@@ -1,0 +1,76 @@
+
+
+.ActionMenu {
+    .dots-menu-step {
+        display: flex;
+        transform: rotate(90deg);
+        border: 2px solid #E7E7E7;
+        border-radius: 12px;
+        width: 30px;
+        height: 30px;
+        align-items: center;
+        justify-content: center;
+        background-color: white;
+        
+        .more-options-item {
+            display: flex;
+            gap: 10px;
+            font-size: 14px;
+        }
+
+        .button {
+            padding: 2px;
+            :hover {
+                background-color: none;
+            }
+
+            .icon {
+                color: black;
+            }
+        }
+    }
+}
+
+.select-component {
+    .options-button {
+        min-width: 128px;
+        font-size: 12px;
+    }
+    .clean-button {
+        display: flex;
+        justify-content: flex-end;
+        padding: 5px;
+    }
+    .marketplace {
+        display: flex;
+        gap: 5px;
+        font-size: 12px;
+    
+        .marketplace-logo {
+            width: 20px;
+            height: 20px;
+        }
+    }
+
+}
+
+
+.input-component {
+    .container {
+        .label-container {
+            display: flex;
+            gap: 5px;
+            align-items: center;
+            margin-bottom: 0.4rem;
+    
+            .label {
+                font-size: 12px;
+            }
+    
+            .tooltip {
+                width: 13px;
+                cursor: pointer
+            }
+        }
+    }
+}
