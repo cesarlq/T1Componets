@@ -15,6 +15,8 @@ export { default as ChipT1 } from './Components/ChipT1';
 export { default as PhoneInputT1 } from './Components/PhoneInputT1';
 export { default as CheckBoxT1 } from './Components/CheckBoxT1';
 export { default as CustomInput } from './Components/CustomInput';
+export { default as AmountInput } from './Components/AmountInput';
+export { default as SearchInput } from './Components/SearchInput';
 //Table
 export { default as TableT1 } from './Components/TableT1';
 // Collapse

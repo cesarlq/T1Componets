@@ -62,7 +62,7 @@ export interface AmountInput<T extends FieldValues>
     tooltip?: string;
 }
 
-export const AmountInput = <T extends FieldValues>({
+const AmountInput = <T extends FieldValues>({
     textFieldProps,
     currency,
     label,
@@ -109,3 +109,6 @@ export const AmountInput = <T extends FieldValues>({
         </div>
     );
 };
+
+
+export default AmountInput;
