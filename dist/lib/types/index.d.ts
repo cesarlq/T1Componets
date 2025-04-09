@@ -1,6 +1,5 @@
 export { default as theme } from './styles/theme';
 export { default as ActionMenu } from './Components/ActionMenu/ActionMenu';
-export { default as MenuItem } from './Components/ActionMenu/MenuItem';
 export { default as SelectComponent } from './Components/SelectComponent/SelectComponent';
 export { default as SelectItem } from './Components/SelectComponent/SelectItem';
 export { default as FormControlSelect } from './Components/SelectComponent/FormControlSelect';

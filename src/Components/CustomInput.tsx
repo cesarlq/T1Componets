@@ -3,7 +3,6 @@ import React from 'react';
 import styles from '../styles/common/CommonStyles.module.scss';
 import { TextField, Tooltip } from '@mui/material';
 import { CustomInputI } from '../interfaces/commonInterfaces';
-import T1Icon from './T1Icon';
 
 const CustomInput: React.FC<CustomInputI> = ({ label, required, textFieldProps, children, style, tooltip }) => (
 	<div className={`${styles.container} ${textFieldProps && textFieldProps.className}`} style={textFieldProps && textFieldProps.fullWidth ? { width: '100%', ...style } : style}>
@@ -15,7 +14,6 @@ const CustomInput: React.FC<CustomInputI> = ({ label, required, textFieldProps, 
 					tooltip &&
 					<Tooltip title={tooltip}>
 						<div className={styles.tooltip}>
-							<T1Icon icon="helpIcon" />
 						</div>
 					</Tooltip>
 				}

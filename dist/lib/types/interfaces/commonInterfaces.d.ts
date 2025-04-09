@@ -1,4 +1,5 @@
-import { CheckboxProps, ButtonProps } from "@mui/material";
+import { CheckboxProps, ButtonProps, TextFieldProps } from "@mui/material";
+import { ReactNode } from "react";
 export interface SelectComponentPropsI {
     onClick?: () => void;
     buttonType?: 'solid' | 'outline' | 'text';
@@ -15,6 +16,27 @@ export interface SelectComponentPropsI {
     className?: string;
     additionalIcon?: React.ReactNode;
     onAdditionalIconClick?: () => void;
+}
+export interface PBIconProps {
+    icon: string;
+    width?: number;
+    height?: number;
+    sx?: any;
+    className?: string;
+}
+export interface CustomInputI {
+    label?: string | React.ReactNode;
+    required?: boolean;
+    className?: string;
+    textFieldProps: TextFieldProps;
+    children?: React.ReactNode;
+    style?: React.CSSProperties;
+    button?: boolean;
+    buttonText?: string;
+    buttonProps?: React.ButtonHTMLAttributes<HTMLButtonElement>;
+    startIconButton?: ReactNode;
+    endIconButton?: ReactNode;
+    tooltip?: string;
 }
 export interface ButtonT1PropsI {
     additionalItems?: AdditionalItemI[];

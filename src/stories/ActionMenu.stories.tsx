@@ -9,8 +9,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 
-// Definición de componente personalizado para los ítems de menú
-// que acepta las propiedades que espera ActionMenu
+
 const CustomMenuItem = (props: { 
   label: string; 
   onClick?: () => void; 
@@ -19,7 +18,6 @@ const CustomMenuItem = (props: {
   return <>{props.label}</>; // El contenido real no importa
 };
 
-// Define el meta para el componente
 const meta = {
   title: 'Components/ActionMenu',
   component: ActionMenu,
