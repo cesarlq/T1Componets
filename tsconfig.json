@@ -15,9 +15,13 @@
     "jsx": "react",
     "declaration": true,
     "outDir": "dist/lib",
-    "declarationDir": "dist/lib/types",  // IMPORTANTE: Debe estar dentro de dist/lib
+    "declarationDir": "dist/lib/types",
     "sourceMap": true
   },
-  "include": ["src"],
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.d.ts" 
+  ],
   "exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.test.tsx"]
 }

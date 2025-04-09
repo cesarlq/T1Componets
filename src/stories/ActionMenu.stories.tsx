@@ -34,7 +34,7 @@ const meta = {
     onClick: { action: 'menuOpened' },
     onClose: { action: 'menuClosed' }
   },
-  // Decorador para dar algo de espacio alrededor del menú
+  
   decorators: [
     (Story) => (
       <Box sx={{ padding: 4, display: 'flex', justifyContent: 'center' }}>

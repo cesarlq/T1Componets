@@ -12,9 +12,9 @@ export { default as CloseButtonT1 } from './Components/CloseButtonT1';
 //chips
 export { default as ChipT1 } from './Components/ChipT1';
 //Input
-export { default as InputT1 } from './Components/InputComponentT1';
 export { default as PhoneInputT1 } from './Components/PhoneInputT1';
 export { default as CheckBoxT1 } from './Components/CheckBoxT1';
+export { default as CustomInput } from './Components/CustomInput';
 //Table
 export { default as TableT1 } from './Components/TableT1';
 // Collapse
