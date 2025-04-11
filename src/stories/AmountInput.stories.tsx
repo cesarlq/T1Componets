@@ -1,9 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { fn } from '@storybook/test';
 import React from 'react';
-import { AmountInput } from '../Components/AmountInput';
 import { Box } from '@mui/material';
 import { useForm, FormProvider } from 'react-hook-form';
+import AmountInput from '../Components/AmountInput';
 
 // Definir el tipo de nuestros campos de formulario
 type FormValues = {

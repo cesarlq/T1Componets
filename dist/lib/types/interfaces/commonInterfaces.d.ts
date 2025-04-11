@@ -1,4 +1,4 @@
-import { CheckboxProps, ButtonProps, TextFieldProps } from "@mui/material";
+import { CheckboxProps, ButtonProps, TextFieldProps, StandardTextFieldProps } from "@mui/material";
 import { ReactNode } from "react";
 export interface SelectComponentPropsI {
     onClick?: () => void;
@@ -16,6 +16,13 @@ export interface SelectComponentPropsI {
     className?: string;
     additionalIcon?: React.ReactNode;
     onAdditionalIconClick?: () => void;
+}
+export interface SearchInputI {
+    onChange?: (value: React.ChangeEvent<HTMLInputElement>) => void;
+    textFieldProps?: StandardTextFieldProps;
+    onClickButton?: (value: string) => void;
+    defaultValue?: string;
+    placeholder?: string;
 }
 export interface PBIconProps {
     icon: string;

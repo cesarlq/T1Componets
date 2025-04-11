@@ -1443,3 +1443,287 @@ const renderTableHeader = () => (
 />
 ```
 
+
+
+# TableT1 Component
+
+`TableT1` is a highly customizable and feature-rich table component designed to display tabular data in React applications with Material UI.
+
+## Features
+
+- **Sorting**: Sort columns in ascending or descending order
+- **Pagination**: Page navigation with customizable records per page options
+- **Searching**: Real-time filtering of displayed data
+- **Row Selection**: Individual or multiple selection with checkboxes
+- **Expandable Rows**: Show additional information for each row
+- **Custom Actions**: Incorporate action buttons for each row
+- **Loading and Error States**: Elegant handling of loading, error, and empty data states
+- **Complete Customization**: Customizable styles, renderers, and behaviors
+
+## Installation
+
+```bash
+npm install t1componets
+```
+
+## Basic Usage
+
+```jsx
+import { TableT1 } from 't1componets';
+
+// Column definition
+const columns = [
+  { id: 'id', label: 'ID' },
+  { id: 'name', label: 'Name' },
+  { id: 'email', label: 'Email' }
+];
+
+// Sample data
+const data = [
+  { id: 1, name: 'John Smith', email: 'john@example.com' },
+  { id: 2, name: 'Mary Johnson', email: 'mary@example.com' }
+];
+
+function MyComponent() {
+  return (
+    <TableT1
+      columns={columns}
+      data={data}
+    />
+  );
+}
+```
+
+## Variations
+
+### Table with Search
+
+```jsx
+<TableT1
+  columns={columns}
+  data={data}
+  searchable={true}
+  searchPlaceholder="Search users..."
+/>
+```
+
+### Table with Row Selection
+
+```jsx
+<TableT1
+  columns={columns}
+  data={data}
+  selectable={true}
+  onSelectionChange={(selectedRows) => console.log('Selected rows:', selectedRows)}
+/>
+```
+
+### Table with Row Actions
+
+```jsx
+<TableT1
+  columns={columns}
+  data={data}
+  renderRowActions={(row) => (
+    <>
+      <IconButton size="small" onClick={() => handleEdit(row)}>
+        <EditIcon fontSize="small" />
+      </IconButton>
+      <IconButton size="small" color="error" onClick={() => handleDelete(row)}>
+        <DeleteIcon fontSize="small" />
+      </IconButton>
+    </>
+  )}
+/>
+```
+
+### Table with Expandable Rows
+
+```jsx
+<TableT1
+  columns={columns}
+  data={data}
+  expandable={true}
+  renderExpandedRow={(row) => (
+    <Box sx={{ p: 2 }}>
+      <Typography variant="subtitle1">User Details</Typography>
+      <Typography variant="body2">ID: {row.id}</Typography>
+      <Typography variant="body2">Name: {row.name}</Typography>
+      <Typography variant="body2">Email: {row.email}</Typography>
+    </Box>
+  )}
+/>
+```
+
+### Custom Cell Rendering
+
+```jsx
+const columns = [
+  { id: 'id', label: 'ID' },
+  { id: 'name', label: 'Name' },
+  { 
+    id: 'status', 
+    label: 'Status',
+    renderCell: (row) => (
+      <Chip
+        label={row.status} 
+        color={row.status === 'active' ? 'success' : 'default'} 
+        size="small"
+        variant="outlined"
+      />
+    )
+  }
+];
+```
+
+### Comprehensive Table with All Features
+
+```jsx
+<TableT1
+  columns={columns}
+  data={data}
+  selectable={true}
+  searchable={true}
+  expandable={true}
+  pageable={true}
+  stickyHeader={true}
+  renderRowActions={renderRowActions}
+  renderExpandedRow={renderExpandedRow}
+  renderTableHeader={() => (
+    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+      <Typography variant="h6">Users</Typography>
+      <Button variant="contained" size="small">Add User</Button>
+    </Box>
+  )}
+  onRowClick={(row) => console.log('Row clicked:', row)}
+  onSelectionChange={(selectedRows) => console.log('Selection changed:', selectedRows)}
+  containerSx={{ maxWidth: 1200, mx: 'auto' }}
+/>
+```
+
+## Props API
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `columns` | `Array<TableColumnT1>` | *Required* | Column configuration |
+| `data` | `Array<T>` | *Required* | Data to display in the table |
+| `idKey` | `string` | `'id'` | Property to use as unique identifier |
+| `loading` | `boolean` | `false` | Indicates if the table is loading data |
+| `error` | `string` | `''` | Error message to display |
+| `emptyMessage` | `string` | `'No data available'` | Message when no data is available |
+| `selectable` | `boolean` | `false` | Enables row selection |
+| `sortable` | `boolean` | `true` | Enables column sorting |
+| `pageable` | `boolean` | `true` | Enables pagination |
+| `searchable` | `boolean` | `false` | Enables search |
+| `expandable` | `boolean` | `false` | Enables expandable rows |
+| `pageSize` | `number` | `10` | Default page size |
+| `pageSizeOptions` | `number[]` | `[5, 10, 25, 50]` | Page size options |
+| `onRowClick` | `(row: T) => void` | — | Function called when a row is clicked |
+| `onRowExpand` | `(row: T) => void` | — | Function called when a row is expanded |
+| `onSelectionChange` | `(selectedRows: T[]) => void` | — | Function called when selection changes |
+| `onSearchChange` | `(searchTerm: string) => void` | — | Function called when search term changes |
+| `searchPlaceholder` | `string` | `'Search...'` | Placeholder for search field |
+| `stickyHeader` | `boolean` | `true` | Keeps header visible when scrolling |
+| `searchDelay` | `number` | `300` | Delay in ms for search (debounce) |
+| `defaultSortColumn` | `string` | `''` | Default sort column |
+| `defaultSortDirection` | `'asc'` \| `'desc'` | `'asc'` | Default sort direction |
+
+### Custom Renderer Props
+
+| Prop | Type | Description |
+|------|------|-------------|
+| `renderRowActions` | `(row: T) => React.ReactNode` | Renders actions for each row |
+| `renderExpandedRow` | `(row: T) => React.ReactNode` | Renders expanded content for each row |
+| `renderTableHeader` | `() => React.ReactNode` | Renders a custom header for the table |
+
+### Style Props
+
+| Prop | Type | Description |
+|------|------|-------------|
+| `containerSx` | `SxProps` | Styles for the table container |
+| `tableSx` | `SxProps` | Styles for the Table element |
+| `headerRowSx` | `SxProps` | Styles for the header rows |
+| `bodyRowSx` | `SxProps` | Styles for the body rows |
+| `expansionPanelSx` | `SxProps` | Styles for the expansion panel |
+
+## Data Types
+
+### TableColumnT1
+
+```typescript
+interface TableColumnT1<T = any> {
+  id: string;              // Unique identifier for the column
+  label: string;           // Text to display in the header
+  numeric?: boolean;       // If true, aligns content to the right
+  width?: string | number; // Width of the column
+  sortable?: boolean;      // Whether the column is sortable
+  renderCell?: (row: T) => React.ReactNode; // Renders custom content
+  align?: 'left' | 'right' | 'center'; // Content alignment
+  cellClassName?: string;  // CSS class for cells
+  headerClassName?: string; // CSS class for header
+  hidden?: boolean;        // Whether the column is hidden
+}
+```
+
+## Advanced Usage Examples
+
+### Style Customization
+
+```jsx
+<TableT1
+  columns={columns}
+  data={data}
+  containerSx={{
+    backgroundColor: '#f9fafc',
+    padding: 2,
+    borderRadius: 2
+  }}
+  headerRowSx={{
+    backgroundColor: '#f0f4ff'
+  }}
+  bodyRowSx={{
+    '&:hover': {
+      backgroundColor: '#f0f7ff !important'
+    }
+  }}
+/>
+```
+
+### Table with Loading State
+
+```jsx
+<TableT1
+  columns={columns}
+  data={[]}
+  loading={true}
+/>
+```
+
+### Table with Error Message
+
+```jsx
+<TableT1
+  columns={columns}
+  data={[]}
+  error="Error loading data. Please try again later."
+/>
+```
+
+### Table with Custom Empty Data Message
+
+```jsx
+<TableT1
+  columns={columns}
+  data={[]}
+  emptyMessage="No users found matching your search criteria."
+/>
+```
+
+## Use Cases
+
+- **Admin Panels**: User, product, order management
+- **Analytical Dashboards**: Data tables with filtering and visualization options
+- **Record Listings**: Any type of data requiring tabular visualization
+- **Management Interfaces**: Systems where users need to interact with multiple records
+
+---

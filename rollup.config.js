@@ -5,6 +5,7 @@ import commonjs from '@rollup/plugin-commonjs';
 import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 import postcss from 'rollup-plugin-postcss';
 import { terser } from 'rollup-plugin-terser';
+import url from '@rollup/plugin-url'; // Añade esta importación
 
 // Plugin personalizado para eliminar directivas 'use client'
 const removeUseClientDirectivePlugin = {
@@ -46,7 +47,11 @@ export default {
       declarationDir: './dist/lib/types',
       rootDir: './src',
     }),
-    terser()
+    terser(),
+    url({
+      include: ['**/*.svg', '**/*.png', '**/*.jpg', '**/*.gif'],
+      limit: 10000 // inline as base64 URLs for files <= 10kb
+    })
   ],
   external: [
     'react', 

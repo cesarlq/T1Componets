@@ -1,10 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 import TableT1 from '../Components/TableT1';
-import { Box, Button, Chip, IconButton, Stack, Tooltip, Typography } from '@mui/material';
+import { Box, Button, IconButton, Stack, Tooltip, Typography } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { fn } from '@storybook/test';
+import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
+import SearchIcon from '@mui/icons-material/Search';
+import { ChipT1 } from 't1componets';
 
 // Sample data for the table
 const sampleData = [
@@ -19,7 +21,43 @@ const sampleData = [
   { id: 9, name: 'Michael Moore', email: 'michael@example.com', status: 'inactive', role: 'Viewer', lastLogin: '2023-03-31' },
   { id: 10, name: 'Lisa Taylor', email: 'lisa@example.com', status: 'active', role: 'Editor', lastLogin: '2023-04-04' },
   { id: 11, name: 'William Anderson', email: 'william@example.com', status: 'active', role: 'Admin', lastLogin: '2023-04-08' },
-  { id: 12, name: 'Elizabeth Thomas', email: 'elizabeth@example.com', status: 'inactive', role: 'Viewer', lastLogin: '2023-03-27' }
+  { id: 12, name: 'Elizabeth Thomas', email: 'elizabeth@example.com', status: 'inactive', role: 'Viewer', lastLogin: '2023-03-27' },
+  { id: 13, name: 'John Smith', email: 'john@example.com', status: 'active', role: 'Admin', lastLogin: '2023-04-01' },
+  { id: 14, name: 'Maria Garcia', email: 'maria@example.com', status: 'active', role: 'Editor', lastLogin: '2023-04-05' },
+  { id: 15, name: 'Robert Johnson', email: 'robert@example.com', status: 'inactive', role: 'Viewer', lastLogin: '2023-03-28' },
+  { id: 16, name: 'Sarah Williams', email: 'sarah@example.com', status: 'active', role: 'Editor', lastLogin: '2023-04-02' },
+  { id: 17, name: 'David Brown', email: 'david@example.com', status: 'active', role: 'Admin', lastLogin: '2023-04-07' },
+  { id: 18, name: 'Jessica Davis', email: 'jessica@example.com', status: 'inactive', role: 'Viewer', lastLogin: '2023-03-25' },
+  { id: 19, name: 'Thomas Miller', email: 'thomas@example.com', status: 'active', role: 'Editor', lastLogin: '2023-04-03' },
+  { id: 20, name: 'Jennifer Wilson', email: 'jennifer@example.com', status: 'active', role: 'Admin', lastLogin: '2023-04-06' },
+  { id: 21, name: 'Michael Moore', email: 'michael@example.com', status: 'inactive', role: 'Viewer', lastLogin: '2023-03-31' },
+  { id: 22, name: 'Lisa Taylor', email: 'lisa@example.com', status: 'active', role: 'Editor', lastLogin: '2023-04-04' },
+  { id: 23, name: 'William Anderson', email: 'william@example.com', status: 'active', role: 'Admin', lastLogin: '2023-04-08' },
+  { id: 24, name: 'Elizabeth Thomas', email: 'elizabeth@example.com', status: 'inactive', role: 'Viewer', lastLogin: '2023-03-27' },
+  { id: 25, name: 'John Smith', email: 'john@example.com', status: 'active', role: 'Admin', lastLogin: '2023-04-01' },
+  { id: 26, name: 'Maria Garcia', email: 'maria@example.com', status: 'active', role: 'Editor', lastLogin: '2023-04-05' },
+  { id: 27, name: 'Robert Johnson', email: 'robert@example.com', status: 'inactive', role: 'Viewer', lastLogin: '2023-03-28' },
+  { id: 28, name: 'Sarah Williams', email: 'sarah@example.com', status: 'active', role: 'Editor', lastLogin: '2023-04-02' },
+  { id: 29, name: 'David Brown', email: 'david@example.com', status: 'active', role: 'Admin', lastLogin: '2023-04-07' },
+  { id: 30, name: 'Jessica Davis', email: 'jessica@example.com', status: 'inactive', role: 'Viewer', lastLogin: '2023-03-25' },
+  { id: 31, name: 'Thomas Miller', email: 'thomas@example.com', status: 'active', role: 'Editor', lastLogin: '2023-04-03' },
+  { id: 32, name: 'Jennifer Wilson', email: 'jennifer@example.com', status: 'active', role: 'Admin', lastLogin: '2023-04-06' },
+  { id: 33, name: 'Michael Moore', email: 'michael@example.com', status: 'inactive', role: 'Viewer', lastLogin: '2023-03-31' },
+  { id: 34, name: 'Lisa Taylor', email: 'lisa@example.com', status: 'active', role: 'Editor', lastLogin: '2023-04-04' },
+  { id: 35, name: 'William Anderson', email: 'william@example.com', status: 'active', role: 'Admin', lastLogin: '2023-04-08' },
+  { id: 36, name: 'Elizabeth Thomas', email: 'elizabeth@example.com', status: 'inactive', role: 'Viewer', lastLogin: '2023-03-27' },
+  { id: 37, name: 'John Smith', email: 'john@example.com', status: 'active', role: 'Admin', lastLogin: '2023-04-01' },
+  { id: 38, name: 'Maria Garcia', email: 'maria@example.com', status: 'active', role: 'Editor', lastLogin: '2023-04-05' },
+  { id: 39, name: 'Robert Johnson', email: 'robert@example.com', status: 'inactive', role: 'Viewer', lastLogin: '2023-03-28' },
+  { id: 40, name: 'Sarah Williams', email: 'sarah@example.com', status: 'active', role: 'Editor', lastLogin: '2023-04-02' },
+  { id: 41, name: 'David Brown', email: 'david@example.com', status: 'active', role: 'Admin', lastLogin: '2023-04-07' },
+  { id: 42, name: 'Jessica Davis', email: 'jessica@example.com', status: 'inactive', role: 'Viewer', lastLogin: '2023-03-25' },
+  { id: 43, name: 'Thomas Miller', email: 'thomas@example.com', status: 'active', role: 'Editor', lastLogin: '2023-04-03' },
+  { id: 44, name: 'Jennifer Wilson', email: 'jennifer@example.com', status: 'active', role: 'Admin', lastLogin: '2023-04-06' },
+  { id: 45, name: 'Michael Moore', email: 'michael@example.com', status: 'inactive', role: 'Viewer', lastLogin: '2023-03-31' },
+  { id: 46, name: 'Lisa Taylor', email: 'lisa@example.com', status: 'active', role: 'Editor', lastLogin: '2023-04-04' },
+  { id: 47, name: 'William Anderson', email: 'william@example.com', status: 'active', role: 'Admin', lastLogin: '2023-04-08' },
+  { id: 48, name: 'Elizabeth Thomas', email: 'elizabeth@example.com', status: 'inactive', role: 'Viewer', lastLogin: '2023-03-27' }
 ];
 
 // Column definitions
@@ -31,7 +69,7 @@ const columns = [
     id: 'status', 
     label: 'Status',
     renderCell: (row: any) => (
-      <Chip 
+      <ChipT1
         label={row.status} 
         color={row.status === 'active' ? 'success' : 'default'} 
         size="small"
@@ -134,7 +172,8 @@ type Story = StoryObj<typeof meta>;
 export const Basic: Story = {
   args: {
     columns: columns,
-    data: sampleData
+    data: sampleData,
+    pageSizeOptions: [3, 6, 8],
   }
 };
 
@@ -144,7 +183,8 @@ export const WithSearch: Story = {
     columns: columns,
     data: sampleData,
     searchable: true,
-    searchPlaceholder: 'Search users...'
+    searchPlaceholder: 'Search users...',
+    pageSizeOptions: [3, 6, 8],
   }
 };
 
@@ -153,7 +193,8 @@ export const WithSelection: Story = {
   args: {
     columns: columns,
     data: sampleData,
-    selectable: true
+    selectable: true,
+    pageSizeOptions: [3, 6, 8],
   }
 };
 
@@ -162,7 +203,8 @@ export const WithRowActions: Story = {
   args: {
     columns: columns,
     data: sampleData,
-    renderRowActions: renderRowActions
+    renderRowActions: renderRowActions,
+    pageSizeOptions: [3, 6, 8],
   }
 };
 
@@ -172,7 +214,8 @@ export const WithExpandableRows: Story = {
     columns: columns,
     data: sampleData,
     expandable: true,
-    renderExpandedRow: renderExpandedContent
+    renderExpandedRow: renderExpandedContent,
+    pageSizeOptions: [3, 6, 8],
   }
 };
 
@@ -186,7 +229,8 @@ export const ComprehensiveTable: Story = {
     expandable: true,
     renderRowActions: renderRowActions,
     renderExpandedRow: renderExpandedContent,
-    renderTableHeader: renderTableHeader
+    renderTableHeader: renderTableHeader,
+    pageSizeOptions: [3, 6, 8],
   }
 };
 
@@ -195,7 +239,8 @@ export const LoadingState: Story = {
   args: {
     columns: columns,
     data: [],
-    loading: true
+    loading: true,
+    pageSizeOptions: [3, 6, 8],
   }
 };
 
@@ -204,7 +249,8 @@ export const EmptyState: Story = {
   args: {
     columns: columns,
     data: [],
-    emptyMessage: 'No users found'
+    emptyMessage: 'No users found',
+    pageSizeOptions: [3, 6, 8],
   }
 };
 
@@ -213,7 +259,8 @@ export const ErrorState: Story = {
   args: {
     columns: columns,
     data: [],
-    error: 'Error loading users data. Please try again later.'
+    error: 'Error loading users data. Please try again later.',
+    pageSizeOptions: [3, 6, 8],
   }
 };
 
@@ -222,6 +269,7 @@ export const CustomStyling: Story = {
   args: {
     columns: columns,
     data: sampleData,
+    pageSizeOptions: [3, 6, 8],
     containerSx: {
       backgroundColor: '#f9fafc',
       padding: 2,

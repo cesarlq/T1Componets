@@ -22,6 +22,8 @@ import {
 import SearchIcon from '@mui/icons-material/Search';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import { visuallyHidden } from '@mui/utils';
+import CustomPagination from './CustomPagination';
+import SearchInput from './SearchInput';
 
 // Types for table props
 export interface TableColumnT1<T = any> {
@@ -346,21 +348,7 @@ const TableT1 = <T extends Record<string, any>>({
           )}
           
           {searchable && (
-            <TextField
-              placeholder={searchPlaceholder}
-              value={searchInputValue}
-              onChange={(e) => setSearchInputValue(e.target.value)}
-              size="small"
-              variant="outlined"
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchIcon />
-                  </InputAdornment>
-                ),
-              }}
-              sx={{ width: { xs: '100%', sm: '250px' } }}
-            />
+            <SearchInput />
           )}
         </Box>
       )}
@@ -549,14 +537,17 @@ const TableT1 = <T extends Record<string, any>>({
       
       {/* Pagination */}
       {pageable && (
-        <TablePagination
-          rowsPerPageOptions={pageSizeOptions}
-          component="div"
+        <CustomPagination
           count={filteredData.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
+          onRowsPerPageChange={(e) => {
+            console.log('Rows per page changed:', e);
+            setRowsPerPage(Number(e.target.value));
+            setPage(0);
+          }}
+          rowsPerPageOptions={pageSizeOptions}
         />
       )}
     </Box>

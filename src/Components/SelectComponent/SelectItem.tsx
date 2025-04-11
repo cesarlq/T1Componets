@@ -2,11 +2,11 @@ import React from 'react';
 import { Typography, TypographyProps } from '@mui/material';
 
 interface ExtendedTypographyProps extends TypographyProps {
-    value?: boolean | string;
+    value?: boolean | string | number;
     label?: string;
     icon?: string;
     cheked?: string | boolean;
-    onClick?: () => void;
+    onClick?: (e:any) => void;
 }
 
 const SelectItem: React.FC<ExtendedTypographyProps> = ({ 

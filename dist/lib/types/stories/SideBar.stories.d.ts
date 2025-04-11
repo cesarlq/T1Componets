@@ -1,0 +1,14 @@
+import { Meta, StoryObj } from '@storybook/react';
+import SideBar from '../Components/SideBar';
+declare const meta: Meta<typeof SideBar>;
+export default meta;
+type Story = StoryObj<typeof SideBar>;
+export declare const Default: Story;
+export declare const Reduced: Story;
+export declare const WithHiddenItems: Story;
+export declare const DarkTheme: Story;
+export declare const LongMenuNames: Story;
+export declare const WithActiveItem: Story;
+export declare const Responsive: Story;
+export declare const NoServiceOptions: Story;
+export declare const CustomStyles: Story;

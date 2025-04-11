@@ -21,5 +21,5 @@ export { default as SearchInput } from './Components/SearchInput';
 export { default as TableT1 } from './Components/TableT1';
 // Collapse
 export { default as CollapsibleCardT1 } from './Components/CollapsibleCardT1';
-
-
+//SideBar
+export { default as Sidebar } from './Components/SideBar';

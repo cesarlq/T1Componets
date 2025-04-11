@@ -7,8 +7,11 @@ export { default as CheckBoxSelect } from './Components/SelectComponent/CheckBox
 export { default as ButtonT1 } from './Components/ButtonT1';
 export { default as CloseButtonT1 } from './Components/CloseButtonT1';
 export { default as ChipT1 } from './Components/ChipT1';
-export { default as InputT1 } from './Components/InputComponentT1';
 export { default as PhoneInputT1 } from './Components/PhoneInputT1';
 export { default as CheckBoxT1 } from './Components/CheckBoxT1';
+export { default as CustomInput } from './Components/CustomInput';
+export { default as AmountInput } from './Components/AmountInput';
+export { default as SearchInput } from './Components/SearchInput';
 export { default as TableT1 } from './Components/TableT1';
 export { default as CollapsibleCardT1 } from './Components/CollapsibleCardT1';
+export { default as Sidebar } from './Components/SideBar';

@@ -161,9 +161,10 @@ const SelectComponent: React.FC<SelectComponentPropsI> = ({
   return (
     <div className={styles['select-component']}>
       <Button
+      sx={{}}
         variant="outlined"
-        className={`${styles["options-button"]} ${className} ${buttonType === 'solid' ? '' : buttonType === 'outline' && '!border-[0px]'}`}
-        endIcon={<div className="gap-2 flex">
+        className={`${styles["options-button"]} text-red ${className} ${buttonType === 'solid' ? '' : buttonType === 'outline' && '!border-[0px]'}`}
+        endIcon={<div style={{display: 'flex', alignItems: 'center'}}>
             {endIcon ? endIcon : <ExpandMoreIcon />} 
             {additionalIcon && (<>
                 <Divider orientation="vertical" flexItem />
