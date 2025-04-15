@@ -1,4 +1,4 @@
-import { CheckboxProps, ButtonProps, TextFieldProps, StandardTextFieldProps } from "@mui/material";
+import { CheckboxProps, ButtonProps, TextFieldProps, StandardTextFieldProps, Theme, SxProps } from "@mui/material";
 import { ReactNode } from "react";
 export interface SelectComponentPropsI {
     onClick?: () => void;
@@ -47,16 +47,28 @@ export interface CustomInputI {
     tooltip?: string;
 }
 export interface ButtonT1PropsI {
-    additionalItems?: AdditionalItemI[];
-    children: React.ReactNode;
-    label?: string;
-    endIcon?: React.ReactNode | null;
-    startIcon?: React.ReactNode | null;
+    children?: React.ReactNode;
+    startIcon?: React.ReactNode;
+    endIcon?: React.ReactNode;
     additionalIcon?: React.ReactNode;
-    className?: string;
     variant?: 'text' | 'outlined' | 'contained';
-    disabled?: boolean;
+    className?: string;
     onClick?: () => void;
+    disabled?: boolean;
+    loading?: boolean;
+    confirmationMessage?: string;
+    confirmationCancelText?: string;
+    confirmationConfirmText?: string;
+    confirmationTitle?: string;
+    tooltipText?: string;
+    tooltipPlacement?: 'top' | 'bottom' | 'left' | 'right';
+    responsive?: boolean;
+    sx?: SxProps<Theme>;
+    color?: 'inherit' | 'primary' | 'secondary' | 'error' | 'success' | 'info' | 'warning';
+    size?: 'small' | 'medium' | 'large';
+    disableElevation?: boolean;
+    fullWidth?: boolean;
+    preventDoubleClick?: boolean;
 }
 export interface ChildrenProps {
     checkbox?: boolean;
