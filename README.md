@@ -53,8 +53,6 @@ The library includes the following key dependencies:
 - react-world-flags
 - tailwindcss
 
-## Usage
-
 ## Styling
 
 The library uses Tailwind CSS for styling. Ensure your project is configured to work with Tailwind CSS.
