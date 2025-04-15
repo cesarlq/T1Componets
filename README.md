@@ -1,42 +1,82 @@
-# T1Components - Installation and Setup Guide
+# @t1-org/t1componets
+
+## Overview
+
+A React component library for T1 organization, providing a collection of reusable UI components.
+
+## Prerequisites
+
+Before installing the library, ensure you have the following:
+
+- Node.js (version 16 or higher)
+- npm (version 7 or higher)
+- React (version 17 or 18)
+- React DOM (version 17 or 18)
 
 ## Installation
 
-### Installing the Package
+### 1. Authentication
 
-You can install T1Components using npm or yarn:
+First, you must be logged into npm and have access to the T1 organization:
 
 ```bash
-# Using npm
-npm install t1componets
+# Log in to npm
+npm login
 
-# Using yarn
-yarn add t1componets
+# Verify organization access
+npm whoami
 ```
 
-### Installing Peer Dependencies
+### 2. Install the Library
 
-T1Components requires the following peer dependencies:
+Install the library using npm:
 
 ```bash
-# Required dependencies
-npm install @mui/material @mui/icons-material @emotion/react @emotion/styled
-
-# For Next.js projects
-npm install next-images
+npm install @t1-org/t1componets
 ```
 
-For React projects using TypeScript, ensure you have TypeScript installed:
+### Peer Dependencies
 
-```bash
-npm install --save-dev typescript @types/react
+This library requires the following peer dependencies:
+
+- react (^17.0.0 || ^18.0.0)
+- react-dom (^17.0.0 || ^18.0.0)
+
+### Additional Dependencies
+
+The library includes the following key dependencies:
+- @mui/icons-material
+- @mui/lab
+- clsx
+- react-hook-form
+- react-number-format
+- react-world-flags
+- tailwindcss
+
+## Usage
+
+## Styling
+
+The library uses Tailwind CSS for styling. Ensure your project is configured to work with Tailwind CSS.
+
+### Tailwind Configuration
+
+Add to your `tailwind.config.js`:
+
+```javascript
+module.exports = {
+  content: [
+    // ... other paths
+    './node_modules/@t1-org/t1componets/**/*.{js,ts,jsx,tsx}'
+  ],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+}
 ```
 
 ## Setting Up Theme Provider
-
-For the best experience with T1Components, you should set up a MUI ThemeProvider in your application root.
-
-### Basic Setup
 
 ```jsx
 // In your _app.js or App.js
