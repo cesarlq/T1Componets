@@ -4,7 +4,7 @@ import TableT1 from '../Components/TableT1';
 import { Box, Button, IconButton, Stack, Tooltip, Typography } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { ChipT1 } from 't1componets';
+import ChipT1 from '../Components/ChipT1';
 
 // Sample data for the table
 const sampleData = [

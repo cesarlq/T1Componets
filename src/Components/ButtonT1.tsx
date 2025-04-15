@@ -9,9 +9,6 @@ import { SxProps, Theme, useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { ButtonT1PropsI } from '../interfaces/commonInterfaces';
 import clsx from 'clsx';
-import 'tailwindcss/base';
-import 'tailwindcss/components';
-import 'tailwindcss/utilities';
 
 const ButtonT1: React.FC<ButtonT1PropsI> = ({
     children,

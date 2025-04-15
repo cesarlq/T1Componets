@@ -15,7 +15,7 @@ import {
   Theme,
   styled
 } from '@mui/material';
-import { CloseButtonT1 } from 't1componets';
+import CloseButtonT1 from './CloseButtonT1';
 
 // Creamos un MenuItem personalizado para evitar problemas de tipado
 const StyledMenuItem = styled('div')<{ isSelected?: boolean }>(({ theme, isSelected }) => ({

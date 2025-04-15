@@ -1,8 +1,8 @@
 import React from 'react';
 import { Meta, StoryObj } from '@storybook/react';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
-import { CloseButtonT1 } from 't1componets';
 import ModalComponent from '../Components/ModalComponent';
+import CloseButtonT1 from '../Components/CloseButtonT1';
 
 // Fondo de ejemplo para mostrar el efecto modal
 const BackgroundDecorator = (Story: React.FC) => (

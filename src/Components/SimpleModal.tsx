@@ -6,7 +6,7 @@ import {
   Divider,
   styled
 } from '@mui/material';
-import { CloseButtonT1 } from 't1componets';
+import CloseButtonT1 from './CloseButtonT1';
 
 /**
  * Props para el componente SimpleModalComponent
