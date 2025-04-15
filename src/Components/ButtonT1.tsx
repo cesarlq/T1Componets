@@ -8,6 +8,10 @@ import {
 import { SxProps, Theme, useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { ButtonT1PropsI } from '../interfaces/commonInterfaces';
+import clsx from 'clsx';
+import 'tailwindcss/base';
+import 'tailwindcss/components';
+import 'tailwindcss/utilities';
 
 const ButtonT1: React.FC<ButtonT1PropsI> = ({
     children,
@@ -82,44 +86,38 @@ const ButtonT1: React.FC<ButtonT1PropsI> = ({
             )}
         </div>
     ) : undefined;
-
-    // Render button content
-    const buttonContent = (
-        <Button
-            {...props}
-            {...responsiveProps}
-            className={`${className || ''}`}
-            variant={variant}
-            color={color}
-            size={size}
-            startIcon={startIcon}
-            endIcon={fullEndIcon}
-            disabled={disabled || loading}
-            onClick={handleClick}
-            sx={customSx}
-        >
-            {isConfirming ? confirmationMessage : children}
-            {loading && (
-                <CircularProgress 
-                    size={24} 
-                    sx={{ 
-                        position: 'absolute', 
-                        top: '50%', 
-                        left: '50%', 
-                        marginTop: '-12px', 
-                        marginLeft: '-12px' 
-                    }} 
-                />
-            )}
-        </Button>
-    );
-
     // Wrap with tooltip if tooltip text is provided
     return tooltipText ? (
         <Tooltip title={tooltipText}>
-            {buttonContent}
+            <Button
+                {...props}
+                {...responsiveProps}
+                className={clsx(
+                    // Clases base del componente
+                    'button-t1', 
+                    // Clases de Tailwind
+                    className
+                )}
+                // ... resto de props
+            >
+                {/* Contenido del botón */}
+            </Button>
         </Tooltip>
-    ) : buttonContent;
+    ) : (
+        <Button
+            {...props}
+            {...responsiveProps}
+            className={clsx(
+                // Clases base del componente
+                'button-t1', 
+                // Clases de Tailwind
+                className
+            )}
+            // ... resto de props
+        >
+            {/* Contenido del botón */}
+        </Button>
+    );
 };
 
 export default ButtonT1;

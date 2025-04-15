@@ -30,7 +30,7 @@ const CustomSearchField = styled('div')(({ theme }) => ({
 	}
 }));
 
-const SearchInput: React.FC<SearchInputI> = ({ textFieldProps, defaultValue, onChange, onClickButton }) => {
+const SearchInput: React.FC<SearchInputI> = ({ textFieldProps, defaultValue, onChange, onClickButton,className }) => {
 	const [valueInput, setValueInput] = useState<string>('');
 
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -41,7 +41,7 @@ const SearchInput: React.FC<SearchInputI> = ({ textFieldProps, defaultValue, onC
 	};
 
 	return (
-		<CustomSearchField>
+		<CustomSearchField className={className} style={{ ...(textFieldProps?.sx as React.StyleHTMLAttributes<HTMLDivElement>) }}>
 			<span className="search-icon">
 				<Image
 					src={MagnifierIcon}

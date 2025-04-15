@@ -1,6 +1,8 @@
 export { default as theme } from './styles/theme';
 //action menu
 export { default as ActionMenu } from './Components/ActionMenu/ActionMenu';
+export { default as ModalComponent } from './Components/ModalComponent';
+export { default as SimpleModalComponent } from './Components/SimpleModal';
 //select Component
 export { default as SelectComponent } from './Components/SelectComponent/SelectComponent';
 export { default as SelectItem } from './Components/SelectComponent/SelectItem';

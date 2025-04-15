@@ -26,6 +26,7 @@ declare const meta: {
         onClickButton?: ((value: string) => void) | undefined;
         defaultValue?: string | undefined;
         placeholder?: string | undefined;
+        className?: string | undefined;
     }>) => React.JSX.Element)[];
 };
 export default meta;

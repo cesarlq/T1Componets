@@ -6,12 +6,13 @@ import {
   MenuItem, 
   IconButton, 
   TextField,
-  InputAdornment,
-  SelectChangeEvent 
+  SelectChangeEvent, 
+  useTheme,
+  useMediaQuery
 } from '@mui/material';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
-import { SelectComponent, SelectItem } from 't1componets';
+import ListIcon from '@mui/icons-material/List';
 
 interface CustomPaginationProps {
   count: number;
@@ -28,10 +29,22 @@ const CustomPagination: React.FC<CustomPaginationProps> = ({
   page,
   onPageChange,
   onRowsPerPageChange,
-  rowsPerPageOptions
+  rowsPerPageOptions = [5, 10, 25]
 }) => {
+  rowsPerPage = rowsPerPage ?? rowsPerPageOptions[0];
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
+  const isMediumScreen = useMediaQuery(theme.breakpoints.between('sm', 'md'));
+
   const totalPages = Math.ceil(count / rowsPerPage);
   const [goToPage, setGoToPage] = React.useState<string>((page + 1).toString());
+
+  const navigateToPage = (pageNumber: number) => {
+    if (!isNaN(pageNumber) && pageNumber > 0 && pageNumber <= totalPages) {
+      onPageChange(null, pageNumber - 1);
+      setGoToPage(pageNumber.toString());
+    }
+  };
 
   const handlePreviousPage = () => {
     onPageChange(null, Math.max(0, page - 1));
@@ -42,16 +55,21 @@ const CustomPagination: React.FC<CustomPaginationProps> = ({
   };
 
   const handleGoToPageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setGoToPage(event.target.value);
+    // Solo permitir números
+    const value = event.target.value.replace(/[^0-9]/g, '');
+    setGoToPage(value);
   };
 
   const handleGoToPageKeyPress = (event: React.KeyboardEvent) => {
     if (event.key === 'Enter') {
       const pageNumber = parseInt(goToPage, 10);
-      if (!isNaN(pageNumber) && pageNumber > 0 && pageNumber <= totalPages) {
-        onPageChange(null, pageNumber - 1);
-      }
+      navigateToPage(pageNumber);
     }
+  };
+
+  const handleGoToPageButtonClick = () => {
+    const pageNumber = parseInt(goToPage, 10);
+    navigateToPage(pageNumber);
   };
 
   // Función para generar los botones de página
@@ -166,102 +184,201 @@ const CustomPagination: React.FC<CustomPaginationProps> = ({
   };
 
   return (
-    <Box 
+<Box 
       sx={{ 
         display: 'flex', 
         alignItems: 'center', 
         justifyContent: 'space-between', 
-        p: 2
+        p: {
+          xs: 1, // Padding más pequeño en pantallas extra pequeñas
+          sm: 2  // Padding estándar en pantallas pequeñas y superiores
+        },
+        flexDirection: {
+          xs: 'column', // Columna en pantallas muy pequeñas
+          sm: 'row'     // Fila en pantallas pequeñas y superiores
+        },
+        gap: {
+          xs: 1, // Espacio entre elementos en columna
+          sm: 2  // Espacio entre elementos en fila
+        }
       }}
     >
-      <Typography variant="body1">
+      <Typography 
+        variant="body1" 
+        sx={{ 
+          mb: { 
+            xs: 1, 
+            sm: 0 
+          },
+          textAlign: {
+            xs: 'center',
+            sm: 'left'
+          }
+        }}
+      >
         En total {count} registros
       </Typography>
       
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+      <Box 
+        sx={{ 
+          display: 'flex', 
+          alignItems: 'center', 
+          flexWrap: 'wrap',
+          justifyContent: 'center',
+          gap: {
+            xs: 1,
+            sm: 2
+          }
+        }}
+      >
         {/* Flechas y números de página */}
         <IconButton 
           onClick={handlePreviousPage} 
           disabled={page === 0}
-          size="small"
+          size={isSmallScreen ? 'small' : 'medium'}
         >
           <KeyboardArrowLeftIcon />
         </IconButton>
         
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+        <Box 
+          sx={{ 
+            display: { 
+              xs: 'none', // Oculto en pantallas muy pequeñas
+              sm: 'flex'  // Visible desde pantallas pequeñas
+            }, 
+            alignItems: 'center' 
+          }}
+        >
           {renderPageNumbers()}
         </Box>
         
         <IconButton 
           onClick={handleNextPage} 
           disabled={page >= totalPages - 1}
-          size="small"
+          size={isSmallScreen ? 'small' : 'medium'}
         >
           <KeyboardArrowRightIcon />
         </IconButton>
         
         {/* Selector de registros por página */}
+
         <Select
           value={rowsPerPage}
           onChange={onRowsPerPageChange}
-          size="small"
+          size={isSmallScreen ? 'small' : 'medium'}
           sx={{ 
-            minWidth: '200px',
+            minWidth: {
+              xs: '150px', 
+              sm: '200px'  
+            },
             '& .MuiSelect-select': { 
               py: 1, 
-              px: 2 
+              px: 2,
+              display: 'flex',
+              alignItems: 'center',
+              gap: 1
             }
           }}
+          renderValue={(selected) => (
+            <Box sx={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              gap: 1 
+            }}>
+              <Typography>{selected} registros / pagina</Typography>
+            </Box>
+          )}
         >
           {rowsPerPageOptions.map((option) => (
-            <MenuItem  key={option} value={option}>
+            <MenuItem key={option} value={option}>
               {option} registros / pagina
             </MenuItem>
           ))}
         </Select>
-
-        <SelectComponent 
-          label={`${rowsPerPage.toString()}registros / pagina`}
-        >
-          {rowsPerPageOptions.map((option) => (
-            <SelectItem  key={option} label={`${option.toString()}registros / pagina`} value={option.toString()} onClick={() => onRowsPerPageChange({ target: { value: option } } as SelectChangeEvent<number>)}/>
-          ))}
-        </SelectComponent>
         
         {/* Campo para ir a una página específica */}
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <Typography variant="body2" sx={{ mr: 1 }}>
+        <Box 
+          sx={{ 
+            padding: '0px!important',
+            display: 'flex', 
+            alignItems: 'center',
+            width: {
+              xs: '100%',    // Ancho completo en pantallas muy pequeñas
+              sm: 'auto'     // Ancho automático en pantallas pequeñas y superiores
+            },
+            justifyContent: 'center'
+          }}
+        >
+          <Typography 
+            variant="body2" 
+            sx={{ 
+              mr: 1, 
+              padding: 0,
+              display: {
+                xs: 'none', // Oculto en pantallas muy pequeñas
+                sm: 'block' // Visible desde pantallas pequeñas
+              }
+            }}
+          >
             Ir a la página
           </Typography>
           <TextField
             value={goToPage}
             onChange={handleGoToPageChange}
             onKeyPress={handleGoToPageKeyPress}
-            size="small"
+            size={isSmallScreen ? 'small' : 'medium'}
+            inputProps={{
+              min: 1,
+              max: totalPages,
+              type: 'number'
+            }}
             sx={{ 
-              width: '70px',
+              padding: 0,
+              width: {
+                xs: '60px', // Ancho más pequeño en pantallas muy pequeñas
+                sm: '70px'  // Ancho estándar en pantallas pequeñas y superiores
+              },
+              '& .MuiInputBase-root': {
+                height: {
+                  xs: '35px', // Altura más pequeña en pantallas muy pequeñas
+                  sm: '40px'  // Altura estándar en pantallas pequeñas y superiores
+                }
+              },
               '& .MuiInputBase-input': {
                 py: 1,
-                px: 1.5
+                px: 1.5,
+                padding: 0,
+                textAlign: 'center',
+                appearance: 'textfield',
+                MozAppearance: 'textfield',
+                WebkitAppearance: 'textfield',
+                fontSize: {
+                  xs: '0.75rem', // Fuente más pequeña en pantallas muy pequeñas
+                  sm: '0.875rem' // Tamaño de fuente estándar en pantallas pequeñas y superiores
+                }
+              },
+              '& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button': {
+                display: 'none',
+              },
+              '& input[type=number]': {
+                MozAppearance: 'textfield',
               }
             }}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton
-                    size="small"
-                    onClick={() => {
-                      const pageNumber = parseInt(goToPage, 10);
-                      if (!isNaN(pageNumber) && pageNumber > 0 && pageNumber <= totalPages) {
-                        onPageChange(null, pageNumber - 1);
-                      }
-                    }}
-                  >
-                    <KeyboardArrowRightIcon fontSize="small" />
-                  </IconButton>
-                </InputAdornment>
-              )
-            }}
+            // InputProps={{
+            //   endAdornment: (
+            //       <IconButton
+            //         size="small"
+            //         onClick={handleGoToPageButtonClick}
+            //         disabled={
+            //           !goToPage || 
+            //           parseInt(goToPage, 10) < 1 || 
+            //           parseInt(goToPage, 10) > totalPages
+            //         }
+            //       >
+            //         <KeyboardArrowRightIcon fontSize="small" />
+            //       </IconButton>
+            //   )
+            // }}
           />
         </Box>
       </Box>

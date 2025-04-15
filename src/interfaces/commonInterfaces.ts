@@ -25,6 +25,7 @@ export interface SearchInputI {
   onClickButton?: (value: string) => void  //eslint-disable-line
   defaultValue?: string;
   placeholder?: string;
+  className?: string;
 }
 
 export interface PBIconProps {

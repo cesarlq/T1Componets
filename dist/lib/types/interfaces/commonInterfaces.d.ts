@@ -23,6 +23,7 @@ export interface SearchInputI {
     onClickButton?: (value: string) => void;
     defaultValue?: string;
     placeholder?: string;
+    className?: string;
 }
 export interface PBIconProps {
     icon: string;

@@ -144,7 +144,7 @@ const TableT1 = <T extends Record<string, any>>({
   const [order, setOrder] = useState<Order>(defaultSortDirection);
   const [orderBy, setOrderBy] = useState<string>(defaultSortColumn);
   const [selected, setSelected] = useState<string[]>([]);
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(pageSize);
   const [searchTerm, setSearchTerm] = useState('');
   const [expandedRow, setExpandedRow] = useState<string | null>(null);
@@ -186,7 +186,7 @@ const TableT1 = <T extends Record<string, any>>({
 
   // Reset pagination when data changes
   useEffect(() => {
-    setPage(0);
+    setPage(1);
   }, [filteredData]);
 
   // Update selected rows callback
@@ -348,7 +348,9 @@ const TableT1 = <T extends Record<string, any>>({
           )}
           
           {searchable && (
-            <SearchInput />
+            <SearchInput 
+              textFieldProps={{ sx: { width: '30rem' } }}
+            />
           )}
         </Box>
       )}

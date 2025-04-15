@@ -65,6 +65,7 @@ type Story = StoryObj<typeof meta>;
 // Story base por defecto
 export const Default: Story = {
   args: {
+    className: 'pt-4 text-lg', // Correcto
     children: 'Button',
     variant: 'contained',
     color: 'primary',

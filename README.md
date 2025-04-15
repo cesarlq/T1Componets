@@ -1727,3 +1727,183 @@ interface TableColumnT1<T = any> {
 - **Management Interfaces**: Systems where users need to interact with multiple records
 
 ---
+
+
+# Modal Component
+## Características
+
+- ✅ Diseño responsive que se adapta a diferentes tamaños de pantalla
+- ✅ Dos versiones: con menú lateral y simple (sin menú)
+- ✅ Totalmente personalizable (iconos, estilos, contenido)
+- ✅ Compatible con Material UI
+- ✅ Soporte para TypeScript con tipos completos
+- ✅ Estilo de modal con bordes redondeados en la parte superior
+- ✅ Fondo semitransparente para enfoque en el contenido del modal
+
+
+## Versiones disponibles
+
+### 1. ModalComponent (con menú lateral)
+
+Componente modal que incluye un menú lateral para navegación entre secciones.
+
+```jsx
+import { ModalComponent } from 'tu-libreria-componentes';
+
+const YourComponent = () => {
+  // Opciones del menú
+  const menuOptions = [
+    {
+      id: 1,
+      label: 'Información personal',
+      icon: 'userIcon',
+      value: 0,
+      component: <PersonalInfo />
+    },
+    // Más opciones...
+  ];
+
+  return (
+    <ModalComponent
+      title="Mi perfil"
+      onClose={handleClose}
+      menuOptions={menuOptions}
+      iconComponent={YourIconRenderer}
+      // Más props...
+    />
+  );
+};
+```
+
+### 2. SimpleModalComponent (sin menú)
+
+Versión simplificada del modal para contenido directo sin navegación.
+
+```jsx
+import { SimpleModalComponent } from 'tu-libreria-componentes';
+
+const YourComponent = () => {
+  return (
+    <SimpleModalComponent
+      title="Términos y Condiciones"
+      onClose={handleClose}
+      closeIcon={<CloseButton />}
+    >
+      {/* Tu contenido aquí */}
+      <div>
+        <h2>Contenido del modal</h2>
+        <p>Lorem ipsum dolor sit amet...</p>
+      </div>
+    </SimpleModalComponent>
+  );
+};
+```
+
+## Personalización
+
+### Estilos
+
+Ambos componentes aceptan estilos personalizados a través de las props `className` y `styles`:
+
+```jsx
+<ModalComponent
+  // ...otras props
+  className={{
+    mainContainer: styles.modalContainer,
+    headerProfile: styles.modalHeader,
+    // más clases...
+  }}
+  styles={{
+    mainContainer: { 
+      // Estilos CSS en línea
+      borderRadius: '20px 20px 0px 0px',
+    },
+    // más estilos...
+  }}
+/>
+```
+
+### Botón de cierre personalizado
+
+Puedes personalizar el botón de cierre usando la prop `closeIcon`:
+
+```jsx
+import { CloseButtonT1 } from 't1componets';
+
+<ModalComponent
+  // ...otras props
+  closeIcon={<CloseButtonT1 />}
+/>
+```
+
+## Props
+
+### ModalComponent (con menú)
+
+| Prop | Tipo | Descripción | Requerido |
+|------|------|-------------|-----------|
+| `title` | string | Título del modal | ✅ |
+| `onClose` | function | Función para cerrar el modal | ✅ |
+| `menuOptions` | MenuOption[] | Opciones del menú lateral | ✅ |
+| `closeIcon` | ReactNode | Icono de cierre personalizado | ❌ |
+| `iconComponent` | function | Renderizador de iconos para el menú | ✅ |
+| `className` | object | Nombres de clases CSS | ❌ |
+| `styles` | object | Estilos CSS en línea | ❌ |
+
+### SimpleModalComponent (sin menú)
+
+| Prop | Tipo | Descripción | Requerido |
+|------|------|-------------|-----------|
+| `title` | string | Título del modal | ✅ |
+| `onClose` | function | Función para cerrar el modal | ✅ |
+| `children` | ReactNode | Contenido del modal | ✅ |
+| `closeIcon` | ReactNode | Icono de cierre personalizado | ❌ |
+| `className` | object | Nombres de clases CSS | ❌ |
+| `styles` | object | Estilos CSS en línea | ❌ |
+
+## Ejemplos de uso
+
+### Formulario de contacto
+
+```jsx
+<SimpleModalComponent
+  title="Contacto"
+  onClose={handleClose}
+>
+  <form onSubmit={handleSubmit}>
+    <h2>Contáctanos</h2>
+    {/* Campos del formulario */}
+    <div className="actions">
+      <button type="button" onClick={handleClose}>Cancelar</button>
+      <button type="submit">Enviar</button>
+    </div>
+  </form>
+</SimpleModalComponent>
+```
+
+### Términos y condiciones
+
+```jsx
+<SimpleModalComponent
+  title="Términos y Condiciones"
+  onClose={handleClose}
+>
+  <div>
+    <h2>Términos y Condiciones de Uso</h2>
+    <div className="scrollable-content">
+      {/* Contenido de los términos */}
+    </div>
+    <div className="actions">
+      <button onClick={handleReject}>Rechazar</button>
+      <button onClick={handleAccept}>Aceptar</button>
+    </div>
+  </div>
+</SimpleModalComponent>
+```
+
+## Responsive
+
+El componente detecta automáticamente el tamaño de pantalla y ajusta su comportamiento:
+
+- **Desktop**: Muestra menú lateral (en ModalComponent)
+- **Tablet/Mobile**: Muestra pestañas horizontales (en ModalComponent)

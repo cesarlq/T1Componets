@@ -4,8 +4,6 @@ import TableT1 from '../Components/TableT1';
 import { Box, Button, IconButton, Stack, Tooltip, Typography } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
-import SearchIcon from '@mui/icons-material/Search';
 import { ChipT1 } from 't1componets';
 
 // Sample data for the table

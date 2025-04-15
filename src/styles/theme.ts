@@ -409,9 +409,6 @@ const theme = createTheme({
             borderRadius: '12px'
           },
         }
-      },
-      defaultProps: {
-        IconComponent: (props) => React.createElement("span", props, React.createElement(Image, { src: '', alt: "arrow" }))
       }
     },
     MuiTypography: {
