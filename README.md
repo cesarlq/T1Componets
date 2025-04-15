@@ -459,93 +459,209 @@ interface CheckBoxSelectProps extends Omit<TypographyProps, 'checkbox' | 'icon' 
 # Custom Button Component (ButtonT1)
 # ButtonT1 - Advanced Button Component
 
-## Overview
-`ButtonT1` is a sophisticated, feature-rich button component built on Material-UI, offering enhanced functionality, flexibility, and user experience.
-
 ## Features
-- Dynamic icon handling
-- Loading state support
-- Confirmation dialogs
-- Responsive design
-- Tooltip integration
-- Advanced styling
-- Comprehensive event management
+
+- ✅ **Multiple variants**: Contained, Outlined, Text
+- ✅ **Icon support**: Start, end, and additional icons with separator
+- ✅ **Advanced states**: Loading, disabled, confirmation
+- ✅ **Tooltips**: Additional information on hover
+- ✅ **Action confirmation**: Simple or via modal dialog
+- ✅ **Adaptable**: Responsive mode for mobile devices
+- ✅ **Security**: Double-click prevention for sensitive operations
+- ✅ **Accessibility**: Fully compatible with a11y standards
 
 
-## Props Interface
-```typescript
-interface ButtonT1PropsI extends ButtonProps {
-    additionalIcon?: React.ReactNode;
-    loading?: boolean;
-    tooltipText?: string;
-    confirmationMessage?: string;
-    responsive?: boolean;
+## Basic Usage
+
+```jsx
+import { ButtonT1 } from 't1componets';
+import AddIcon from '@mui/icons-material/Add';
+
+function MyComponent() {
+  const handleClick = () => {
+    console.log('Button clicked');
+  };
+
+  return (
+    <ButtonT1 
+      variant="contained" 
+      color="primary"
+      startIcon={<AddIcon />}
+      onClick={handleClick}
+    >
+      Add Item
+    </ButtonT1>
+  );
 }
 ```
 
-### Prop Descriptions
+## Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| additionalIcon | `React.ReactNode` | - | Extra icon with vertical divider |
-| loading | `boolean` | `false` | Displays loading spinner |
-| tooltipText | `string` | - | Tooltip text when hovering |
-| confirmationMessage | `string` | - | Message displayed in confirmation state |
-| responsive | `boolean` | `false` | Adapts button for small screens |
+| `variant` | 'contained' \| 'outlined' \| 'text' | 'contained' | Visual style of the button |
+| `color` | 'primary' \| 'secondary' \| 'success' \| 'error' \| 'info' \| 'warning' | 'primary' | Button color |
+| `size` | 'small' \| 'medium' \| 'large' | 'medium' | Button size |
+| `loading` | boolean | false | Shows loading indicator |
+| `disabled` | boolean | false | Disables the button |
+| `startIcon` | ReactNode | - | Icon at the beginning of the button |
+| `endIcon` | ReactNode | - | Icon at the end of the button |
+| `additionalIcon` | ReactNode | - | Additional icon with separator |
+| `confirmationMessage` | string | - | Message to confirm action |
+| `confirmationTitle` | string | 'Confirm Action' | Title of confirmation dialog |
+| `confirmationCancelText` | string | 'Cancel' | Text for cancel action |
+| `confirmationConfirmText` | string | 'Confirm' | Text for confirm action |
+| `tooltipText` | string | - | Tooltip text |
+| `tooltipPlacement` | 'top' \| 'bottom' \| 'left' \| 'right' | 'top' | Tooltip position |
+| `responsive` | boolean | false | Adaptation to small screens |
+| `preventDoubleClick` | boolean | false | Prevents repeated clicks |
+| `fullWidth` | boolean | false | Takes up full width |
+| `disableElevation` | boolean | false | Removes elevation |
+| `onClick` | function | - | Function called on click |
+| `className` | string | - | Additional CSS classes |
+| `sx` | SxProps | - | Material UI styles |
 
-## Usage Examples
+> In addition to the listed props, the component accepts all props from Material UI's Button component.
 
-### Basic Button
+## Examples
+
+### Button with loading state
+
+Ideal for asynchronous operations:
+
 ```jsx
-<ButtonT1 onClick={handleClick}>
-    Click Me
-</ButtonT1>
+import React, { useState } from 'react';
+import { ButtonT1 } from 't1componets';
+
+function LoadingButtonExample() {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleSave = async () => {
+    setIsLoading(true);
+    
+    try {
+      // Simulate asynchronous operation
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      console.log('Save successful');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <ButtonT1 
+      loading={isLoading}
+      onClick={handleSave}
+    >
+      Save changes
+    </ButtonT1>
+  );
+}
 ```
 
-### With Icons
+### Button with confirmation
+
+For destructive or important actions:
+
 ```jsx
-<ButtonT1
-    startIcon={<StartIcon />}
-    endIcon={<EndIcon />}
-    additionalIcon={<MoreIcon />}
-    onClick={handleAction}
->
-    Action Button
-</ButtonT1>
+import { ButtonT1 } from 't1componets';
+import DeleteIcon from '@mui/icons-material/Delete';
+
+function DeleteButtonExample() {
+  const handleDelete = () => {
+    console.log('Item deleted');
+  };
+
+  return (
+    <ButtonT1 
+      color="error"
+      startIcon={<DeleteIcon />}
+      confirmationMessage="This action cannot be undone"
+      confirmationTitle="Delete item?"
+      confirmationConfirmText="Delete"
+      confirmationCancelText="Cancel"
+      onClick={handleDelete}
+    >
+      Delete
+    </ButtonT1>
+  );
+}
 ```
 
-### Loading State
+### Button with additional icons
+
+Useful for menus or compound actions:
+
 ```jsx
-<ButtonT1
-    loading={isSubmitting}
-    onClick={handleSubmit}
->
-    Submit
-</ButtonT1>
+import { ButtonT1 } from 't1componets';
+import SaveIcon from '@mui/icons-material/Save';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+
+function SaveButtonWithMenuExample() {
+  return (
+    <ButtonT1 
+      startIcon={<SaveIcon />}
+      additionalIcon={<ArrowDropDownIcon />}
+      onClick={() => console.log('Main save action')}
+    >
+      Save
+    </ButtonT1>
+  );
+}
 ```
 
-### Confirmation Button
+## Responsive Button
+
+Adaptable to different screen sizes:
+
 ```jsx
-<ButtonT1
-    confirmationMessage="Are you sure?"
-    onClick={handleDelete}
-    color="error"
->
-    Delete
-</ButtonT1>
+import { ButtonT1 } from 't1componets';
+import SendIcon from '@mui/icons-material/Send';
+
+function ResponsiveButtonExample() {
+  return (
+    <ButtonT1 
+      responsive
+      endIcon={<SendIcon />}
+    >
+      Send message
+    </ButtonT1>
+  );
+}
 ```
 
-### Responsive Button
+## Customization with themes
+
+The component is compatible with Material UI's theme system:
+
 ```jsx
-<ButtonT1
-    responsive
-    fullWidth
-    variant="contained"
-    tooltipText="Click to proceed"
->
-    Responsive Action
-</ButtonT1>
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+
+const theme = createTheme({
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          borderRadius: 8,
+          textTransform: 'none',
+        },
+        containedPrimary: {
+          background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
+        },
+      },
+    },
+  },
+});
+
+function App() {
+  return (
+    <ThemeProvider theme={theme}>
+      <YourApp />
+    </ThemeProvider>
+  );
+}
 ```
+
 
 # InputComponentT1 - Advanced Input Component
 ## Overview
