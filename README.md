@@ -2061,3 +2061,158 @@ El componente detecta automáticamente el tamaño de pantalla y ajusta su compor
 
 - **Desktop**: Muestra menú lateral (en ModalComponent)
 - **Tablet/Mobile**: Muestra pestañas horizontales (en ModalComponent)
+
+
+## Sidebar Component
+
+### Overview
+The Sidebar is a flexible, responsive navigation component designed for complex web applications. It supports full and reduced states, service paths, menu items with submenus, and extensive customization.
+
+### Features
+- Responsive design with adaptive width
+- Toggle between full and reduced states
+- Support for service paths and menu items
+- Nested menu items
+- Customizable styles
+- Automatic width adjustment based on screen size
+
+### Installation
+Ensure you have the following peer dependencies:
+```bash
+npm install react react-dom next @mui/material @mui/icons-material
+```
+
+### Props Interface
+
+```typescript
+interface SidebarProps {
+  testMode?: boolean;
+  className?: string;
+  logoFull: string;
+  logoReduced: string;
+  servicePaths?: ServiceOption[];
+  menuItems: MenuItem[];
+  initialReduceState?: boolean;
+  breakpointWidth?: number;
+  userInfo?: any;
+  onServiceOptionClick?: (option: ServiceOption) => void;
+  onSidebarReduceChange?: (reduced: boolean) => void;
+  onClickMenuItem?: (item: MenuItem, index: number) => void;
+  customStyles?: {
+    sidebar?: React.CSSProperties;
+    header?: React.CSSProperties;
+    logo?: React.CSSProperties;
+    submenu?: React.CSSProperties;
+    paths?: React.CSSProperties;
+    buttonReduce?: React.CSSProperties;
+  };
+}
+```
+
+### Usage Example
+
+```tsx
+import Sidebar from './Sidebar';
+
+const MyApp = () => {
+  const serviceOptions = [
+    {
+      name: 'Envíos',
+      icon: '/path/to/full-logo.svg',
+      iconReduced: '/path/to/reduced-logo.svg',
+      type: 'envios',
+      width: 100
+    }
+  ];
+
+  const menuItems = [
+    {
+      id: 'dashboard',
+      title: 'Dashboard',
+      path: '/dashboard',
+      icon: '/path/to/dashboard-icon.svg'
+    },
+    {
+      id: 'products',
+      title: 'Productos',
+      icon: '/path/to/products-icon.svg',
+      subItems: [
+        {
+          id: 'all-products',
+          title: 'Todos los productos',
+          path: '/products'
+        },
+        {
+          id: 'add-product',
+          title: 'Añadir producto',
+          path: '/products/add'
+        }
+      ]
+    }
+  ];
+
+  return (
+    <Sidebar
+      logoFull="/path/to/full-logo.svg"
+      logoReduced="/path/to/reduced-logo.svg"
+      servicePaths={serviceOptions}
+      menuItems={menuItems}
+      initialReduceState={false}
+      breakpointWidth={1110}
+      onServiceOptionClick={(option) => console.log(option)}
+      onSidebarReduceChange={(reduced) => console.log(reduced)}
+    />
+  );
+};
+```
+
+### Customization
+
+#### Custom Styles
+You can pass custom styles to modify the appearance:
+
+```tsx
+const customStyles = {
+  sidebar: { 
+    backgroundColor: '#f5f5f5' 
+  },
+  header: { 
+    borderBottom: '2px solid #e0e0e0' 
+  },
+  buttonReduce: { 
+    backgroundColor: '#d9534f', 
+    color: 'white' 
+  }
+};
+
+<Sidebar
+  {...otherProps}
+  customStyles={customStyles}
+/>
+```
+
+### Responsive Behavior
+- Automatically reduces sidebar width on smaller screens
+- Configurable breakpoint width
+- Toggle between full and reduced states
+
+### Props Details
+
+#### Required Props
+- `logoFull`: Full-size logo path
+- `logoReduced`: Reduced-size logo path
+- `menuItems`: Array of menu items to display
+
+#### Optional Props
+- `servicePaths`: Additional service path options
+- `initialReduceState`: Initial sidebar state (expanded/reduced)
+- `breakpointWidth`: Screen width to trigger automatic reduction
+- `customStyles`: Override default styles
+- `onServiceOptionClick`: Callback for service path clicks
+- `onSidebarReduceChange`: Callback for sidebar state changes
+- `onClickMenuItem`: Callback for menu item clicks
+
+### Performance Considerations
+- Uses `useState` and `useEffect` for responsive behavior
+- Minimal re-renders with memoization techniques
+- Lightweight and flexible design

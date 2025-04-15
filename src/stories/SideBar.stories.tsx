@@ -1,29 +1,26 @@
 import React from 'react';
 import { Meta, StoryObj } from '@storybook/react';
-
-// Importamos imágenes de muestra (esto dependerá de tu configuración, usa rutas locales para Storybook)
 import T1Logo from '../assets/marketplaces-logos/t1-logo.svg';
 import T1IconReduced from '../assets/marketplaces-logos/t1-logo.svg';
 import T1EnviosLogo from '../assets/sidebar/t1EnviosLogo.svg';
 import T1EnviosIcon from '../assets/sidebar/t1EnviosIcon.svg';
 import T1ComerciosLogo from '../assets/sidebar/t1ComerciosLogo.svg';
 import T1ComerciosIcon from '../assets/sidebar/t1ComerciosIcon.svg';
-import T1PagosLogo from '../assets/sidebar/t1PagosIcon.svg';
-import T1PagosIcon from '../assets/sidebar/t1PagosIcon.svg';
 import ProductsIcon from '../assets/menu-icons/products-icon.svg';
 import OrdersIcon from '../assets/menu-icons/orders-icon.svg';
 import SettingsIcon from '../assets/menu-icons/settings-icon.svg';
 import UsersIcon from '../assets/menu-icons/clients-icon.svg';
-import SideBar from '../Components/SideBar';
+import homeIcon from '../assets/menu-icons/home-icon.svg';
+import Sidebar from '../Components/SideBar';
 
-const meta: Meta<typeof SideBar> = {
-  title: 'Components/SideBar',
-  component: SideBar,
+const meta: Meta<typeof Sidebar> = {
+  title: 'Components/Sidebar',
+  component: Sidebar,
   parameters: {
     layout: 'fullscreen',
   },
   decorators: [
-    (Story:any) => (
+    (Story) => (
       <div style={{ height: '100vh', display: 'flex' }}>
         <Story />
         <div style={{ padding: '20px', flex: 1 }}>
@@ -32,7 +29,7 @@ const meta: Meta<typeof SideBar> = {
         </div>
       </div>
     ),
-  ] as any[],
+  ],
   argTypes: {
     onServiceOptionClick: { action: 'Service Option Clicked' },
     onSidebarReduceChange: { action: 'Sidebar Reduce Changed' },
@@ -41,17 +38,10 @@ const meta: Meta<typeof SideBar> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof SideBar>;
+type Story = StoryObj<typeof Sidebar>;
 
-// Datos de ejemplo para usar en todas las stories
+// Sample data for stories
 const serviceOptions = [
-  {
-    name: 'Pagos',
-    icon: T1PagosLogo,
-    iconReduced: T1PagosIcon,
-    type: 'pagos',
-    width: 85
-  },
   {
     name: 'Envíos',
     icon: T1EnviosLogo,
@@ -73,6 +63,7 @@ const menuItems = [
     id: 'dashboard',
     title: 'Dashboard',
     path: '/dashboard',
+    icon: homeIcon,
   },
   {
     id: 'products',
@@ -88,11 +79,6 @@ const menuItems = [
         id: 'add-product',
         title: 'Añadir producto',
         path: '/products/add'
-      },
-      {
-        id: 'categories',
-        title: 'Categorías',
-        path: '/products/categories'
       }
     ]
   },
@@ -127,7 +113,7 @@ const menuItems = [
   }
 ];
 
-// Story base - Sidebar expandido por defecto
+// Default Sidebar - Expanded
 export const Default: Story = {
   args: {
     testMode: true,
@@ -140,7 +126,7 @@ export const Default: Story = {
   },
 };
 
-// Story con sidebar reducido
+// Reduced Sidebar
 export const Reduced: Story = {
   args: {
     ...Default.args,
@@ -148,7 +134,7 @@ export const Reduced: Story = {
   },
 };
 
-// Story con algunos elementos del menú ocultos
+// Sidebar with Hidden Menu Items
 export const WithHiddenItems: Story = {
   args: {
     ...Default.args,
@@ -158,7 +144,7 @@ export const WithHiddenItems: Story = {
   },
 };
 
-// Story con tema oscuro
+// Dark Theme Sidebar
 export const DarkTheme: Story = {
   args: {
     ...Default.args,
@@ -182,7 +168,7 @@ export const DarkTheme: Story = {
   },
 };
 
-// Story con nombre largo de menú para probar el overflow
+// Long Menu Names
 export const LongMenuNames: Story = {
   args: {
     ...Default.args,
@@ -192,41 +178,7 @@ export const LongMenuNames: Story = {
   },
 };
 
-// Story con menú activo y submenú abierto
-export const WithActiveItem: Story = {
-  args: {
-    ...Default.args,
-  },
-  render: (args) => {
-    return (
-      <SideBar
-        {...args}
-        customStyles={{
-          ...args.customStyles,
-        }}
-      />
-    );
-  },
-  play: async ({ canvasElement }) => {
-    // Aquí podrías añadir testing-library para simular interacciones
-    // pero requeriría configuración adicional en Storybook
-  },
-};
-
-// Story responsivo
-export const Responsive: Story = {
-  args: {
-    ...Default.args,
-  },
-  parameters: {
-    viewport: {
-      // Puedes configurar viewports personalizados en el archivo main de Storybook
-      defaultViewport: 'tablet',
-    },
-  },
-};
-
-// Story sin opciones de servicio
+// No Service Options
 export const NoServiceOptions: Story = {
   args: {
     ...Default.args,
@@ -234,7 +186,7 @@ export const NoServiceOptions: Story = {
   },
 };
 
-// Story con estilos personalizados
+// Custom Styles
 export const CustomStyles: Story = {
   args: {
     ...Default.args,

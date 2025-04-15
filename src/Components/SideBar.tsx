@@ -3,6 +3,11 @@ import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { Button, IconButton } from '@mui/material';
 import { useRouter } from 'next/navigation';
+import ArrowMenu from '../assets/svg-icons/arrow-menu.svg';
+import commonStyle from '../styles/common/CommonStyles.module.scss';
+import DoubleArrow from '../assets/svg-icons/double-arrow-icon.svg';
+import { fontFamily, fontWeight, height, width } from '@mui/system';
+
 
 // Tipos
 interface SidebarProps {
@@ -147,7 +152,7 @@ const Sidebar: React.FC<SidebarProps> = ({
       width: sidebarReduce ? '80px' : '280px',
       height: '100%',
       background: '#fff',
-      boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
+      boxShadow: '0 0 1px rgba(0, 0, 0, 0.3)',
       transition: 'width 0.3s ease',
       position: 'relative' as const,
       ...customStyles.sidebar
@@ -163,6 +168,9 @@ const Sidebar: React.FC<SidebarProps> = ({
     },
     logo: {
       objectFit: 'contain' as const,
+      width: 'auto',
+      cursor: 'pointer',
+      height: '50px',
       ...customStyles.logo
     },
     submenu: {
@@ -193,7 +201,8 @@ const Sidebar: React.FC<SidebarProps> = ({
       alignItems: 'center',
       padding: '12px 20px',
       cursor: 'pointer',
-      borderLeft: '4px solid transparent',
+      borderLeft: '4px',
+      borderLeftColor: 'transparent',
       transition: 'background-color 0.2s',
     },
     menuItemActive: {
@@ -201,11 +210,16 @@ const Sidebar: React.FC<SidebarProps> = ({
       backgroundColor: 'rgba(217, 83, 79, 0.1)',
     },
     menuIcon: {
+      height: '20px',
+      width: '20px',
       marginRight: sidebarReduce ? '0' : '16px',
       opacity: 0.7,
     },
     menuTitle: {
       display: sidebarReduce ? 'none' : 'block',
+      fontSize: '13px',
+      fontFamily: 'Manrope',
+      fontWeight: 600,
       whiteSpace: 'nowrap' as const,
       overflow: 'hidden',
       textOverflow: 'ellipsis',
@@ -223,7 +237,9 @@ const Sidebar: React.FC<SidebarProps> = ({
       padding: sidebarReduce ? '10px 0' : '10px 20px',
       cursor: 'pointer',
       display: 'block',
-      fontSize: '14px',
+      fontSize: '13px',
+      fontFamily: 'Manrope',
+      fontWeight: 600,
       whiteSpace: 'nowrap' as const,
       overflow: 'hidden',
       textOverflow: 'ellipsis',
@@ -234,21 +250,24 @@ const Sidebar: React.FC<SidebarProps> = ({
     },
     buttonReduce: {
       position: 'absolute' as const,
-      right: '-15px',
+      right: '-20px',
       top: '50%',
+      background: '#fff',
       transform: 'translateY(-50%)',
       minWidth: '30px',
-      width: '30px',
-      height: '30px',
+      width: '38px',
+      height: '38px',
       borderRadius: '50%',
       padding: 0,
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      boxShadow: '0 2px 5px rgba(0,0,0,0.2)',
       ...customStyles.buttonReduce
     },
     doubleArrow: {
+      background: '#fff',
+      width: '6px',
+      height: '6px',
       transform: sidebarReduce ? 'rotate(0deg)' : 'rotate(180deg)',
       transition: 'transform 0.3s ease',
     },
@@ -259,7 +278,7 @@ const Sidebar: React.FC<SidebarProps> = ({
   };
 
   return (
-    <div className={className} style={styles.sidebar}>
+    <div className={`${className} ${commonStyle.sideBar}`} style={styles.sidebar}>
       <div style={{ height: '100%' }}>
         <div style={styles.header} onClick={handleToggle}>
           {!sidebarReduce ? (
@@ -285,7 +304,12 @@ const Sidebar: React.FC<SidebarProps> = ({
               e.stopPropagation();
               handleToggle();
             }}>
-              <span style={styles.arrowIcon}>▼</span>
+              <Image
+                src={ArrowMenu}
+                className={commonStyle.icon}
+                data-rotate={showOptions}
+                alt='arrow'
+              />
             </IconButton>
           )}
         </div>
@@ -343,7 +367,13 @@ const Sidebar: React.FC<SidebarProps> = ({
                       marginLeft: 'auto',
                       transform: currentSubmenuOpen === index ? 'rotate(180deg)' : 'rotate(0deg)',
                       transition: 'transform 0.3s ease'
-                    }}>▼</span>
+                    }}>
+                      <Image
+                        src={ArrowMenu}
+                        className={commonStyle.icon}
+                        alt='arrow'
+                      />
+                  </span>
                   )}
                 </div>
                 
@@ -382,7 +412,11 @@ const Sidebar: React.FC<SidebarProps> = ({
           handleSidebarReduceChange(!sidebarReduce);
         }}
       >
-        <span style={styles.doubleArrow}>◄</span>
+        <Image
+					src={DoubleArrow}
+					alt='button'
+          style={styles.doubleArrow}
+				/>
       </Button>
     </div>
   );

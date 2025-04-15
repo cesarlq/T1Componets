@@ -87,3 +87,16 @@ h1 {
         }
     }
 }
+
+
+.sideBar {
+    .icon {
+        transition: all 0.3s;
+        transform: rotate(180deg);
+    }
+
+    .icon[data-rotate=true] {
+        transform: rotate(0deg) !important;
+    }
+
+}
