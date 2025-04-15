@@ -97,7 +97,7 @@ const ButtonT1: React.FC<ButtonT1PropsI> = ({
                 )}
                 // ... resto de props
             >
-                {/* Contenido del botón */}
+                {children}
             </Button>
         </Tooltip>
     ) : (
@@ -112,7 +112,7 @@ const ButtonT1: React.FC<ButtonT1PropsI> = ({
             )}
             // ... resto de props
         >
-            {/* Contenido del botón */}
+            {children}
         </Button>
     );
 };
