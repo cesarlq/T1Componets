@@ -1,6 +1,12 @@
 {
-    "buildCommand": "npm run build-storybook",
-    "outputDirectory": "storybook-static",
-    "installCommand": "npm install --legacy-peer-deps --no-optional",
-    "framework": "storybook"
-  }
+  "version": 2,
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "storybook-static"
+      }
+    }
+  ]
+}

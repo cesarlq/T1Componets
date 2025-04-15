@@ -6,10 +6,10 @@
   "types": "dist/lib/types/index.d.ts",
   "style": "dist/lib/styles.css",
   "scripts": {
-    "build": "rollup -c",
-    "dev": "rollup -c -w",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "SKIP_PREFLIGHT_CHECK=true storybook build -o storybook-static"
+    "build-storybook": "storybook build -o storybook-static",
+    "build": "rollup -c",
+    "dev": "rollup -c -w"
   },
   "keywords": [
     "react",
