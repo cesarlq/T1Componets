@@ -2448,3 +2448,199 @@ function Header() {
   );
 }
 ```
+
+
+# CustomPagination
+
+## Basic Usage
+
+```jsx
+import { CustomPagination } from 't1componets';
+import { useState } from 'react';
+
+function MyTable() {
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const totalItems = 243; // Total count of your data
+  
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+  
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+  
+  return (
+    <div>
+      {/* Your table or data grid component */}
+      <table>
+        {/* Table content */}
+      </table>
+      
+      <CustomPagination
+        count={totalItems}
+        page={page}
+        rowsPerPage={rowsPerPage}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+        rowsPerPageOptions={[5, 10, 25, 50]}
+      />
+    </div>
+  );
+}
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `count` | number | - | Total number of items across all pages |
+| `rowsPerPage` | number | - | Number of items per page |
+| `page` | number | - | Current page (zero-based index) |
+| `onPageChange` | function | - | Callback fired when the page is changed: `(event, newPage) => void` |
+| `onRowsPerPageChange` | function | - | Callback fired when the number of rows per page is changed: `(event) => void` |
+| `rowsPerPageOptions` | number[] | [5, 10, 25] | Options for the rows per page select |
+
+## Advanced Features
+
+### Direct Page Navigation
+
+CustomPagination includes a text field that allows users to navigate directly to a specific page. Users can:
+
+1. Type a page number
+2. Press Enter to navigate to that page
+
+```jsx
+<CustomPagination
+  count={500}
+  page={page}
+  rowsPerPage={rowsPerPage}
+  onPageChange={handleChangePage}
+  onRowsPerPageChange={handleChangeRowsPerPage}
+/>
+```
+
+### Custom Rows Per Page Options
+
+Customize the available options in the rows per page dropdown:
+
+```jsx
+<CustomPagination
+  count={totalItems}
+  page={page}
+  rowsPerPage={rowsPerPage}
+  onPageChange={handleChangePage}
+  onRowsPerPageChange={handleChangeRowsPerPage}
+  rowsPerPageOptions={[10, 20, 50, 100]}
+/>
+```
+
+## Responsive Behavior
+
+CustomPagination adapts to different screen sizes:
+
+- **Desktop**: Full interface with page numbers, rows per page selector, and direct navigation
+- **Tablet**: Slightly more compact layout but maintains all features
+- **Mobile**: Simplified interface that focuses on essential navigation controls
+
+The component uses Material UI's `useMediaQuery` to detect screen size and adjust accordingly:
+
+- On small screens, some elements are hidden or resized
+- On very small screens, pagination controls are stacked vertically for better usability
+
+## Pagination Range Handling
+
+For large datasets, the component intelligently displays:
+
+1. First page button
+2. Ellipsis (if needed)
+3. Pages around the current page
+4. Ellipsis (if needed)
+5. Last page button
+
+This creates a clean and usable interface even with hundreds of pages:
+
+```
+< 1 ... 7 8 9 10 11 ... 50 >
+```
+
+## Integration with Material UI Tables
+
+CustomPagination works seamlessly with Material UI's Table component:
+
+```jsx
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+import { CustomPagination } from 't1componets';
+
+function PaginatedTable({ data }) {
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  
+  // Calculate displayed data
+  const displayedData = data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+  
+  return (
+    <Paper>
+      <TableContainer>
+        <Table>
+          <TableHead>
+            {/* Table headers */}
+          </TableHead>
+          <TableBody>
+            {displayedData.map(row => (
+              <TableRow key={row.id}>
+                {/* Table cells */}
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      
+      <CustomPagination
+        count={data.length}
+        page={page}
+        rowsPerPage={rowsPerPage}
+        onPageChange={(_, newPage) => setPage(newPage)}
+        onRowsPerPageChange={(event) => {
+          setRowsPerPage(parseInt(event.target.value, 10));
+          setPage(0);
+        }}
+      />
+    </Paper>
+  );
+}
+```
+
+## Accessibility
+
+The component follows accessibility best practices:
+
+- Proper button roles for all controls
+- Keyboard navigation support
+- Numeric input for direct page access
+- Clear visual indication of current page
+- Disabled state for navigation buttons when at boundaries
+
+## Best Practices
+
+1. **Initialize with appropriate defaults**: Start with a `rowsPerPage` value that matches one of your `rowsPerPageOptions`.
+
+2. **Reset to page 0 on rowsPerPage change**: When the user changes the number of items per page, reset to the first page to avoid confusing states.
+
+3. **Provide meaningful rowsPerPageOptions**: Choose options that make sense for your data density and screen size.
+
+4. **Consider loading states**: For async data, combine with loading indicators when changing pages.
+
+5. **Test responsiveness**: Ensure the pagination works well across different device sizes.
+
+## AI Component Information
+
+- **Component purpose**: Providing pagination controls for tabular data displays
+- **Core functionality**: Page navigation, rows per page selection, and direct page access
+- **Interactive behaviors**: Page changing, rows per page changing, direct page input
+- **Visual adaptations**: Responsive layout changes based on screen size
+- **Accessibility considerations**: Keyboard navigation, clear visual indicators
+- **Common use cases**: Data tables, search results, content lists
+- **Relationships**: Often paired with Table or DataGrid components
