@@ -1,7 +1,7 @@
 import React, { Children, isValidElement, useEffect, useState } from 'react';
 import { TypographyProps, RadioGroup, Radio, MenuItem, FormControlLabel } from '@mui/material';
 import SelectItem from './SelectItem';
-
+import Image from "next/image";
 
 interface FormControlSelectItemProps {
   value?: any;
@@ -71,10 +71,21 @@ const FormControlSelect: React.FC<FormControlSelectItemProps> = ({
                     }}
                   />
                 }
-                label={<>
+                label={<div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                {props.icon && (typeof props.icon === 'string' ? (
+                  <Image 
+                    src={props.icon}
+                    alt="icon" 
+                    width={22}
+                    height={22}
+                    style={{ marginRight: '8px' }}
+                  />
+                ) : (
+                  props.icon
+                ))}
                 {props?.label}
                { props?.children}
-                </>}
+                </div>}
                 onClick={(e) => {
                   e.preventDefault(); 
                   e.stopPropagation();

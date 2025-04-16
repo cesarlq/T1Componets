@@ -1,67 +1,153 @@
 import React from 'react';
-import { Chip } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import { ExtendedChipProps } from '../interfaces/commonInterfaces';
+import { 
+  Chip, 
+  ChipProps
+} from '@mui/material';
 
+// Enhanced color definitions with more flexibility
+interface ChipColorDefinition {
+  backgroundColor: {
+    filled: string;
+    outlined: string;
+  };
+  color: {
+    filled: string;
+    outlined: string;
+  };
+  borderColor: {
+    filled: string;
+    outlined: string;
+  };
+}
 
-const StyledChip = styled(Chip, {
-    shouldForwardProp: (prop) => prop !== 'color'
-})<{ color?: string }>(({ color, variant }) => {
-    switch (color) {
-        case 'primary':
-            return {
-                backgroundColor: variant === 'filled' ? '#eaf3ff' : 'transparent',
-                color: '#4f89fd',
-                borderColor: variant === 'filled' ? '#eaf3ff' : '#4f89fd'
-            };
+// Extended props to include additional customization options
+interface ExtendedChipProps extends ChipProps {
+  // Allow custom color definitions
+  customColorDefinition?: Partial<ChipColorDefinition>;
+  
+  // Hover and interaction states
+  hoverEffect?: boolean;
+}
 
-        case 'error':
-            return {
-                backgroundColor: variant === 'filled' ? '#ffeeef' : 'transparent',
-                color: '#f54f62',
-                borderColor: variant === 'filled' ? '#ffeeef' : '#f54f62',
-            };
-
-        case 'default':
-            return {
-                backgroundColor: variant === 'filled' ? '#ffefe6' : 'transparent',
-                color: '#f56e02',
-                borderColor: variant === 'filled' ? '#ffefe6' : '#f56e02',
-            };
-        case 'success':
-            return {
-                backgroundColor: variant === 'filled' ? '#52F5B01A' : 'transparent',
-                color: '#4FC153',
-                borderColor: variant === 'filled' ? '#52F5B01A' : '#4FC153',
-            };
-        case 'warning':
-            return {
-                backgroundColor: variant === 'filled' ? '#EDBD551A' : 'transparent',
-                color: '#976905',
-                borderColor: variant === 'filled' ? '#976905' : '#EDBD551A',
-            };
-        
-        default:
-            return {};
+// Default color palette with more nuanced colors
+const COLOR_PALETTE: Record<string, ChipColorDefinition> = {
+  primary: {
+    backgroundColor: {
+      filled: '#eaf3ff',
+      outlined: 'transparent'
+    },
+    color: {
+      filled: '#4f89fd',
+      outlined: '#4f89fd'
+    },
+    borderColor: {
+      filled: '#eaf3ff',
+      outlined: '#4f89fd'
     }
-});
+  },
+  error: {
+    backgroundColor: {
+      filled: '#ffeeef',
+      outlined: 'transparent'
+    },
+    color: {
+      filled: '#f54f62',
+      outlined: '#f54f62'
+    },
+    borderColor: {
+      filled: '#ffeeef',
+      outlined: '#f54f62'
+    }
+  },
+  default: {
+    backgroundColor: {
+      filled: '#ffefe6',
+      outlined: 'transparent'
+    },
+    color: {
+      filled: '#f56e02',
+      outlined: '#f56e02'
+    },
+    borderColor: {
+      filled: '#ffefe6',
+      outlined: '#f56e02'
+    }
+  },
+  success: {
+    backgroundColor: {
+      filled: 'rgba(79, 193, 83, 0.1)',
+      outlined: 'transparent'
+    },
+    color: {
+      filled: '#4FC153',
+      outlined: '#4FC153'
+    },
+    borderColor: {
+      filled: 'rgba(79, 193, 83, 0.1)',
+      outlined: '#4FC153'
+    }
+  },
+  warning: {
+    backgroundColor: {
+      filled: 'rgba(237, 189, 85, 0.1)',
+      outlined: 'transparent'
+    },
+    color: {
+      filled: '#976905',
+      outlined: '#976905'
+    },
+    borderColor: {
+      filled: 'rgba(237, 189, 85, 0.1)',
+      outlined: '#EDBD55'
+    }
+  }
+};
 
 const ChipT1: React.FC<ExtendedChipProps> = ({
-    ...props
+  color = 'default',
+  variant = 'outlined',
+  customColorDefinition,
+  hoverEffect = false,
+  sx,
+  ...props
 }) => {
-    return (
-        <StyledChip
-            sx={{
-                fontSize: '11px',
-                padding: '4px 10px 4px 10px',
-                fontWeight: 700,
-                letterSpacing: '0px',
-                lineHeight: '100%',
-                ...props.sx,
-            }}
-            {...props}
-        />
-    );
+  // Merge custom color definitions with default palette
+  const colorDefinition = customColorDefinition 
+    ? { ...COLOR_PALETTE[color], ...customColorDefinition }
+    : COLOR_PALETTE[color];
+
+  // Dynamic styling based on variant and color
+  const dynamicStyles = {
+    backgroundColor: colorDefinition.backgroundColor[variant],
+    color: colorDefinition.color[variant],
+    borderColor: colorDefinition.borderColor[variant],
+    borderRadius: '16px',
+    transition: 'all 0.3s ease',
+    ...(hoverEffect && {
+      [`&:hover`]: {
+        transform: 'scale(1.05)',
+        boxShadow: '0 4px 6px rgba(0,0,0,0.1)'
+      }
+    }),
+    height: '32px',
+    fontSize: '12px',
+    fontWeight: 700,
+    letterSpacing: '0px',
+    lineHeight: '100%',
+    padding: '4px 10px',
+  };
+
+  return (
+    <Chip
+      color={color}
+      variant={variant}
+      sx={{
+        ...dynamicStyles,
+        ...sx
+      }}
+      {...props}
+    />
+  );
 };
 
 export default ChipT1;

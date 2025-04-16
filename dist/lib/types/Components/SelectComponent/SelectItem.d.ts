@@ -3,7 +3,7 @@ import { TypographyProps } from '@mui/material';
 interface ExtendedTypographyProps extends TypographyProps {
     value?: boolean | string | number;
     label?: string;
-    icon?: string;
+    icon?: string | React.ReactNode;
     cheked?: string | boolean;
     onClick?: (e: any) => void;
 }

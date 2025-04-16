@@ -4,7 +4,7 @@ export { default as ActionMenu } from './Components/ActionMenu/ActionMenu';
 export { default as ModalComponent } from './Components/ModalComponent';
 export { default as SimpleModalComponent } from './Components/SimpleModal';
 //select Component
-export { default as SelectComponent } from './Components/SelectComponent/SelectComponent';
+export { default as SelectComponent} from './Components/SelectComponent/SelectComponent'
 export { default as SelectItem } from './Components/SelectComponent/SelectItem';
 export { default as FormControlSelect } from './Components/SelectComponent/FormControlSelect';
 export { default as CheckBoxSelect } from './Components/SelectComponent/CheckBoxSelect';
@@ -25,3 +25,5 @@ export { default as TableT1 } from './Components/TableT1';
 export { default as CollapsibleCardT1 } from './Components/CollapsibleCardT1';
 //SideBar
 export { default as Sidebar } from './Components/SideBar';
+//UserProfileMenu
+export { default as UserProfileMenu } from './Components/UserProfileMenu';

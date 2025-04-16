@@ -1,133 +1,314 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { fn } from '@storybook/test';
-import SelectComponent from '../Components/SelectComponent/SelectComponent';
-import MenuItem from '@mui/material/MenuItem';
 import React from 'react';
+import { Meta, StoryObj } from '@storybook/react';
+import { 
+  MenuItem,
+  SvgIcon
+} from '@mui/material';
+import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
+import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
+import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
+import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
 
-// Define el meta para el componente
-const meta = {
+import SelectComponent from '../Components/SelectComponent/SelectComponent';
+import SelectItem from '../Components/SelectComponent/SelectItem';
+import CheckBoxSelect from '../Components/SelectComponent/CheckBoxSelect';
+import FormControlSelect from '../Components/SelectComponent/FormControlSelect';
+
+const meta: Meta<typeof SelectComponent> = {
   title: 'Components/SelectComponent',
   component: SelectComponent,
   parameters: {
     layout: 'centered',
-    docs: {
-      description: {
-        component: 'Un componente de selección personalizado que permite mostrar opciones en un menú desplegable con diferentes estilos y funcionalidades.'
-      }
-    }
   },
-  tags: ['autodocs'],
   argTypes: {
-    label: {
-      control: 'text',
-      description: 'Texto que se muestra en el botón del selector.'
+    buttonType: { 
+      control: { 
+        type: 'select', 
+        options: ['solid', 'outline', 'text'] 
+      } 
     },
-    buttonType: {
-      control: 'select',
-      options: ['solid', 'outline', undefined],
-      description: 'Estilo del botón: sólido, outline o por defecto.'
-    },
-    className: {
-      control: 'text',
-      description: 'Clases CSS adicionales para el botón.'
-    },
-    menuProps: {
-      control: 'object',
-      description: 'Propiedades adicionales para el componente Menu.'
-    }
   },
-  // Decorador para renderizar el componente con children por defecto
-  decorators: [
-    (Story) => (
-      <Story />
-    )
-  ],
-  // Argumento por defecto para todos los stories
-  args: { 
-    label: 'Seleccionar',
-    onClick: fn(),
-    // Proporciona un children por defecto usando React.createElement
-    children: React.createElement(MenuItem, { key: 'default-option' }, 'Opción por defecto')
-  }
-} satisfies Meta<typeof SelectComponent>;
+};
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof SelectComponent>;
 
-// Historia básica: Menú simple
-export const Default: Story = {
-  args: {
-    label: 'Opciones',
-    // Proporciona múltiples elementos MenuItem como children
-    children: [
-      React.createElement(MenuItem, { key: 'option-1' }, 'Opción 1'),
-      React.createElement(MenuItem, { key: 'option-2' }, 'Opción 2'),
-      React.createElement(MenuItem, { key: 'option-3' }, 'Opción 3')
-    ]
-  }
+// Checkbox Select Variations
+export const WithCheckboxSelect: Story = {
+  render: () => (
+    <div style={{ display: 'flex', gap: '20px' }}>
+      <SelectComponent 
+        label="Checkbox Select (Unchecked)" 
+        endIcon={<PersonOutlineIcon />}
+      >
+        <CheckBoxSelect
+          checkbox={false}
+          icon={<PersonOutlineIcon />}
+          onCheckboxClick={() => console.log('User checkbox clicked')}
+        >
+          User Management
+        </CheckBoxSelect>
+        <CheckBoxSelect
+          checkbox={false}
+          icon={<SettingsOutlinedIcon />}
+          onCheckboxClick={() => console.log('Settings checkbox clicked')}
+        >
+          System Settings
+        </CheckBoxSelect>
+      </SelectComponent>
+
+      <SelectComponent 
+        label="Checkbox Select (Mixed)" 
+        endIcon={<SettingsOutlinedIcon />}
+      >
+        <CheckBoxSelect
+          checkbox={true}
+          icon={<HomeOutlinedIcon />}
+          onCheckboxClick={() => console.log('Home checkbox clicked')}
+        >
+          Home Configuration
+        </CheckBoxSelect>
+        <CheckBoxSelect
+          checkbox={false}
+          icon={<EmailOutlinedIcon />}
+          onCheckboxClick={() => console.log('Email checkbox clicked')}
+        >
+          Email Preferences
+        </CheckBoxSelect>
+      </SelectComponent>
+    </div>
+  ),
 };
 
-// Historia: Con estilo outline
-export const OutlineStyle: Story = {
-  args: {
-    label: 'Estilo Outline',
-    buttonType: 'outline',
-    children: [
-      React.createElement(MenuItem, { key: 'option-1' }, 'Opción 1'),
-      React.createElement(MenuItem, { key: 'option-2' }, 'Opción 2'),
-      React.createElement(MenuItem, { key: 'option-3' }, 'Opción 3')
-    ]
-  }
+// Select Items with Icons
+export const WithSelectItemsAndIcons: Story = {
+  render: () => (
+    <div style={{ display: 'flex', gap: '20px' }}>
+      <SelectComponent 
+        color='primary'
+        label="Select with Icons" 
+        additionalIcon={<SettingsOutlinedIcon />}
+      >
+        <FormControlSelect>
+          <SelectItem 
+            label="Products" 
+            icon={<SettingsOutlinedIcon />}
+            value="products"
+            onClick={() => console.log('Products clicked')}
+          />
+          <SelectItem 
+            label="Orders" 
+            icon={<PersonOutlineIcon />}
+            value="orders"
+            onClick={() => console.log('Orders clicked')}
+          />
+        </FormControlSelect>
+      </SelectComponent>
+
+      <SelectComponent 
+        label="Select with Text and Icons" 
+        buttonType="contained"
+        additionalIcon={<HomeOutlinedIcon />}
+      >
+        <FormControlSelect>
+          <SelectItem 
+            label="Manage Users" 
+            icon={<PersonOutlineIcon />}
+            value="users"
+            onClick={() => console.log('Users clicked')}
+          />
+          <SelectItem 
+            label="System Settings" 
+            icon={<SettingsOutlinedIcon />}
+            value="settings"
+            onClick={() => console.log('Settings clicked')}
+          />
+        </FormControlSelect>
+      </SelectComponent>
+    </div>
+  ),
 };
 
-// Historia: Con elementos adicionales
-export const WithAdditionalItems: Story = {
-  args: {
-    label: 'Categorías',
-    children: [
-      React.createElement(MenuItem, { key: 'category-1' }, 'Categoría 1'),
-      React.createElement(MenuItem, { key: 'category-2' }, 'Categoría 2'),
-      React.createElement(MenuItem, { key: 'category-3' }, 'Categoría 3')
-    ],
-    additionalItems: [
-      { id: 'add', label: 'Añadir categoría', onClick: () => console.log('Añadir categoría') },
-      {
-        id: 'divider', type: 'divider', onClick: () => console.log('divider'),
-        label: ''
-      }, // Aunque no tenga sentido para un divider, es requerido
-      { id: 'manage', label: 'Gestionar categorías', onClick: () => console.log('Gestionar categorías') }
-    ]
-  }
+// Complex Select with Mixed Components
+export const ComplexSelectWithMixedComponents: Story = {
+  render: () => (
+    <SelectComponent 
+      label="Advanced Select" 
+      buttonType="contained"
+      endIcon={<SettingsOutlinedIcon />}
+      additionalItems={[
+        { 
+          id: 'add', 
+          label: 'Add New', 
+          onClick: () => console.log('Add new item') 
+        },
+        { 
+          id: 'divider', 
+          type: 'divider' 
+        },
+        { 
+          id: 'manage', 
+          label: 'Manage Options', 
+          onClick: () => console.log('Manage options') 
+        }
+      ]}
+    >
+      <FormControlSelect>
+        <SelectItem 
+          label="User Management" 
+          icon={<PersonOutlineIcon />}
+          value="users"
+        />
+        <CheckBoxSelect
+          checkbox={true}
+          icon={<EmailOutlinedIcon />}
+          onCheckboxClick={() => console.log('Email notifications')}
+        >
+          Email Notifications
+        </CheckBoxSelect>
+        <SelectItem 
+          label="System Settings" 
+          icon={<SettingsOutlinedIcon />}
+          value="settings"
+        />
+      </FormControlSelect>
+    </SelectComponent>
+  ),
 };
 
-// Historia: Con clase personalizada
-export const CustomClass: Story = {
+// Accessibility and Customization
+export const AccessibleCustomSelect: Story = {
   args: {
-    label: 'Clase personalizada',
-    className: 'custom-select-class',
-    children: [
-      React.createElement(MenuItem, { key: 'option-1' }, 'Opción 1'),
-      React.createElement(MenuItem, { key: 'option-2' }, 'Opción 2'),
-      React.createElement(MenuItem, { key: 'option-3' }, 'Opción 3')
-    ]
-  }
+    label: 'Accessible Custom Select',
+    ariaLabel: 'Select system preferences',
+    testId: 'system-preferences-select',
+    buttonType: 'contained',
+    children: (
+      <FormControlSelect>
+        <SelectItem 
+          label="Dark Mode" 
+          icon={<SettingsOutlinedIcon />}
+          value="dark-mode"
+        />
+        <CheckBoxSelect
+          checkbox={false}
+          icon={<EmailOutlinedIcon />}
+          onCheckboxClick={() => console.log('Notifications toggled')}
+        >
+          Enable Notifications
+        </CheckBoxSelect>
+      </FormControlSelect>
+    ),
+  },
 };
 
-// Historia: Con propiedades de menú personalizadas
-export const CustomMenuProps: Story = {
-  args: {
-    label: 'Menú personalizado',
-    children: [
-      React.createElement(MenuItem, { key: 'option-1' }, 'Opción 1'),
-      React.createElement(MenuItem, { key: 'option-2' }, 'Opción 2'),
-      React.createElement(MenuItem, { key: 'option-3' }, 'Opción 3')
-    ],
-    menuProps: {
-      sx: {
-        backgroundColor: '#f5f5f5',
-        borderRadius: '8px',
-        boxShadow: '0 4px 8px rgba(0,0,0,0.1)'
-      }
-    }
-  }
+// Button Variants with Additional Icons
+export const ButtonVariantsWithIcons: Story = {
+  render: () => (<>
+    <div style={{ display: 'block', gap: '20px' }}>
+      <div>
+        <h1>buttonType</h1>
+      </div>
+      <div style={{ display: 'flex', gap: '20px' }}>
+        <SelectComponent 
+          label="contained with Icon" 
+          buttonType="contained"
+          additionalIcon={<PersonOutlineIcon />}
+        >
+          <MenuItem>Outline Option 1</MenuItem>
+          <MenuItem>Outline Option 2</MenuItem>
+        </SelectComponent>
+        <SelectComponent 
+          label="outlined with Icon" 
+          buttonType="outlined"
+          additionalIcon={<SettingsOutlinedIcon />}
+        >
+          <MenuItem>Solid Option 1</MenuItem>
+          <MenuItem>Solid Option 2</MenuItem>
+        </SelectComponent>
+      </div>
+     
+    </div>
+
+    <div style={{ display: 'block', gap: '20px' }}>
+      <div>
+        <h1>Variants</h1>
+      </div>
+
+      <div style={{ display: 'flex', gap: '20px' }}>
+        <SelectComponent 
+          label="primary" 
+          buttonType="contained"
+          color='primary'
+          additionalIcon={<PersonOutlineIcon />}
+        >
+          <MenuItem>Outline Option 1</MenuItem>
+          <MenuItem>Outline Option 2</MenuItem>
+        </SelectComponent>
+
+        <SelectComponent 
+          label="error"  
+          buttonType="contained"
+          color='error'
+          additionalIcon={<PersonOutlineIcon />}
+        >
+          <MenuItem>Outline Option 1</MenuItem>
+          <MenuItem>Outline Option 2</MenuItem>
+        </SelectComponent>
+
+        <SelectComponent 
+          label="info" 
+          buttonType="contained"
+          color='info'
+          additionalIcon={<PersonOutlineIcon />}
+        >
+          <MenuItem>Outline Option 1</MenuItem>
+          <MenuItem>Outline Option 2</MenuItem>
+        </SelectComponent>
+
+        <SelectComponent 
+          label="inherit" 
+          buttonType="contained"
+          color='inherit'
+          additionalIcon={<PersonOutlineIcon />}
+        >
+          <MenuItem>Outline Option 1</MenuItem>
+          <MenuItem>Outline Option 2</MenuItem>
+        </SelectComponent>
+
+        <SelectComponent 
+          label="secondary" 
+          buttonType="contained"
+          color='secondary'
+          additionalIcon={<PersonOutlineIcon />}
+        >
+          <MenuItem>Outline Option 1</MenuItem>
+          <MenuItem>Outline Option 2</MenuItem>
+        </SelectComponent>
+        
+        <SelectComponent 
+          label="success" 
+          buttonType="contained"
+          color='success'
+          additionalIcon={<PersonOutlineIcon />}
+        >
+          <MenuItem>Outline Option 1</MenuItem>
+          <MenuItem>Outline Option 2</MenuItem>
+        </SelectComponent>
+
+        <SelectComponent 
+          label="warning" 
+          buttonType="contained"
+          color='warning'
+          additionalIcon={<PersonOutlineIcon />}
+        >
+          <MenuItem>Outline Option 1</MenuItem>
+          <MenuItem>Outline Option 2</MenuItem>
+        </SelectComponent>
+      </div>
+
+      
+     
+    </div>
+    </>),
 };
