@@ -7,32 +7,9 @@ import {
   styled
 } from '@mui/material';
 import CloseButtonT1 from './CloseButtonT1';
+import { SimpleModalProps } from '../interfaces/commonInterfaces';
 
-/**
- * Props para el componente SimpleModalComponent
- */
-export interface SimpleModalProps {
-  title: string;
-  onClose: () => void;
-  children: ReactNode;
-  closeIcon?: ReactNode;
-  className?: {
-    mainContainer?: string;
-    headerProfile?: string;
-    btnClose?: string;
-    contentContainer?: string;
-  };
-  styles?: {
-    mainContainer?: React.CSSProperties;
-    headerProfile?: React.CSSProperties;
-    contentContainer?: React.CSSProperties;
-  };
-}
 
-/**
- * Componente Modal Simple - Sin menú lateral
- * Versión simplificada que solo muestra un título, botón de cierre y contenido
- */
 const SimpleModalComponent: React.FC<SimpleModalProps> = ({
   title,
   onClose,

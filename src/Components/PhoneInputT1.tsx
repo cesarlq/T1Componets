@@ -9,13 +9,7 @@ import {
 } from '@mui/material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import Flag from 'react-world-flags';
-
-// Country definition interface
-interface Country {
-  code: string;
-  name: string;
-  prefix: string;
-}
+import { Country, PhoneInputT1Props } from '../interfaces/commonInterfaces';
 
 // Predefined countries list
 const DEFAULT_COUNTRIES: Country[] = [
@@ -38,15 +32,6 @@ const DEFAULT_COUNTRIES: Country[] = [
 ];
 
 // Props interface
-interface PhoneInputT1Props {
-  initialRegion?: string;
-  initialPhoneNumber?: string;
-  countries?: Country[];
-  onChange?: (region: string, phoneNumber: string) => void;
-  placeholder?: string;
-  error?: boolean;
-  helperText?: string;
-}
 
 const PhoneInputT1: React.FC<PhoneInputT1Props> = ({
   initialRegion,

@@ -12,23 +12,9 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
+import { CollapsibleCardT1Props } from '../interfaces/commonInterfaces';
 
-export interface CollapsibleCardT1Props {
-  title?: React.ReactNode;
-  headerContent?: React.ReactNode;
-  bodyContent?: React.ReactNode;
-  footerContent?: React.ReactNode;
-  collapseContent?: React.ReactNode;
-  defaultCollapsed?: boolean;
-  cardSx?: any;
-  headerSx?: any;
-  bodySx?: any;
-  footerSx?: any;
-  collapseSx?: any;
-  collapseButtonSx?: any;
-  hideCollapseButton?: boolean;
-  loading?: boolean;
-}
+
 
 const CollapsibleCardT1: React.FC<CollapsibleCardT1Props> = ({
   title,

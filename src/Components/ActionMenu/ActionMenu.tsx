@@ -2,7 +2,7 @@ import { IconButton, Menu, MenuItem } from '@mui/material';
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Image from "next/image";
 import React, { Children, cloneElement, isValidElement, useState } from 'react';
-import { actionMenuI } from '../../interfaces/commonInterfaces';
+import { actionMenuI, ChildProps, MenuItemProps } from '../../interfaces/commonInterfaces';
 import styles from '../../styles/common/CommonStyles.module.scss';
 
 
@@ -30,12 +30,7 @@ const ActionMenu: React.FC<actionMenuI> = ({
 
             if (child.type === MenuItem) {
             // Definimos una interfaz para los props del MenuItem
-            interface MenuItemProps {
-              onClick?: (e: any) => void;
-              sx?: any;
-              [key: string]: any;
-            }
-            
+           
             const childWithProps = child as React.ReactElement<MenuItemProps>;
             return cloneElement(childWithProps, {
               key: child.key || `menu-item-${index}`,
@@ -58,12 +53,7 @@ const ActionMenu: React.FC<actionMenuI> = ({
             });
           }
           // Definimos una interfaz para los props de los elementos hijo
-          interface ChildProps {
-            label?: string;
-            onClick?: () => void;
-            icon?: string;
-            [key: string]: any;
-          }
+        
           
           const { label, onClick, icon } = child.props as ChildProps;
     

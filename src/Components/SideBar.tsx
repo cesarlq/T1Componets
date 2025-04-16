@@ -7,55 +7,8 @@ import ArrowMenu from '../assets/svg-icons/arrow-menu.svg';
 import commonStyle from '../styles/common/CommonStyles.module.scss';
 import DoubleArrow from '../assets/svg-icons/double-arrow-icon.svg';
 import { fontFamily, fontWeight, height, width } from '@mui/system';
+import { MenuItem, ServiceOption, SidebarProps, SubMenuItem } from '../interfaces/commonInterfaces';
 
-
-// Tipos
-interface SidebarProps {
-  testMode?: boolean; // Flag para modo de prueba
-  className?: string;
-  logoFull: string;
-  logoReduced: string;
-  servicePaths?: ServiceOption[];
-  menuItems: MenuItem[];
-  initialReduceState?: boolean;
-  breakpointWidth?: number;
-  userInfo?: any;
-  onServiceOptionClick?: (option: ServiceOption) => void;
-  onSidebarReduceChange?: (reduced: boolean) => void;
-  onClickMenuItem?: (item: MenuItem, index: number) => void;
-  customStyles?: {
-    sidebar?: React.CSSProperties;
-    header?: React.CSSProperties;
-    logo?: React.CSSProperties;
-    submenu?: React.CSSProperties;
-    paths?: React.CSSProperties;
-    buttonReduce?: React.CSSProperties;
-  };
-}
-
-interface ServiceOption {
-  name: string;
-  icon: string;
-  type: string;
-  width?: number;
-  iconReduced?: string;
-}
-
-interface MenuItem {
-  id: string;
-  title: string;
-  path?: string;
-  icon?: string;
-  subItems?: SubMenuItem[];
-  hidden?: boolean;
-}
-
-interface SubMenuItem {
-  id: string;
-  title: string;
-  path: string;
-  hidden?: boolean;
-}
 
 const Sidebar: React.FC<SidebarProps> = ({
   className = '',

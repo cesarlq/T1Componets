@@ -5,23 +5,15 @@ import {
   Select, 
   MenuItem, 
   IconButton, 
-  TextField,
-  SelectChangeEvent, 
+  TextField, 
   useTheme,
   useMediaQuery
 } from '@mui/material';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
-import ListIcon from '@mui/icons-material/List';
+import { CustomPaginationProps } from '../interfaces/commonInterfaces';
 
-interface CustomPaginationProps {
-  count: number;
-  rowsPerPage: number;
-  page: number;
-  onPageChange: (event: unknown, newPage: number) => void;
-  onRowsPerPageChange: (event: SelectChangeEvent<number>) => void;
-  rowsPerPageOptions: number[];
-}
+
 
 const CustomPagination: React.FC<CustomPaginationProps> = ({
   count,

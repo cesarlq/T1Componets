@@ -3,31 +3,10 @@ import {
   Chip, 
   ChipProps
 } from '@mui/material';
+import { ChipColorDefinition, ExtendedChipProps } from '../interfaces/commonInterfaces';
 
 // Enhanced color definitions with more flexibility
-interface ChipColorDefinition {
-  backgroundColor: {
-    filled: string;
-    outlined: string;
-  };
-  color: {
-    filled: string;
-    outlined: string;
-  };
-  borderColor: {
-    filled: string;
-    outlined: string;
-  };
-}
 
-// Extended props to include additional customization options
-interface ExtendedChipProps extends ChipProps {
-  // Allow custom color definitions
-  customColorDefinition?: Partial<ChipColorDefinition>;
-  
-  // Hover and interaction states
-  hoverEffect?: boolean;
-}
 
 // Default color palette with more nuanced colors
 const COLOR_PALETTE: Record<string, ChipColorDefinition> = {

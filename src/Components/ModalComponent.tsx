@@ -1,9 +1,8 @@
-import React, { useState, ReactNode, JSX } from 'react';
+import React, { useState} from 'react';
 import { 
   useTheme, 
   useMediaQuery, 
   Divider, 
-  IconButton, 
   Stack, 
   Paper, 
   MenuList, 
@@ -12,10 +11,10 @@ import {
   Tabs, 
   Tab, 
   Box,
-  Theme,
   styled
 } from '@mui/material';
 import CloseButtonT1 from './CloseButtonT1';
+import { ProfileComponentProps, TabPanelProps } from '../interfaces/commonInterfaces';
 
 // Creamos un MenuItem personalizado para evitar problemas de tipado
 const StyledMenuItem = styled('div')<{ isSelected?: boolean }>(({ theme, isSelected }) => ({
@@ -31,15 +30,6 @@ const StyledMenuItem = styled('div')<{ isSelected?: boolean }>(({ theme, isSelec
     backgroundColor: isSelected ? '#FADEDE' : '#f5f5f5',
   }
 }));
-
-/**
- * Props para TabPanel
- */
-interface TabPanelProps {
-  children?: ReactNode;
-  index: number;
-  value: number;
-}
 
 /**
  * Componente TabPanel para mostrar contenido basado en pestaña seleccionada
@@ -62,41 +52,7 @@ function TabPanel(props: TabPanelProps) {
 /**
  * Interfaz para cada opción del menú
  */
-export interface MenuOption {
-  id: number;
-  label: string;
-  icon: string;
-  value: number;
-  component: ReactNode;
-}
 
-/**
- * Props para el componente principal ProfileComponent
- */
-export interface ProfileComponentProps {
-  title: string;
-  onClose: () => void;
-  menuOptions: MenuOption[];
-  closeIcon?: ReactNode;
-  iconComponent: (props: { icon: string; width: number; height: number }) => JSX.Element;
-  className?: {
-    mainContainer?: string;
-    headerProfile?: string;
-    btnClose?: string;
-    sectionProfile?: string;
-    containerLeft?: string;
-    paper?: string;
-    listItemText?: string;
-    menuItem?: string;
-    menuItemSelected?: string;
-  };
-  styles?: {
-    mainContainer?: React.CSSProperties;
-    headerProfile?: React.CSSProperties;
-    sectionProfile?: React.CSSProperties;
-    contentContainer?: React.CSSProperties;
-  };
-}
 
 /**
  * Componente de Perfil Reutilizable

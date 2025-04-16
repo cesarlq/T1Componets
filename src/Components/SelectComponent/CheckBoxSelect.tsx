@@ -1,12 +1,8 @@
 import React from 'react';
-import { Typography, TypographyProps } from '@mui/material';
+import { Typography } from '@mui/material';
+import { CheckBoxSelectProps } from '../../interfaces/commonInterfaces';
 
-interface CheckBoxSelectProps extends Omit<TypographyProps, 'checkbox' | 'icon' | 'onCheckboxClick'> {
-  checkbox?: boolean;
-  icon?: string | React.ReactNode;
-  onCheckboxClick?: () => void;
-  children?: React.ReactNode;
-}
+
 
 const CheckBoxSelect: React.FC<CheckBoxSelectProps> = ({
   checkbox,

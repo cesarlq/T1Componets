@@ -1,15 +1,6 @@
 import React, { useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
-
-interface CloseButtonT1Props {
-  onClick?: () => void;
-  size?: 'small' | 'medium' | 'large';
-  color?: 'default' | 'primary' | 'secondary' | 'error';
-  variant?: 'text' | 'outlined' | 'contained';
-  disabled?: boolean;
-  className?: string;
-  ariaLabel?: string;
-}
+import { CloseButtonT1Props } from '../interfaces/commonInterfaces';
 
 const CloseButtonT1: React.FC<CloseButtonT1Props> = ({
   onClick,

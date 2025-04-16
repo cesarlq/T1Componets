@@ -13,13 +13,9 @@ import {
 } from 'react-hook-form';
 import { NumericFormat } from 'react-number-format';
 import T1Icon from './T1Icon';
+import { NumericFormatProps, AmountInputI } from '../interfaces/commonInterfaces';
 
-interface NumericFormatProps {
-    onChange: (event: { target: { name?: string; value?: number } }) => void;
-    name?: string;
-    currency?: string;
-    min?: number;
-}
+
 
 export const CurrencyNumericFormat = forwardRef<unknown, NumericFormatProps>(
     function NumberFormatCustom(props, ref) {
@@ -53,15 +49,6 @@ export const CurrencyNumericFormat = forwardRef<unknown, NumericFormatProps>(
     }
 );
 
-export interface AmountInput<T extends FieldValues>
-    extends UseControllerProps<T> {
-    textFieldProps?: StandardTextFieldProps;
-    currency?: string;
-    label?: string;
-    onChange?: any;
-    tooltip?: string;
-}
-
 const AmountInput = <T extends FieldValues>({
     textFieldProps,
     currency,
@@ -69,7 +56,7 @@ const AmountInput = <T extends FieldValues>({
     onChange,
     tooltip,
     ...other
-}: AmountInput<T>) => {
+}: AmountInputI<T>) => {
     const {
         field,
         fieldState: { error },

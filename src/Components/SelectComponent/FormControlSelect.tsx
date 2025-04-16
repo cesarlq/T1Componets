@@ -2,14 +2,8 @@ import React, { Children, isValidElement, useEffect, useState } from 'react';
 import { TypographyProps, RadioGroup, Radio, MenuItem, FormControlLabel } from '@mui/material';
 import SelectItem from './SelectItem';
 import Image from "next/image";
+import { FormControlSelectItemProps } from '../../interfaces/commonInterfaces';
 
-interface FormControlSelectItemProps {
-  value?: any;
-  onClick?: (e: any) => void;
-  label?: string;
-  children?: React.ReactNode;
-  [key: string]: any;
-}
 
 const FormControlSelect: React.FC<FormControlSelectItemProps> = ({ 
   children,
