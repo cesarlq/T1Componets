@@ -14,26 +14,109 @@ import SelectItem from '../Components/SelectComponent/SelectItem';
 import CheckBoxSelect from '../Components/SelectComponent/CheckBoxSelect';
 import FormControlSelect from '../Components/SelectComponent/FormControlSelect';
 
+/**
+ * `SelectComponent` is a flexible dropdown component for displaying selectable options.
+ * 
+ * It combines the functionality of a dropdown menu with the visual appearance of a button.
+ * The component supports various configurations including different button styles, icons,
+ * and specialized selection items like checkboxes.
+ * 
+ * ## Features
+ * - Multiple button types (contained, outlined, text)
+ * - Support for various Material UI colors
+ * - Icons at start, end, or as additional elements
+ * - Support for checkbox selections
+ * - Customizable menu items
+ * - Accessibility built-in
+ * 
+ * ## Components
+ * The select system consists of multiple components:
+ * - `SelectComponent`: The main container component
+ * - `SelectItem`: Standard selectable item with icon support
+ * - `CheckBoxSelect`: Item with checkbox for multi-select functionality
+ * - `FormControlSelect`: Container for select items
+ * 
+ * @component
+ */
 const meta: Meta<typeof SelectComponent> = {
   title: 'Components/SelectComponent',
   component: SelectComponent,
   parameters: {
     layout: 'centered',
+    docs: {
+      description: {
+        component: `
+          A flexible dropdown component that combines button styling with dropdown menu functionality.
+          
+          ## When to use
+          - For dropdown menus that need to stand out as buttons
+          - When dropdown options might include checkbox selections
+          - For navigation menus with visual hierarchy
+          - In complex forms where standard selects lack visual emphasis
+          
+          ## Composition
+          The SelectComponent works with specialized sub-components:
+          - \`SelectItem\` - Standard menu items with icon support
+          - \`CheckBoxSelect\` - Items with checkbox functionality
+          - \`FormControlSelect\` - Container for organizing select items
+        `
+      }
+    }
   },
   argTypes: {
     buttonType: { 
       control: { 
         type: 'select', 
-        options: ['solid', 'outline', 'text'] 
-      } 
+        options: ['contained', 'outlined', 'text'] 
+      },
+      description: 'The visual style of the button that triggers the dropdown'
     },
+    color: {
+      control: 'select',
+      options: ['primary', 'secondary', 'error', 'info', 'success', 'warning', 'inherit'],
+      description: 'The color of the button element'
+    },
+    label: {
+      control: 'text',
+      description: 'The text displayed on the button'
+    },
+    startIcon: {
+      description: 'Icon displayed at the start of the button'
+    },
+    endIcon: {
+      description: 'Icon displayed at the end of the button'
+    },
+    additionalIcon: {
+      description: 'Additional icon displayed after a separator'
+    },
+    additionalItems: {
+      description: 'Array of additional menu items to be displayed at the bottom of the menu'
+    },
+    ariaLabel: {
+      control: 'text',
+      description: 'Accessibility label for screen readers'
+    },
+    testId: {
+      control: 'text',
+      description: 'Test ID for automated testing'
+    },
+    children: {
+      description: 'The content of the dropdown menu'
+    }
   },
+  tags: ['autodocs'],
 };
 
 export default meta;
 type Story = StoryObj<typeof SelectComponent>;
 
-// Checkbox Select Variations
+/**
+ * This example shows how to use the `CheckBoxSelect` component within the dropdown.
+ * 
+ * The CheckBoxSelect component allows for multi-select functionality where users
+ * can toggle options on and off via checkboxes. This is useful for filter menus
+ * or settings panels where multiple options can be selected simultaneously.
+ */
 export const WithCheckboxSelect: Story = {
   render: () => (
     <div style={{ display: 'flex', gap: '20px' }}>
@@ -78,9 +161,22 @@ export const WithCheckboxSelect: Story = {
       </SelectComponent>
     </div>
   ),
+  parameters: {
+    docs: {
+      description: {
+        story: 'Demonstrates checkboxes within dropdown menus for multi-select functionality. The left example shows unchecked options, while the right example shows a mix of checked and unchecked options.'
+      }
+    }
+  }
 };
 
-// Select Items with Icons
+/**
+ * This example shows how to use custom `SelectItem` components with icons.
+ * 
+ * SelectItem components provide a standardized way to display selectable options
+ * with optional icons. They are wrapped in a FormControlSelect to maintain proper
+ * structure and accessibility.
+ */
 export const WithSelectItemsAndIcons: Story = {
   render: () => (
     <div style={{ display: 'flex', gap: '20px' }}>
@@ -127,9 +223,22 @@ export const WithSelectItemsAndIcons: Story = {
       </SelectComponent>
     </div>
   ),
+  parameters: {
+    docs: {
+      description: {
+        story: 'Shows how to use SelectItem components with icons within a FormControlSelect container. The left example uses the default style while the right example uses a contained button style.'
+      }
+    }
+  }
 };
 
-// Complex Select with Mixed Components
+/**
+ * This example demonstrates a complex use case combining different item types
+ * and additional items at the bottom of the menu.
+ * 
+ * The `additionalItems` prop allows adding extra items such as actions, dividers,
+ * or any custom menu items at the bottom of the dropdown menu.
+ */
 export const ComplexSelectWithMixedComponents: Story = {
   render: () => (
     <SelectComponent 
@@ -174,9 +283,22 @@ export const ComplexSelectWithMixedComponents: Story = {
       </FormControlSelect>
     </SelectComponent>
   ),
+  parameters: {
+    docs: {
+      description: {
+        story: 'A complex example showing multiple features together: different item types (SelectItem and CheckBoxSelect) and additional menu items at the bottom of the dropdown.'
+      }
+    }
+  }
 };
 
-// Accessibility and Customization
+/**
+ * This example shows how to create accessible select components with built-in
+ * accessibility attributes and testing identifiers.
+ * 
+ * Setting appropriate aria labels and test IDs ensures the component is both
+ * accessible to screen readers and easily testable in automated tests.
+ */
 export const AccessibleCustomSelect: Story = {
   args: {
     label: 'Accessible Custom Select',
@@ -200,9 +322,22 @@ export const AccessibleCustomSelect: Story = {
       </FormControlSelect>
     ),
   },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Demonstrates how to create accessible select components with proper ARIA attributes and testing identifiers.'
+      }
+    }
+  }
 };
 
-// Button Variants with Additional Icons
+/**
+ * This example showcases different button types and color variants available for
+ * the SelectComponent.
+ * 
+ * The component supports all Material UI button types (contained, outlined, text)
+ * and color variants (primary, secondary, error, info, success, warning, inherit).
+ */
 export const ButtonVariantsWithIcons: Story = {
   render: () => (<>
     <div style={{ display: 'block', gap: '20px' }}>
@@ -306,9 +441,13 @@ export const ButtonVariantsWithIcons: Story = {
           <MenuItem>Outline Option 2</MenuItem>
         </SelectComponent>
       </div>
-
-      
-     
     </div>
     </>),
+  parameters: {
+    docs: {
+      description: {
+        story: 'Showcases different button types (contained, outlined) and color variants (primary, secondary, error, info, success, warning, inherit) available for the SelectComponent.'
+      }
+    }
+  }
 };

@@ -3,38 +3,103 @@ import { Meta, StoryObj } from '@storybook/react';
 import { Stack } from '@mui/material';
 import ChipT1 from '../Components/ChipT1';
 
+/**
+ * `ChipT1` is a customizable chip component based on Material UI's Chip.
+ * 
+ * It can be used to display compact elements like tags, filters, or status indicators.
+ * The component supports different colors, sizes, and styles to match your design needs.
+ * 
+ * ## Features
+ * - Multiple color variations (primary, error, success, warning, default)
+ * - Two variants (filled, outlined)
+ * - Two sizes (small, medium)
+ * - Support for custom colors
+ * - Interactive states (hover effects, clickable, deletable)
+ * 
+ * ## Accessibility
+ * The component includes proper ARIA attributes for better screen reader support.
+ * 
+ * @component
+ */
 const meta: Meta<typeof ChipT1> = {
   title: 'Components/ChipT1',
   component: ChipT1,
   parameters: {
     layout: 'centered',
+    docs: {
+      description: {
+        component: `
+          A customizable chip component based on Material UI's Chip, 
+          designed to display compact elements like tags, filters, or status indicators.
+          
+          ## When to use
+          - As a tag or label for categorizing or organizing content
+          - To display status or state information (like "Active", "Pending", etc.)
+          - For filter selections in search interfaces
+          - To show compact, actionable information
+        `
+      }
+    }
   },
   argTypes: {
     color: {
       control: { 
         type: 'select', 
         options: ['primary', 'error', 'default', 'success', 'warning'] 
-      }
+      },
+      description: 'The color of the chip'
     },
     variant: {
       control: { 
         type: 'select', 
         options: ['filled', 'outlined'] 
-      }
+      },
+      description: 'The visual style of the chip'
     },
     size: {
       control: { 
         type: 'select', 
         options: ['small', 'medium'] 
-      }
+      },
+      description: 'The size of the chip'
+    },
+    label: {
+      control: 'text',
+      description: 'The content of the chip'
+    },
+    hoverEffect: {
+      control: 'boolean',
+      description: 'Whether to show a hover effect when the user hovers over the chip'
+    },
+    customColorDefinition: {
+      control: 'object',
+      description: 'Custom color configuration for the chip'
+    },
+    onClick: {
+      action: 'clicked',
+      description: 'Callback fired when the chip is clicked'
+    },
+    onDelete: {
+      action: 'deleted',
+      description: 'Callback fired when the delete icon is clicked'
     }
   },
+  tags: ['autodocs'],
 };
 
 export default meta;
 type Story = StoryObj<typeof ChipT1>;
 
-// Default Chip Variations
+/**
+ * Different color variations of the ChipT1 component in both filled and outlined variants.
+ * 
+ * This example demonstrates all the available color options:
+ * - primary: Used for main actions or primary tags
+ * - error: Used for error states or destructive tags
+ * - success: Used for success states or confirmations
+ * - warning: Used for warnings or attention-required states
+ * - default: Used for neutral or less emphasized tags
+ */
 export const ColorVariations: Story = {
   render: () => (
     <Stack 
@@ -64,9 +129,21 @@ export const ColorVariations: Story = {
       </Stack>
     </Stack>
   ),
+  parameters: {
+    docs: {
+      description: {
+        story: 'Shows all color variations in both filled and outlined variants.'
+      }
+    }
+  }
 };
 
-// Chip with Different Sizes
+/**
+ * The ChipT1 component comes in two sizes: small and medium.
+ * 
+ * - small: Compact size, useful when space is limited or for dense UIs
+ * - medium: Standard size, provides better visibility and touch target
+ */
 export const SizeVariations: Story = {
   render: () => (
     <Stack 
@@ -84,9 +161,21 @@ export const SizeVariations: Story = {
       </Stack>
     </Stack>
   ),
+  parameters: {
+    docs: {
+      description: {
+        story: 'Demonstrates the small and medium size variants of the chip component.'
+      }
+    }
+  }
 };
 
-// Chip with Custom Styles
+/**
+ * The ChipT1 component supports custom styling options:
+ * 
+ * - Hover effects can make chips more interactive
+ * - Custom colors allow for brand-specific styling
+ */
 export const CustomStyledChips: Story = {
   render: () => (
     <Stack 
@@ -126,9 +215,22 @@ export const CustomStyledChips: Story = {
       </Stack>
     </Stack>
   ),
+  parameters: {
+    docs: {
+      description: {
+        story: 'Examples of customizing the chip appearance with hover effects and custom colors.'
+      }
+    }
+  }
 };
 
-// Chip with Different Content
+/**
+ * ChipT1 can display different types of content and interactions:
+ * 
+ * - Various text lengths
+ * - Deletable chips (with delete icon)
+ * - Clickable chips (for actions or toggling)
+ */
 export const ContentVariations: Story = {
   render: () => (
     <Stack 
@@ -147,9 +249,20 @@ export const ContentVariations: Story = {
       </Stack>
     </Stack>
   ),
+  parameters: {
+    docs: {
+      description: {
+        story: 'Demonstrates chips with different content lengths and interactive behaviors (deletable, clickable).'
+      }
+    }
+  }
 };
 
-// Interactive Chip Story
+/**
+ * Example of an interactive chip that changes appearance based on state.
+ * 
+ * This demonstrates how ChipT1 can be used for toggling or selection behaviors.
+ */
 export const InteractiveChips: Story = {
   render: () => {
     const [selected, setSelected] = React.useState(false);
@@ -169,9 +282,20 @@ export const InteractiveChips: Story = {
       </Stack>
     );
   },
+  parameters: {
+    docs: {
+      description: {
+        story: 'An interactive example showing how chips can change based on state (selected/unselected).'
+      }
+    }
+  }
 };
 
-// Accessibility and Variations
+/**
+ * This example demonstrates accessibility features of the ChipT1 component.
+ * 
+ * The chip includes appropriate ARIA attributes for better screen reader support.
+ */
 export const AccessibilityDemo: Story = {
   args: {
     label: 'Accessible Chip',
@@ -179,4 +303,11 @@ export const AccessibilityDemo: Story = {
     variant: 'outlined',
     'aria-label': 'Example of an accessible chip',
   },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Shows how to create accessible chips using ARIA attributes.'
+      }
+    }
+  }
 };

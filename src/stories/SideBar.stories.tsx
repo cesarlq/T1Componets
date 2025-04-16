@@ -13,11 +13,51 @@ import UsersIcon from '../assets/menu-icons/clients-icon.svg';
 import homeIcon from '../assets/menu-icons/home-icon.svg';
 import Sidebar from '../Components/SideBar';
 
+/**
+ * `SideBar` is a navigational component for applications that provides a vertical menu
+ * with expandable sections and service switching functionality.
+ * 
+ * The sidebar can be displayed in expanded or reduced states, and responsively adjusts
+ * based on screen width. It supports hierarchical navigation with collapsible submenu items.
+ * 
+ * ## Features
+ * - Expandable/collapsible navigation menu
+ * - Service switching capability
+ * - Responsive design with breakpoint control
+ * - Submenu support for nested navigation
+ * - Customizable styling
+ * - Controlled or uncontrolled expand/collapse state
+ * - Hidden items support for conditional navigation
+ * 
+ * The sidebar is commonly used as the main navigation element in dashboard-style applications
+ * and admin interfaces.
+ * 
+ * @component
+ */
 const meta: Meta<typeof Sidebar> = {
   title: 'Components/Sidebar',
   component: Sidebar,
   parameters: {
     layout: 'fullscreen',
+    docs: {
+      description: {
+        component: `
+          A versatile vertical navigation sidebar component with expandable/collapsible functionality, 
+          service switching, and responsive behavior.
+          
+          ## When to use
+          - As the main navigation element in dashboard applications
+          - In admin interfaces where hierarchical navigation is needed
+          - When multiple services or sections need to be accessible from one interface
+          - For applications requiring a clean, space-efficient navigation system
+          
+          ## Accessibility considerations
+          - Supports keyboard navigation
+          - Icon+text combinations improve recognition
+          - Reduced state maintains recognizable icons for navigation
+        `
+      }
+    }
   },
   decorators: [
     (Story) => (
@@ -31,10 +71,48 @@ const meta: Meta<typeof Sidebar> = {
     ),
   ],
   argTypes: {
-    onServiceOptionClick: { action: 'Service Option Clicked' },
-    onSidebarReduceChange: { action: 'Sidebar Reduce Changed' },
-    onClickMenuItem: { action: 'Menu Item Clicked' },
+    logoFull: {
+      description: 'The full logo to display in expanded state'
+    },
+    logoReduced: {
+      description: 'The reduced logo to display in collapsed state'
+    },
+    servicePaths: {
+      description: 'Array of service options for service switching functionality'
+    },
+    menuItems: {
+      description: 'Array of menu items and their potential submenus'
+    },
+    initialReduceState: {
+      control: 'boolean',
+      description: 'Initial state of the sidebar (expanded or reduced)'
+    },
+    breakpointWidth: {
+      control: 'number',
+      description: 'Width at which the sidebar automatically collapses (responsive behavior)'
+    },
+    customStyles: {
+      control: 'object',
+      description: 'Custom styles for different parts of the sidebar'
+    },
+    onServiceOptionClick: { 
+      action: 'Service Option Clicked',
+      description: 'Function called when a service option is clicked'
+    },
+    onSidebarReduceChange: { 
+      action: 'Sidebar Reduce Changed', 
+      description: 'Function called when the sidebar state changes between expanded and reduced'
+    },
+    onClickMenuItem: { 
+      action: 'Menu Item Clicked',
+      description: 'Function called when a menu item is clicked'
+    },
+    testMode: {
+      control: 'boolean',
+      description: 'Enables test mode to facilitate automated testing'
+    }
   },
+  tags: ['autodocs'],
 };
 
 export default meta;
@@ -113,7 +191,13 @@ const menuItems = [
   }
 ];
 
-// Default Sidebar - Expanded
+/**
+ * Default expanded view of the sidebar with all standard features enabled.
+ * 
+ * This example shows the sidebar in its expanded state with the full menu text visible.
+ * It includes service options at the top and a complete menu structure with both direct
+ * navigation items and expandable sections with subitems.
+ */
 export const Default: Story = {
   args: {
     testMode: true,
@@ -124,17 +208,43 @@ export const Default: Story = {
     initialReduceState: false,
     breakpointWidth: 1110,
   },
+  parameters: {
+    docs: {
+      description: {
+        story: 'The default expanded sidebar showing service options and a full menu structure with expandable sections.'
+      }
+    }
+  }
 };
 
-// Reduced Sidebar
+/**
+ * Collapsed version of the sidebar showing only icons.
+ * 
+ * In the reduced state, the sidebar displays only icons to save space while
+ * still providing navigation functionality. This is useful for maximizing
+ * content area space while keeping navigation accessible.
+ */
 export const Reduced: Story = {
   args: {
     ...Default.args,
     initialReduceState: true,
   },
+  parameters: {
+    docs: {
+      description: {
+        story: 'The sidebar in its collapsed state, showing only icons to save space while maintaining navigation functionality.'
+      }
+    }
+  }
 };
 
-// Sidebar with Hidden Menu Items
+/**
+ * Sidebar with conditionally hidden menu items.
+ * 
+ * This example demonstrates how certain menu items can be hidden based on
+ * user permissions or application state. The hidden items do not appear in
+ * the navigation at all.
+ */
 export const WithHiddenItems: Story = {
   args: {
     ...Default.args,
@@ -142,9 +252,22 @@ export const WithHiddenItems: Story = {
       index === 3 ? { ...item, hidden: true } : item
     ),
   },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Demonstrates conditionally hidden menu items, which is useful for implementing permission-based navigation.'
+      }
+    }
+  }
 };
 
-// Dark Theme Sidebar
+/**
+ * Dark themed version of the sidebar.
+ * 
+ * This example shows how to customize the sidebar's appearance with a dark theme
+ * using the customStyles prop. This is useful for applications with dark mode
+ * or for creating visual distinction between different sections.
+ */
 export const DarkTheme: Story = {
   args: {
     ...Default.args,
@@ -166,9 +289,21 @@ export const DarkTheme: Story = {
       },
     },
   },
+  parameters: {
+    docs: {
+      description: {
+        story: 'A dark-themed version of the sidebar using the customStyles prop to override default styling.'
+      }
+    }
+  }
 };
 
-// Long Menu Names
+/**
+ * Sidebar displaying menu items with very long titles.
+ * 
+ * This example tests how the sidebar handles menu items with exceptionally long
+ * titles, demonstrating text truncation and overflow handling.
+ */
 export const LongMenuNames: Story = {
   args: {
     ...Default.args,
@@ -176,17 +311,41 @@ export const LongMenuNames: Story = {
       index === 2 ? { ...item, title: 'Este es un título muy largo para probar cómo se ve' } : item
     ),
   },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Tests how the sidebar handles menu items with very long titles, demonstrating text truncation and overflow behavior.'
+      }
+    }
+  }
 };
 
-// No Service Options
+/**
+ * Sidebar without service switching functionality.
+ * 
+ * This example shows the sidebar without the service options section,
+ * useful for applications that don't require service switching.
+ */
 export const NoServiceOptions: Story = {
   args: {
     ...Default.args,
     servicePaths: [],
   },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Sidebar configuration without service options section, for applications that don\'t need service switching functionality.'
+      }
+    }
+  }
 };
 
-// Custom Styles
+/**
+ * Sidebar with extensive visual customization.
+ * 
+ * This example demonstrates the flexibility of the sidebar's styling system,
+ * with custom colors, borders, shadows, and spacing applied to different sections.
+ */
 export const CustomStyles: Story = {
   args: {
     ...Default.args,
@@ -207,4 +366,11 @@ export const CustomStyles: Story = {
       },
     },
   },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Demonstrates the extensive styling customization options available for the sidebar component.'
+      }
+    }
+  }
 };
