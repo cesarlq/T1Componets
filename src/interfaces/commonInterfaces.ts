@@ -218,6 +218,7 @@ export interface SimpleModalProps {
 export interface SidebarProps {
   testMode?: boolean; // Flag para modo de prueba
   className?: string;
+  router?: any;
   logoFull: string;
   logoReduced: string;
   servicePaths?: ServiceOption[];

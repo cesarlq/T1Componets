@@ -177,6 +177,7 @@ export interface SimpleModalProps {
 export interface SidebarProps {
     testMode?: boolean;
     className?: string;
+    router?: any;
     logoFull: string;
     logoReduced: string;
     servicePaths?: ServiceOption[];

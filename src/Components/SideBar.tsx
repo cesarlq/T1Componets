@@ -20,14 +20,14 @@ const Sidebar: React.FC<SidebarProps> = ({
   initialReduceState = false,
   breakpointWidth = 1110,
   userInfo,
+  router: customRouter,
   onServiceOptionClick,
   onSidebarReduceChange,
   onClickMenuItem,
   customStyles = {}
 }) => {
 
-  const nextRouter = useRouter();
-  const router = nextRouter;
+  const router = customRouter;
   const [sidebarReduce, setSidebarReduce] = useState(initialReduceState);
   const [activePath, setActivePath] = useState('');
   const [activeSubPath, setActiveSubPath] = useState('');
