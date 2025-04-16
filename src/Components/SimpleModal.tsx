@@ -19,7 +19,7 @@ const SimpleModalComponent: React.FC<SimpleModalProps> = ({
   styles = {}
 }) => {
   return (
-    <div style={{ position: 'relative', zIndex: 1, width: '100%', height: '100%', overflow: 'hidden', backgroundColor: '#0000006b' }}>
+    <div style={{ position: 'absolute', top:'0px', zIndex: 1, width: '100vw', height: '100vh', overflow: 'hidden', backgroundColor: '#0000006b' }}>
     <Box
       component="main"
       className={className.mainContainer} 

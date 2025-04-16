@@ -1,4 +1,4 @@
-import React, { useState} from 'react';
+import React, { useEffect, useState} from 'react';
 import { 
   useTheme, 
   useMediaQuery, 
@@ -15,6 +15,29 @@ import {
 } from '@mui/material';
 import CloseButtonT1 from './CloseButtonT1';
 import { ProfileComponentProps, TabPanelProps } from '../interfaces/commonInterfaces';
+
+// Estilos para la animación
+const AnimatedModal = styled(Box)(({ theme }) => ({
+  '&.modal-enter': {
+    transform: 'translateY(100%)',
+    opacity: 0,
+  },
+  '&.modal-enter-active': {
+    transform: 'translateY(0)',
+    opacity: 1,
+    transition: 'transform 300ms ease-in-out, opacity 300ms ease-in-out',
+  },
+  '&.modal-exit': {
+    transform: 'translateY(0)',
+    opacity: 1,
+  },
+  '&.modal-exit-active': {
+    transform: 'translateY(100%)',
+    opacity: 0,
+    transition: 'transform 300ms ease-in-out, opacity 300ms ease-in-out',
+  },
+}));
+
 
 // Creamos un MenuItem personalizado para evitar problemas de tipado
 const StyledMenuItem = styled('div')<{ isSelected?: boolean }>(({ theme, isSelected }) => ({
@@ -69,6 +92,7 @@ const ModalComponent: React.FC<ProfileComponentProps> = ({
   // Estados
   const [viewSelected, setViewSelected] = useState<number | null>(0);
   const [currentTab, setCurrentTab] = useState<number>(0);
+  const [modalClass, setModalClass] = useState('modal-enter');
   
   // Theme y responsive
   const theme = useTheme();
@@ -80,6 +104,26 @@ const ModalComponent: React.FC<ProfileComponentProps> = ({
   
   const dimensionsIcon = { width: 16, height: 16 };
 
+  // Efecto para manejar la animación de entrada
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setModalClass('modal-enter modal-enter-active');
+    }, 10);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+   // Handler para cerrar con animación
+   const handleClose = () => {
+    setModalClass('modal-exit modal-exit-active');
+    
+    const timer = setTimeout(() => {
+      onClose();
+    }, 300);
+
+    return () => clearTimeout(timer);
+  };
+
   // Handlers
   const handleMenuItemClick = (index: number) => {
     setViewSelected(index);
@@ -90,22 +134,28 @@ const ModalComponent: React.FC<ProfileComponentProps> = ({
   };
 
   return (
-    <div style={{ position: 'relative', zIndex: 1, width: '100%', height: '100%', overflow: 'hidden', backgroundColor: '#0000006b' }}>
+    <div style={{ position: 'absolute', top:'0px', zIndex: 1, width: '100vw', height: '100vh', overflow: 'hidden', backgroundColor: '#0000006b' }}>
+      <AnimatedModal
+        className={`${className.mainContainer} ${modalClass}`}
+        sx={{
+          backgroundColor: '#FFFFFF',
+          position: 'fixed',
+          top: '65px',
+          left: 0,
+          right: 0,
+          bottom: 0,
+          zIndex: 1000,
+          overflow: 'auto',
+          boxShadow: '0px -2px 10px rgba(0,0,0,0.1)',
+          borderRadius: '20px 20px 0px 0px',
+          ...styles.mainContainer
+        }}
+      >
     <Box
-      component="main"
-      className={className.mainContainer} 
+      component="header" 
+      className={className.headerProfile}
       sx={{
-        backgroundColor: '#FFFFFF',
-        position: 'fixed',
-        top: '65px',
-        left: 0,
-        right: 0,
-        bottom: 0,
-        zIndex: 1000,
-        overflow: 'auto',
-        boxShadow: '0px -2px 10px rgba(0,0,0,0.1)',
-        borderRadius: '20px 20px 0px 0px',
-        ...styles.mainContainer
+        ...styles.headerProfile
       }}
     >
       <Box
@@ -120,7 +170,7 @@ const ModalComponent: React.FC<ProfileComponentProps> = ({
           <CloseButtonT1 
             className={className.btnClose} 
             aria-label="close" 
-            onClick={onClose} 
+            onClick={handleClose} 
             size="small" 
           />
         </Stack>
@@ -190,6 +240,7 @@ const ModalComponent: React.FC<ProfileComponentProps> = ({
         )}
       </Box>
     </Box>
+    </AnimatedModal>
     </div>
   );
 };
