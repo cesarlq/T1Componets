@@ -134,7 +134,7 @@ const ModalComponent: React.FC<ProfileComponentProps> = ({
   };
 
   return (
-    <div style={{ position: 'absolute', top:'0px', zIndex: 1, width: '100vw', height: '100vh', overflow: 'hidden', backgroundColor: '#0000006b' }}>
+    <div style={{ position: 'absolute', top:'0px', left: '0px', zIndex: 1, width: '100vw', height: '100vh', overflow: 'hidden', backgroundColor: '#0000006b' }}>
       <AnimatedModal
         className={`${className.mainContainer} ${modalClass}`}
         sx={{
