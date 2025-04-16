@@ -158,13 +158,6 @@ const ModalComponent: React.FC<ProfileComponentProps> = ({
         ...styles.headerProfile
       }}
     >
-      <Box
-        component="header" 
-        className={className.headerProfile}
-        sx={{
-          ...styles.headerProfile
-        }}
-      >
         <Stack direction="row" spacing={2} justifyContent="space-between" alignItems="center" sx={{ p: 2 }}>
           <h1 >{title}</h1>
           <CloseButtonT1 
@@ -239,7 +232,6 @@ const ModalComponent: React.FC<ProfileComponentProps> = ({
           </Box>
         )}
       </Box>
-    </Box>
     </AnimatedModal>
     </div>
   );
