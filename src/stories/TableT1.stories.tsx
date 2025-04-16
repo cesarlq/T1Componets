@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import TableT1 from '../Components/TableT1';
 import { Box, Button, IconButton, Stack, Tooltip, Typography } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
@@ -7,7 +7,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import ChipT1 from '../Components/ChipT1';
 
 // Sample data for the table
-const sampleData = [
+const allData = [
   { id: 1, name: 'John Smith', email: 'john@example.com', status: 'active', role: 'Admin', lastLogin: '2023-04-01' },
   { id: 2, name: 'Maria Garcia', email: 'maria@example.com', status: 'active', role: 'Editor', lastLogin: '2023-04-05' },
   { id: 3, name: 'Robert Johnson', email: 'robert@example.com', status: 'inactive', role: 'Viewer', lastLogin: '2023-03-28' },
@@ -132,6 +132,17 @@ const renderTableHeader = () => (
   </Stack>
 );
 
+// Define a type for our data structure
+interface UserData {
+  id: number;
+  name: string;
+  email: string;
+  status: string;
+  role: string;
+  lastLogin: string;
+  [key: string]: string | number; // Index signature to allow string indexing
+}
+
 const meta = {
   title: 'Components/TableT1',
   component: TableT1,
@@ -152,7 +163,7 @@ const meta = {
   },
   args: {
     columns: columns,
-    data: sampleData,
+    data: allData,
     loading: false,
     selectable: false,
     pageable: true,
@@ -170,7 +181,7 @@ type Story = StoryObj<typeof meta>;
 export const Basic: Story = {
   args: {
     columns: columns,
-    data: sampleData,
+    data: allData,
     pageSizeOptions: [3, 6, 8],
   }
 };
@@ -179,7 +190,7 @@ export const Basic: Story = {
 export const WithSearch: Story = {
   args: {
     columns: columns,
-    data: sampleData,
+    data: allData,
     searchable: true,
     searchPlaceholder: 'Search users...',
     pageSizeOptions: [3, 6, 8],
@@ -190,7 +201,7 @@ export const WithSearch: Story = {
 export const WithSelection: Story = {
   args: {
     columns: columns,
-    data: sampleData,
+    data: allData,
     selectable: true,
     pageSizeOptions: [3, 6, 8],
   }
@@ -200,7 +211,7 @@ export const WithSelection: Story = {
 export const WithRowActions: Story = {
   args: {
     columns: columns,
-    data: sampleData,
+    data: allData,
     renderRowActions: renderRowActions,
     pageSizeOptions: [3, 6, 8],
   }
@@ -210,7 +221,7 @@ export const WithRowActions: Story = {
 export const WithExpandableRows: Story = {
   args: {
     columns: columns,
-    data: sampleData,
+    data: allData,
     expandable: true,
     renderExpandedRow: renderExpandedContent,
     pageSizeOptions: [3, 6, 8],
@@ -221,7 +232,7 @@ export const WithExpandableRows: Story = {
 export const ComprehensiveTable: Story = {
   args: {
     columns: columns,
-    data: sampleData,
+    data: allData,
     selectable: true,
     searchable: true,
     expandable: true,
@@ -230,6 +241,102 @@ export const ComprehensiveTable: Story = {
     renderTableHeader: renderTableHeader,
     pageSizeOptions: [3, 6, 8],
   }
+};
+
+// Server-side Pagination Table
+export const ServerSidePagination: Story = {
+  render: () => {
+    const [data, setData] = useState<UserData[]>([]);
+    const [loading, setLoading] = useState(false);
+    const [page, setPage] = useState(1);
+    const [rowsPerPage, setRowsPerPage] = useState(6);
+    const [sortField, setSortField] = useState('id');
+    const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+    const totalCount = allData.length;
+  
+    // Simulate API call with delay
+    const fetchData = async (
+      page: number, 
+      rowsPerPage: number, 
+      sortField: string, 
+      sortOrder: 'asc' | 'desc'
+    ) => {
+      setLoading(true);
+      
+      // Simulate server delay
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
+      // Sort data (with type-safe comparison)
+      const sortedData = [...allData].sort((a, b) => {
+        const aValue = a[sortField as keyof typeof a];
+        const bValue = b[sortField as keyof typeof b];
+        
+        if (sortOrder === 'asc') {
+          return aValue > bValue ? 1 : -1;
+        } else {
+          return aValue < bValue ? 1 : -1;
+        }
+      });
+      
+      // Paginate data
+      const startIndex = (page - 1) * rowsPerPage;
+      const paginatedData = sortedData.slice(startIndex, startIndex + rowsPerPage);
+      
+      setData(paginatedData);
+      setLoading(false);
+    };
+  
+    // Handle page change
+    const handlePageChange = (newPage: number, newRowsPerPage: number) => {
+      setPage(newPage);
+      setRowsPerPage(newRowsPerPage);
+    };
+  
+    // Handle sort change
+    const handleSortChange = (field: string, order: 'asc' | 'desc') => {
+      setSortField(field);
+      setSortOrder(order);
+    };
+  
+    // Fetch data when dependencies change
+    useEffect(() => {
+      fetchData(page, rowsPerPage, sortField, sortOrder);
+    }, [page, rowsPerPage, sortField, sortOrder]);
+  
+    return (
+      <Box>
+        <Typography variant="h6" gutterBottom>
+          Server-side Pagination Example
+        </Typography>
+        <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+          This example simulates server-side pagination, sorting, and filtering.
+        </Typography>
+        
+        <TableT1
+          columns={columns}
+          data={data}
+          loading={loading}
+          
+          // Server-side pagination props
+          serverSidePagination={true}
+          totalCount={totalCount}
+          onPageChange={handlePageChange}
+          onSortChange={handleSortChange}
+          
+          // Additional features
+          expandable={true}
+          renderExpandedRow={renderExpandedContent}
+          renderRowActions={renderRowActions}
+          
+          // Pagination options
+          pageSize={rowsPerPage}
+          pageSizeOptions={[3, 6, 10, 15]}
+          pageable={true}
+        />
+      </Box>
+    );
+  }
+  
 };
 
 // Loading State
@@ -266,7 +373,7 @@ export const ErrorState: Story = {
 export const CustomStyling: Story = {
   args: {
     columns: columns,
-    data: sampleData,
+    data: allData,
     pageSizeOptions: [3, 6, 8],
     containerSx: {
       backgroundColor: '#f9fafc',

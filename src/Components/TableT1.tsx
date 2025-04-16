@@ -12,15 +12,14 @@ import {
   Checkbox,
   IconButton,
   Typography,
-  CircularProgress
+  CircularProgress,
+  SelectChangeEvent
 } from '@mui/material';
-import SearchIcon from '@mui/icons-material/Search';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import { visuallyHidden } from '@mui/utils';
 import CustomPagination from './CustomPagination';
 import SearchInput from './SearchInput';
 import { TableT1Props } from '../interfaces/commonInterfaces';
-
 
 type Order = 'asc' | 'desc';
 
@@ -48,6 +47,12 @@ const TableT1 = <T extends Record<string, any>>({
   onRowClick,
   onRowExpand,
   onSelectionChange,
+  
+  // Server-side pagination
+  serverSidePagination = false,
+  totalCount,
+  onPageChange,
+  onSortChange,
   
   // Pagination options
   pageSize = 10,
@@ -84,8 +89,17 @@ const TableT1 = <T extends Record<string, any>>({
   const [filteredData, setFilteredData] = useState<T[]>(data);
   const [searchInputValue, setSearchInputValue] = useState('');
 
-  // Update filtered data when data changes or search term changes
+  // Determine the total count of items (server or client side)
+  const effectiveTotalCount = serverSidePagination ? totalCount || 0 : filteredData.length;
+
+  // Update filtered data when data changes or search term changes (for client-side filtering)
   useEffect(() => {
+    if (serverSidePagination) {
+      // If server-side pagination, just use data as is
+      setFilteredData(data);
+      return;
+    }
+
     if (!searchTerm) {
       setFilteredData(data);
       return;
@@ -103,7 +117,7 @@ const TableT1 = <T extends Record<string, any>>({
     });
 
     setFilteredData(filtered);
-  }, [data, searchTerm]);
+  }, [data, searchTerm, serverSidePagination]);
 
   // Handle search input with debounce
   useEffect(() => {
@@ -119,8 +133,10 @@ const TableT1 = <T extends Record<string, any>>({
 
   // Reset pagination when data changes
   useEffect(() => {
-    setPage(1);
-  }, [filteredData]);
+    if (!serverSidePagination) {
+      setPage(1);
+    }
+  }, [filteredData, serverSidePagination]);
 
   // Update selected rows callback
   useEffect(() => {
@@ -135,11 +151,17 @@ const TableT1 = <T extends Record<string, any>>({
   // Handle sort request
   const handleRequestSort = (property: string) => {
     const isAsc = orderBy === property && order === 'asc';
-    setOrder(isAsc ? 'desc' : 'asc');
+    const newOrder = isAsc ? 'desc' : 'asc';
+    setOrder(newOrder);
     setOrderBy(property);
+
+    // If server-side sorting, call the callback
+    if (serverSidePagination && onSortChange) {
+      onSortChange(property, newOrder);
+    }
   };
 
-  // Sort function
+  // Sort function for client-side sorting
   const getSorting = (order: Order, orderBy: string) => {
     return order === 'desc'
       ? (a: T, b: T) => descendingComparator(a, b, orderBy)
@@ -190,12 +212,23 @@ const TableT1 = <T extends Record<string, any>>({
   // Handle page change
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
+    
+    // If server-side pagination, call the callback
+    if (serverSidePagination && onPageChange) {
+      onPageChange(newPage, rowsPerPage);
+    }
   };
 
   // Handle rows per page change
-  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
+  const handleChangeRowsPerPage = (event: SelectChangeEvent<number>) => {
+    const newRowsPerPage = parseInt(event.target.value.toString(), 10);
+    setRowsPerPage(newRowsPerPage);
+    setPage(1); // Reset to first page when changing page size
+    
+    // If server-side pagination, call the callback
+    if (serverSidePagination && onPageChange) {
+      onPageChange(1, newRowsPerPage);
+    }
   };
 
   // Handle row expansion
@@ -244,20 +277,26 @@ const TableT1 = <T extends Record<string, any>>({
     </TableRow>
   );
 
-  // Apply sorting and pagination
+  // Apply sorting and pagination for client-side mode
   const visibleRows = React.useMemo(() => {
-    if (orderBy && sortable) {
-      return [...filteredData].sort(getSorting(order, orderBy)).slice(
-        page * rowsPerPage,
-        page * rowsPerPage + rowsPerPage,
-      );
+    if (serverSidePagination) {
+      // For server-side, just return data as is, as it's already paginated
+      return data;
     } else {
-      return filteredData.slice(
-        page * rowsPerPage,
-        page * rowsPerPage + rowsPerPage,
-      );
+      // For client-side, handle sorting and pagination
+      if (orderBy && sortable) {
+        return [...filteredData].sort(getSorting(order, orderBy)).slice(
+          (page - 1) * rowsPerPage,
+          (page - 1) * rowsPerPage + rowsPerPage,
+        );
+      } else {
+        return filteredData.slice(
+          (page - 1) * rowsPerPage,
+          (page - 1) * rowsPerPage + rowsPerPage,
+        );
+      }
     }
-  }, [filteredData, order, orderBy, page, rowsPerPage, sortable]);
+  }, [filteredData, order, orderBy, page, rowsPerPage, sortable, serverSidePagination, data]);
 
   // Get visible columns (non-hidden)
   const visibleColumns = columns.filter(column => !column.hidden);
@@ -282,6 +321,8 @@ const TableT1 = <T extends Record<string, any>>({
           
           {searchable && (
             <SearchInput 
+              onChange={(e) => setSearchInputValue(e.target.value)}
+              placeholder={searchPlaceholder}
               textFieldProps={{ sx: { width: '30rem' } }}
             />
           )}
@@ -473,15 +514,11 @@ const TableT1 = <T extends Record<string, any>>({
       {/* Pagination */}
       {pageable && (
         <CustomPagination
-          count={filteredData.length}
+          count={effectiveTotalCount}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}
-          onRowsPerPageChange={(e) => {
-            console.log('Rows per page changed:', e);
-            setRowsPerPage(Number(e.target.value));
-            setPage(0);
-          }}
+          onRowsPerPageChange={handleChangeRowsPerPage}
           rowsPerPageOptions={pageSizeOptions}
         />
       )}

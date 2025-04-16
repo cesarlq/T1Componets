@@ -129,9 +129,21 @@ export interface TableColumnT1<T = any> {
   hidden?: boolean;
 }
 
-export interface TableT1Props<T = any> {
+// Extendemos la interfaz para añadir soporte para paginación en servidor
+export interface TableT1Props<T extends Record<string, any>> {
   // Core data
-  columns: TableColumnT1<T>[];
+  columns: Array<{
+    id: string;
+    label: string;
+    numeric?: boolean;
+    width?: string | number;
+    align?: 'left' | 'right' | 'center';
+    sortable?: boolean;
+    hidden?: boolean;
+    headerClassName?: string;
+    cellClassName?: string;
+    renderCell?: (row: T) => React.ReactNode;
+  }>;
   data: T[];
   
   // Key configuration
@@ -154,6 +166,12 @@ export interface TableT1Props<T = any> {
   onRowExpand?: (row: T) => void;
   onSelectionChange?: (selectedRows: T[]) => void;
   
+  // Server-side pagination
+  serverSidePagination?: boolean;
+  totalCount?: number; // Total count of records from server
+  onPageChange?: (page: number, rowsPerPage: number) => void; // Callback for when page changes
+  onSortChange?: (orderBy: string, order: 'asc' | 'desc') => void; // Callback for when sort changes
+  
   // Pagination options
   pageSize?: number;
   pageSizeOptions?: number[];
@@ -164,11 +182,11 @@ export interface TableT1Props<T = any> {
   renderTableHeader?: () => React.ReactNode;
   
   // Styling
-  containerSx?: any;
-  tableSx?: any;
-  headerRowSx?: any;
-  bodyRowSx?: any;
-  expansionPanelSx?: any;
+  containerSx?: Record<string, any>;
+  tableSx?: Record<string, any>;
+  headerRowSx?: Record<string, any>;
+  bodyRowSx?: Record<string, any>;
+  expansionPanelSx?: Record<string, any>;
   
   // Additional options
   searchPlaceholder?: string;
@@ -304,9 +322,9 @@ export interface CustomPaginationProps {
   count: number;
   rowsPerPage: number;
   page: number;
-  onPageChange: (event: unknown, newPage: number) => void;
+  onPageChange: (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => void;
   onRowsPerPageChange: (event: SelectChangeEvent<number>) => void;
-  rowsPerPageOptions: number[];
+  rowsPerPageOptions?: number[];
 }
 
 export interface CollapsibleCardT1Props {

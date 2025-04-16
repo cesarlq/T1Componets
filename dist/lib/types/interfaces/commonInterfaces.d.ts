@@ -110,8 +110,19 @@ export interface TableColumnT1<T = any> {
     headerClassName?: string;
     hidden?: boolean;
 }
-export interface TableT1Props<T = any> {
-    columns: TableColumnT1<T>[];
+export interface TableT1Props<T extends Record<string, any>> {
+    columns: Array<{
+        id: string;
+        label: string;
+        numeric?: boolean;
+        width?: string | number;
+        align?: 'left' | 'right' | 'center';
+        sortable?: boolean;
+        hidden?: boolean;
+        headerClassName?: string;
+        cellClassName?: string;
+        renderCell?: (row: T) => React.ReactNode;
+    }>;
     data: T[];
     idKey?: string;
     loading?: boolean;
@@ -125,16 +136,20 @@ export interface TableT1Props<T = any> {
     onRowClick?: (row: T) => void;
     onRowExpand?: (row: T) => void;
     onSelectionChange?: (selectedRows: T[]) => void;
+    serverSidePagination?: boolean;
+    totalCount?: number;
+    onPageChange?: (page: number, rowsPerPage: number) => void;
+    onSortChange?: (orderBy: string, order: 'asc' | 'desc') => void;
     pageSize?: number;
     pageSizeOptions?: number[];
     renderRowActions?: (row: T) => React.ReactNode;
     renderExpandedRow?: (row: T) => React.ReactNode;
     renderTableHeader?: () => React.ReactNode;
-    containerSx?: any;
-    tableSx?: any;
-    headerRowSx?: any;
-    bodyRowSx?: any;
-    expansionPanelSx?: any;
+    containerSx?: Record<string, any>;
+    tableSx?: Record<string, any>;
+    headerRowSx?: Record<string, any>;
+    bodyRowSx?: Record<string, any>;
+    expansionPanelSx?: Record<string, any>;
     searchPlaceholder?: string;
     stickyHeader?: boolean;
     searchDelay?: number;
@@ -260,9 +275,9 @@ export interface CustomPaginationProps {
     count: number;
     rowsPerPage: number;
     page: number;
-    onPageChange: (event: unknown, newPage: number) => void;
+    onPageChange: (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => void;
     onRowsPerPageChange: (event: SelectChangeEvent<number>) => void;
-    rowsPerPageOptions: number[];
+    rowsPerPageOptions?: number[];
 }
 export interface CollapsibleCardT1Props {
     title?: React.ReactNode;

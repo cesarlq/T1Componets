@@ -7,13 +7,12 @@ import {
   IconButton, 
   TextField, 
   useTheme,
-  useMediaQuery
+  useMediaQuery,
+  SelectChangeEvent
 } from '@mui/material';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import { CustomPaginationProps } from '../interfaces/commonInterfaces';
-
-
 
 const CustomPagination: React.FC<CustomPaginationProps> = ({
   count,
@@ -29,7 +28,7 @@ const CustomPagination: React.FC<CustomPaginationProps> = ({
   const isMediumScreen = useMediaQuery(theme.breakpoints.between('sm', 'md'));
 
   const totalPages = Math.ceil(count / rowsPerPage);
-  const [goToPage, setGoToPage] = React.useState<string>((page + 1).toString());
+  const [goToPage, setGoToPage] = React.useState<string>((page).toString());
 
   const navigateToPage = (pageNumber: number) => {
     if (!isNaN(pageNumber) && pageNumber > 0 && pageNumber <= totalPages) {
@@ -176,7 +175,7 @@ const CustomPagination: React.FC<CustomPaginationProps> = ({
   };
 
   return (
-<Box 
+    <Box 
       sx={{ 
         display: 'flex', 
         alignItems: 'center', 
@@ -253,7 +252,6 @@ const CustomPagination: React.FC<CustomPaginationProps> = ({
         </IconButton>
         
         {/* Selector de registros por página */}
-
         <Select
           value={rowsPerPage}
           onChange={onRowsPerPageChange}
@@ -356,21 +354,6 @@ const CustomPagination: React.FC<CustomPaginationProps> = ({
                 MozAppearance: 'textfield',
               }
             }}
-            // InputProps={{
-            //   endAdornment: (
-            //       <IconButton
-            //         size="small"
-            //         onClick={handleGoToPageButtonClick}
-            //         disabled={
-            //           !goToPage || 
-            //           parseInt(goToPage, 10) < 1 || 
-            //           parseInt(goToPage, 10) > totalPages
-            //         }
-            //       >
-            //         <KeyboardArrowRightIcon fontSize="small" />
-            //       </IconButton>
-            //   )
-            // }}
           />
         </Box>
       </Box>

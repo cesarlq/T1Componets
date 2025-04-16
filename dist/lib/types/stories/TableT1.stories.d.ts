@@ -2,7 +2,7 @@ import type { StoryObj } from '@storybook/react';
 import React from 'react';
 declare const meta: {
     title: string;
-    component: <T extends Record<string, any>>({ columns, data, idKey, loading, error, emptyMessage, selectable, sortable, pageable, searchable, expandable, onRowClick, onRowExpand, onSelectionChange, pageSize, pageSizeOptions, renderRowActions, renderExpandedRow, renderTableHeader, containerSx, tableSx, headerRowSx, bodyRowSx, expansionPanelSx, searchPlaceholder, stickyHeader, searchDelay, onSearchChange, defaultSortColumn, defaultSortDirection }: import("../interfaces/commonInterfaces").TableT1Props<T>) => React.ReactElement;
+    component: <T extends Record<string, any>>({ columns, data, idKey, loading, error, emptyMessage, selectable, sortable, pageable, searchable, expandable, onRowClick, onRowExpand, onSelectionChange, serverSidePagination, totalCount, onPageChange, onSortChange, pageSize, pageSizeOptions, renderRowActions, renderExpandedRow, renderTableHeader, containerSx, tableSx, headerRowSx, bodyRowSx, expansionPanelSx, searchPlaceholder, stickyHeader, searchDelay, onSearchChange, defaultSortColumn, defaultSortDirection }: import("../interfaces/commonInterfaces").TableT1Props<T>) => React.ReactElement;
     parameters: {
         layout: string;
         docs: {
