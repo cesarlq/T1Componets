@@ -2216,3 +2216,235 @@ const customStyles = {
 - Uses `useState` and `useEffect` for responsive behavior
 - Minimal re-renders with memoization techniques
 - Lightweight and flexible design
+
+
+
+# ProfileAvatarMenu
+
+## Basic Usage
+
+```jsx
+import { ProfileAvatarMenu } from 't1componets';
+import LogoutIcon from '@mui/icons-material/Logout';
+import PersonIcon from '@mui/icons-material/Person';
+
+function Header() {
+  const handleLogout = () => {
+    // Your logout logic
+    console.log('Logged out');
+  };
+  
+  const handleProfile = () => {
+    // Navigate to profile
+    console.log('Navigate to profile');
+  };
+  
+  return (
+    <header>
+      <div className="header-content">
+        <h1>My App</h1>
+        <ProfileAvatarMenu
+          user={{
+            name: 'John Doe',
+            email: 'john.doe@example.com',
+          }}
+          menuItems={[
+            {
+              id: 'profile',
+              label: 'My Profile',
+              icon: <PersonIcon fontSize="small" />,
+              onClick: handleProfile,
+            },
+            {
+              id: 'logout',
+              label: 'Log Out',
+              icon: <LogoutIcon fontSize="small" />,
+              onClick: handleLogout,
+            },
+          ]}
+        />
+      </div>
+    </header>
+  );
+}
+```
+
+## Props
+
+### Main Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `user` | `ProfileUser` | - | User data to display (required) |
+| `menuItems` | `ProfileMenuItem[]` | - | Menu items to display in dropdown (required) |
+| `showNameInHeader` | `boolean` | `true` | Whether to show user name/email next to avatar |
+| `showUserInMenu` | `boolean` | `true` | Whether to show user details at top of menu |
+| `customAvatar` | `ReactNode` | - | Custom avatar component |
+| `avatarSize` | `number` | `40` | Size of avatar in header (pixels) |
+| `menuAvatarSize` | `number` | `50` | Size of avatar in menu (pixels) |
+| `avatarBgColor` | `string` | `'#db3b2b'` | Background color of avatar |
+
+### Interface Definitions
+
+```typescript
+interface ProfileUser {
+  name?: string;       // User's display name
+  email: string;       // User's email (required)
+  avatar?: string;     // URL to avatar image
+}
+
+interface ProfileMenuItem {
+  id: string;          // Unique ID for the menu item
+  label: string;       // Display text
+  icon?: ReactNode;    // Optional icon component
+  onClick?: () => void; // Click handler
+  divider?: boolean;   // Whether to show divider after this item
+}
+```
+
+### Styling Props
+
+```typescript
+interface ProfileAvatarMenuProps {
+  // ...other props
+
+  // CSS class names for styling
+  className?: {
+    container?: string;
+    name?: string;
+    avatarButton?: string;
+    menu?: string;
+    menuUserInfo?: string;
+    menuUsername?: string;
+    menuEmail?: string;
+    menuItem?: string;
+  };
+  
+  // MUI sx prop for styling
+  sx?: {
+    container?: SxProps<Theme>;
+    avatar?: SxProps<Theme>;
+    menuAvatar?: SxProps<Theme>;
+    menu?: SxProps<Theme>;
+  };
+}
+```
+
+## Examples
+
+### With Avatar Image
+
+```jsx
+<ProfileAvatarMenu
+  user={{
+    name: 'Jane Smith',
+    email: 'jane.smith@example.com',
+    avatar: 'https://example.com/avatar.jpg'
+  }}
+  menuItems={menuItems}
+/>
+```
+
+### Without Name in Header
+
+```jsx
+<ProfileAvatarMenu
+  user={user}
+  menuItems={menuItems}
+  showNameInHeader={false}
+/>
+```
+
+### Custom Styling
+
+```jsx
+<ProfileAvatarMenu
+  user={user}
+  menuItems={menuItems}
+  avatarBgColor="#3f51b5"
+  sx={{
+    avatar: {
+      border: '2px solid white',
+      boxShadow: '0 2px 10px rgba(0,0,0,0.2)',
+    },
+    menu: {
+      '& .MuiPaper-root': {
+        borderRadius: '16px',
+      }
+    }
+  }}
+  className={{
+    container: 'custom-profile-container',
+    menuItem: 'custom-menu-item',
+  }}
+/>
+```
+
+### Minimal Configuration
+
+```jsx
+<ProfileAvatarMenu
+  user={{ email: 'user@example.com' }}
+  menuItems={[
+    {
+      id: 'logout',
+      label: 'Log out',
+      onClick: handleLogout
+    }
+  ]}
+  showNameInHeader={false}
+  showUserInMenu={false}
+/>
+```
+
+## Accessibility
+
+The component follows accessibility best practices:
+- Proper ARIA attributes for the dropdown menu
+- Focus management for keyboard navigation
+- Sufficient color contrast for text elements
+- Screen reader support
+
+## Best Practices
+
+1. **Always provide a meaningful ID** for each menu item to help with testing and tracking.
+
+2. **Keep menu items concise** - ideally 4-6 items for best usability.
+
+3. **Use icons consistently** to improve visual recognition.
+
+4. **Consider mobile users** when setting sizes and spacing.
+
+5. **Customize the avatar color** to match your brand.
+
+## Integration with Authentication
+
+This component is designed to work with any authentication system. Just pass the user data and handlers from your auth context:
+
+```jsx
+import { useAuth } from './your-auth-provider';
+import { ProfileAvatarMenu } from 't1componets';
+
+function Header() {
+  const { user, logout } = useAuth();
+  
+  return (
+    <header>
+      <ProfileAvatarMenu
+        user={{
+          name: user.displayName,
+          email: user.email,
+          avatar: user.photoURL
+        }}
+        menuItems={[
+          {
+            id: 'logout',
+            label: 'Log Out',
+            onClick: logout
+          }
+        ]}
+      />
+    </header>
+  );
+}
+```
