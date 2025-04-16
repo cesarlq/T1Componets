@@ -68,6 +68,7 @@ export declare const WithSelection: Story;
 export declare const WithRowActions: Story;
 export declare const WithExpandableRows: Story;
 export declare const ComprehensiveTable: Story;
+export declare const ServerSidePagination: Story;
 export declare const LoadingState: Story;
 export declare const EmptyState: Story;
 export declare const ErrorState: Story;
