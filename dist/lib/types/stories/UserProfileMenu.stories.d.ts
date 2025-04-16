@@ -1,0 +1,12 @@
+import { Meta, StoryObj } from '@storybook/react';
+import UserProfileMenu from '../Components/UserProfileMenu';
+declare const meta: Meta<typeof UserProfileMenu>;
+export default meta;
+type Story = StoryObj<typeof UserProfileMenu>;
+export declare const Default: Story;
+export declare const WithoutNameInHeader: Story;
+export declare const WithAvatarImage: Story;
+export declare const WithoutUserInMenu: Story;
+export declare const OnlyEmail: Story;
+export declare const CustomStyling: Story;
+export declare const Minimal: Story;
