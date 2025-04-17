@@ -259,6 +259,8 @@ const Sidebar: React.FC<SidebarProps> = ({
             }}>
               <Image
                 src={ArrowMenu}
+                width={10}
+                height={10}
                 className={commonStyle.icon}
                 data-rotate={showOptions}
                 alt='arrow'
@@ -324,6 +326,8 @@ const Sidebar: React.FC<SidebarProps> = ({
                       <Image
                         src={ArrowMenu}
                         className={commonStyle.icon}
+                        width={10}
+                        height={10}
                         alt='arrow'
                       />
                   </span>
@@ -368,6 +372,8 @@ const Sidebar: React.FC<SidebarProps> = ({
         <Image
 					src={DoubleArrow}
 					alt='button'
+          width={24}
+          height={24}
           style={styles.doubleArrow}
 				/>
       </Button>

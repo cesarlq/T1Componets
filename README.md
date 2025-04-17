@@ -2063,7 +2063,241 @@ El componente detecta automáticamente el tamaño de pantalla y ajusta su compor
 - **Tablet/Mobile**: Muestra pestañas horizontales (en ModalComponent)
 
 
-## Sidebar Component
+# Sidebar Component - Usage Guide
+
+## Description
+The Sidebar component is a customizable navigation sidebar that provides a hierarchical menu system with expand/collapse capabilities and service switching options. Ideal for dashboard-type applications or administrative interfaces.
+
+
+## Basic Usage
+
+To use the Sidebar component in a Next.js application with App Router, follow these steps:
+
+```jsx
+'use client';
+import React, { useEffect, useState } from 'react';
+import { Sidebar } from '@t1-org/t1componets';
+// Import your assets
+import LogoFull from './path-to-your-logo.svg';
+import LogoReduced from './path-to-your-icon.svg';
+import MenuIcon1 from './path-to-icon1.svg';
+// ... other imports
+
+function NavBarComponent() {
+  // State to handle component mounting
+  const [isMounted, setIsMounted] = useState(false);
+  // State to handle Next.js router
+  const [router, setRouter] = useState(null);
+
+  useEffect(() => {
+    setIsMounted(true);
+    
+    // Dynamically import the router only on the client
+    const initRouter = async () => {
+      try {
+        const { useRouter } = await import('next/navigation');
+        const routerInstance = useRouter();
+        setRouter(routerInstance);
+      } catch (error) {
+        console.error('Error loading router:', error);
+      }
+    };
+    
+    initRouter();
+  }, []);
+  
+  // Custom router for navigation
+  const customRouter = {
+    pathname: '/',
+    push: (path) => {
+      console.log('Navigation to:', path);
+      if (router) {
+        router.push(path);
+      } else {
+        // Fallback if router is not available
+        window.location.href = path;
+      }
+    }
+  };
+
+  // Service options configuration
+  const serviceOptions = [
+    {
+      name: 'Service 1',
+      icon: ServiceIcon1,
+      iconReduced: ServiceIconReduced1,
+      type: 'service1',
+      width: 100
+    },
+    // More service options...
+  ];
+  
+  // Menu items configuration
+  const menuItems = [
+    {
+      id: 'dashboard',
+      title: 'Dashboard',
+      path: '/dashboard',
+      icon: DashboardIcon,
+      width: 100
+    },
+    {
+      id: 'section',
+      title: 'Section',
+      icon: SectionIcon,
+      width: 100,
+      subItems: [
+        {
+          id: 'subsection1',
+          title: 'Subsection 1',
+          path: '/section/subsection1'
+        },
+        {
+          id: 'subsection2',
+          title: 'Subsection 2',
+          path: '/section/subsection2'
+        }
+      ]
+    },
+    // More menu items...
+  ];
+
+  // Don't render during SSR or first client render
+  if (!isMounted) {
+    return <div style={{ width: '280px', height: '100%', background: '#fff' }}></div>;
+  }
+
+  return (
+    <Sidebar
+      router={customRouter}
+      breakpointWidth={1110}
+      logoFull={LogoFull}
+      logoReduced={LogoReduced}
+      menuItems={menuItems}
+      onClickMenuItem={(item, index) => {
+        // Callback for menu item clicks
+        console.log('Menu item clicked:', item.title);
+      }}
+      onServiceOptionClick={(option) => {
+        // Callback for service option clicks
+        console.log('Service option clicked:', option.name);
+      }}
+      onSidebarReduceChange={(reduced) => {
+        // Callback for expanded/reduced state changes
+        console.log('Sidebar reduced:', reduced);
+      }}
+      servicePaths={serviceOptions}
+      testMode={false}
+      // Optional: custom styles
+      customStyles={{
+        sidebar: { /* styles for sidebar */ },
+        header: { /* styles for header */ },
+        // More style options...
+      }}
+    />
+  );
+}
+
+export default NavBarComponent;
+```
+
+## Props
+
+| Prop | Type | Description | Default |
+|-----------|------|-------------|-------------|
+| `className` | `string` | Additional CSS class for the component | `''` |
+| `testMode` | `boolean` | Enables test mode | `false` |
+| `logoFull` | `StaticImageData` | Full logo for expanded state | - |
+| `logoReduced` | `StaticImageData` | Reduced logo for collapsed state | - |
+| `servicePaths` | `ServiceOption[]` | Available service options | `[]` |
+| `menuItems` | `MenuItem[]` | Main menu items | - |
+| `initialReduceState` | `boolean` | Initial reduction state of the sidebar | `false` |
+| `breakpointWidth` | `number` | Screen width in px for auto-collapse | `1110` |
+| `userInfo` | `object` | User information (optional) | - |
+| `router` | `object` | Custom router object for navigation | - |
+| `onServiceOptionClick` | `function` | Callback for service option clicks | - |
+| `onSidebarReduceChange` | `function` | Callback for reduction state changes | - |
+| `onClickMenuItem` | `function` | Callback for menu item clicks | - |
+| `customStyles` | `object` | Custom styles for the component | `{}` |
+
+## Interfaces
+
+### ServiceOption
+```typescript
+interface ServiceOption {
+  name: string;
+  icon: StaticImageData;
+  iconReduced?: StaticImageData;
+  type: string;
+  width?: number;
+}
+```
+
+### MenuItem
+```typescript
+interface MenuItem {
+  id: string;
+  title: string;
+  path?: string;
+  icon: StaticImageData;
+  width?: number;
+  hidden?: boolean;
+  subItems?: SubMenuItem[];
+}
+```
+
+### SubMenuItem
+```typescript
+interface SubMenuItem {
+  id: string;
+  title: string;
+  path?: string;
+  hidden?: boolean;
+}
+```
+
+## Important Notes
+
+1. **Next.js App Router Compatibility**: This component requires special handling of the router in Next.js App Router. Follow the approach shown in the example to avoid "router not mounted" errors.
+
+2. **SVGs and Images**: Make sure all SVG images have `width` and `height` properties specified, especially in menu items.
+
+3. **Client-Side Rendering**: The component must be rendered only on the client side to avoid hydration errors. Use the `isMounted` check pattern as shown in the example.
+
+4. **Navigation**: The custom router object must implement at least the `push(path)` function for navigation. 
+
+5. **Custom Styles**: You can customize the appearance using the `customStyles` object, which allows you to override the default styles.
+
+## Troubleshooting
+
+### Error "invariant expected app router to be mounted"
+This error occurs when the component tries to use the Next.js router during server rendering. Make sure to:
+
+1. Use the `'use client'` directive in your component
+2. Implement the dynamic router import pattern as shown in the example
+3. Use the `isMounted` state to render only when the component is mounted on the client
+
+### Error "Image is missing required width property"
+This error occurs when an SVG image in the component is missing the `width` and `height` properties. Make sure all icons and logos passed to the component have these properties.
+
+## Example Layout with Sidebar
+
+```jsx
+'use client';
+import React from 'react';
+import NavBar from './NavBar'; // Your component containing the Sidebar
+
+export default function DashboardLayout({ children }) {
+  return (
+    <div style={{ display: 'flex', height: '100vh' }}>
+      <NavBar />
+      <main style={{ flex: 1, overflow: 'auto', padding: '20px' }}>
+        {children}
+      </main>
+    </div>
+  );
+}
+```
 
 ### Overview
 The Sidebar is a flexible, responsive navigation component designed for complex web applications. It supports full and reduced states, service paths, menu items with submenus, and extensive customization.

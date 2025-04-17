@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Meta, StoryObj } from '@storybook/react';
 import T1Logo from '../assets/marketplaces-logos/t1-logo.svg';
 import T1IconReduced from '../assets/marketplaces-logos/t1-logo.svg';
@@ -60,15 +60,24 @@ const meta: Meta<typeof Sidebar> = {
     }
   },
   decorators: [
-    (Story) => (
-      <div style={{ height: '100vh', display: 'flex' }}>
-        <Story />
-        <div style={{ padding: '20px', flex: 1 }}>
-          <h1>Content Area</h1>
-          <p>Interact with the sidebar on the left to see how it works.</p>
+    (Story) => {
+      // Client-side only rendering decorator
+      const [isMounted, setIsMounted] = useState(false);
+      
+      useEffect(() => {
+        setIsMounted(true);
+      }, []);
+      
+      return (
+        <div style={{ height: '100vh', display: 'flex' }}>
+          {isMounted ? <Story /> : <div style={{ width: '280px', height: '100%', background: '#fff' }}></div>}
+          <div style={{ padding: '20px', flex: 1 }}>
+            <h1>Content Area</h1>
+            <p>Interact with the sidebar on the left to see how it works.</p>
+          </div>
         </div>
-      </div>
-    ),
+      );
+    },
   ],
   argTypes: {
     logoFull: {
@@ -110,6 +119,9 @@ const meta: Meta<typeof Sidebar> = {
     testMode: {
       control: 'boolean',
       description: 'Enables test mode to facilitate automated testing'
+    },
+    router: {
+      description: 'Custom router object for navigation'
     }
   },
   tags: ['autodocs'],
@@ -142,11 +154,13 @@ const menuItems = [
     title: 'Dashboard',
     path: '/dashboard',
     icon: homeIcon,
+    width: 100
   },
   {
     id: 'products',
     title: 'Productos',
     icon: ProductsIcon,
+    width: 100,
     subItems: [
       {
         id: 'all-products',
@@ -164,12 +178,14 @@ const menuItems = [
     id: 'orders',
     title: 'Pedidos',
     path: '/orders',
-    icon: OrdersIcon
+    icon: OrdersIcon,
+    width: 100
   },
   {
     id: 'users',
     title: 'Usuarios',
     icon: UsersIcon,
+    width: 100,
     subItems: [
       {
         id: 'customers',
@@ -187,9 +203,16 @@ const menuItems = [
     id: 'settings',
     title: 'Configuración',
     path: '/settings',
-    icon: SettingsIcon
+    icon: SettingsIcon,
+    width: 100
   }
 ];
+
+// Create dummy router for all stories
+const dummyRouter = {
+  pathname: '/',
+  push: (path: string) => console.log('Navigation to:', path)
+};
 
 /**
  * Default expanded view of the sidebar with all standard features enabled.
@@ -201,6 +224,7 @@ const menuItems = [
 export const Default: Story = {
   args: {
     testMode: true,
+    router: dummyRouter,
     logoFull: T1Logo,
     logoReduced: T1IconReduced,
     servicePaths: serviceOptions,
