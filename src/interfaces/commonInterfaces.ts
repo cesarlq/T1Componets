@@ -1,6 +1,35 @@
 import { ChipProps, CheckboxProps, ButtonProps, TextFieldProps, StandardTextFieldProps, Theme, SxProps, SelectChangeEvent, TypographyProps } from "@mui/material";
-import { JSX, ReactNode } from "react";
+import { JSX, ReactNode, SetStateAction, Dispatch } from "react";
 import { FieldValues, UseControllerProps } from "react-hook-form";
+
+export interface AuthContentI {
+  setOpenModal: Dispatch<SetStateAction<boolean>>
+  formData: OnBoardingFormI | null
+}
+
+export interface OnBoardingFormI {
+  storeTitle: string;
+  productNames: string;
+  productQuantity: string;
+  physicalStore: boolean;
+  storeDescription: string;
+  storeStyle: StyleStore;
+  logotype: FileOrString;
+  favicon: FileOrString;
+  authorization: string;
+  language: Language;
+  storeIndustry: string
+  productCollections: string[] | undefined
+  productSuggestions?: SuggestionI[]
+  colorSuggestions: string[]
+  otherCategories: string[]
+  hasProducts: boolean
+}
+
+export interface SuggestionI { name: string }
+export type FileOrString = File | string
+export type StyleStore = 'minimalist' | 'fun' | 'classic' | 'formal'
+export type Language = 'spanish' | 'english'
 
 
 export interface FormControlSelectItemProps {

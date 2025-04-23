@@ -268,8 +268,14 @@ const SelectComponent: React.FC<SelectComponentPropsI> = ({
   }, [children]);
 
 const customSx: SxProps<Theme> = {
+        fontSize: '12px',
+        fontWeight:'400',
+        lineHeight: '100%',
+        color:'#000000',
         position: 'relative',
-        borderRadius: theme.shape.borderRadius,
+        border: '1px solid #e7e7e7;',
+        borderRadius: '7px',
+        height: '30px',
         ...(buttonType === 'contained' && !disableElevation && {
             boxShadow: theme.shadows[2],
             transition: 'all 0.3s ease',

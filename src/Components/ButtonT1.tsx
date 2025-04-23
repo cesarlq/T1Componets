@@ -119,8 +119,14 @@ const ButtonT1 = forwardRef<HTMLButtonElement, ButtonT1PropsI>(({
     
     // Custom styling with more robust defaults
     const customSx: SxProps<Theme> = {
+        padding:'10px auto 10px auto',
         position: 'relative',
-        borderRadius: theme.shape.borderRadius,
+        letterSpacing: '0px',
+        fontFamily: 'Manrope, sans-serif',
+        fontWeight: 700,
+        lineHeight: '100%',
+        fontSize: '12px',
+        borderRadius: '10px',
         ...(variant === 'contained' && !disableElevation && {
             boxShadow: theme.shadows[2],
             transition: 'all 0.3s ease',

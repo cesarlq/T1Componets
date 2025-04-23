@@ -19,3 +19,4 @@ export { default as CollapsibleCardT1 } from './Components/CollapsibleCardT1';
 export { default as Sidebar } from './Components/SideBar';
 export { default as UserProfileMenu } from './Components/UserProfileMenu';
 export { default as CustomPagination } from './Components/CustomPagination';
+export { default as Cards } from './Components/Cards';

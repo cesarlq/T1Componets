@@ -29,3 +29,5 @@ export { default as Sidebar } from './Components/SideBar';
 export { default as UserProfileMenu } from './Components/UserProfileMenu';
 //CustomPagination
 export { default as CustomPagination } from './Components/CustomPagination';
+//Card
+export { default as Cards } from './Components/Cards'
