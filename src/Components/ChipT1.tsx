@@ -40,16 +40,16 @@ const COLOR_PALETTE: Record<string, ChipColorDefinition> = {
   },
   default: {
     backgroundColor: {
-      filled: '#ffefe6',
+      filled: '#F8F8F8',
       outlined: 'transparent'
     },
     color: {
-      filled: '#f56e02',
-      outlined: '#f56e02'
+      filled: '#C3C3C3',
+      outlined: '#C3C3C3'
     },
     borderColor: {
-      filled: '#ffefe6',
-      outlined: '#f56e02'
+      filled: '#F8F8F8',
+      outlined: '#C3C3C3'
     }
   },
   success: {
@@ -72,8 +72,8 @@ const COLOR_PALETTE: Record<string, ChipColorDefinition> = {
       outlined: 'transparent'
     },
     color: {
-      filled: '#976905',
-      outlined: '#976905'
+      filled: '#F5A623',
+      outlined: '#F5A623'
     },
     borderColor: {
       filled: 'rgba(237, 189, 85, 0.1)',
