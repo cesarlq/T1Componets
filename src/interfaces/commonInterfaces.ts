@@ -1,10 +1,71 @@
-import { ChipProps, CheckboxProps, ButtonProps, TextFieldProps, StandardTextFieldProps, Theme, SxProps, SelectChangeEvent, TypographyProps } from "@mui/material";
+import { ChipProps, CheckboxProps, ButtonProps, TextFieldProps, StandardTextFieldProps, Theme, SxProps, SelectChangeEvent, TypographyProps, OutlinedTextFieldProps } from "@mui/material";
 import { JSX, ReactNode, SetStateAction, Dispatch } from "react";
 import { FieldValues, UseControllerProps } from "react-hook-form";
 
 export interface AuthContentI {
   setOpenModal: Dispatch<SetStateAction<boolean>>
   formData: OnBoardingFormI | null
+}
+
+export interface CustomInputProps extends Omit<OutlinedTextFieldProps, 'variant'> {
+  // Propiedades básicas
+  label?: string | React.ReactNode;
+  required?: boolean;
+  disabled?: boolean;
+  readOnly?: boolean;
+  
+  // Contenido y valor
+  textFieldProps?: OutlinedTextFieldProps & {
+    inputProps?: React.InputHTMLAttributes<HTMLInputElement>;
+  };
+  value?: string | number;
+  defaultValue?: string | number;
+  placeholder?: string;
+  
+  // Validación
+  error?: boolean;
+  helperText?: string | React.ReactNode;
+  validation?: (value: string) => boolean | { isValid: boolean; message?: string };
+  maxLength?: number;
+  minLength?: number;
+  validateOnBlur?: boolean;
+  validateOnChange?: boolean;
+  
+  // Comportamiento
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;
+  onFocus?: (event: React.FocusEvent<HTMLInputElement>) => void;
+  onEnterPress?: () => void;
+  autoFocus?: boolean;
+  clearable?: boolean;
+  
+  // Personalización visual
+  tooltip?: string | React.ReactNode;
+  tooltipPlacement?: 'top' | 'right' | 'bottom' | 'left';
+  startIcon?: React.ReactNode;
+  endIcon?: React.ReactNode;
+  variant?: 'outlined' | 'filled' | 'standard';
+  size?: 'small' | 'medium';
+  style?: React.CSSProperties;
+  sx?: SxProps<Theme>;
+  labelSx?: SxProps<Theme>;
+  inputSx?: SxProps<Theme>;
+  helperTextSx?: SxProps<Theme>;
+  borderRadius?: number | string;
+  borderColor?: string;
+  focusBorderColor?: string;
+  
+  // Control del diseño
+  fullWidth?: boolean;
+  hideLabel?: boolean;
+  compact?: boolean;
+  customStyles?: {
+    container?: React.CSSProperties;
+    label?: React.CSSProperties;
+    input?: React.CSSProperties;
+    helperText?: React.CSSProperties;
+  };
+  showCharCount?: boolean;
 }
 
 export interface OnBoardingFormI {
