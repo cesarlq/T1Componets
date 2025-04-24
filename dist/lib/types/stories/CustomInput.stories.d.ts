@@ -1,32 +1,7 @@
-import type { StoryObj } from '@storybook/react';
-import React from 'react';
-declare const meta: {
-    title: string;
-    component: React.FC<import("../interfaces/commonInterfaces").CustomInputI>;
-    parameters: {
-        layout: string;
-        docs: {
-            description: {
-                component: string;
-            };
-        };
-    };
-    tags: string[];
-    decorators: ((Story: import("@storybook/core/csf").PartialStoryFn<import("@storybook/react").ReactRenderer, {
-        label?: React.ReactNode;
-        required?: boolean | undefined;
-        className?: string | undefined;
-        textFieldProps: import("@mui/material").TextFieldProps;
-        children?: React.ReactNode;
-        style?: React.CSSProperties | undefined;
-        button?: boolean | undefined;
-        buttonText?: string | undefined;
-        buttonProps?: React.ButtonHTMLAttributes<HTMLButtonElement> | undefined;
-        startIconButton?: React.ReactNode;
-        endIconButton?: React.ReactNode;
-        tooltip?: string | undefined;
-    }>) => React.JSX.Element)[];
-};
+import type { Meta, StoryObj } from '@storybook/react';
+import CustomInput from '../Components/CustomInput';
+type CustomInputStoryMeta = Meta<typeof CustomInput>;
+declare const meta: CustomInputStoryMeta;
 export default meta;
 type Story = StoryObj<typeof meta>;
 export declare const Basic: Story;
@@ -39,3 +14,11 @@ export declare const FilledVariant: Story;
 export declare const SelectField: Story;
 export declare const Multiline: Story;
 export declare const CustomStyle: Story;
+export declare const PasswordWithToggle: Story;
+export declare const ClearableInput: Story;
+export declare const WithCharCounter: Story;
+export declare const WithValidation: Story;
+export declare const WithEnterAction: Story;
+export declare const CustomBorders: Story;
+export declare const AdvancedExample: Story;
+export declare const SizesAndVariants: Story;
