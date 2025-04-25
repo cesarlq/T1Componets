@@ -381,10 +381,12 @@ const CustomInput = forwardRef<HTMLDivElement, CustomInputProps>((
 
   // Estilos para el label
   const labelStyles = {
-	fontWeight:'500',
-	fontSize:'12px',
-	lineHeight:'100%',
-	letterSpacing:'0%',
+	margin: '0',
+    lineHeight: '1.43',
+    letterSpacing: '0.01071em',
+    fontSize: '13px',
+    marginBottom: '4px',
+    fontWeight: '500',
     ...customStyles?.label
   };
 
