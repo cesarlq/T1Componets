@@ -385,7 +385,6 @@ const CustomInput = forwardRef<HTMLDivElement, CustomInputProps>((
     lineHeight: '1.43',
     letterSpacing: '0.01071em',
     fontSize: '13px',
-    marginBottom: '4px',
     fontWeight: '500',
     ...customStyles?.label
   };
@@ -475,6 +474,7 @@ const CustomInput = forwardRef<HTMLDivElement, CustomInputProps>((
           sx: {
             ...inputStyles,
 			height:'35px',
+			border: '1px solid #c4c4c4',
             ...(textFieldProps.InputProps?.sx as any),
             ...inputSx
           }
