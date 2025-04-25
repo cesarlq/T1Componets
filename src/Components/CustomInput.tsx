@@ -473,8 +473,7 @@ const CustomInput = forwardRef<HTMLDivElement, CustomInputProps>((
           endAdornment,
           sx: {
             ...inputStyles,
-			height:'35px',
-			border: '1px solid #c4c4c4',
+			    height:'35px',
             ...(textFieldProps.InputProps?.sx as any),
             ...inputSx
           }
