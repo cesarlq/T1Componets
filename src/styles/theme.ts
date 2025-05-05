@@ -1,15 +1,21 @@
 import React from 'react';
 import { createTheme } from '@mui/material/styles';
 import { toggleButtonClasses } from '@mui/material';
-import { statusColors } from '../util/staticData';
+import { statusColors } from '../util/staticData'
 import type { } from '@mui/lab/themeAugmentation';
 import CheckboxIcon from '../assets/icons/CheckboxIcon';
 import UnCheckboxIcon from '../assets/icons/UnCheckboxIcon';
 import IndeterminateCheckboxIcon from '../assets/icons/IndeterminateCheckboxIcon';
 import UnCheckRadioIcon from '../assets/icons/UnCheckRadio';
 import CheckRadio from '../assets/icons/CheckRadio';
+import ChevronDown from '../assets/svg-icons/chevron-down-icon.svg';
 import Image from 'next/image';
 
+const manrope = {
+  style: {
+    fontFamily: '"Manrope", sans-serif'
+  }
+};
 
 const theme = createTheme({
   palette: {
@@ -17,13 +23,14 @@ const theme = createTheme({
       main: '#db3b2b'
     },
     secondary: {
-      main: '#FFFFFF'
+      main: '#fadede'
     },
     error: {
       main: '#FF0000'
     }
   },
   typography: {
+    fontFamily: manrope.style.fontFamily,
     fontSize: 13
   },
   components: {
@@ -67,7 +74,8 @@ const theme = createTheme({
             color: '#4c4c4c',
             fontWeight: '600',
             '&:hover': {
-              border: 'none'
+              border: 'none',
+              backgroundColor: 'transparent'
             }
           }
         }
@@ -128,7 +136,7 @@ const theme = createTheme({
             borderColor: '#E7E7E7'
           },
           '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-            borderColor: '#E7E7E7'
+            border: '1px solid #E7E7E7 !important'
           },
           '&:focus-within fieldset, &:focus-visible fieldset': {
             border: '1px solid #E7E7E7 !important'
@@ -257,7 +265,7 @@ const theme = createTheme({
         }
       },
       defaultProps: {
-        popupIcon: React.createElement("span", null, React.createElement(Image, { src: '', alt: "arrow" }))
+        popupIcon: React.createElement("span", null, React.createElement(Image, { src: ChevronDown, alt: "arrow" }))
       }
     },
     MuiPaper: {
@@ -409,6 +417,9 @@ const theme = createTheme({
             borderRadius: '12px'
           },
         }
+      },
+      defaultProps: {
+        IconComponent: (props) => React.createElement("span", props, React.createElement(Image, { src: ChevronDown, alt: "arrow" }))
       }
     },
     MuiTypography: {
