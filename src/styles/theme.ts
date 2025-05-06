@@ -85,6 +85,7 @@ const theme = createTheme({
       },
       styleOverrides: {
         root: {
+          boxShadow: 'none!important',
           textTransform: 'none',
           fontSize: 12,
           height: 35
@@ -136,7 +137,7 @@ const theme = createTheme({
             borderColor: '#E7E7E7'
           },
           '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-            border: '1px solid #E7E7E7 !important'
+            border: '1px solid #E7E7E7'
           },
           '&:focus-within fieldset, &:focus-visible fieldset': {
             border: '1px solid #E7E7E7 !important'
