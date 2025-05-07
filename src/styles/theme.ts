@@ -266,7 +266,7 @@ const theme = createTheme({
         }
       },
       defaultProps: {
-        popupIcon: React.createElement("span", null, React.createElement(Image, { src: ChevronDown, alt: "arrow" }))
+        popupIcon: React.createElement("span", null, React.createElement(Image, { src: ChevronDown, alt: "arrow" , width: 16, height: 16}))
       }
     },
     MuiPaper: {
@@ -420,7 +420,7 @@ const theme = createTheme({
         }
       },
       defaultProps: {
-        IconComponent: (props) => React.createElement("span", props, React.createElement(Image, { src: ChevronDown, alt: "arrow" }))
+        IconComponent: (props) => React.createElement("span", props, React.createElement(Image, { src: ChevronDown, alt: "arrow", width: 16, height:16 }))
       }
     },
     MuiTypography: {
