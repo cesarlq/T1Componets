@@ -39,8 +39,11 @@ const theme = createTheme({
         {
           props: { variant: 'contained' },
           style: {
-            borderRadius: 10,
-            fontWeight: '600',
+            borderRadius: '10px',
+            fontWeight: '700',
+            fontSize:'12px',
+            lineHeight:'100%',
+            letterSpacing:'0%',
             boxShadow: 'none',
             '&:hover': {
               boxShadow: 'none'
@@ -56,15 +59,16 @@ const theme = createTheme({
         {
           props: { variant: 'outlined' },
           style: {
-            borderRadius: 10,
-            border: '1px solid #EBEBEB',
-            fontWeight: '600',
+            borderRadius: '10px',
+            border: '1px solid #E7E7E7',
+            fontWeight: '500',
+            fontSize:'12px',
             color: '#4c4c4c',
             boxShadow: 'none',
             '&:hover': {
-              border: 'solid 1px #EBEBEB',
+              border: 'solid 1px #E7E7E7',
               boxShadow: 'none',
-              backgroundColor: '#EBEBEB'
+              backgroundColor: '#E7E7E7'
             }
           }
         },

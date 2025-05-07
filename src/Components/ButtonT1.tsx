@@ -35,7 +35,7 @@ const ButtonT1 = forwardRef<HTMLButtonElement, ButtonT1PropsI>(({
     sx,
     color = 'primary',
     size = 'medium',
-    disableElevation = false,
+    disableElevation = true,
     fullWidth = false,
     preventDoubleClick = false,
     ...props
@@ -123,10 +123,19 @@ const ButtonT1 = forwardRef<HTMLButtonElement, ButtonT1PropsI>(({
         position: 'relative',
         letterSpacing: '0px',
         fontFamily: 'Manrope, sans-serif',
-        fontWeight: 700,
         lineHeight: '100%',
         fontSize: '12px',
         borderRadius: '10px',
+        ...(variant == 'contained' && {
+            fontWeight:'700',
+            lineHeight:'100%',
+            letterSpacing:'0%',
+        }),
+        ...(variant == 'outlined' && {
+            fontWeight:'500',
+            lineHeight:'100%',
+            letterSpacing:'0%'
+        }),
         ...(variant === 'contained' && !disableElevation && {
             boxShadow: theme.shadows[2],
             transition: 'all 0.3s ease',
