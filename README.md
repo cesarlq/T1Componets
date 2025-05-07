@@ -1,4 +1,4 @@
-# @t1-org/t1componets
+# @t1-org/t1components
 
 ## Overview
 
@@ -32,7 +32,7 @@ npm whoami
 Install the library using npm:
 
 ```bash
-npm install @t1-org/t1componets
+npm install @t1-org/t1components
 ```
 
 ### Peer Dependencies
@@ -65,7 +65,7 @@ Add to your `tailwind.config.js`:
 module.exports = {
   content: [
     // ... other paths
-    './node_modules/@t1-org/t1componets/**/*.{js,ts,jsx,tsx}'
+    './node_modules/@t1-org/t1components/**/*.{js,ts,jsx,tsx}'
   ],
   theme: {
     extend: {},
@@ -80,7 +80,7 @@ module.exports = {
 // In your _app.js or App.js
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import { theme } from '@t1-org/t1componets'; // Import the pre-configured theme
+import { theme } from '@t1-org/t1components'; // Import the pre-configured theme
 
 function MyApp({ Component, pageProps }) {
   return (
@@ -100,7 +100,7 @@ If you want to customize the theme:
 
 ```jsx
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { theme as t1Theme } from '@t1-org/t1componets';
+import { theme as t1Theme } from '@t1-org/t1components';
 
 // Create a custom theme by extending the T1Components theme
 const customTheme = createTheme({
@@ -132,7 +132,7 @@ Import the global styles in your main component:
 
 ```jsx
 // Import the global styles (do this once in your app)
-import '@t1-org/t1componets/dist/lib/styles.css';
+import '@t1-org/t1components/dist/lib/styles.css';
 ```
 
 ## Basic Usage
@@ -140,7 +140,7 @@ import '@t1-org/t1componets/dist/lib/styles.css';
 Here's a quick example of how to use the components:
 
 ```jsx
-import { ButtonT1, InputComponentT1, ChipT1 } from '@t1-org/t1componets';
+import { ButtonT1, InputComponentT1, ChipT1 } from '@t1-org/t1components';
 
 function MyComponent() {
   return (
@@ -217,10 +217,10 @@ module.exports = withImages({
 
    ```jsx
    // Correct import
-   import { ButtonT1 } from '@t1-org/t1componets';
+   import { ButtonT1 } from '@t1-org/t1components';
    
    // Not
-   import ButtonT1 from '@t1-org/t1componets/ButtonT1';
+   import ButtonT1 from '@t1-org/t1components/ButtonT1';
    ```
 
 ### Support
@@ -512,7 +512,7 @@ interface CheckBoxSelectProps extends Omit<TypographyProps, 'checkbox' | 'icon' 
 ## Basic Usage
 
 ```jsx
-import { ButtonT1 } from '@t1-org/t1componets';
+import { ButtonT1 } from '@t1-org/t1components';
 import AddIcon from '@mui/icons-material/Add';
 
 function MyComponent() {
@@ -569,7 +569,7 @@ Ideal for asynchronous operations:
 
 ```jsx
 import React, { useState } from 'react';
-import { ButtonT1 } from '@t1-org/t1componets';
+import { ButtonT1 } from '@t1-org/t1components';
 
 function LoadingButtonExample() {
   const [isLoading, setIsLoading] = useState(false);
@@ -602,7 +602,7 @@ function LoadingButtonExample() {
 For destructive or important actions:
 
 ```jsx
-import { ButtonT1 } from '@t1-org/t1componets';
+import { ButtonT1 } from '@t1-org/t1components';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 function DeleteButtonExample() {
@@ -631,7 +631,7 @@ function DeleteButtonExample() {
 Useful for menus or compound actions:
 
 ```jsx
-import { ButtonT1 } from '@t1-org/t1componets';
+import { ButtonT1 } from '@t1-org/t1components';
 import SaveIcon from '@mui/icons-material/Save';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
@@ -653,7 +653,7 @@ function SaveButtonWithMenuExample() {
 Adaptable to different screen sizes:
 
 ```jsx
-import { ButtonT1 } from '@t1-org/t1componets';
+import { ButtonT1 } from '@t1-org/t1components';
 import SendIcon from '@mui/icons-material/Send';
 
 function ResponsiveButtonExample() {
@@ -1414,7 +1414,7 @@ interface TableT1Props<T = any> {
 
 ### Basic Table
 ```jsx
-import { TableT1 } from '@t1-org/t1componets';
+import { TableT1 } from '@t1-org/t1components';
 
 const columns = [
   { id: 'id', label: 'ID', width: '80px' },
@@ -1617,13 +1617,13 @@ const renderTableHeader = () => (
 ## Installation
 
 ```bash
-npm install @t1-org/t1componets
+npm install @t1-org/t1components
 ```
 
 ## Basic Usage
 
 ```jsx
-import { TableT1 } from '@t1-org/t1componets';
+import { TableT1 } from '@t1-org/t1components';
 
 // Column definition
 const columns = [
@@ -1982,7 +1982,7 @@ Ambos componentes aceptan estilos personalizados a través de las props `classNa
 Puedes personalizar el botón de cierre usando la prop `closeIcon`:
 
 ```jsx
-import { CloseButtonT1 } from '@t1-org/t1componets';
+import { CloseButtonT1 } from '@t1-org/t1components';
 
 <ModalComponent
   // ...otras props
@@ -2076,7 +2076,7 @@ To use the Sidebar component in a Next.js application with App Router, follow th
 ```jsx
 'use client';
 import React, { useEffect, useState } from 'react';
-import { Sidebar } from '@t1-org/t1componets';
+import { Sidebar } from '@t1-org/t1components';
 // Import your assets
 import LogoFull from './path-to-your-logo.svg';
 import LogoReduced from './path-to-your-icon.svg';
@@ -2458,7 +2458,7 @@ const customStyles = {
 ## Basic Usage
 
 ```jsx
-import { ProfileAvatarMenu } from '@t1-org/t1componets';
+import { ProfileAvatarMenu } from '@t1-org/t1components';
 import LogoutIcon from '@mui/icons-material/Logout';
 import PersonIcon from '@mui/icons-material/Person';
 
@@ -2657,7 +2657,7 @@ This component is designed to work with any authentication system. Just pass the
 
 ```jsx
 import { useAuth } from './your-auth-provider';
-import { ProfileAvatarMenu } from '@t1-org/t1componets';
+import { ProfileAvatarMenu } from '@t1-org/t1components';
 
 function Header() {
   const { user, logout } = useAuth();
@@ -2689,7 +2689,7 @@ function Header() {
 ## Basic Usage
 
 ```jsx
-import { CustomPagination } from '@t1-org/t1componets';
+import { CustomPagination } from '@t1-org/t1components';
 import { useState } from 'react';
 
 function MyTable() {
@@ -2806,7 +2806,7 @@ CustomPagination works seamlessly with Material UI's Table component:
 
 ```jsx
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
-import { CustomPagination } from '@t1-org/t1componets';
+import { CustomPagination } from '@t1-org/t1components';
 
 function PaginatedTable({ data }) {
   const [page, setPage] = useState(0);
