@@ -14,9 +14,9 @@ import {
 } from '@mui/material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import ClearIcon from '@mui/icons-material/Clear';
-import Flag from 'react-world-flags';
 import { styled } from '@mui/material/styles';
 import theme from '../styles/theme';
+import * as CountryFlags from 'country-flag-icons/react/3x2';
 
 // Interfaces
 export interface Country {
@@ -105,6 +105,21 @@ const DEFAULT_COUNTRIES: Country[] = [
   { code: 'IN', name: 'India', prefix: '+91', flagEmoji: '🇮🇳' }
 ];
 
+
+const CountryFlag: React.FC<{ code: string; width?: string; height?: string }> = ({ 
+  code, 
+  width = "24", 
+  height = "16" 
+}) => {
+  const FlagComponent = (CountryFlags as any)[code];
+  
+  if (FlagComponent) {
+    return <FlagComponent title={code} width={width} height={height} />;
+  }
+  
+  // Fallback si no tenemos el componente de bandera
+  return <span>{code}</span>;
+};
 // Componente estilizado para el InputBase con bordes persistentes
 const StyledInputBase = styled(InputBase, {
   shouldForwardProp: (prop) => prop !== 'customBorderColor' && prop !== 'customBorderRadius'
@@ -312,7 +327,7 @@ const PhoneInputT1: React.FC<PhoneInputT1Props> = ({
       : borderColor;
 
   return (
-    <Box
+  <Box
       sx={{
         display: 'flex',
         flexDirection: 'column',
@@ -357,7 +372,6 @@ const PhoneInputT1: React.FC<PhoneInputT1Props> = ({
           disabled={disabled || readOnly}
           IconComponent={KeyboardArrowDownIcon}
           className={selectClassName}
-          // Deshabilitar el efecto de enfoque predeterminado del Select
           sx={{
             minWidth: 'auto',
             height: size === 'small' ? '40px' : '48px',
@@ -376,7 +390,6 @@ const PhoneInputT1: React.FC<PhoneInputT1Props> = ({
             },
             borderRight: `1px solid ${hasError ? '#d32f2f' : borderColor}`,
             borderRadius: '0 !important',
-            // Importante: eliminar estilos de enfoque
             "&.Mui-focused": {
               "& .MuiOutlinedInput-notchedOutline": { 
                 border: "none" 
@@ -389,10 +402,10 @@ const PhoneInputT1: React.FC<PhoneInputT1Props> = ({
             return (
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                 <Box sx={{ width: '24px', height: 'auto', display:'flex', alignItems: 'center' }}>
-                  {country?.flagEmoji ? (
+                  {country?.flagEmoji && country.code === 'EMOJI' ? (
                     <Typography fontSize="16px">{country.flagEmoji}</Typography>
                   ) : (
-                    <Flag code={country?.code} height="16" width="24" />
+                    <CountryFlag code={country?.code || ''} />
                   )}
                 </Box>
                 <span>{country?.prefix}</span>
@@ -416,11 +429,11 @@ const PhoneInputT1: React.FC<PhoneInputT1Props> = ({
           {countries.map((country) => (
             <MenuItem key={country.code} value={country.code}>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                <Box sx={{ width: '24px', height: '16px' }}>
-                  {country.flagEmoji ? (
+                <Box sx={{ width: '24px', height: '16px', display: 'flex', alignItems: 'center' }}>
+                  {country.flagEmoji && country.code === 'EMOJI' ? (
                     <Typography fontSize="16px">{country.flagEmoji}</Typography>
                   ) : (
-                    <Flag code={country.code} height="16" width="24" />
+                    <CountryFlag code={country.code} />
                   )}
                 </Box>
                 <span>{country.prefix}</span>
