@@ -31,5 +31,5 @@ export { default as UserProfileMenu } from './Components/UserProfileMenu';
 export { default as CustomPagination } from './Components/CustomPagination';
 //Card
 export { default as Cards } from './Components/Cards'
-//iTemIcon 
+//ITemIcon 
 export {default as T1Icon} from './Components/T1Icon';

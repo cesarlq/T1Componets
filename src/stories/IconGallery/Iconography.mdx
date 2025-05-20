@@ -1,0 +1,236 @@
+import {
+  Meta,
+  Title,
+  IconGallery,
+  IconItem,
+  Story,
+  Stories,
+} from "@storybook/blocks";
+
+{/* // import {
+//   AbacusIcon,
+//   AddressesAlternativeIcon,
+//   AddressesIcon,
+//   AlertIcon,
+//   AnalysisIcon,
+//   AntifraudIcon,
+//   AverageWeightIcon,
+//   BagMoneyIcon,
+//   BalanceIcon,
+//   BillsIcon,
+//   BusinessAndFinanceIcon,
+//   CalendarIcon,
+//   CatalogsIcon,
+//   CloseIcon,
+//   CoinsIcon,
+//   CompanyIcon,
+//   DashboardIcon,
+//   DealIcon,
+//   DeleteIcon,
+//   DevelopmentIcon,
+//   DownloadIcon,
+//   EditIcon,
+//   EmailIcon,
+//   ExitIcon,
+//   FilterIcon,
+//   FlowIcon,
+//   GenerateCollectionsIcon,
+//   GenerateGuidesIcon,
+//   GuideHistoryIcon,
+//   GuideTrackingIcon,
+//   HelpIcon,
+//   HomeIcon,
+//   InventoryIcon,
+//   ListIcon,
+//   LocationIcon,
+//   MoneyIcon,
+//   MyOrdersIcon,
+//   MyProductsIcon,
+//   NotificationIcon,
+//   PaymentLinkIcon,
+//   RatesIcon,
+//   ReportIcon,
+//   ReportsIcon,
+//   ReputationIcon,
+//   RulesIcon,
+//   SalesChannelIcon,
+//   SalesChannelsIcon,
+//   SalesIcon,
+//   SearchIcon,
+//   TicketIcon,
+//   TrackOrdersIcon,
+//   TransactionsIcon,
+//   UserIcon,
+//   UsersIcon,
+//   VideoIcon,
+//   WhatsAppIcon,
+// } from "src/assets/icons";
+// import {
+//   AmazonIconLogo,
+//   AmericanExpressLogo,
+//   CarnetLogo,
+//   ClaroShopAppLogo,
+//   ClaroShopLogo,
+//   CreditoClaroShopLogo,
+//   DhlLogo,
+//   EstafetaLogo,
+//   ExpressLogo,
+//   FedexExpressLogo,
+//   MastercardLogo,
+//   MercadoLibreIconLogo,
+//   OxxoLogo,
+//   SanbornsAppLogo,
+//   SanbornsLogo,
+//   SearsAppLogo,
+//   SearsIconLogo,
+//   SearsLogo,
+//   T1ComerciosLogo,
+//   T1EnviosLogo,
+//   T1Logo,
+//   T1Paginas,
+//   T1PaginasLogos,
+//   T1PagosLogos,
+//   VisaLogo,
+// } from "src/assets/logos"; */}
+
+import * as IconStories from "./Icon.stories";
+
+<Meta title="Foundations/Iconography" of={IconStories} />
+
+# Icons
+
+Official collection of icons to promote a consistent experience across the T1 ecosystem. All icons are available in two ways, [React components](#react-components) and [static files](#static-files).
+
+<Stories />
+
+{/* <div class="grid grid-cols-4 gap-4">
+  <div className="flex justify-center items-center">
+    <T1PaginasLogos width={140} height={140} name="graphline" />
+  </div>
+  <div className="flex justify-center items-center">
+    <T1PagosLogos width={140} height={140} name="graphline" />
+  </div>
+  <div className="flex justify-center items-center">
+    <T1EnviosLogo width={140} height={140} name="graphline" />
+  </div>
+  <div className="flex justify-center items-center">
+    <AmericanExpressLogo width={140} height={140} name="IconAmericanExpress" />
+  </div>
+  <div className="flex justify-center items-center">
+    <CarnetLogo width={140} height={140} name="paintbrush" />
+  </div>
+  <div className="flex justify-center items-center">
+    <MastercardLogo width={140} height={140} name="graphline" />
+  </div>
+  <div className="flex justify-center items-center">
+    <VisaLogo width={140} height={140} name="graphline" />
+  </div>
+  <div className="flex justify-center items-center">
+    <ClaroShopLogo width={140} height={140} name="paintbrush" />
+  </div>
+  <div className="flex justify-center items-center">
+    <CreditoClaroShopLogo width={140} height={140} name="document" />
+  </div>
+  <div className="flex justify-center items-center">
+    <OxxoLogo width={140} height={140} />
+  </div>
+  <div className="flex justify-center items-center">
+    <FedexExpressLogo width={140} height={140} />
+  </div>
+  <div className="flex justify-center items-center">
+    <EstafetaLogo width={140} height={140} />
+  </div>
+  <div className="flex justify-center items-center">
+    <DhlLogo width={140} height={140} />
+  </div>
+  <div className="flex justify-center items-center">
+    <ExpressLogo width={140} height={140} />
+  </div>
+</div> */}
+
+{/* ## Ecommerce Icons */}
+
+{/* <IconGallery>
+  <IconItem name="ClaroShopIcon">
+    <ClaroShopLogo />
+  </IconItem>
+  <IconItem name="SearsIcon">
+    <SearsLogo />
+  </IconItem>
+  <IconItem name="SanbornsIcon">
+    <SanbornsLogo />
+  </IconItem>
+  <IconItem name="MercadoLibreIcon">
+    <MercadoLibreIconLogo />
+  </IconItem>
+  <IconItem name="AmazonIcon">
+    <AmazonIconLogo name="AmazonIcon" />
+  </IconItem>
+</IconGallery> */}
+
+## Iconography
+
+
+## Design specifications
+
+All official SVG icons are available as major icons.
+
+## Icon dimensions
+
+While it is possible to adjust both the width and height dimensions, it is recommended to maintain a 1:1 aspect ratio, resembling a square shape, for optimal visual presentation. This ensures that the icons retain their intended appearance and aesthetic quality.
+
+#### Usage
+
+```jsx
+import { AbacusIcon } from "@afrodita/ui-kit-t1";
+
+function render() {
+  return <AbacusIcon width={24} height={24} />;
+}
+```
+
+### Static files
+
+Icons SVG files are available from the root of `@afrodita/ui-kit-t1` package. These files are useful for non React apps or any use cases which cannot be done using a component. Whenever you can, you should prefer React components to static files.
+
+Although frowned upon, you can customize an icon dimensions with the `width` and `height`.
+
+#### Image source
+
+```jsx
+import CalendarMajorIcon from "@afrodita/ui-kit-t1/icon-calendar-major.svg";
+
+function render() {
+  return <Img src={CalendarMajorIcon24} alt="Calendar" width={24} height={24} />;
+}
+```
+
+## Color
+
+An SVG object get it's color from the [fill attribute](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Fills_and_Strokes). When an SVG object doesn't define a `fill` attribute on his elements, CSS can be use to style the internal color of the elements of the objects with the `fill` property.
+
+This means you can alter the color of an icon by specifying a new `fill` value. If the SVG already contains a `fill` attribute.
+
+### React components
+
+To set the color of an icon component, you can set the `color` prop.
+
+```jsx
+import { AbacusIcon } from "@afrodita/ui-kit-t1/src/assets/icons";
+
+function render() {
+  return <AbacusIcon color="red" width={24} height={24} />;
+}
+```
+
+### Image source
+
+To set the color of an image, you can set the `fill` prop.
+
+```jsx
+import CalendarMajorIcon from "@afrodita/ui-kit-t1/icon-calendar-major.svg";
+
+function render() {
+  return <Img src={CalendarMajorIcon} alt="calendar" fill="purple-8" />;
+}
+```

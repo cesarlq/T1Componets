@@ -1,5 +1,5 @@
 import React from 'react';
-import { Stack } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import T1Icon from '../Components/T1Icon';
 
 /**
@@ -172,55 +172,290 @@ export const SectionIcons = {
 /**
  * User interface icons available in the component.
  * 
- * This example shows icons commonly used in user interfaces
- * such as search, navigation, actions, etc.
+ * This comprehensive gallery displays all UI icons organized by categories:
+ * - Navigation & Arrows
+ * - Actions & Operations
+ * - Forms & Inputs
+ * - Media & Content
+ * - Status & Notifications
+ * - E-commerce
+ * - User & Account
  */
 export const UIIcons = {
   render: () => (
     <Stack
-      direction="row"
-      flexWrap="wrap"
-      spacing={2}
-      sx={{ maxWidth: '600px', gap: '16px' }}
+      direction="column"
+      spacing={4}
+      sx={{ maxWidth: '800px' }}
     >
-      {[
-        'searchIcon', 
-        'eyeIcon', 
-        'eyeOffIcon', 
-        'trashIcon',
-        'checkIcon',
-        'copyIcon',
-        'calendarIcon',
-        'downloadIcon',
-        'mailIcon',
-        'clipboardIcon',
-        'checkCircleFillIcon',
-        'helpIcon',
-        'settingsIcon',
-        'aiIcon',
-        'columnIcon',
-        'filterIcon'
-      ].map((iconName) => (
-        <Stack key={iconName} direction="column" alignItems="center" 
-          sx={{ 
-            padding: '16px', 
-            border: '1px solid #e7e7e7', 
-            borderRadius: '8px',
-            width: '120px',
-            height: '100px',
-            justifyContent: 'center' 
-          }}
+      {/* Navigation & Arrows */}
+      <div>
+        <Typography variant="subtitle1" sx={{ mb: 2, fontWeight: 'bold' }}>Navigation & Arrows</Typography>
+        <Stack
+          direction="row"
+          flexWrap="wrap"
+          spacing={2}
+          sx={{ gap: '16px' }}
         >
-          <T1Icon icon={iconName} width={24} height={24} />
-          <span style={{ fontSize: '12px', marginTop: '8px', textAlign: 'center' }}>{iconName}</span>
+          {[
+            'chevronRightIcon', 
+            'chevronDownIcon', 
+            'arrowRight',
+            'arrowLeft',
+            'arrowUpRight',
+            'swapVertIcon',
+            'mobileIcon',
+            'pcIcon'
+          ].map((iconName) => (
+            <Stack key={iconName} direction="column" alignItems="center" 
+              sx={{ 
+                padding: '16px', 
+                border: '1px solid #e7e7e7', 
+                borderRadius: '8px',
+                width: '120px',
+                height: '100px',
+                justifyContent: 'center' 
+              }}
+            >
+              <T1Icon icon={iconName} width={24} height={24} />
+              <span style={{ fontSize: '12px', marginTop: '8px', textAlign: 'center' }}>{iconName}</span>
+            </Stack>
+          ))}
         </Stack>
-      ))}
+      </div>
+
+      {/* Search & Visibility */}
+      <div>
+        <Typography variant="subtitle1" sx={{ mb: 2, fontWeight: 'bold' }}>Search & Visibility</Typography>
+        <Stack
+          direction="row"
+          flexWrap="wrap"
+          spacing={2}
+          sx={{ gap: '16px' }}
+        >
+          {[
+            'searchIcon', 
+            'searchIconGSVG',
+            'magnifierIcon',
+            'eyeIcon', 
+            'eyeOffIcon',
+            'filterIcon'
+          ].map((iconName) => (
+            <Stack key={iconName} direction="column" alignItems="center" 
+              sx={{ 
+                padding: '16px', 
+                border: '1px solid #e7e7e7', 
+                borderRadius: '8px',
+                width: '120px',
+                height: '100px',
+                justifyContent: 'center' 
+              }}
+            >
+              <T1Icon icon={iconName} width={24} height={24} />
+              <span style={{ fontSize: '12px', marginTop: '8px', textAlign: 'center' }}>{iconName}</span>
+            </Stack>
+          ))}
+        </Stack>
+      </div>
+
+      {/* Actions & Operations */}
+      <div>
+        <Typography variant="subtitle1" sx={{ mb: 2, fontWeight: 'bold' }}>Actions & Operations</Typography>
+        <Stack
+          direction="row"
+          flexWrap="wrap"
+          spacing={2}
+          sx={{ gap: '16px' }}
+        >
+          {[
+            'trashIcon',
+            'pencilLineIcon',
+            'checkIcon',
+            'copyIcon',
+            'downloadIcon',
+            'downloadIconGrey',
+            'uploadIconAlt',
+            'linkIcon',
+            'shareIcon',
+            'clipboardIcon',
+            'settingsIcon'
+          ].map((iconName) => (
+            <Stack key={iconName} direction="column" alignItems="center" 
+              sx={{ 
+                padding: '16px', 
+                border: '1px solid #e7e7e7', 
+                borderRadius: '8px',
+                width: '120px',
+                height: '100px',
+                justifyContent: 'center' 
+              }}
+            >
+              <T1Icon icon={iconName} width={24} height={24} />
+              <span style={{ fontSize: '12px', marginTop: '8px', textAlign: 'center' }}>{iconName}</span>
+            </Stack>
+          ))}
+        </Stack>
+      </div>
+
+      {/* Formatting & Content */}
+      <div>
+        <Typography variant="subtitle1" sx={{ mb: 2, fontWeight: 'bold' }}>Formatting & Content</Typography>
+        <Stack
+          direction="row"
+          flexWrap="wrap"
+          spacing={2}
+          sx={{ gap: '16px' }}
+        >
+          {[
+            'negritaIcon',
+            'italicIcon',
+            'pointsIcon',
+            'autoAwesomeIcon',
+            'fileIcon',
+            'columnIcon',
+            'orderAscIcon',
+            'orderDescIcon',
+            'orderLineIcon'
+          ].map((iconName) => (
+            <Stack key={iconName} direction="column" alignItems="center" 
+              sx={{ 
+                padding: '16px', 
+                border: '1px solid #e7e7e7', 
+                borderRadius: '8px',
+                width: '120px',
+                height: '100px',
+                justifyContent: 'center' 
+              }}
+            >
+              <T1Icon icon={iconName} width={24} height={24} />
+              <span style={{ fontSize: '12px', marginTop: '8px', textAlign: 'center' }}>{iconName}</span>
+            </Stack>
+          ))}
+        </Stack>
+      </div>
+
+      {/* Status & Notifications */}
+      <div>
+        <Typography variant="subtitle1" sx={{ mb: 2, fontWeight: 'bold' }}>Status & Notifications</Typography>
+        <Stack
+          direction="row"
+          flexWrap="wrap"
+          spacing={2}
+          sx={{ gap: '16px' }}
+        >
+          {[
+            'warningIconCircle',
+            'alertIcon',
+            'alertIconAlt',
+            'errorIcon',
+            'checkCircleFillIcon',
+            'helpIcon',
+            'bellIcon',
+            'checkboxIcon',
+            'uncheckboxIcon',
+            'disabledCheckboxIcon'
+          ].map((iconName) => (
+            <Stack key={iconName} direction="column" alignItems="center" 
+              sx={{ 
+                padding: '16px', 
+                border: '1px solid #e7e7e7', 
+                borderRadius: '8px',
+                width: '120px',
+                height: '100px',
+                justifyContent: 'center' 
+              }}
+            >
+              <T1Icon icon={iconName} width={24} height={24} />
+              <span style={{ fontSize: '12px', marginTop: '8px', textAlign: 'center' }}>{iconName}</span>
+            </Stack>
+          ))}
+        </Stack>
+      </div>
+
+      {/* E-commerce */}
+      <div>
+        <Typography variant="subtitle1" sx={{ mb: 2, fontWeight: 'bold' }}>E-commerce</Typography>
+        <Stack
+          direction="row"
+          flexWrap="wrap"
+          spacing={2}
+          sx={{ gap: '16px' }}
+        >
+          {[
+            'productIcon',
+            'productsIcon',
+            'cartShoppingLight',
+            'cartShoppingThin',
+            'cartShoppingDuotone',
+            'deliveryTruck',
+            'deliveryTruckAlt',
+            'creditCard',
+            'creditCardAlt',
+            'commentMoneyIcon'
+          ].map((iconName) => (
+            <Stack key={iconName} direction="column" alignItems="center" 
+              sx={{ 
+                padding: '16px', 
+                border: '1px solid #e7e7e7', 
+                borderRadius: '8px',
+                width: '120px',
+                height: '100px',
+                justifyContent: 'center' 
+              }}
+            >
+              <T1Icon icon={iconName} width={24} height={24} />
+              <span style={{ fontSize: '12px', marginTop: '8px', textAlign: 'center' }}>{iconName}</span>
+            </Stack>
+          ))}
+        </Stack>
+      </div>
+
+      {/* User & Account */}
+      <div>
+        <Typography variant="subtitle1" sx={{ mb: 2, fontWeight: 'bold' }}>User & Account</Typography>
+        <Stack
+          direction="row"
+          flexWrap="wrap"
+          spacing={2}
+          sx={{ gap: '16px' }}
+        >
+          {[
+            'userLight',
+            'userThin',
+            'userDuotone',
+            'smallUserIcon',
+            'cameraOutlinedIcon',
+            'calendarIcon',
+            'mailIcon',
+            'domainIcon',
+            'languageIcon',
+            'padlockIcon',
+            'privacyLockIcon',
+            'aiIcon',
+            'aiAltIcon'
+          ].map((iconName) => (
+            <Stack key={iconName} direction="column" alignItems="center" 
+              sx={{ 
+                padding: '16px', 
+                border: '1px solid #e7e7e7', 
+                borderRadius: '8px',
+                width: '120px',
+                height: '100px',
+                justifyContent: 'center' 
+              }}
+            >
+              <T1Icon icon={iconName} width={24} height={24} />
+              <span style={{ fontSize: '12px', marginTop: '8px', textAlign: 'center' }}>{iconName}</span>
+            </Stack>
+          ))}
+        </Stack>
+      </div>
     </Stack>
   ),
   parameters: {
     docs: {
       description: {
-        story: 'Shows the available icons for user interface elements.'
+        story: 'A comprehensive visual gallery of all UI icons available in the component, organized by functional categories for easier reference.'
       }
     }
   }

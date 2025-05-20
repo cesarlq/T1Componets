@@ -2878,3 +2878,190 @@ The component follows accessibility best practices:
 - **Accessibility considerations**: Keyboard navigation, clear visual indicators
 - **Common use cases**: Data tables, search results, content lists
 - **Relationships**: Often paired with Table or DataGrid components
+
+# T1Icon Component
+
+A versatile icon component that provides easy access to a comprehensive collection of SVG icons for various UI needs.
+
+## Usage
+
+```jsx
+import { T1Icon } from '@t1-org/t1components';
+
+function MyComponent() {
+  return (
+    <div>
+      <T1Icon icon="searchIcon" width={24} height={24} />
+      <T1Icon icon="downloadIcon" width={18} height={18} />
+      <T1Icon 
+        icon="checkCircleFillIcon" 
+        width={32} 
+        height={32} 
+        sx={{ color: 'green' }} 
+      />
+    </div>
+  );
+}
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `icon` | string | `"genericIcon"` | Key name of the icon to display (see available icons below) |
+| `width` | number | 20 | Width of the icon in pixels |
+| `height` | number | 20 | Height of the icon in pixels |
+| `sx` | object | `{}` | Custom styles to apply to the icon (uses Next.js Image style prop) |
+| `className` | string | `undefined` | CSS class to apply to the icon |
+
+## Available Icons
+
+The component includes over 80 icons organized by category for easy reference:
+
+### Page Section Icons
+- `bannerSection` - Banner section
+- `imageSection` - Image section
+- `imageTextSection` - Image with text section
+- `multicolumnSection` - Multi-column section
+- `multicolumnCarouselSection` - Multi-column carousel section
+- `textSection` - Text block section
+- `featuredProductSection` - Featured product section
+- `productListSection` - Product list section
+- `productCarouselSection` - Product carousel section
+- `collectionListSection` - Collection list section
+- `brandListSection` - Brand list section
+- `mapSection` - Map section
+- `contactFormSection` - Contact form section
+- `videoSection` - Video section
+- `collapseContentSection` - Collapsible content section
+- `instagramFeedSection` - Instagram feed section
+
+### Layout Icons
+- `headerIcon` - Header component
+- `footerIcon` - Footer component
+
+### UI Navigation & Controls
+- `chevronRightIcon` - Right chevron
+- `chevronDownIcon` - Down chevron
+- `arrowRight` - Right arrow
+- `arrowUpRight` - Up-right arrow
+- `arrowLeft` - Left arrow
+- `mobileIcon` - Mobile device
+- `pcIcon` - Desktop/PC
+- `swapVertIcon` - Vertical swap
+
+### Form Controls
+- `searchIcon` - Standard search
+- `searchIconGSVG` - Alternative search design
+- `magnifierIcon` - Magnifying glass
+- `eyeIcon` - Show/visible 
+- `eyeOffIcon` - Hide/invisible
+- `checkboxIcon` - Checked checkbox
+- `uncheckboxIcon` - Unchecked checkbox
+- `disabledCheckboxIcon` - Disabled checkbox
+- `orderAscIcon` - Ascending order
+- `orderDescIcon` - Descending order
+- `orderLineIcon` - Order line
+
+### Actions & Operations
+- `trashIcon` - Delete/remove
+- `pencilLineIcon` - Edit/modify
+- `checkIcon` - Confirm/approve
+- `copyIcon` - Copy
+- `downloadIcon` - Download
+- `downloadIconGrey` - Download (grey variant)
+- `uploadIconAlt` - Upload
+- `linkIcon` - Link/hyperlink
+- `shareIcon` - Share
+- `clipboardIcon` - Clipboard
+
+### Formatting & Content
+- `negritaIcon` - Bold text
+- `italicIcon` - Italic text
+- `pointsIcon` - Points/bullets
+- `fileIcon` - File
+- `columnIcon` - Column layout
+- `autoAwesomeIcon` - Auto format
+
+### Alerts & Notifications
+- `warningIconCircle` - Warning in circle
+- `alertIcon` - Alert
+- `alertIconAlt` - Alternative alert
+- `errorIcon` - Error
+- `checkCircleFillIcon` - Success checkmark
+- `helpIcon` - Help
+- `bellIcon` - Notification bell
+
+### E-commerce
+- `productIcon` - Single product
+- `productsIcon` - Multiple products
+- `cartShoppingLight` - Shopping cart (light style)
+- `cartShoppingThin` - Shopping cart (thin style)
+- `cartShoppingDuotone` - Shopping cart (duotone style)
+- `deliveryTruck` - Delivery truck
+- `deliveryTruckAlt` - Alternative delivery truck
+- `creditCard` - Credit card
+- `creditCardAlt` - Alternative credit card
+- `commentMoneyIcon` - Comment with money
+
+### User & Account
+- `userLight` - User icon (light style)
+- `userThin` - User icon (thin style)
+- `userDuotone` - User icon (duotone style)
+- `smallUserIcon` - Small user icon
+- `cameraOutlinedIcon` - Camera (for user avatars)
+- `settingsIcon` - Settings/preferences
+- `calendarIcon` - Calendar/date
+- `mailIcon` - Email
+- `languageIcon` - Language settings
+- `padlockIcon` - Security/padlock
+
+### Special Features
+- `aiIcon` - AI/Machine learning
+- `aiAltIcon` - Alternative AI icon
+- `filterIcon` - Filter results
+- `domainIcon` - Web domain
+- `privacyLockIcon` - Privacy protection
+
+## Example with Styling
+
+```jsx
+// Using with custom styling
+<T1Icon 
+  icon="checkCircleFillIcon" 
+  width={32} 
+  height={32} 
+  sx={{ 
+    filter: 'drop-shadow(0px 2px 4px rgba(0,0,0,0.2))',
+    transition: 'transform 0.2s ease',
+    ':hover': {
+      transform: 'scale(1.1)'
+    }
+  }} 
+/>
+
+// Using with className
+<T1Icon 
+  icon="arrowRight" 
+  width={24} 
+  height={24} 
+  className="animated-icon" 
+/>
+```
+
+## Implementation Notes
+
+- This component uses Next.js `Image` component internally for optimal rendering.
+- Icons maintain their aspect ratio regardless of the specified width and height.
+- All icons are SVG format for crisp rendering at any size.
+- The default fallback icon is `genericIcon` (banner icon) if an invalid icon name is provided.
+
+## Accessibility
+
+When using icons that convey meaning (rather than just decoration), consider adding appropriate accessibility attributes to your parent elements, such as `aria-label` or `aria-labelledby`.
+
+```jsx
+<button aria-label="Search">
+  <T1Icon icon="searchIcon" width={20} height={20} />
+</button>
+```

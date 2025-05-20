@@ -1,6 +1,6 @@
 {
   "name": "@t1-org/t1components",
-  "version": "3.1.4",
+  "version": "3.1.6",
   "private": false,
   "publishConfig": {
     "access": "restricted"
@@ -39,6 +39,7 @@
     "next-auth": "^4.24.11",
     "next-intl": "^4.0.3",
     "react": "^17.0.0 || ^18.0.0",
+    "react-copy-to-clipboard": "^5.1.0",
     "react-dom": "^17.0.0 || ^18.0.0",
     "react-hook-form": "^7.55.0",
     "react-number-format": "^5.4.3",
@@ -62,12 +63,15 @@
     "@chromatic-com/storybook": "^3.2.6",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
+    "@mdx-js/mdx": "^1.6.22",
+    "@mdx-js/react": "^3.1.0",
     "@mui/material": "^7.0.2",
     "@mui/system": "^7.0.2",
     "@rollup/plugin-commonjs": "^28.0.3",
     "@rollup/plugin-node-resolve": "^16.0.1",
     "@rollup/plugin-typescript": "^12.1.2",
     "@rollup/plugin-url": "^8.0.2",
+    "@storybook/addon-docs": "^8.6.14",
     "@storybook/addon-essentials": "^8.6.12",
     "@storybook/addon-interactions": "^8.6.12",
     "@storybook/addon-links": "^8.6.12",
@@ -83,6 +87,7 @@
     "@types/next": "^8.0.7",
     "@types/node-sass": "^4.11.8",
     "@types/react": "^19.1.0",
+    "@types/react-copy-to-clipboard": "^5.0.7",
     "@types/react-dom": "^19.1.1",
     "@types/react-world-flags": "^1.6.0",
     "@vitest/browser": "^3.1.1",
@@ -98,6 +103,7 @@
     "rollup-plugin-terser": "^7.0.2",
     "sass": "^1.86.3",
     "storybook": "^8.6.12",
+    "vite-plugin-svgr": "^4.3.0",
     "vitest": "^3.1.1"
   }
 }

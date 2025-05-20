@@ -189,7 +189,14 @@ const T1Icon: React.FC<PBIconProps> = ({ icon, width, height, sx, className }) =
 
 	const iconSrc = iconMap[icon] || BannerIcon;
 	return (
-		<Image src={iconSrc} alt="Icon" width={width || 20} height={height || 20} style={sx} className={className} />
+		<Image 
+		src={iconSrc} 
+		alt="Icon" 
+		width={width || 20} 
+		height={height || 20} 
+		style={sx} 
+		className={className} 
+		/>
 	);
 };
 
