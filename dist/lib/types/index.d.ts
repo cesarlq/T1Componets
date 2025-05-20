@@ -20,3 +20,4 @@ export { default as Sidebar } from './Components/SideBar';
 export { default as UserProfileMenu } from './Components/UserProfileMenu';
 export { default as CustomPagination } from './Components/CustomPagination';
 export { default as Cards } from './Components/Cards';
+export { default as T1Icon } from './Components/T1Icon';

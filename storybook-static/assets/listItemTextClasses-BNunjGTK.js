@@ -1,0 +1,1 @@
+import{g as s}from"./generateUtilityClasses-DmTfqs8F.js";import{g as e}from"./defaultTheme-UNuJapAP.js";function n(t){return e("MuiListItemIcon",t)}const o=s("MuiListItemIcon",["root","alignItemsFlexStart"]);function l(t){return e("MuiListItemText",t)}const r=s("MuiListItemText",["root","multiline","dense","inset","primary","secondary"]);export{l as a,o as b,n as g,r as l};
