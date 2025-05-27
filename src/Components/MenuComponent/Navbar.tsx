@@ -29,7 +29,8 @@ export interface NavbarProps {
   onManageAccount?: (user: User) => void;
   onStoreChange?: (storeId: number) => void;
   onNavigate?: (path: string) => void;
-  
+  onReducerHandle: () => void ;
+
   // Component slots (solo los que realmente deben ser configurables)
   BalanceBanner?: React.ComponentType<{ className?: string }>;
   T1Selector?: React.ComponentType<any>;
@@ -78,6 +79,7 @@ export function Navbar({
   onManageAccount = () => {},
   onStoreChange = () => {},
   onNavigate = () => {},
+  onReducerHandle = () => {},
   
   // Component slots
   BalanceBanner = ({ className }) => <div className={className}>Balance Banner</div>,
@@ -151,7 +153,7 @@ export function Navbar({
       <div className={`${styles['navbar-left-section']} flex items-center gap-4`}>
         <button
           className={`${styles['menu-toggle-button']} block lg:hidden`}
-          onClick={handleMenuToggle}
+          onClick={onReducerHandle}
           type="button"
           aria-label="Toggle menu"
         >
@@ -160,6 +162,7 @@ export function Navbar({
         
         {/* T1ShippingBanner es fijo, solo el título es configurable */}
         <T1ShippingBanner
+          onReducerHandle={onReducerHandle}
           brandText={shippingBannerTitle}
           onNavigate={onNavigate}
         />

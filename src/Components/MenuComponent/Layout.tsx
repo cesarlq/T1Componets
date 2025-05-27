@@ -15,7 +15,11 @@ export interface LayoutProps {
 
 export function Layout({ 
   children, 
-  navbarProps = {}, 
+  navbarProps = {
+    onReducerHandle: function (): void {
+      throw new Error('Function not implemented.');
+    }
+  }, 
   sidebarProps = {},
   showNavbar = true,
   showSidebar = true,
@@ -53,7 +57,11 @@ export function BasicLayout({
 
 export function NavbarLayout({ 
   children, 
-  navbarProps = {},
+  navbarProps = {
+    onReducerHandle: function (): void {
+      throw new Error('Function not implemented.');
+    }
+  },
   className = ""
 }: { 
   children: ReactNode; 

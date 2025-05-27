@@ -15,6 +15,7 @@ export interface T1ShippingBannerProps {
   onReduceToggle?: () => void;
   // Estados externos (si no usas LayoutProvider)
   isReduced?: boolean;
+  onReducerHandle: () => void;
 }
 
 export function T1ShippingBanner({
@@ -22,8 +23,8 @@ export function T1ShippingBanner({
   onNavigate = () => {},
   dashboardPath = '/dashboard',
   brandText = 'envíos',
-  onReduceToggle,
-  isReduced: externalIsReduced
+  isReduced: externalIsReduced,
+  onReducerHandle,
 }: T1ShippingBannerProps) {
   
   // Intentar usar el contexto, pero permitir uso sin él
@@ -36,10 +37,10 @@ export function T1ShippingBanner({
 
   const handleReduceToggle = () => {
     console.log('🔄 T1ShippingBanner handleReduceToggle clicked'); // DEBUG
-    if (onReduceToggle) {
+    if (onReducerHandle) {
       // Usar callback personalizado
       console.log('📞 Using custom onReduceToggle'); // DEBUG
-      onReduceToggle();
+      onReducerHandle();
     } else if (layoutContext) {
       // Usar el contexto si está disponible
       console.log('🎯 Using layoutContext.toggleSidebarReduce'); // DEBUG

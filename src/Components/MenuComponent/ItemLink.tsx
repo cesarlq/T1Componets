@@ -181,8 +181,9 @@ export function ItemLink({
             <Image
               src={icon}
               alt={text}
-              height={20}
-              width={20}
+              style={{maxWidth:'19px', maxHeight:'19px'}}
+              height={19}
+              width={19}
             />
             {(!sidebarReduce || enlargeByHover) && text}
             {endAdornment && !(sidebarReduce && !enlargeByHover) && (
@@ -195,6 +196,7 @@ export function ItemLink({
             src={ArrowMenu}
             className={styles.arrow}
             data-open={openSubMenu}
+            style={{maxWidth:'16px', maxHeight:'16px'}}
             alt='arrow'
             width={16}
             height={16}
@@ -248,8 +250,9 @@ export function ItemLink({
         <Image
           src={icon}
           alt={text}
-          height={20}
-          width={20}
+          height={19}
+          width={19}
+          style={{maxWidth:'19px', maxHeight:'19px'}}
           className={styles.menuIcon}
         />
         {(!sidebarReduce || enlargeByHover) && text}
