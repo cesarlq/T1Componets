@@ -18,7 +18,8 @@ export function Layout({
   navbarProps = {
     onReducerHandle: function (): void {
       throw new Error('Function not implemented.');
-    }
+    },
+    sidebarReduce: false
   }, 
   sidebarProps = {},
   showNavbar = true,
@@ -60,7 +61,8 @@ export function NavbarLayout({
   navbarProps = {
     onReducerHandle: function (): void {
       throw new Error('Function not implemented.');
-    }
+    },
+    sidebarReduce: false
   },
   className = ""
 }: { 

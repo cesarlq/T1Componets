@@ -16,6 +16,7 @@ export interface T1ShippingBannerProps {
   // Estados externos (si no usas LayoutProvider)
   isReduced?: boolean;
   onReducerHandle: () => void;
+  sidebarReduce: boolean;
 }
 
 export function T1ShippingBanner({
@@ -25,6 +26,7 @@ export function T1ShippingBanner({
   brandText = 'envíos',
   isReduced: externalIsReduced,
   onReducerHandle,
+  sidebarReduce
 }: T1ShippingBannerProps) {
   
   // Intentar usar el contexto, pero permitir uso sin él
@@ -63,10 +65,10 @@ export function T1ShippingBanner({
         className="bg-transparent cursor-pointer" // DEBUG: Super visible
         onClick={handleReduceToggle}
         type="button"
-        aria-label={isReduced ? "Expandir sidebar" : "Reducir sidebar"}
+        aria-label={sidebarReduce ? "Expandir sidebar" : "Reducir sidebar"}
       >
         <div>
-          {isReduced ? (
+          {sidebarReduce ? (
             // Icono de expandir
             EnlargeIcon && (
                 <Image

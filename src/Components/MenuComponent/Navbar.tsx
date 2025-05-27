@@ -30,6 +30,7 @@ export interface NavbarProps {
   onStoreChange?: (storeId: number) => void;
   onNavigate?: (path: string) => void;
   onReducerHandle: () => void ;
+  sidebarReduce: boolean;
 
   // Component slots (solo los que realmente deben ser configurables)
   BalanceBanner?: React.ComponentType<{ className?: string }>;
@@ -80,6 +81,7 @@ export function Navbar({
   onStoreChange = () => {},
   onNavigate = () => {},
   onReducerHandle = () => {},
+  sidebarReduce = false,
   
   // Component slots
   BalanceBanner = ({ className }) => <div className={className}>Balance Banner</div>,
@@ -163,6 +165,7 @@ export function Navbar({
         {/* T1ShippingBanner es fijo, solo el título es configurable */}
         <T1ShippingBanner
           onReducerHandle={onReducerHandle}
+          sidebarReduce={sidebarReduce}
           brandText={shippingBannerTitle}
           onNavigate={onNavigate}
         />
