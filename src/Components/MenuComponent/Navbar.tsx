@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { IconButton, ListItemText, Menu, MenuItem as MuiMenuItem } from '@mui/material';
 import { StoreSelector } from './StoreSelector';
-import Image from "next/image";
 import { T1ShippingBanner } from './T1ShippingBanner';
 import { BalanceBanner } from './BalanceBanner';
 import { useLayout } from './LayoutProvider';
@@ -153,7 +152,7 @@ export function Navbar({
           type="button"
           aria-label="Toggle menu"
         >
-          <Image src={MenuInActive} alt='menu' width={18} height={16}/>
+          <img src={MenuInActive} alt='menu' width={18} height={16}/>
         </button>
          <T1ShippingBanner
           brandText="envios"

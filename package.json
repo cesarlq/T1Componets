@@ -13,6 +13,19 @@
     "*.css",
     "*.scss"
   ],
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/lib/types/index.d.ts",
+      "import": "./dist/lib/index.es.js",
+      "require": "./dist/lib/index.js"
+    },
+    "./dist/lib/styles.css": "./dist/lib/styles.css",
+    "./CommonStyles.module.scss": "./dist/lib/CommonStyles.module.scss",
+    "./assets/*": "./dist/lib/assets/*"
+  },
   "scripts": {
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build -o storybook-static",
@@ -45,18 +58,6 @@
     "react-hook-form": "^7.55.0",
     "react-number-format": "^5.4.3",
     "react-world-flags": "^1.6.0"
-  },
-  "files": [
-    "dist"
-  ],
-  "exports": {
-    ".": {
-      "types": "./dist/lib/types/index.d.ts",
-      "import": "./dist/lib/index.es.js",
-      "require": "./dist/lib/index.js"
-    },
-    "./dist/lib/styles.css": "./dist/lib/styles.css",
-    "./CommonStyles.module.scss": "./dist/lib/CommonStyles.module.scss"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^3.2.6",

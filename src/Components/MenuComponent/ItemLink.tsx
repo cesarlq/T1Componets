@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import Image from 'next/image';
 import ArrowMenu from '../../assets/arrow-menu.svg';
 import styles from '../../styles/common/ItemLink.module.scss';
 import { MenuPath, SubPath } from './Sidebar';
@@ -178,7 +177,7 @@ export function ItemLink({
           )}
         >
           <div className={styles.link}>
-            <Image
+            <img
               src={icon}
               alt={text}
               height={20}
@@ -191,7 +190,7 @@ export function ItemLink({
               </div>
             )}
           </div>
-          <Image
+          <img
             src={ArrowMenu}
             className={styles.arrow}
             data-open={openSubMenu}
@@ -245,7 +244,7 @@ export function ItemLink({
           onNavigate(concatStoreId && currentUserId ? `${href}${currentUserId}` : href);
         }}
       >
-        <Image
+        <img
           src={icon}
           alt={text}
           height={20}
