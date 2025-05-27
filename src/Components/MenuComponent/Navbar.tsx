@@ -153,7 +153,7 @@ export function Navbar({
           type="button"
           aria-label="Toggle menu"
         >
-          <Image src={MenuInActive} alt='menu' />
+          <Image src={MenuInActive} alt='menu' width={18} height={16}/>
         </button>
          <T1ShippingBanner
           brandText="envios"
