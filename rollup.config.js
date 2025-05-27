@@ -1,19 +1,37 @@
-// rollup.config.js
+// rollup.config.js - Copiando assets como archivos
 import typescript from '@rollup/plugin-typescript';
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 import postcss from 'rollup-plugin-postcss';
 import { terser } from 'rollup-plugin-terser';
-import url from '@rollup/plugin-url';
+import { copyFileSync, mkdirSync, existsSync } from 'fs';
+import { join, dirname, basename } from 'path';
 
-// Plugin personalizado para manejar SVGs como módulos
-const svgPlugin = {
-  name: 'svg',
+// Plugin para copiar assets y generar imports relativos
+const copyAssetsPlugin = {
+  name: 'copy-assets',
   load(id) {
-    if (id.endsWith('.svg')) {
-      // Devolver el path del SVG en lugar del contenido
-      return `export default "${id}";`;
+    if (id.endsWith('.svg') || id.endsWith('.png') || id.endsWith('.jpg') || id.endsWith('.gif')) {
+      const filename = basename(id);
+      const outputDir = 'dist/lib/assets';
+      const outputPath = join(outputDir, filename);
+      
+      // Crear directorio si no existe
+      if (!existsSync(outputDir)) {
+        mkdirSync(outputDir, { recursive: true });
+      }
+      
+      // Copiar archivo
+      try {
+        copyFileSync(id, outputPath);
+        console.log(`Copied ${filename} to ${outputPath}`);
+      } catch (error) {
+        console.warn(`Failed to copy ${filename}:`, error);
+      }
+      
+      // Retornar path relativo
+      return `export default "./assets/${filename}";`;
     }
   }
 };
@@ -56,15 +74,8 @@ export default {
     }),
     removeUseClientDirectivePlugin,
     
-    // Manejar SVGs correctamente - NO convertir a data URLs
-    url({
-      include: ['**/*.png', '**/*.jpg', '**/*.gif'], // Solo para imágenes raster
-      limit: 10000,
-      fileName: '[dirname][name][extname]'
-    }),
-    
-    // Plugin específico para SVGs
-    svgPlugin,
+    // Plugin para copiar assets
+    copyAssetsPlugin,
     
     postcss({
       modules: true,
@@ -82,38 +93,14 @@ export default {
     terser()
   ],
   external: [
-    // React
-    'react', 
-    'react-dom',
-    'react/jsx-runtime',
-    
-    // Next.js
-    'next',
-    'next/image',
-    'next/router',
-    'next/navigation',
-    'next-auth',
-    'next-intl',
-    
-    // Material-UI
-    '@mui/material',
-    '@mui/material/styles',
-    '@mui/material/Button',
-    '@mui/material/IconButton',
-    '@mui/material/Menu',
-    '@mui/material/MenuItem',
-    '@mui/material/ListItemText',
-    '@mui/icons-material',
-    '@mui/icons-material/Add',
-    '@mui/system',
-    '@mui/styled-engine',
-    '@mui/lab',
-    
-    // Otros
-    '@emotion/react',
-    '@emotion/styled',
-    
-    // Node.js modules
+    'react', 'react-dom', 'react/jsx-runtime',
+    'next', 'next/image', 'next/router', 'next/navigation',
+    'next-auth', 'next-intl',
+    '@mui/material', '@mui/material/styles', '@mui/material/Button',
+    '@mui/material/IconButton', '@mui/material/Menu', '@mui/material/MenuItem',
+    '@mui/material/ListItemText', '@mui/icons-material', '@mui/icons-material/Add',
+    '@mui/system', '@mui/styled-engine', '@mui/lab',
+    '@emotion/react', '@emotion/styled',
     'fs', 'path', 'crypto', 'util', 'stream', 'buffer', 'events', 'os', 'net', 'tls', 'string_decoder'
   ]
 };
