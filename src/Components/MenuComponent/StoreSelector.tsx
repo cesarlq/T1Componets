@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import DoubleArrowIcon from '../../assets/inputs/double-arrow.svg';
 import Search from '../../assets/search-input.svg';
@@ -117,7 +118,7 @@ export function StoreSelector({
           </span>
           
           {/* Flecha */}
-          <img 
+          <Image 
             src={DoubleArrowIcon} 
             alt='double-arrow' 
             width={16}
@@ -144,7 +145,7 @@ export function StoreSelector({
               onChange: (event: { target: { value: React.SetStateAction<string>; }; }) => setSearch(event.target.value),
               placeholder: searchPlaceholder,
               InputProps: {
-                endAdornment: <img src={Search} alt='search' width={16} height={16} />,
+                endAdornment: <Image src={Search} alt='search' width={16} height={16} />,
               },
               inputProps: {
                 enterKeyHint: 'search',
@@ -178,7 +179,7 @@ export function StoreSelector({
                   
                   {/* Check icon si está seleccionada */}
                   {isSelected && (
-                    <img
+                    <Image
                       src={CheckIcon}
                       alt='check'
                       height={20}
@@ -204,7 +205,7 @@ export function StoreSelector({
               target='_blank'
               className={styles.newStoreLink}
             >
-              <img 
+              <Image 
                 src={PlusIconBlack} 
                 alt='plus' 
                 width={16}

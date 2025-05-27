@@ -1,41 +1,78 @@
-// rollup.config.js - Convertir SVGs a base64 data URLs
+// rollup.config.js
 import typescript from '@rollup/plugin-typescript';
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 import postcss from 'rollup-plugin-postcss';
 import { terser } from 'rollup-plugin-terser';
-import { readFileSync } from 'fs';
+import { copyFileSync, mkdirSync, existsSync, readdirSync, statSync } from 'fs';
+import { join, basename, extname } from 'path';
 
-// Plugin para convertir SVGs a base64 data URLs
-const svgToBase64Plugin = {
-  name: 'svg-to-base64',
+// Plugin para copiar todos los assets a public y generar el mapping
+const copyAssetsToPublicPlugin = {
+  name: 'copy-assets-to-public',
+  buildStart() {
+    // Crear directorios
+    const publicDir = 'dist/public/t1-assets';
+    if (!existsSync(publicDir)) {
+      mkdirSync(publicDir, { recursive: true });
+    }
+
+    // Función recursiva para encontrar todos los assets
+    const findAssets = (dir, fileList = []) => {
+      const files = readdirSync(dir);
+      files.forEach(file => {
+        const filePath = join(dir, file);
+        const stat = statSync(filePath);
+        
+        if (stat.isDirectory()) {
+          findAssets(filePath, fileList);
+        } else if (/\.(svg|png|jpg|jpeg|gif|webp)$/i.test(file)) {
+          fileList.push(filePath);
+        }
+      });
+      return fileList;
+    };
+
+    // Encontrar todos los assets en src/assets
+    const assetsDir = 'src/assets';
+    if (existsSync(assetsDir)) {
+      const assetFiles = findAssets(assetsDir);
+      
+      // Copiar cada archivo y crear el mapping
+      const assetMapping = {};
+      
+      assetFiles.forEach(filePath => {
+        const fileName = basename(filePath);
+        const outputPath = join(publicDir, fileName);
+        
+        try {
+          copyFileSync(filePath, outputPath);
+          console.log(`✅ Copied ${fileName} to public/t1-assets/`);
+          
+          // Crear el mapping para el import
+          const importPath = filePath.replace(/\\/g, '/');
+          assetMapping[importPath] = `/t1-assets/${fileName}`;
+        } catch (error) {
+          console.warn(`Failed to copy ${fileName}:`, error);
+        }
+      });
+
+      // Generar archivo de mapping
+      const mappingContent = `// Auto-generated asset mapping
+export const assetMapping = ${JSON.stringify(assetMapping, null, 2)};
+`;
+      
+      require('fs').writeFileSync('dist/asset-mapping.js', mappingContent);
+      console.log('📝 Generated asset mapping file');
+    }
+  },
+  
   load(id) {
-    if (id.endsWith('.svg')) {
-      try {
-        // Leer el archivo SVG
-        const svgContent = readFileSync(id, 'utf8');
-        
-        // Limpiar el SVG (remover saltos de línea y espacios extra)
-        const cleanSvg = svgContent
-          .replace(/\n/g, '')
-          .replace(/\s+/g, ' ')
-          .trim();
-        
-        // Convertir a base64
-        const base64 = Buffer.from(cleanSvg).toString('base64');
-        
-        // Crear data URL
-        const dataUrl = `data:image/svg+xml;base64,${base64}`;
-        
-        return `export default "${dataUrl}";`;
-      } catch (error) {
-        console.warn(`Failed to load SVG: ${id}`, error);
-        // Fallback: retornar una imagen transparente
-        const fallbackSvg = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><rect width="24" height="24" fill="transparent"/></svg>';
-        const fallbackBase64 = Buffer.from(fallbackSvg).toString('base64');
-        return `export default "data:image/svg+xml;base64,${fallbackBase64}";`;
-      }
+    if (/\.(svg|png|jpg|jpeg|gif|webp)$/i.test(id)) {
+      const fileName = basename(id);
+      // Retornar el path público
+      return `export default "/t1-assets/${fileName}";`;
     }
   }
 };
@@ -78,8 +115,8 @@ export default {
     }),
     removeUseClientDirectivePlugin,
     
-    // Plugin para convertir SVGs a base64
-    svgToBase64Plugin,
+    // Plugin para copiar assets
+    copyAssetsToPublicPlugin,
     
     postcss({
       modules: true,

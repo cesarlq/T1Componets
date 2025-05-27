@@ -7,9 +7,9 @@ import { useLayout } from './LayoutProvider';
 import { User, Store } from '../../interfaces/menu';
 import styles from '../../styles/common/Navbar.module.scss';
 import { T1Selector } from './T1Selector';
-import MenuInActive from '../../assets/menus/inactive/menu-inactive.svg';
 import { Profile } from './Profile';
 import TextFieldAndButton from './TextFieldAndButton';
+import T1Icon from '../T1Icon';
 
 export interface NavbarProps {
   className?: string;
@@ -152,7 +152,8 @@ export function Navbar({
           type="button"
           aria-label="Toggle menu"
         >
-          <img src={MenuInActive} alt='menu' width={18} height={16}/>
+          {/* Usar T1Icon en lugar del import directo */}
+          <T1Icon icon="menuInActive" width={18} height={16} />
         </button>
          <T1ShippingBanner
           brandText="envios"

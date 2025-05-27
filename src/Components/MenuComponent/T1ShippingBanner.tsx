@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from "next/image";
 import { useLayoutOptional } from './LayoutProvider';
 import T1Logo from '../../assets/T1.svg';
 import ReduceIcon from '../../assets/reduce-icon.svg';
@@ -67,7 +68,7 @@ export function T1ShippingBanner({
           {isReduced ? (
             // Icono de expandir
             EnlargeIcon && (
-                <img
+                <Image
                   src={EnlargeIcon}
                   alt="expand sidebar"
                   width={18}
@@ -77,7 +78,7 @@ export function T1ShippingBanner({
           ) : (
             // Icono de reducir
             ReduceIcon && (
-                <img
+                <Image
                   src={ReduceIcon}
                   alt="reduce sidebar"
                   width={18}
@@ -97,7 +98,7 @@ export function T1ShippingBanner({
         aria-label="Ir al dashboard"
       >
         <div className="w-[27px] h-[25px] flex items-center justify-center">
-          <img 
+          <Image 
             src={T1Logo} 
             alt="T1 Logo" 
             width={27}

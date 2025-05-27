@@ -1,201 +1,115 @@
-import Image, { StaticImageData } from 'next/image';
+import Image from 'next/image';
 import { PBIconProps } from '../interfaces/commonInterfaces';
 import React from 'react';
 
-import BannerIcon from '../assets/svg-icons/banner-icon.svg';
-import ImageIcon from '../assets/svg-icons/img-icon.svg';
-import ImageTextIcon from '../assets/svg-icons/img-text-icon.svg';
-import MulticolumnaIcon from '../assets/svg-icons/multicolumna-icon.svg';
-import TextBlockIcon from '../assets/svg-icons/text-block-icon.svg';
-import FeaturedProductIcon from '../assets/svg-icons/featured-product-icon.svg';
-import ProductListIcon from '../assets/svg-icons/product-list-icon.svg';
-import CollectionListIcon from '../assets/svg-icons/collection-list-icon.svg';
-import BrandListIcon from '../assets/svg-icons/brand-list-icon.svg';
-import MapIcon from '../assets/svg-icons/map-icon.svg';
-import ContactFormIcon from '../assets/svg-icons/contact-form-icon.svg';
-import VideoIcon from '../assets/svg-icons/video-icon.svg';
-import ContentCollapsibleIcon from '../assets/svg-icons/content-collapsible-icon.svg';
-import InstagramIcon from '../assets/svg-icons/instagram-icon.svg';
-
-//icons for header and footer
-import HeaderIcon from '../assets/svg-icons/header-icon.svg';
-import FooterIcon from '../assets/svg-icons/footer-icon.svg';
-
-import CameraOutlinedIcon from '../assets/svg-icons/camera-outlined-icon.svg';
-import SearchIconGSVG from '../assets/svg-icons/search-icon-g.svg';
-import EyeIcon from '../assets/svg-icons/eye-icon.svg';
-import EyeOffIcon from '../assets/svg-icons/eye-off-icon.svg';
-import TrashIcon from '../assets/svg-icons/trashcan-icon.svg';
-import AutoAwesomeIcon from '../assets/svg-icons/auto-awesome-icon.svg';
-import NegritaIcon from '../assets/svg-icons/negrita-icon.svg';
-import ItalicIcon from '../assets/svg-icons/italic-icon.svg';
-import PointsIcon from '../assets/svg-icons/points-icon.svg';
-import LinkIcon from '../assets/svg-icons/link-icon.svg';
-import ShareIcon from '../assets/svg-icons/share-icon.svg';
-import ChevronRightIcon from '../assets/svg-icons/chevron-right-icon.svg';
-import MobileIcon from '../assets/svg-icons/mobile-icon.svg';
-import PcIcon from '../assets/svg-icons/pc-icon.svg';
-
-import CartShoppingLight from '../assets/svg-icons/iconstyle-selector/cart-shopping-light.svg';
-import UserLight from '../assets/svg-icons/iconstyle-selector/user-light.svg';
-import CartShoppingThin from '../assets/svg-icons/iconstyle-selector/cart-shopping-thin.svg';
-import UserThin from '../assets/svg-icons/iconstyle-selector/user-thin.svg';
-import CartShoppingDuotone from '../assets/svg-icons/iconstyle-selector/cart-shopping-duotone.svg';
-import UserDuotone from '../assets/svg-icons/iconstyle-selector/user-duotone.svg';
-import ChevronDownIcon from '../assets/svg-icons/chevron-down-icon.svg';
-import MagnifierIcon from '../assets/svg-icons/magnifier-icon.svg';
-import OrderAscIcon from '../assets/svg-icons/order-asc-icon.svg';
-import OrderDescIcon from '../assets/svg-icons/order-desc-icon.svg';
-import OrderLineIcon from '../assets/svg-icons/order-line-icon.svg';
-import CheckboxIcon from '../assets/svg-icons/checkbox-icon.svg';
-import UncheckboxIcon from '../assets/svg-icons/uncheckedbox-icon.svg';
-import DisabledCheckboxIcon from '../assets/svg-icons/disabled-checkbox-icon.svg';
-import PencilLineIcon from "../assets/svg-icons/pencil-icon.svg";
-import CheckIcon from "../assets/svg-icons/check-icon.svg";
-import CopyIcon from "../assets/svg-icons/copy-icon.svg";
-import WariningIconCircle from "../assets/svg-icons/warning-icon.svg";
-import CalendarIcon from "../assets/svg-icons/calendar-icon.svg";
-import ProductIcon from "../assets/svg-icons/product-icon.svg";
-import ProductsIcon from '../assets/menu-icons/products-icon.svg';
-import DownloadIcon from "../assets/svg-icons/download-icon.svg";
-import DownloadIconGrey from "../assets/svg-icons/download-icon-grey.svg";
-import MailIcon from "../assets/svg-icons/mail-icon.svg";
-import ClipboardIcon from "../assets/svg-icons/clipboard-icon.svg";
-import CommentMoneyIcon from "../assets/svg-icons/comment-money-icon.svg";
-import FileIcon from "../assets/svg-icons/file-icon.svg";
-import CheckCircleFillIcon from "../assets/svg-icons/check-circle-fill-icon.svg";
-import HelpIcon from "../assets/svg-icons/help-icon.svg";
-import SettingsIcon from '../assets/menu-icons/settings-icon.svg';
-import SearchIcon from '../assets/svg-icons/search-icon-2.svg';
-import AiIcon from '../assets/svg-icons/ai-icon.svg';
-import AiAltIcon from '../assets/svg-icons/ai-icon-alt.svg';
-import ColumnIcon from '../assets/svg-icons/column-icon.svg';
-import FilterIcon from "../assets/svg-icons/filter-icon.svg";
-import DeliveryTruck from "../assets/svg-icons/delivery-truck.svg";
-import CreditCard from "../assets/svg-icons/credit-card.svg";
-import CreditCardAlt from "../assets/svg-icons/credit-card-alt.svg";
-import UploadIconAlt from "../assets/svg-icons/upload-icon-alt.svg";
-import DomainIcon from "../assets/svg-icons/domain.svg";
-import BellIcon from "../assets/svg-icons/bell.svg";
-import PrivacyLockIcon from "../assets/svg-icons/privacy.svg";
-import DeliveryTruckAlt from "../assets/svg-icons/truck.svg";
-import AlertIcon from "../assets/svg-icons/alert-icon.svg";
-import AlertIconAlt from "../assets/svg-icons/alert-icon-alt.svg";
-import ArrowRight from "../assets/svg-icons/arrow-right-icon.svg";
-import ArrowUpRight from "../assets/svg-icons/arrow-right-short.svg";
-import SwapVertIcon from "../assets/svg-icons/swap-vert-icon.svg";
-import ErrorIcon from "../assets/svg-icons/error-icon.svg";
-import SmallUserIcon from '../assets/svg-icons/small-user-icon.svg';
-import LanguageIcon from '../assets/svg-icons/language-icon.svg';
-import PadlockIcon from '../assets/svg-icons/padlock-icon.svg';
-import ArrowLeftIcon from '../assets/svg-icons/arrow-left-2.svg';
-
-
+// Ahora los assets estarán en la carpeta public del proyecto consumidor
 const T1Icon: React.FC<PBIconProps> = ({ icon, width, height, sx, className }) => {
-	const iconMap: { [key: string]: StaticImageData | string } = {
-		genericIcon: BannerIcon,   // default icon  // cambiar
-		bannerSection: BannerIcon,
-		imageSection: ImageIcon,
-		imageTextSection: ImageTextIcon,
-		multicolumnSection: MulticolumnaIcon,
-		multicolumnCarouselSection: MulticolumnaIcon,
-		textSection: TextBlockIcon,
-		featuredProductSection: FeaturedProductIcon,
-		productListSection: ProductListIcon,
-		productCarouselSection: ProductListIcon,
-		collectionListSection: CollectionListIcon,
-		brandListSection: BrandListIcon,
-		mapSection: MapIcon,
-		contactFormSection: ContactFormIcon,
-		videoSection: VideoIcon,
-		collapseContentSection: ContentCollapsibleIcon,
-		instagramFeedSection: InstagramIcon,
+	const iconMap: { [key: string]: string } = {
+		genericIcon: '/t1-assets/banner-icon.svg',
+		bannerSection: '/t1-assets/banner-icon.svg',
+		imageSection: '/t1-assets/img-icon.svg',
+		imageTextSection: '/t1-assets/img-text-icon.svg',
+		multicolumnSection: '/t1-assets/multicolumna-icon.svg',
+		multicolumnCarouselSection: '/t1-assets/multicolumna-icon.svg',
+		textSection: '/t1-assets/text-block-icon.svg',
+		featuredProductSection: '/t1-assets/featured-product-icon.svg',
+		productListSection: '/t1-assets/product-list-icon.svg',
+		productCarouselSection: '/t1-assets/product-list-icon.svg',
+		collectionListSection: '/t1-assets/collection-list-icon.svg',
+		brandListSection: '/t1-assets/brand-list-icon.svg',
+		mapSection: '/t1-assets/map-icon.svg',
+		contactFormSection: '/t1-assets/contact-form-icon.svg',
+		videoSection: '/t1-assets/video-icon.svg',
+		collapseContentSection: '/t1-assets/content-collapsible-icon.svg',
+		instagramFeedSection: '/t1-assets/instagram-icon.svg',
 
 		//icons for header and footer
-		headerIcon: HeaderIcon,
-		footerIcon: FooterIcon,
+		headerIcon: '/t1-assets/header-icon.svg',
+		footerIcon: '/t1-assets/footer-icon.svg',
 
 		//other icons
-		cameraOutlinedIcon: CameraOutlinedIcon,
-		searchIconGSVG: SearchIconGSVG,
-		eyeIcon: EyeIcon,
-		eyeOffIcon: EyeOffIcon,
-		trashIcon: TrashIcon,
-		autoAwesomeIcon: AutoAwesomeIcon,
-		negritaIcon: NegritaIcon,
-		italicIcon: ItalicIcon,
-		pointsIcon: PointsIcon,
-		linkIcon: LinkIcon,
-		shareIcon: ShareIcon,
-		chevronRightIcon: ChevronRightIcon,
-		mobileIcon: MobileIcon,
-		pcIcon: PcIcon,
-		chevronDownIcon: ChevronDownIcon,
-		magnifierIcon: MagnifierIcon,
-		orderAscIcon: OrderAscIcon,
-		orderDescIcon: OrderDescIcon,
-		orderLineIcon: OrderLineIcon,
-		pencilLineIcon: PencilLineIcon,
-		productIcon: ProductIcon,
-		productsIcon: ProductsIcon,
+		cameraOutlinedIcon: '/t1-assets/camera-outlined-icon.svg',
+		searchIconGSVG: '/t1-assets/search-icon-g.svg',
+		eyeIcon: '/t1-assets/eye-icon.svg',
+		eyeOffIcon: '/t1-assets/eye-off-icon.svg',
+		trashIcon: '/t1-assets/trashcan-icon.svg',
+		autoAwesomeIcon: '/t1-assets/auto-awesome-icon.svg',
+		negritaIcon: '/t1-assets/negrita-icon.svg',
+		italicIcon: '/t1-assets/italic-icon.svg',
+		pointsIcon: '/t1-assets/points-icon.svg',
+		linkIcon: '/t1-assets/link-icon.svg',
+		shareIcon: '/t1-assets/share-icon.svg',
+		chevronRightIcon: '/t1-assets/chevron-right-icon.svg',
+		mobileIcon: '/t1-assets/mobile-icon.svg',
+		pcIcon: '/t1-assets/pc-icon.svg',
+		chevronDownIcon: '/t1-assets/chevron-down-icon.svg',
+		magnifierIcon: '/t1-assets/magnifier-icon.svg',
+		orderAscIcon: '/t1-assets/order-asc-icon.svg',
+		orderDescIcon: '/t1-assets/order-desc-icon.svg',
+		orderLineIcon: '/t1-assets/order-line-icon.svg',
+		pencilLineIcon: '/t1-assets/pencil-icon.svg',
+		productIcon: '/t1-assets/product-icon.svg',
+		productsIcon: '/t1-assets/products-icon.svg',
 
 		//for icon style selector
-		cartShoppingLight: CartShoppingLight,
-		userLight: UserLight,
-		cartShoppingThin: CartShoppingThin,
-		userThin: UserThin,
-		cartShoppingDuotone: CartShoppingDuotone,
-		userDuotone: UserDuotone,
-		checkboxIcon: CheckboxIcon,
-		uncheckboxIcon: UncheckboxIcon,
-		disabledCheckboxIcon: DisabledCheckboxIcon,
-		checkIcon: CheckIcon,
-		copyIcon: CopyIcon,
-		warningIconCircle: WariningIconCircle,
-		calendarIcon: CalendarIcon,
-		downloadIcon: DownloadIcon,
-		mailIcon: MailIcon,
-		clipboardIcon: ClipboardIcon,
-		commentMoneyIcon: CommentMoneyIcon,
-		fileIcon: FileIcon,
-		checkCircleFillIcon: CheckCircleFillIcon,
-		downloadIconGrey: DownloadIconGrey,
-		helpIcon: HelpIcon,
-		settingsIcon: SettingsIcon,
-		searchIcon: SearchIcon,
-		aiIcon: AiIcon,
-		aiAltIcon: AiAltIcon,
-		columnIcon: ColumnIcon,
-		filterIcon: FilterIcon,
-		deliveryTruck: DeliveryTruck,
-		creditCard: CreditCard,
-		uploadIconAlt: UploadIconAlt,
-		domainIcon: DomainIcon,
-		bellIcon: BellIcon,
-		privacyLockIcon: PrivacyLockIcon,
-		creditCardAlt: CreditCardAlt,
-		deliveryTruckAlt: DeliveryTruckAlt,
-		alertIconAlt: AlertIconAlt,
-		alertIcon: AlertIcon,
-		arrowRight: ArrowRight,
-		arrowUpRight: ArrowUpRight,
-		swapVertIcon: SwapVertIcon,
-		errorIcon: ErrorIcon,
-		smallUserIcon: SmallUserIcon,
-		languageIcon: LanguageIcon,
-		padlockIcon: PadlockIcon,
-		arrowLeft: ArrowLeftIcon
+		cartShoppingLight: '/t1-assets/cart-shopping-light.svg',
+		userLight: '/t1-assets/user-light.svg',
+		cartShoppingThin: '/t1-assets/cart-shopping-thin.svg',
+		userThin: '/t1-assets/user-thin.svg',
+		cartShoppingDuotone: '/t1-assets/cart-shopping-duotone.svg',
+		userDuotone: '/t1-assets/user-duotone.svg',
+		checkboxIcon: '/t1-assets/checkbox-icon.svg',
+		uncheckboxIcon: '/t1-assets/uncheckedbox-icon.svg',
+		disabledCheckboxIcon: '/t1-assets/disabled-checkbox-icon.svg',
+		checkIcon: '/t1-assets/check-icon.svg',
+		copyIcon: '/t1-assets/copy-icon.svg',
+		warningIconCircle: '/t1-assets/warning-icon.svg',
+		calendarIcon: '/t1-assets/calendar-icon.svg',
+		downloadIcon: '/t1-assets/download-icon.svg',
+		mailIcon: '/t1-assets/mail-icon.svg',
+		clipboardIcon: '/t1-assets/clipboard-icon.svg',
+		commentMoneyIcon: '/t1-assets/comment-money-icon.svg',
+		fileIcon: '/t1-assets/file-icon.svg',
+		checkCircleFillIcon: '/t1-assets/check-circle-fill-icon.svg',
+		downloadIconGrey: '/t1-assets/download-icon-grey.svg',
+		helpIcon: '/t1-assets/help-icon.svg',
+		settingsIcon: '/t1-assets/settings-icon.svg',
+		searchIcon: '/t1-assets/search-icon-2.svg',
+		aiIcon: '/t1-assets/ai-icon.svg',
+		aiAltIcon: '/t1-assets/ai-icon-alt.svg',
+		columnIcon: '/t1-assets/column-icon.svg',
+		filterIcon: '/t1-assets/filter-icon.svg',
+		deliveryTruck: '/t1-assets/delivery-truck.svg',
+		creditCard: '/t1-assets/credit-card.svg',
+		uploadIconAlt: '/t1-assets/upload-icon-alt.svg',
+		domainIcon: '/t1-assets/domain.svg',
+		bellIcon: '/t1-assets/bell.svg',
+		privacyLockIcon: '/t1-assets/privacy.svg',
+		creditCardAlt: '/t1-assets/credit-card-alt.svg',
+		deliveryTruckAlt: '/t1-assets/truck.svg',
+		alertIconAlt: '/t1-assets/alert-icon-alt.svg',
+		alertIcon: '/t1-assets/alert-icon.svg',
+		arrowRight: '/t1-assets/arrow-right-icon.svg',
+		arrowUpRight: '/t1-assets/arrow-right-short.svg',
+		swapVertIcon: '/t1-assets/swap-vert-icon.svg',
+		errorIcon: '/t1-assets/error-icon.svg',
+		smallUserIcon: '/t1-assets/small-user-icon.svg',
+		languageIcon: '/t1-assets/language-icon.svg',
+		padlockIcon: '/t1-assets/padlock-icon.svg',
+		arrowLeft: '/t1-assets/arrow-left-2.svg',
+		menuInActive: '/t1-assets/menu-inactive.svg', // Agregar el icono del menú
 	};
 
-	const iconSrc = iconMap[icon] || BannerIcon;
+	const iconSrc = iconMap[icon] || '/t1-assets/banner-icon.svg';
+	
 	return (
 		<Image 
-		src={iconSrc} 
-		alt="Icon" 
-		width={width || 20} 
-		height={height || 20} 
-		style={sx} 
-		className={className} 
+			src={iconSrc} 
+			alt="Icon" 
+			width={width || 20} 
+			height={height || 20} 
+			style={sx} 
+			className={className} 
 		/>
 	);
 };
