@@ -20,6 +20,9 @@ export interface NavbarProps {
   stores?: Store[];
   currentStore?: Store;
   
+  // Solo el título del banner es configurable
+  shippingBannerTitle?: string;
+  
   // Event handlers
   onLogout?: () => void;
   onSearch?: (data: { search: string }) => void;
@@ -27,11 +30,10 @@ export interface NavbarProps {
   onStoreChange?: (storeId: number) => void;
   onNavigate?: (path: string) => void;
   
-  // Component slots
+  // Component slots (solo los que realmente deben ser configurables)
   BalanceBanner?: React.ComponentType<{ className?: string }>;
   T1Selector?: React.ComponentType<any>;
   SearchComponent?: React.ComponentType<any>;
-  MenuIcon?: React.ReactNode;
   
   // Configuration for T1Selector
   t1SelectorConfig?: {
@@ -68,6 +70,7 @@ export function Navbar({
   user = null,
   stores = [],
   currentStore,
+  shippingBannerTitle = 'envíos', // Valor por defecto
   
   // Event handlers
   onLogout = () => {},
@@ -152,20 +155,22 @@ export function Navbar({
           type="button"
           aria-label="Toggle menu"
         >
-          {/* Usar T1Icon en lugar del import directo */}
           <T1Icon icon="menuInActive" width={18} height={16} />
         </button>
-         <T1ShippingBanner
-          brandText="envios"
-          onNavigate={(path) => console.log('Navigate to:', path)}
+        
+        {/* T1ShippingBanner es fijo, solo el título es configurable */}
+        <T1ShippingBanner
+          brandText={shippingBannerTitle}
+          onNavigate={onNavigate}
         />
+        
         <StoreSelector 
           className={`${styles['store-selector-desktop']} hidden lg:flex`}
           stores={stores}
           currentStore={currentStore}
           onStoreChange={onStoreChange} 
           createStoreUrl={''}       
-          />
+        />
       </div>
       
       {showSearchInput && (
