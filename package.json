@@ -1,6 +1,6 @@
 {
   "name": "@t1-org/t1components",
-  "version": "3.2.16",
+  "version": "3.2.17",
   "private": false,
   "publishConfig": {
     "access": "restricted"
