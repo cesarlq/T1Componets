@@ -23,8 +23,6 @@ export { default as SearchInput } from './Components/SearchInput';
 export { default as TableT1 } from './Components/TableT1';
 // Collapse
 export { default as CollapsibleCardT1 } from './Components/CollapsibleCardT1';
-//SideBar
-export { default as Sidebar } from './Components/SideBar';
 //UserProfileMenu
 export { default as UserProfileMenu } from './Components/UserProfileMenu';
 //CustomPagination
@@ -33,3 +31,6 @@ export { default as CustomPagination } from './Components/CustomPagination';
 export { default as Cards } from './Components/Cards'
 //ITemIcon 
 export {default as T1Icon} from './Components/T1Icon';
+//MenuComponent
+export {  Navbar } from './Components/MenuComponent/Navbar';
+export { Sidebar } from './Components/MenuComponent/Sidebar';

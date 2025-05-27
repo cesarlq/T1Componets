@@ -1,0 +1,240 @@
+// ItemLink.module.scss
+@use './variables.scss';
+
+.itemSubPath {
+  list-style: none;
+  margin-bottom: 4px;
+
+  &[data-reduce="true"] {
+    .linkContainer {
+      width: 41px;
+      height: 41px;
+      padding: 0;
+      display: grid;
+      place-content: center;
+
+      .arrow {
+        display: none;
+      }
+    }
+  }
+}
+
+.linkContainer {
+  display: flex;
+  align-items: center;
+  height: 30px;
+  list-style-type: none;
+  transition: all ease 0.3s;
+  cursor: pointer;
+
+  // Estado activo cuando NO está reducido y NO tiene subpaths
+  &[data-active="true"][data-has-sub-paths="false"][data-reduce="false"] {
+    background-color: #FEF4F4;
+    border-radius: 6px;
+
+    .link {
+      padding: 4px;
+      margin-left: -4px;
+      font-weight: 700;
+      height: 32.99px;
+
+      &::before {
+        content: ' ';
+        position: absolute;
+        width: 2px;
+        background-color: variables.$primary-color;
+        left: 0px;
+        top: 6px;
+        bottom: 6px;
+        border-radius: 10px;
+      }
+
+      .endAdornment {
+        bottom: 8.5px;
+        right: -25px;
+      }
+    }
+  }
+
+  // Estado activo cuando NO está reducido y SÍ tiene subpaths
+  &[data-active="true"][data-reduce="false"] {
+    position: relative;
+
+    .link {
+      font-weight: 700;
+
+      &::before {
+        content: ' ';
+        position: absolute;
+        width: 2px;
+        background-color: variables.$primary-color;
+        left: -4px;
+        top: 0;
+        bottom: 0;
+        border-radius: 10px;
+      }
+    }
+  }
+
+  // Estado activo cuando SÍ está reducido y NO tiene subpaths
+  &[data-active="true"][data-has-sub-paths="false"][data-reduce="true"] {
+    background-color: #FEF4F4;
+    border-radius: 15px;
+  }
+
+  // Estado activo cuando SÍ está reducido y SÍ tiene subpaths
+  &[data-active="true"][data-has-sub-paths="true"][data-reduce="true"] {
+    background-color: #FEF4F4;
+    border-radius: 15px;
+
+    .link {
+      background-color: #FEF4F4;
+      border-radius: 6px;
+      width: 100%;
+    }
+  }
+
+  // Configuración especial para items con subpaths
+  &[data-has-sub-paths="true"] {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0 !important;
+  }
+}
+
+.link {
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: #4C4C4C;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  position: relative;
+  width: 100%;
+
+  &:hover {
+    text-decoration: none;
+    color: #4C4C4C;
+  }
+
+  .menuIcon {
+    flex-shrink: 0;
+    fill: variables.$font-color;
+    max-width: 50px;
+    max-height: 25px;
+  }
+}
+
+.endAdornment {
+  position: absolute;
+  right: -30px;
+  bottom: 2px;
+  min-width: 25px;
+  height: 17px;
+}
+
+.arrow {
+  transition: all ease 0.3s;
+  transform: rotate(180deg);
+  flex-shrink: 0;
+
+  &[data-open="true"] {
+    transform: rotate(0deg);
+  }
+}
+
+.subPaths {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height ease 0.3s;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding-left: 26px;
+
+  &[data-open="true"] {
+    max-height: 500px;
+    position: relative;
+    margin-top: 3px;
+
+    &::before {
+      content: ' ';
+      position: absolute;
+      width: 1px;
+      background-color: #E7E7E7;
+      left: 5px;
+      top: 0;
+      bottom: 0;
+    }
+  }
+}
+
+.subPath {
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  border-radius: 5px;
+  padding: 4px;
+  width: calc(100% - 10px);
+  margin-left: -4px;
+  color: #000;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  text-decoration: none;
+  position: relative;
+
+  &:hover {
+    text-decoration: none;
+    color: #000;
+  }
+
+  &[data-active="true"] {
+    background-color: #FEF4F4;
+  }
+
+  // Notification count
+  &::before {
+    content: attr(data-notification-count);
+    position: absolute;
+    right: 18px;
+    font-size: 11px;
+    font-weight: 400;
+    border-radius: 6px;
+    background: #F9D2D2;
+    width: 19.356px;
+    height: 20px;
+    place-content: center;
+    display: grid;
+    color: #4C4C4C;
+  }
+
+  &[data-notification-count='']::before {
+    display: none;
+  }
+}
+
+// Media queries
+@media (max-width: variables.$breakpoint-md) {
+  .linkContainer[data-active="true"] {
+    position: relative;
+
+    .link {
+      &::after {
+        display: none;
+      }
+    }
+  }
+}

@@ -1,0 +1,143 @@
+@use './variables.scss';
+
+.container {
+    button {
+        border: none;
+    }
+    display: flex;
+    height: variables.$height-navbar;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 23px;
+    padding-right: 32px;
+    gap: 112px;
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 3;
+    background-color: white;
+    border: 1px #F2F2F2 solid;
+    transition: all ease 0.3s;
+
+    .search {
+        max-width: 217px;
+        width: 400px !important;
+    }
+
+    .progress {
+        width: 559px;
+    }
+
+    .user-info-container {
+        display: flex;
+        gap: 19px;
+        align-items: center;
+
+        .first-letter {
+            cursor: pointer;
+            font-size: 14px;
+            height: 24px;
+            width: 24px;
+            background-color: variables.$primary-color;
+            color: white;
+            border-radius: 50%;
+            place-items: center;
+            flex-shrink: 0;
+        }
+    }
+
+    // Sección izquierda del navbar
+    .navbar-left-section {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    }
+
+    // Botón del menú móvil
+    .menu-toggle-button {
+    display: block;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    
+    @media (min-width: 1024px) {
+        display: none;
+    }
+    }
+
+    // Banner T1 en desktop
+    .t1-banner-desktop {
+    display: none;
+    
+    @media (min-width: 1024px) {
+        display: flex;
+    }
+    }
+
+    // Selector de tienda en desktop
+    .store-selector-desktop {
+    display: none;
+    
+    @media (min-width: 1024px) {
+        display: flex;
+    }
+    }
+
+    // Selector de tienda en móvil
+    .store-selector-mobile {
+    display: flex;
+    
+    @media (min-width: 1024px) {
+        display: none;
+    }
+    }
+
+    // Sección de búsqueda
+    .search-section {
+    display: none;
+    
+    @media (min-width: 1024px) {
+        display: block;
+    }
+    }
+
+    // Banner de balance en desktop
+    .balance-banner-desktop {
+    display: none;
+    
+    @media (min-width: 1024px) {
+        display: flex;
+    }
+    }
+}
+
+.container[data-show-info-band=true] {
+    margin-top: variables.$height-info;
+}
+
+
+@media (max-width: 1300px) {
+    .progress {
+        display: none;
+    }
+}
+
+@media (max-width: variables.$breakpoint-md) {
+    .container {
+        z-index: 2;
+    }
+}
+
+@media (max-width: 1320px) {
+    .container {
+        padding: 0 13px;
+
+        .select-store-and-search {
+            .search-and-button {
+                display: none;
+            }
+        }
+    }
+}

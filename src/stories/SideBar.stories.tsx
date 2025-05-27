@@ -1,400 +1,378 @@
-import React, { useEffect, useState } from 'react';
-import { Meta, StoryObj } from '@storybook/react';
-import T1Logo from '../assets/marketplaces-logos/t1-logo.svg';
-import T1IconReduced from '../assets/marketplaces-logos/t1-logo.svg';
-import T1EnviosLogo from '../assets/sidebar/t1EnviosLogo.svg';
-import T1EnviosIcon from '../assets/sidebar/t1EnviosIcon.svg';
-import T1ComerciosLogo from '../assets/sidebar/t1ComerciosLogo.svg';
-import T1ComerciosIcon from '../assets/sidebar/t1ComerciosIcon.svg';
-import ProductsIcon from '../assets/menu-icons/products-icon.svg';
-import OrdersIcon from '../assets/menu-icons/orders-icon.svg';
-import SettingsIcon from '../assets/menu-icons/settings-icon.svg';
-import UsersIcon from '../assets/menu-icons/clients-icon.svg';
-import homeIcon from '../assets/menu-icons/home-icon.svg';
-import Sidebar from '../Components/SideBar';
+// Sidebar.stories.tsx
+import type { Meta, StoryObj } from '@storybook/react';
+import React, { useState } from 'react';
+import { Sidebar, MenuPath } from '../Components/MenuComponent/Sidebar';
+import HomeIcon from '../assets/menus/inactive/home-inactive.svg';
+import PackageIcon from '../assets/menus/inactive/shipping-inactive.svg';
+import AnalyticsIcon from '../assets/menus/inactive/finances-inactive.svg';
+import SettingsIcon from '../assets/menus/inactive/settings-inactive.svg';
 
-/**
- * `SideBar` is a navigational component for applications that provides a vertical menu
- * with expandable sections and service switching functionality.
- * 
- * The sidebar can be displayed in expanded or reduced states, and responsively adjusts
- * based on screen width. It supports hierarchical navigation with collapsible submenu items.
- * 
- * ## Features
- * - Expandable/collapsible navigation menu
- * - Service switching capability
- * - Responsive design with breakpoint control
- * - Submenu support for nested navigation
- * - Customizable styling
- * - Controlled or uncontrolled expand/collapse state
- * - Hidden items support for conditional navigation
- * 
- * The sidebar is commonly used as the main navigation element in dashboard-style applications
- * and admin interfaces.
- * 
- * @component
- */
-const meta: Meta<typeof Sidebar> = {
-  title: 'Components/Sidebar',
-  component: Sidebar,
-  parameters: {
-    layout: 'fullscreen',
-    docs: {
-      description: {
-        component: `
-          A versatile vertical navigation sidebar component with expandable/collapsible functionality, 
-          service switching, and responsive behavior.
-          
-          ## When to use
-          - As the main navigation element in dashboard applications
-          - In admin interfaces where hierarchical navigation is needed
-          - When multiple services or sections need to be accessible from one interface
-          - For applications requiring a clean, space-efficient navigation system
-          
-          ## Accessibility considerations
-          - Supports keyboard navigation
-          - Icon+text combinations improve recognition
-          - Reduced state maintains recognizable icons for navigation
-        `
-      }
-    }
+// Mock menu data
+const mockMenuPaths: MenuPath[] = [
+  {
+    href: '/dashboard',
+    text: 'Dashboard',
+    icon: HomeIcon,
   },
-  decorators: [
-    (Story) => {
-      // Client-side only rendering decorator
-      const [isMounted, setIsMounted] = useState(false);
+  {
+    href: '/shipments',
+    text: 'Envíos',
+    icon: PackageIcon,
+    subPaths: [
+      { href: '/shipments/create', text: 'Crear envío' },
+      { href: '/shipments/list', text: 'Lista de envíos' },
+      { href: '/shipments/tracking', text: 'Rastreo' },
+      { href: '/shipments/returns', text: 'Devoluciones' }
+    ]
+  },
+  {
+    href: '/analytics',
+    text: 'Analíticas',
+    icon: AnalyticsIcon,
+    subPaths: [
+      { href: '/analytics/overview', text: 'Resumen' },
+      { href: '/analytics/performance', text: 'Rendimiento' },
+      { href: '/analytics/reports', text: 'Reportes' }
+    ]
+  },
+  {
+    href: '/settings',
+    text: 'Configuración',
+    icon: SettingsIcon,
+    concatStoreId: true,
+    subPaths: [
+      { href: '/settings/profile/', text: 'Perfil' },
+      { href: '/settings/billing/', text: 'Facturación' },
+      { href: '/settings/integrations/', text: 'Integraciones' }
+    ]
+  }
+];
+
+// Mock components
+const MockTopBanner: React.ComponentType<{ className?: string }> = ({ className }) => (
+  <div className={`${className} bg-blue-500 text-white p-3 rounded-lg text-center font-bold`}>
+    🚀 T1 Shipping
+  </div>
+);
+
+const MockBalanceBanner: React.ComponentType<{ className?: string }> = ({ className }) => (
+  <div className={`${className} bg-green-100 p-3 rounded-lg text-center`}>
+    <div className="text-sm font-semibold text-green-800">Balance</div>
+    <div className="text-lg font-bold text-green-900">$1,250.00</div>
+  </div>
+);
+
+const MockBottomBanner = () => (
+  <div className="bg-gray-100 p-4 text-center">
+    <div className="text-xs text-gray-600">© 2024 T1 Shipping</div>
+    <div className="text-xs text-gray-500">Versión 2.1.0</div>
+  </div>
+);
+
+// Wrapper component for state management
+const SidebarWrapper = (props: any) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [isReduced, setIsReduced] = useState(false);
+  const [currentPath, setCurrentPath] = useState('/dashboard');
+
+  // Mock window.innerWidth para testing responsive
+  const [windowWidth, setWindowWidth] = useState(1200);
+
+  // Simular cambio de tamaño de ventana
+  const simulateResize = (width: number) => {
+    setWindowWidth(width);
+    // Simular el efecto del breakpoint
+    if (width <= 768) {
+      setIsReduced(false); // En móvil no se reduce
+    } else if (width <= 1110) {
+      setIsReduced(true); // En tablet se reduce
+    } else {
+      setIsReduced(false); // En desktop normal
+    }
+  };
+
+  return (
+    <div style={{ display: 'flex', minHeight: '100vh', background: '#f5f5f5' }}>
+      <Sidebar
+        {...props}
+        isOpen={isOpen}
+        isReduced={isReduced}
+        onToggleOpen={(open) => {
+          console.log('Toggle open:', open);
+          setIsOpen(open);
+        }}
+        onToggleReduce={(reduced) => {
+          console.log('Toggle reduce:', reduced);
+          setIsReduced(reduced);
+        }}
+        onNavigate={(path) => {
+          console.log('Navigate to:', path);
+          setCurrentPath(path);
+        }}
+        onCreateClick={() => console.log('Create button clicked!')}
+      />
       
-      useEffect(() => {
-        setIsMounted(true);
-      }, []);
-      
-      return (
-        <div style={{ height: '100vh', display: 'flex' }}>
-          {isMounted ? <Story /> : <div style={{ width: '280px', height: '100%', background: '#fff' }}></div>}
-          <div style={{ padding: '20px', flex: 1 }}>
-            <h1>Content Area</h1>
-            <p>Interact with the sidebar on the left to see how it works.</p>
+      {/* Main content area */}
+      <div style={{ 
+        marginLeft: windowWidth <= 768 ? 0 : (isReduced ? '70px' : '250px'),
+        padding: '20px',
+        flex: 1,
+        transition: 'margin-left 0.3s ease'
+      }}>
+        <div style={{ 
+          background: 'white', 
+          padding: '20px', 
+          borderRadius: '10px',
+          boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+        }}>
+          <h1 style={{ margin: '0 0 20px 0', color: '#333' }}>
+            Contenido Principal
+          </h1>
+          <p style={{ color: '#666', marginBottom: '20px' }}>
+            Esta es el área de contenido principal. El sidebar debería funcionar correctamente 
+            en diferentes tamaños de pantalla.
+          </p>
+          
+          {/* Controles para testing */}
+          <div style={{ 
+            background: '#f0f8ff', 
+            padding: '15px', 
+            borderRadius: '8px',
+            marginBottom: '20px'
+          }}>
+            <h3 style={{ margin: '0 0 15px 0', color: '#333' }}>🎛️ Controles de Testing:</h3>
+            <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+              <button 
+                onClick={() => simulateResize(1400)}
+                style={{ 
+                  padding: '8px 12px', 
+                  background: '#e3f2fd', 
+                  border: '1px solid #2196f3',
+                  borderRadius: '4px',
+                  cursor: 'pointer'
+                }}
+              >
+                Desktop (1400px)
+              </button>
+              <button 
+                onClick={() => simulateResize(1000)}
+                style={{ 
+                  padding: '8px 12px', 
+                  background: '#fff3e0', 
+                  border: '1px solid #ff9800',
+                  borderRadius: '4px',
+                  cursor: 'pointer'
+                }}
+              >
+                Tablet (1000px)
+              </button>
+              <button 
+                onClick={() => simulateResize(600)}
+                style={{ 
+                  padding: '8px 12px', 
+                  background: '#fce4ec', 
+                  border: '1px solid #e91e63',
+                  borderRadius: '4px',
+                  cursor: 'pointer'
+                }}
+              >
+                Móvil (600px)
+              </button>
+              <button 
+                onClick={() => setIsOpen(!isOpen)}
+                style={{ 
+                  padding: '8px 12px', 
+                  background: '#e8f5e8', 
+                  border: '1px solid #4caf50',
+                  borderRadius: '4px',
+                  cursor: 'pointer'
+                }}
+              >
+                Toggle Sidebar
+              </button>
+            </div>
+          </div>
+          
+          <div style={{ 
+            background: '#f8f9fa', 
+            padding: '15px', 
+            borderRadius: '8px',
+            marginBottom: '20px'
+          }}>
+            <h3 style={{ margin: '0 0 10px 0', color: '#333' }}>📊 Estado actual:</h3>
+            <p style={{ margin: '5px 0', color: '#666' }}>
+              <strong>Ruta actual:</strong> {currentPath}
+            </p>
+            <p style={{ margin: '5px 0', color: '#666' }}>
+              <strong>Ancho simulado:</strong> {windowWidth}px
+            </p>
+            <p style={{ margin: '5px 0', color: '#666' }}>
+              <strong>Sidebar abierto:</strong> {isOpen ? 'Sí' : 'No'}
+            </p>
+            <p style={{ margin: '5px 0', color: '#666' }}>
+              <strong>Sidebar reducido:</strong> {isReduced ? 'Sí' : 'No'}
+            </p>
+          </div>
+
+          <div style={{ 
+            background: '#e3f2fd', 
+            padding: '15px', 
+            borderRadius: '8px' 
+          }}>
+            <h3 style={{ margin: '0 0 10px 0', color: '#1976d2' }}>
+              🧪 Pruebas recomendadas:
+            </h3>
+            <ul style={{ margin: 0, paddingLeft: '20px', color: '#666' }}>
+              <li>Usa los botones de arriba para simular diferentes tamaños</li>
+              <li>Haz hover sobre el sidebar cuando esté reducido</li>
+              <li>Haz clic en los items del menú con subpaths</li>
+              <li>Prueba el botón de crear envío</li>
+              <li>En móvil, abre/cierra el sidebar</li>
+              <li>Revisa la consola para ver los logs de navegación</li>
+            </ul>
           </div>
         </div>
-      );
-    },
-  ],
-  argTypes: {
-    logoFull: {
-      description: 'The full logo to display in expanded state'
-    },
-    logoReduced: {
-      description: 'The reduced logo to display in collapsed state'
-    },
-    servicePaths: {
-      description: 'Array of service options for service switching functionality'
-    },
-    menuItems: {
-      description: 'Array of menu items and their potential submenus'
-    },
-    initialReduceState: {
-      control: 'boolean',
-      description: 'Initial state of the sidebar (expanded or reduced)'
-    },
-    breakpointWidth: {
-      control: 'number',
-      description: 'Width at which the sidebar automatically collapses (responsive behavior)'
-    },
-    customStyles: {
-      control: 'object',
-      description: 'Custom styles for different parts of the sidebar'
-    },
-    onServiceOptionClick: { 
-      action: 'Service Option Clicked',
-      description: 'Function called when a service option is clicked'
-    },
-    onSidebarReduceChange: { 
-      action: 'Sidebar Reduce Changed', 
-      description: 'Function called when the sidebar state changes between expanded and reduced'
-    },
-    onClickMenuItem: { 
-      action: 'Menu Item Clicked',
-      description: 'Function called when a menu item is clicked'
-    },
-    testMode: {
-      control: 'boolean',
-      description: 'Enables test mode to facilitate automated testing'
-    },
-    router: {
-      description: 'Custom router object for navigation'
-    }
+      </div>
+    </div>
+  );
+};
+
+const meta: Meta<typeof SidebarWrapper> = {
+  title: 'Components/Sidebar',
+  component: SidebarWrapper,
+  parameters: {
+    layout: 'fullscreen',
   },
   tags: ['autodocs'],
 };
 
 export default meta;
-type Story = StoryObj<typeof Sidebar>;
+type Story = StoryObj<typeof meta>;
 
-// Sample data for stories
-const serviceOptions = [
-  {
-    name: 'Envíos',
-    icon: T1EnviosLogo,
-    iconReduced: T1EnviosIcon,
-    type: 'envios',
-    width: 100
-  },
-  {
-    name: 'Comercios',
-    icon: T1ComerciosLogo,
-    iconReduced: T1ComerciosIcon,
-    type: 'comercios',
-    width: 125
-  }
-];
-
-const menuItems = [
-  {
-    id: 'dashboard',
-    title: 'Dashboard',
-    path: '/dashboard',
-    icon: homeIcon,
-    width: 100
-  },
-  {
-    id: 'products',
-    title: 'Productos',
-    icon: ProductsIcon,
-    width: 100,
-    subItems: [
-      {
-        id: 'all-products',
-        title: 'Todos los productos',
-        path: '/products'
-      },
-      {
-        id: 'add-product',
-        title: 'Añadir producto',
-        path: '/products/add'
-      }
-    ]
-  },
-  {
-    id: 'orders',
-    title: 'Pedidos',
-    path: '/orders',
-    icon: OrdersIcon,
-    width: 100
-  },
-  {
-    id: 'users',
-    title: 'Usuarios',
-    icon: UsersIcon,
-    width: 100,
-    subItems: [
-      {
-        id: 'customers',
-        title: 'Clientes',
-        path: '/users/customers'
-      },
-      {
-        id: 'staff',
-        title: 'Personal',
-        path: '/users/staff'
-      }
-    ]
-  },
-  {
-    id: 'settings',
-    title: 'Configuración',
-    path: '/settings',
-    icon: SettingsIcon,
-    width: 100
-  }
-];
-
-// Create dummy router for all stories
-const dummyRouter = {
-  pathname: '/',
-  push: (path: string) => console.log('Navigation to:', path)
-};
-
-/**
- * Default expanded view of the sidebar with all standard features enabled.
- * 
- * This example shows the sidebar in its expanded state with the full menu text visible.
- * It includes service options at the top and a complete menu structure with both direct
- * navigation items and expandable sections with subitems.
- */
 export const Default: Story = {
   args: {
-    testMode: true,
-    router: dummyRouter,
-    logoFull: T1Logo,
-    logoReduced: T1IconReduced,
-    servicePaths: serviceOptions,
-    menuItems: menuItems,
-    initialReduceState: false,
-    breakpointWidth: 1110,
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'The default expanded sidebar showing service options and a full menu structure with expandable sections.'
-      }
-    }
+    menuPaths: mockMenuPaths,
+    TopBanner: MockTopBanner,
+    BottomBanner: MockBottomBanner,
+    BalanceBanner: MockBalanceBanner,
+    showCreateButton: true,
+    showBalance: true,
+    showInfoBand: false,
+    createButtonText: '+ Crear envío',
+    createButtonPath: '/shipments/create',
+    currentUserId: '123',
+    restrictedPaths: []
   }
 };
 
-/**
- * Collapsed version of the sidebar showing only icons.
- * 
- * In the reduced state, the sidebar displays only icons to save space while
- * still providing navigation functionality. This is useful for maximizing
- * content area space while keeping navigation accessible.
- */
 export const Reduced: Story = {
   args: {
     ...Default.args,
-    initialReduceState: true,
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'The sidebar in its collapsed state, showing only icons to save space while maintaining navigation functionality.'
-      }
-    }
+    breakpointReduce: 2000, // Forzar reducción
   }
 };
 
-/**
- * Sidebar with conditionally hidden menu items.
- * 
- * This example demonstrates how certain menu items can be hidden based on
- * user permissions or application state. The hidden items do not appear in
- * the navigation at all.
- */
-export const WithHiddenItems: Story = {
+export const WithoutCreateButton: Story = {
   args: {
     ...Default.args,
-    menuItems: menuItems.map((item, index) => 
-      index === 3 ? { ...item, hidden: true } : item
-    ),
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Demonstrates conditionally hidden menu items, which is useful for implementing permission-based navigation.'
-      }
-    }
+    showCreateButton: false,
   }
 };
 
-/**
- * Dark themed version of the sidebar.
- * 
- * This example shows how to customize the sidebar's appearance with a dark theme
- * using the customStyles prop. This is useful for applications with dark mode
- * or for creating visual distinction between different sections.
- */
-export const DarkTheme: Story = {
+export const WithoutBalance: Story = {
   args: {
     ...Default.args,
-    customStyles: {
-      sidebar: {
-        backgroundColor: '#222',
-        color: '#fff',
-      },
-      header: {
-        borderBottom: '1px solid #333',
-      },
-      submenu: {
-        backgroundColor: '#333',
-        borderBottom: '1px solid #444',
-      },
-      buttonReduce: {
-        backgroundColor: '#444',
-        color: '#fff',
-      },
-    },
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'A dark-themed version of the sidebar using the customStyles prop to override default styling.'
-      }
-    }
+    showBalance: false,
   }
 };
 
-/**
- * Sidebar displaying menu items with very long titles.
- * 
- * This example tests how the sidebar handles menu items with exceptionally long
- * titles, demonstrating text truncation and overflow handling.
- */
-export const LongMenuNames: Story = {
+export const WithRestrictedPaths: Story = {
   args: {
     ...Default.args,
-    menuItems: menuItems.map((item, index) => 
-      index === 2 ? { ...item, title: 'Este es un título muy largo para probar cómo se ve' } : item
-    ),
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Tests how the sidebar handles menu items with very long titles, demonstrating text truncation and overflow behavior.'
-      }
-    }
+    restrictedPaths: ['/analytics', '/settings/billing/'],
   }
 };
 
-/**
- * Sidebar without service switching functionality.
- * 
- * This example shows the sidebar without the service options section,
- * useful for applications that don't require service switching.
- */
-export const NoServiceOptions: Story = {
+export const MinimalSidebar: Story = {
   args: {
-    ...Default.args,
-    servicePaths: [],
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Sidebar configuration without service options section, for applications that don\'t need service switching functionality.'
+    menuPaths: [
+      {
+        href: '/dashboard',
+        text: 'Dashboard',
+        icon: HomeIcon,
+      },
+      {
+        href: '/simple',
+        text: 'Página Simple',
+        icon: PackageIcon,
       }
-    }
+    ],
+    showCreateButton: false,
+    showBalance: false,
+    TopBanner: undefined,
+    BottomBanner: undefined,
   }
 };
 
-/**
- * Sidebar with extensive visual customization.
- * 
- * This example demonstrates the flexibility of the sidebar's styling system,
- * with custom colors, borders, shadows, and spacing applied to different sections.
- */
-export const CustomStyles: Story = {
+export const CustomTexts: Story = {
   args: {
     ...Default.args,
-    customStyles: {
-      sidebar: {
-        backgroundColor: '#f5f5f5',
-        borderRight: '1px solid #e0e0e0',
+    createButtonText: '+ Nueva Guía',
+    createButtonPath: '/create-guide',
+  }
+};
+
+export const WithInfoBand: Story = {
+  args: {
+    ...Default.args,
+    showInfoBand: true,
+  }
+};
+
+export const LongMenuList: Story = {
+  args: {
+    ...Default.args,
+    menuPaths: [
+      ...mockMenuPaths,
+      {
+        href: '/inventory',
+        text: 'Inventario',
+        icon: PackageIcon,
+        subPaths: [
+          { href: '/inventory/products', text: 'Productos' },
+          { href: '/inventory/categories', text: 'Categorías' },
+          { href: '/inventory/suppliers', text: 'Proveedores' },
+          { href: '/inventory/stock', text: 'Stock' },
+          { href: '/inventory/movements', text: 'Movimientos' }
+        ]
       },
-      header: {
-        backgroundColor: '#ffffff',
-        borderBottom: '2px solid #f0f0f0',
-        padding: '15px',
+      {
+        href: '/customers',
+        text: 'Clientes',
+        icon: AnalyticsIcon,
+        subPaths: [
+          { href: '/customers/list', text: 'Lista de clientes' },
+          { href: '/customers/segments', text: 'Segmentos' },
+          { href: '/customers/support', text: 'Soporte' }
+        ]
       },
-      buttonReduce: {
-        backgroundColor: '#d9534f',
-        color: 'white',
-        boxShadow: '0 2px 5px rgba(217, 83, 79, 0.3)',
+      {
+        href: '/billing',
+        text: 'Facturación',
+        icon: SettingsIcon,
       },
-    },
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Demonstrates the extensive styling customization options available for the sidebar component.'
+      {
+        href: '/integrations',
+        text: 'Integraciones',
+        icon: HomeIcon,
       }
-    }
+    ]
+  }
+};
+
+export const MobileDemo: Story = {
+  args: {
+    ...Default.args,
+    breakpointMobile: 2000, // Forzar vista móvil
   }
 };

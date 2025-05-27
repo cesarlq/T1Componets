@@ -1,0 +1,220 @@
+// T1Selector.module.scss
+
+// Clases de transición personalizadas (como en tu original)
+.transition-ease-all {
+  transition: all 0.3s ease;
+}
+
+.duration-30 {
+  transition-duration: 0.3s;
+}
+
+// Shadows personalizadas
+.shadow-popup {
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15), 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.shadow-full {
+  box-shadow: 0 -4px 25px rgba(0, 0, 0, 0.15), 0 -10px 60px rgba(0, 0, 0, 0.1);
+}
+
+.primary-border-bottom {
+  border-bottom: 1px solid #E5E7EB;
+}
+
+.container {
+  position: relative;
+}
+
+.triggerButton {
+  background: transparent;
+  padding: 5px;
+  border-radius: 10px;
+  height: 27px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: #F8F8F8;
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0);
+  }
+}
+
+.modal {
+  // Base styles - igual que tu original
+  margin-top: 8px;
+  height: 177px;
+  background: white;
+  position: fixed;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  
+  // Transición personalizada (transition-ease-all duration-30)
+  transition: all 0.3s ease;
+
+  // Estado cerrado (default)
+  &.modalClosed {
+    // Móvil: escondido abajo
+    bottom: -177px;
+    border-radius: 10px 10px 0 0;
+    box-shadow: none;
+  }
+
+  // Estado abierto
+  &.modalOpen {
+    // Móvil: visible desde abajo (data-[open=true]:bottom-0)
+    bottom: 0;
+    // Redondeado solo arriba en móvil (data-[open=true]:rounded-b-none data-[open=true]:rounded-t-[10px])
+    border-radius: 10px 10px 0 0;
+    // Shadow completa en móvil (data-[open=true]:shadow-full)
+    box-shadow: 0 -4px 25px rgba(0, 0, 0, 0.15), 0 -10px 60px rgba(0, 0, 0, 0.1);
+  }
+
+  // Desktop styles (lg:)
+  @media (min-width: 1024px) {
+    // lg:w-[320px]
+    width: 320px;
+    // lg:absolute lg:top-full lg:right-0 lg:left-auto
+    position: absolute;
+    top: 100%;
+    right: 0;
+    left: auto;
+    bottom: auto;
+    transform-origin: top right;
+
+    // Estado cerrado en desktop (lg:opacity-0 lg:scale-0)
+    &.modalClosed {
+      opacity: 0;
+      transform: scale(0);
+      pointer-events: none;
+      bottom: auto;
+      border-radius: 10px;
+      box-shadow: none;
+    }
+
+    // Estado abierto en desktop (data-[open=true]:lg:opacity-100 data-[open=true]:lg:scale-100)
+    &.modalOpen {
+      opacity: 1;
+      transform: scale(1);
+      bottom: auto;
+      // Completamente redondeado en desktop (data-[open=true]:lg:rounded-[10px])
+      border-radius: 10px;
+      // Shadow popup en desktop (data-[open=true]:lg:shadow-popup)
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15), 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+  }
+}
+
+.closeButton {
+  display: block;
+  position: absolute;
+  right: 15px;
+  top: 12px;
+  padding: 4px;
+  background: transparent;
+  border: none;
+  border-radius: 4px;
+  color: #6B7280;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: #F3F4F6;
+  }
+
+  // Ocultar en desktop
+  @media (min-width: 1024px) {
+    display: none!important;
+  }
+}
+
+.header {
+  padding: 16px 24px;
+  border-bottom: 1px solid #E5E7EB;
+  height: 51px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.ecosystemTitle {
+  font-weight: 700;
+  font-size: 14px;
+  color: #111827;
+}
+
+.t1Logo {
+  color: #EF4444;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.menuItems {
+  padding: 12px 8px 9px 8px;
+  display: flex;
+  gap: 6px;
+  justify-content: space-between;
+}
+
+.menuItem {
+  transition: background-color 0.2s ease;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  padding: 10px 8px 15px 8px;
+  background: transparent;
+  border-radius: 10px;
+  cursor: pointer;
+  text-decoration: none;
+  border: none;
+
+  &:hover {
+    background-color: #FEF4F4;
+  }
+
+  &.menuItemActive {
+    background-color: #EFF6FF;
+  }
+}
+
+.iconContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 8px;
+}
+
+.iconContainer img {
+  width: 57px;
+  height: 57px;
+  color: #6B7280; // Color por defecto
+}
+
+.itemLabel {
+  font-weight: 600;
+  font-size: 12px;
+  text-align: center;
+  color: #374151;
+
+  &.itemLabelActive {
+    color: #2563EB;
+  }
+}
+
+// Variables para personalización
+:export {
+  hoverColor: #FEF4F4;
+  activeBackgroundColor: #EFF6FF;
+  activeLabelColor: #2563EB;
+  t1Color: #EF4444;
+}

@@ -7,6 +7,7 @@ import postcss from 'rollup-plugin-postcss';
 import { terser } from 'rollup-plugin-terser';
 import url from '@rollup/plugin-url'; // Añade esta importación
 
+
 // Plugin personalizado para eliminar directivas 'use client'
 const removeUseClientDirectivePlugin = {
   name: 'remove-use-client',

@@ -1,21 +1,28 @@
+// .storybook/preview.tsx
 import React from 'react';
 import type { Preview } from '@storybook/react';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import theme from '../src/styles/theme';
 
-// Wrap your entire Storybook in necessary providers
-const GlobalDecorator = (Story) => (
+// Importar Tailwind CSS
+import '../src/styles/globals.css';
+
+// Global decorator
+const GlobalDecorator = (Story: any) => (
   <React.StrictMode>
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Story />
+      <div className="min-h-screen bg-gray-50">
+        <Story />
+      </div>
     </ThemeProvider>
   </React.StrictMode>
 );
 
 const preview: Preview = {
   parameters: {
+    actions: { argTypesRegex: '^on[A-Z].*' },
     controls: {
       matchers: {
         color: /(background|color)$/i,
@@ -25,6 +32,7 @@ const preview: Preview = {
     nextjs: {
       appDirectory: true,
     },
+    layout: 'fullscreen',
   },
   decorators: [GlobalDecorator],
 };

@@ -1,0 +1,47 @@
+@use './variables.scss';
+
+.container{
+    max-width: 424px;
+    display: flex;
+    padding: 8px 16px;
+    gap: 16px;
+    justify-content: center;
+    align-items: center;
+    border-bottom: variables.$secondary-border;
+
+    .letter{
+        background-color: variables.$primary-color;
+        color: white;
+        width: 56px;
+        height: 56px;
+        display: grid;
+        place-items: center;
+        border-radius: 50%;
+        flex-shrink: 0;
+        font-size: 35px;
+    }
+
+    .name-and-email{
+        display: flex;
+        flex-direction: column;
+        gap: 1px;
+
+        .name{
+            width: 200px;
+            white-space: nowrap;
+            overflow: hidden;
+            font-size: 16px;
+            font-weight: 700;
+            text-overflow: ellipsis;
+        }
+
+        .email{
+            width: 200px;
+            white-space: nowrap;
+            overflow: hidden;
+            font-size: 12px;
+            font-weight: 400;
+            text-overflow: ellipsis;
+        }
+    }
+}

@@ -1,0 +1,140 @@
+// Sidebar.module.scss
+@use './variables.scss';
+
+.container {
+  transition: all ease 0.3s;
+  width: variables.$width-side-bar;
+  padding-bottom: 18px;
+  position: relative;
+  z-index: 2;
+  height: max-content;
+  position: fixed;
+  left: 0;
+  top: 0;
+  padding-left: 19px;
+  padding-right: 19px;
+  height: 100%;
+  border: 1px #F2F2F2 solid;
+  background-color: white;
+  font-size: 13px;
+  overflow-y: auto;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  gap: 6px;
+
+  // Estado con info band
+  &[data-show-info-band="true"] {
+    margin-top: variables.$height-info;
+  }
+
+  // Estado reducido
+  &[data-reduce="true"] {
+    width: variables.$reduce-sidebar-width;
+    z-index: 1;
+    overflow-x: hidden;
+
+    .sideBar {
+      align-items: center;
+    }
+
+    .paths {
+      align-items: center;
+      gap: 15px;
+    }
+  }
+
+  // Hover effect cuando está reducido
+  &[data-enlarge-by-hover="true"] {
+    box-shadow: 10px 0 5px 999999px #19191958;
+  }
+
+  // Media query para móvil
+  @media (max-width: variables.$breakpoint-md) {
+    width: variables.$width-side-bar-mobile;
+    border-radius: 0px 10px 10px 0px;
+    left: -100%;
+    padding-bottom: 0;
+    padding-left: 15px;
+    padding-right: 15px;
+    z-index: 11;
+
+    &[data-open-side-bar="true"] {
+      box-shadow: 10px 0 5px 999999px #19191958;
+      left: 0;
+    }
+
+    &[data-show-info-band="true"] {
+      margin-top: 0;
+    }
+  }
+
+  // Media query para pantallas bajas
+  @media (max-height: 668px) {
+    .sideBar {
+      .paths {
+        .linkContainer {
+          height: 100%;
+        }
+      }
+    }
+  }
+}
+
+.sideBar {
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.bannerReduced {
+  opacity: 0.7;
+  transform: scale(0.9);
+  transition: all 0.3s ease;
+}
+
+.callToActionCreateGuide {
+  margin: 8px 0 0 0 !important;
+  transition: all ease 0.3s !important;
+  flex-shrink: 0 !important;
+  height: 35px !important;
+  background: #EF4444 !important;
+  color: white !important;
+  border-radius: 10px !important;
+  font-weight: 600 !important;
+  font-size: 14px !important;
+  text-transform: none !important;
+
+  &:hover {
+    background: #DC2626 !important;
+  }
+
+  &[data-reduce="true"] {
+    width: 40px !important;
+    height: 40px !important;
+    min-width: 0 !important;
+    
+    .MuiSvgIcon-root {
+      font-size: 20px;
+    }
+  }
+}
+
+.paths {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.itemLink {
+  // Estilos ya manejados en ItemLink.module.scss
+}
+
+.bottomBanner {
+  margin-top: auto;
+}
