@@ -175,7 +175,7 @@ export function Navbar({
           stores={stores}
           currentStore={currentStore}
           onStoreChange={onStoreChange} 
-          createStoreUrl={''}       
+          createStoreUrl={accountUrl}      
         />
       </div>
       
@@ -209,7 +209,7 @@ export function Navbar({
           stores={stores}
           currentStore={currentStore}
           onStoreChange={onStoreChange} 
-          createStoreUrl={''}        
+          createStoreUrl={accountUrl}        
         />
         
         {user && user.name && (
