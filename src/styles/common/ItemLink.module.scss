@@ -7,8 +7,8 @@
 
   &[data-reduce="true"] {
     .linkContainer {
-      width: 46px;
-      height: 46px;
+      width: 41px;
+      height: 41px;
       padding: 0;
       display: grid;
       place-content: center;
@@ -23,8 +23,7 @@
 .linkContainer {
   display: flex;
   align-items: center;
-  width: 46px;
-  height: 46px;
+  height: 30px;
   list-style-type: none;
   transition: all ease 0.3s;
   cursor: pointer;
@@ -82,12 +81,16 @@
   &[data-active="true"][data-has-sub-paths="false"][data-reduce="true"] {
     background-color: #FEF4F4;
     border-radius: 15px;
+    width: 41px;
+    height: 41px;
   }
 
   // Estado activo cuando SÍ está reducido y SÍ tiene subpaths
   &[data-active="true"][data-has-sub-paths="true"][data-reduce="true"] {
     background-color: #FEF4F4;
     border-radius: 15px;
+    width: 41px;
+    height: 41px;
 
     .link {
       background-color: #FEF4F4;
@@ -122,7 +125,11 @@
   line-height: normal;
   position: relative;
   width: 100%;
-  justify-content: center;
+
+  // Estado activo cuando SÍ está reducido y SÍ tiene subpaths
+  &[data-reduce="true"] {
+    justify-content: center;
+  }
 
   &:hover {
     text-decoration: none;

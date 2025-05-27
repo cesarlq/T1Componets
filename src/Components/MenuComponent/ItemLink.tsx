@@ -177,7 +177,7 @@ export function ItemLink({
             subPaths && subPaths[0] ? subPaths[0].href : undefined
           )}
         >
-          <div className={styles.link}>
+          <div data-reduce={sidebarReduce && !enlargeByHover} className={styles.link}>
             <Image
               src={icon}
               alt={text}
@@ -211,6 +211,7 @@ export function ItemLink({
           >
             {currentSubSteps.map((subItem, subIndex) => (
               <Link
+                data-reduce={sidebarReduce && !enlargeByHover}
                 href={concatStoreId && currentUserId ? `${subItem.href}${currentUserId}` : subItem.href}
                 key={subIndex}
                 className={styles.subPath}
@@ -241,6 +242,7 @@ export function ItemLink({
     >
       <Link
         href={concatStoreId && currentUserId ? `${href}${currentUserId}` : href}
+        data-reduce={sidebarReduce && !enlargeByHover}
         className={styles.link}
         onClick={() => {
           handleOpenSubPaths(index, href);
