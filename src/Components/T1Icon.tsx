@@ -1,8 +1,7 @@
-import Image from 'next/image';
-import { PBIconProps } from '../interfaces/commonInterfaces';
 import React from 'react';
+import { PBIconProps } from '../interfaces/commonInterfaces';
 
-// Ahora los assets estarán en la carpeta public del proyecto consumidor
+// Usar img nativo en lugar de Next/Image para mayor compatibilidad
 const T1Icon: React.FC<PBIconProps> = ({ icon, width, height, sx, className }) => {
 	const iconMap: { [key: string]: string } = {
 		genericIcon: '/t1-assets/banner-icon.svg',
@@ -97,19 +96,25 @@ const T1Icon: React.FC<PBIconProps> = ({ icon, width, height, sx, className }) =
 		languageIcon: '/t1-assets/language-icon.svg',
 		padlockIcon: '/t1-assets/padlock-icon.svg',
 		arrowLeft: '/t1-assets/arrow-left-2.svg',
-		menuInActive: '/t1-assets/menu-inactive.svg', // Agregar el icono del menú
+		menuInActive: '/t1-assets/menu-inactive.svg',
 	};
 
 	const iconSrc = iconMap[icon] || '/t1-assets/banner-icon.svg';
 	
+	// Usar img nativo para mejor compatibilidad
 	return (
-		<Image 
+		<img 
 			src={iconSrc} 
 			alt="Icon" 
 			width={width || 20} 
 			height={height || 20} 
 			style={sx} 
-			className={className} 
+			className={className}
+			onError={(e) => {
+				console.warn(`Failed to load icon: ${iconSrc}`);
+				// Fallback a un icono por defecto o esconder
+				e.currentTarget.style.display = 'none';
+			}}
 		/>
 	);
 };

@@ -1,9 +1,26 @@
-// next.config.js
+// next.config.js - Reemplaza todo el contenido de tu next.config.js con esto:
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
-  output: 'export', // Para generar sitio estático
+  
+  // Configurar imágenes para permitir assets locales
+  images: {
+    // Permitir todos los dominios locales
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**',
+      },
+    ],
+    // Configurar paths locales
+    domains: [],
+    // Permitir SVGs
+    dangerouslyAllowSVG: true,
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
+    // Configurar rutas de assets
+    unoptimized: false, // Cambiar a true si sigue dando problemas
+  },
   
   webpack: (config, { isServer }) => {
     // Configurar fallbacks para el navegador
@@ -24,19 +41,24 @@ const nextConfig = {
       }
     }
 
-    // Configurar alias para Material-UI
-    config.resolve.alias = {
-      ...config.resolve.alias,
-      '@mui/styled-engine': '@mui/styled-engine-sc',
-    }
+    // Configurar manejo de SVGs si es necesario
+    config.module.rules.push({
+      test: /\.svg$/,
+      use: ['@svgr/webpack']
+    });
 
     return config
   },
 
-  // Para Storybook
-  experimental: {
-    esmExternals: 'loose'
-  }
+  // Configurar rutas públicas
+  async rewrites() {
+    return [
+      {
+        source: '/t1-assets/:path*',
+        destination: '/t1-assets/:path*',
+      },
+    ];
+  },
 }
 
 module.exports = nextConfig
