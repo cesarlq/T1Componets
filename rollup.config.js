@@ -7,11 +7,21 @@ import postcss from 'rollup-plugin-postcss';
 import { terser } from 'rollup-plugin-terser';
 import url from '@rollup/plugin-url';
 
+// Plugin personalizado para manejar SVGs como módulos
+const svgPlugin = {
+  name: 'svg',
+  load(id) {
+    if (id.endsWith('.svg')) {
+      // Devolver el path del SVG en lugar del contenido
+      return `export default "${id}";`;
+    }
+  }
+};
+
 // Plugin personalizado para eliminar directivas 'use client'
 const removeUseClientDirectivePlugin = {
   name: 'remove-use-client',
   transform(code) {
-    // Elimina cualquier línea que contenga únicamente 'use client' (con comillas simples o dobles)
     return code.replace(/(['"])use client\1;?\n/g, '');
   }
 };
@@ -37,7 +47,7 @@ export default {
     }),
     resolve({
       browser: true,
-      preferBuiltins: false, // Evita módulos de Node.js
+      preferBuiltins: false,
       skip: ['fs', 'path', 'crypto', 'util', 'stream', 'buffer', 'events']
     }),
     commonjs({
@@ -45,6 +55,17 @@ export default {
       exclude: ['fs', 'path', 'crypto', 'util', 'stream', 'buffer', 'events']
     }),
     removeUseClientDirectivePlugin,
+    
+    // Manejar SVGs correctamente - NO convertir a data URLs
+    url({
+      include: ['**/*.png', '**/*.jpg', '**/*.gif'], // Solo para imágenes raster
+      limit: 10000,
+      fileName: '[dirname][name][extname]'
+    }),
+    
+    // Plugin específico para SVGs
+    svgPlugin,
+    
     postcss({
       modules: true,
       extract: 'styles.css',
@@ -58,12 +79,7 @@ export default {
       rootDir: './src',
       exclude: ['**/*.stories.*', '**/*.test.*']
     }),
-    terser(),
-    url({
-      include: ['**/*.svg', '**/*.png', '**/*.jpg', '**/*.gif'],
-      limit: 10000,
-      fileName: '[dirname][name][extname]'
-    })
+    terser()
   ],
   external: [
     // React
@@ -97,17 +113,7 @@ export default {
     '@emotion/react',
     '@emotion/styled',
     
-    // Node.js modules que no deben incluirse
-    'fs',
-    'path',
-    'crypto',
-    'util',
-    'stream',
-    'buffer',
-    'events',
-    'os',
-    'net',
-    'tls',
-    'string_decoder'
+    // Node.js modules
+    'fs', 'path', 'crypto', 'util', 'stream', 'buffer', 'events', 'os', 'net', 'tls', 'string_decoder'
   ]
 };
