@@ -5,8 +5,7 @@ import commonjs from '@rollup/plugin-commonjs';
 import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 import postcss from 'rollup-plugin-postcss';
 import { terser } from 'rollup-plugin-terser';
-import url from '@rollup/plugin-url'; // Añade esta importación
-
+import url from '@rollup/plugin-url';
 
 // Plugin personalizado para eliminar directivas 'use client'
 const removeUseClientDirectivePlugin = {
@@ -23,7 +22,8 @@ export default {
     {
       file: 'dist/lib/index.js',
       format: 'cjs',
-      sourcemap: true
+      sourcemap: true,
+      exports: 'auto'
     },
     {
       file: 'dist/lib/index.es.js',
@@ -32,10 +32,19 @@ export default {
     }
   ],
   plugins: [
-    peerDepsExternal(),
-    resolve(),
-    commonjs(),
-    removeUseClientDirectivePlugin, // Añade el plugin personalizado
+    peerDepsExternal({
+      includeDependencies: false
+    }),
+    resolve({
+      browser: true,
+      preferBuiltins: false, // Evita módulos de Node.js
+      skip: ['fs', 'path', 'crypto', 'util', 'stream', 'buffer', 'events']
+    }),
+    commonjs({
+      include: /node_modules/,
+      exclude: ['fs', 'path', 'crypto', 'util', 'stream', 'buffer', 'events']
+    }),
+    removeUseClientDirectivePlugin,
     postcss({
       modules: true,
       extract: 'styles.css',
@@ -47,20 +56,58 @@ export default {
       declaration: true,
       declarationDir: './dist/lib/types',
       rootDir: './src',
+      exclude: ['**/*.stories.*', '**/*.test.*']
     }),
     terser(),
     url({
       include: ['**/*.svg', '**/*.png', '**/*.jpg', '**/*.gif'],
-      limit: 10000 // inline as base64 URLs for files <= 10kb
+      limit: 10000,
+      fileName: '[dirname][name][extname]'
     })
   ],
   external: [
+    // React
     'react', 
-    'react-dom', 
-    '@mui/material', 
+    'react-dom',
+    'react/jsx-runtime',
+    
+    // Next.js
+    'next',
+    'next/image',
+    'next/router',
+    'next/navigation',
+    'next-auth',
+    'next-intl',
+    
+    // Material-UI
+    '@mui/material',
+    '@mui/material/styles',
+    '@mui/material/Button',
+    '@mui/material/IconButton',
+    '@mui/material/Menu',
+    '@mui/material/MenuItem',
+    '@mui/material/ListItemText',
     '@mui/icons-material',
+    '@mui/icons-material/Add',
     '@mui/system',
-    '@mui/utils',
-    '@mui/styled-engine'
+    '@mui/styled-engine',
+    '@mui/lab',
+    
+    // Otros
+    '@emotion/react',
+    '@emotion/styled',
+    
+    // Node.js modules que no deben incluirse
+    'fs',
+    'path',
+    'crypto',
+    'util',
+    'stream',
+    'buffer',
+    'events',
+    'os',
+    'net',
+    'tls',
+    'string_decoder'
   ]
 };
