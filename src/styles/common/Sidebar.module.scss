@@ -36,12 +36,11 @@
 
     .sideBar {
       align-items: center;
-      padding-top: 1rem;
     }
 
     .paths {
       align-items: center;
-      gap: 15px;
+      gap: .5rem;
     }
   }
 
@@ -86,8 +85,7 @@
   height: auto;
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  padding-top: 1rem;
+  gap: 1rem;
 }
 
 .bannerReduced {
@@ -97,7 +95,6 @@
 }
 
 .callToActionCreateGuide {
-  margin: 8px 0 0 0 !important;
   transition: all ease 0.3s !important;
   flex-shrink: 0 !important;
   height: 35px !important;
@@ -107,6 +104,7 @@
   font-weight: 600 !important;
   font-size: 14px !important;
   text-transform: none !important;
+  padding: 0px;
 
   &:hover {
     background: #DC2626 !important;
@@ -130,7 +128,7 @@
   display: flex;
   height: 100%;
   flex-direction: column;
-  gap: 3px;
+  gap: 1rem;
 }
 
 .itemLink {

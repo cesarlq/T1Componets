@@ -7,8 +7,8 @@
 
   &[data-reduce="true"] {
     .linkContainer {
-      width: 41px;
-      height: 41px;
+      width: 46px;
+      height: 46px;
       padding: 0;
       display: grid;
       place-content: center;
@@ -23,7 +23,8 @@
 .linkContainer {
   display: flex;
   align-items: center;
-  height: 30px;
+  width: 46px;
+  height: 46px;
   list-style-type: none;
   transition: all ease 0.3s;
   cursor: pointer;
@@ -121,6 +122,7 @@
   line-height: normal;
   position: relative;
   width: 100%;
+  justify-content: center;
 
   &:hover {
     text-decoration: none;

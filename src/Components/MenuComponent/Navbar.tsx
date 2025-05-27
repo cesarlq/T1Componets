@@ -3,7 +3,6 @@ import { IconButton, ListItemText, Menu, MenuItem as MuiMenuItem } from '@mui/ma
 import { StoreSelector } from './StoreSelector';
 import { T1ShippingBanner } from './T1ShippingBanner';
 import { BalanceBanner } from './BalanceBanner';
-import { useLayout } from './LayoutProvider';
 import { User, Store } from '../../interfaces/menu';
 import styles from '../../styles/common/Navbar.module.scss';
 import { T1Selector } from './T1Selector';
@@ -109,8 +108,7 @@ export function Navbar({
     searchPlaceholder: 'Número de rastreo'
   }
 }: NavbarProps) {
-  
-  const { state, setSidebarOpen } = useLayout();
+
   const [profileAnchor, setProfileAnchor] = useState<null | HTMLElement>(null);
   const profileOpen = Boolean(profileAnchor);
 
@@ -141,10 +139,6 @@ export function Navbar({
       }
       onManageAccount(user);
     }
-  };
-
-  const handleMenuToggle = () => {
-    setSidebarOpen(!state.sidebarOpen);
   };
 
   return (
