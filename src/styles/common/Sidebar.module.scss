@@ -137,40 +137,45 @@
 
 // Estilos para títulos estáticos
 .staticTitle {
-  margin: 20px 0 12px 0;
+  margin: 20px 0 12px 0 !important;
   transition: all 0.3s ease;
+  display: block !important;
   
   .titleText {
-    font-size: 13px;
-    font-weight: 700;
-    color: #6B7280;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    color: #6B7280 !important;
     text-transform: uppercase;
     letter-spacing: 0.5px;
     line-height: 1.2;
-    display: block;
+    display: block !important;
+    margin: 0;
+    padding: 0;
   }
   
   // Línea divisoria para modo reducido
   .titleDivider {
-    width: 30px;
-    height: 1px;
-    background-color: #E5E7EB;
-    margin: 8px auto;
+    width: 30px !important;
+    height: 1px !important;
+    background-color: #E5E7EB !important;
+    margin: 8px auto !important;
+    display: block !important;
   }
   
   // En modo reducido
   &[data-reduce="true"] {
-    margin: 12px 0 8px 0;
+    margin: 12px 0 8px 0 !important;
   }
 }
 
 // Estilos para componentes React
 .reactComponent {
-  margin: 8px 0;
+  margin: 8px 0 !important;
   transition: all 0.3s ease;
+  display: block !important;
   
   &[data-reduce="true"] {
-    display: none;
+    display: none !important;
   }
 }
 

@@ -254,12 +254,14 @@ export function Sidebar({
     console.log(`Rendering item ${index}:`, {
       text: item.text,
       type: itemType,
+      rawType: item.type,
       href: item.href,
       hasComponent: !!item.component
     });
     
-    // Título estático
-    if (itemType === 'STATIC_TITLE') {
+    // Título estático - type: '0' corresponde a STATIC_TITLE
+    if (itemType === '0' || itemType === 'STATIC_TITLE') {
+      console.log(`Rendering title: ${item.text}`);
       return (
         <div 
           key={`title-${index}`}
@@ -276,10 +278,10 @@ export function Sidebar({
       );
     }
 
-    // Componente React
-    if (itemType === 'REACT_TSX' && item.component) {
+    // Componente React - type: '3' corresponde a REACT_TSX (basado en tus logs)
+    if ((itemType === '3' || itemType === 'REACT_TSX') && item.component) {
       const Component = item.component;
-      console.log('Rendering React component:', Component.name || 'Anonymous');
+      console.log('Rendering React component:', Component.name || 'Anonymous', 'shouldShowReduced:', shouldShowReduced);
       return (
         <div 
           key={`component-${index}`}
@@ -304,8 +306,8 @@ export function Sidebar({
       );
     }
 
-    // Link normal (por defecto o tipo 'LINK') - Solo renderizar si tiene href válido
-    if (item.href && item.href.trim() !== '') {
+    // Link normal - type: '1' corresponde a LINK
+    if ((itemType === '1' || itemType === 'LINK') && item.href && item.href.trim() !== '') {
       return (
         <ItemLink
           {...item}
@@ -331,8 +333,8 @@ export function Sidebar({
       );
     }
 
-    // Si no es ningún tipo reconocido o no tiene href, no renderizar nada
-    console.log(`Item ${index} not rendered - no valid type or href`);
+    // Si no es ningún tipo reconocido, no renderizar nada
+    console.log(`Item ${index} not rendered - type: ${itemType}, href: ${item.href}`);
     return null;
   };
 
