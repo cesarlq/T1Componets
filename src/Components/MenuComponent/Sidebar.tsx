@@ -57,13 +57,9 @@ export interface SidebarProps {
   onToggleReduce?: (isReduced: boolean) => void;
   onCreateClick?: () => void;
   onNavigate?: (path: string) => void;
-  onOverlayClick?: () => void; // Nuevo: handler para overlay
   // User context
   currentUserId?: string | number;
   restrictedPaths?: string[]; // Rutas que no se deben mostrar
-  // Overlay configuration
-  overlayClassName?: string; // Personalizar el estilo del overlay
-  showOverlay?: boolean; // Controlar si mostrar overlay (default: true en móvil)
 }
 
 export function Sidebar({
@@ -85,11 +81,8 @@ export function Sidebar({
   onToggleReduce = () => {},
   onCreateClick,
   onNavigate = () => {},
-  onOverlayClick,
   currentUserId = '',
-  restrictedPaths = [],
-  overlayClassName = '',
-  showOverlay = true
+  restrictedPaths = []
 }: SidebarProps) {
   
   // Safe router hook - usar mock en Storybook
@@ -129,45 +122,39 @@ export function Sidebar({
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  useEffect(() => {
-    if (screenWidth > 0) {
-      const isMobile = screenWidth <= breakpointMobile;
-      
-      if (isMobile) {
-        // En móvil: nunca reducido
-        if (externalIsReduced === undefined) {
-          setInternalIsReduced(false);
-        }
-        onToggleReduce(false);
-      } else {
-        const shouldReduce = screenWidth <= breakpointReduce;
-        if (externalIsReduced === undefined) {
-          setInternalIsReduced(shouldReduce);
-        }
-        onToggleReduce(shouldReduce);
+useEffect(() => {
+  if (screenWidth > 0) {
+    const isMobile = screenWidth <= breakpointMobile;
+    
+    if (isMobile) {
+      // En móvil: nunca reducido
+      if (externalIsReduced === undefined) {
+        setInternalIsReduced(false);
       }
+      onToggleReduce(false);
+    } else {
+      const shouldReduce = screenWidth <= breakpointReduce;
+      if (externalIsReduced === undefined) {
+        setInternalIsReduced(shouldReduce);
+      }
+      onToggleReduce(shouldReduce);
     }
-  }, [screenWidth, breakpointReduce, breakpointMobile, externalIsReduced, onToggleReduce]);
+  }
+}, [screenWidth, breakpointReduce, breakpointMobile, externalIsReduced, onToggleReduce]);
 
   // Controlar scroll del body cuando está abierto en móvil
   useEffect(() => {
-    const isMobile = screenWidth <= breakpointMobile;
-    if (isMobile && isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
+    if (screenWidth <= breakpointMobile) {
+      document.body.style.overflow = isOpen ? "hidden" : "auto";
     }
-    
-    // Cleanup cuando el componente se desmonta
     return () => {
       document.body.style.overflow = "auto";
     };
   }, [isOpen, screenWidth, breakpointMobile]);
 
-  // Click outside handler para móvil
+  // Click outside handler
   useEffect(() => {
-    const isMobile = screenWidth <= breakpointMobile;
-    if (!isMobile || !isOpen) return;
+    if (!isOpen || screenWidth > breakpointMobile) return;
 
     const handleClickOutside = (event: MouseEvent) => {
       if (refSideBar.current && !refSideBar.current.contains(event.target as Node)) {
@@ -175,15 +162,8 @@ export function Sidebar({
       }
     };
 
-    // Pequeño delay para evitar que se cierre inmediatamente al abrir
-    const timeoutId = setTimeout(() => {
-      document.addEventListener('mousedown', handleClickOutside);
-    }, 100);
-
-    return () => {
-      clearTimeout(timeoutId);
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isOpen, screenWidth, breakpointMobile]);
 
   // Inicializar rutas activas
@@ -215,14 +195,6 @@ export function Sidebar({
     }
   };
 
-  const handleOverlayClick = () => {
-    if (onOverlayClick) {
-      onOverlayClick();
-    } else {
-      handleToggleOpen(false);
-    }
-  };
-
   const handleCreateClick = () => {
     if (onCreateClick) {
       onCreateClick();
@@ -237,15 +209,13 @@ export function Sidebar({
   };
 
   const handleMouseEnter = () => {
-    const isMobile = screenWidth <= breakpointMobile;
-    if (isReduced && !isMobile) {
+    if (isReduced) {
       setEnlargeByHover(true);
     }
   };
 
   const handleMouseLeave = () => {
-    const isMobile = screenWidth <= breakpointMobile;
-    if (isReduced && !isMobile) {
+    if (isReduced) {
       setEnlargeByHover(false);
     }
   };
@@ -256,100 +226,79 @@ export function Sidebar({
   );
 
   const isMobile = screenWidth <= breakpointMobile;
-  const shouldShowReduced = isReduced && !enlargeByHover && !isMobile;
+  const shouldShowReduced = isReduced && !enlargeByHover;
 
   return (
-    <>
-      {/* Overlay para móvil */}
-      {isMobile && showOverlay && (
-        <div 
-          className={`
-            fixed inset-0 bg-black bg-opacity-50 z-[999] transition-opacity duration-300
-            ${isOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}
-            ${overlayClassName}
-          `}
-          onClick={handleOverlayClick}
-          aria-hidden="true"
-        />
-      )}
-
-      {/* Sidebar */}
-      <aside
-        className={`
-          ${styles.container} ${className}
-          ${isMobile ? 'fixed top-0 left-0 h-full z-[1000] transition-transform duration-300' : 'relative'}
-          ${isMobile && !isOpen ? '-translate-x-full' : 'translate-x-0'}
-        `}
-        data-reduce={shouldShowReduced}
-        data-enlarge-by-hover={enlargeByHover}
-        data-show-info-band={showInfoBand}
-        data-open-side-bar={isOpen}
-        data-is-mobile={isMobile}
-        ref={refSideBar}
+    <aside
+      className={`${styles.container} ${className}`}
+      data-reduce={shouldShowReduced}
+      data-enlarge-by-hover={enlargeByHover}
+      data-show-info-band={showInfoBand}
+      data-open-side-bar={isOpen}
+      ref={refSideBar}
+    >
+      <section
+        className={styles.sideBar}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
       >
-        <section
-          className={styles.sideBar}
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-        >
-          {/* Top Banner */}
-          {TopBanner && (
-            <TopBanner className={`ml-3 lg:ml-[23px] mt-3 ${shouldShowReduced ? styles.bannerReduced : ''}`} />
-          )}
-
-          {/* Create Button */}
-          {showCreateButton && (
-            <Button
-              onClick={handleCreateClick}
-              className={styles.callToActionCreateGuide}
-              data-reduce={shouldShowReduced}
-            >
-              {(!isReduced || enlargeByHover || isMobile) ? createButtonText : <AddIcon />}
-            </Button>
-          )}
-
-          {/* Balance Banner - solo visible cuando no está reducido */}
-          {BalanceBanner && showBalance && !shouldShowReduced && (
-            <BalanceBanner className="lg:!hidden" />
-          )}
-
-          {/* Menu Items */}
-          <ul className={styles.paths}>
-            {visibleMenuPaths.map((item, index) => (
-              <ItemLink
-                {...item}
-                className={styles.itemLink}
-                key={index}
-                index={index}
-                sidebarReduce={shouldShowReduced}
-                enlargeByHover={enlargeByHover}
-                onClickPath={(index) => setCurrentSubmenuOpen(index)}
-                openSubMenu={currentSubmenuOpen === index}
-                activePath={activePath}
-                setActivePath={setActivePath}
-                activeSubPath={activeSubPath}
-                setActiveSubPath={setActiveSubPath}
-                mobile={isMobile}
-                currentUserId={currentUserId}
-                restrictedPaths={restrictedPaths}
-                onNavigate={onNavigate}
-                onToggleOpen={handleToggleOpen}
-              />
-            ))}
-          </ul>
-        </section>
-
-        {/* Bottom Banner */}
-        {BottomBanner && (
-          <div className={styles.bottomBanner}>
-            {React.isValidElement(BottomBanner) 
-              ? BottomBanner 
-              : typeof BottomBanner === 'function' 
-                ? <BottomBanner /> 
-                : BottomBanner}
-          </div>
+        {/* Top Banner */}
+        {TopBanner && (
+          <TopBanner className={`ml-3 lg:ml-[23px] mt-3 ${shouldShowReduced ? styles.bannerReduced : ''}`} />
         )}
-      </aside>
-    </>
+
+        {/* Create Button */}
+        {showCreateButton && (
+          <Button
+            onClick={handleCreateClick}
+            className={styles.callToActionCreateGuide}
+            data-reduce={shouldShowReduced}
+          >
+            {(!isReduced || enlargeByHover) ? createButtonText : <AddIcon />}
+          </Button>
+        )}
+
+        {/* Balance Banner - solo visible cuando no está reducido */}
+        {BalanceBanner && showBalance && !shouldShowReduced && (
+          <BalanceBanner className="lg:!hidden" />
+        )}
+
+        {/* Menu Items */}
+        <ul className={styles.paths}>
+          {visibleMenuPaths.map((item, index) => (
+            <ItemLink
+              {...item}
+              className={styles.itemLink}
+              key={index}
+              index={index}
+              sidebarReduce={isReduced}
+              enlargeByHover={enlargeByHover}
+              onClickPath={(index) => setCurrentSubmenuOpen(index)}
+              openSubMenu={currentSubmenuOpen === index}
+              activePath={activePath}
+              setActivePath={setActivePath}
+              activeSubPath={activeSubPath}
+              setActiveSubPath={setActiveSubPath}
+              mobile={isMobile}
+              currentUserId={currentUserId}
+              restrictedPaths={restrictedPaths}
+              onNavigate={onNavigate}
+              onToggleOpen={handleToggleOpen}
+            />
+          ))}
+        </ul>
+      </section>
+
+      {/* Bottom Banner */}
+      {BottomBanner && (
+        <div className={styles.bottomBanner}>
+          {React.isValidElement(BottomBanner) 
+            ? BottomBanner 
+            : typeof BottomBanner === 'function' 
+              ? <BottomBanner /> 
+              : BottomBanner}
+        </div>
+      )}
+    </aside>
   );
 }
