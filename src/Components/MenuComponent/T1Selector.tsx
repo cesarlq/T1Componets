@@ -25,7 +25,6 @@ export function T1Selector({
   storeBaseUrl = '',
   shippingBaseUrl = '',
   paymentBaseUrl = '',
-  storeId = '',
   ecosystemTitle = 'Ecosistema'
 }: T1SelectorProps) {
   
@@ -37,17 +36,17 @@ export function T1Selector({
     {
       icon: Store,
       label: 'Tienda',
-      href: storeBaseUrl && storeId ? `${storeBaseUrl}${storeId}` : undefined
+      href: storeBaseUrl ? `${storeBaseUrl}` : undefined
     },
     {
       icon: Shipping,
       label: 'Envíos',
-      isActive: true // Siempre activo porque es el actual
+      href: shippingBaseUrl ? `${shippingBaseUrl}` : undefined
     },
     {
       icon: Pay,
       label: 'Pagos',
-      href: paymentBaseUrl && storeId ? `${paymentBaseUrl}${storeId}` : undefined
+      href: paymentBaseUrl ? `${paymentBaseUrl}` : undefined
     }
   ];
 
