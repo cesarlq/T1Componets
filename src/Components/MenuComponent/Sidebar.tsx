@@ -122,19 +122,18 @@ export function Sidebar({
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
- // En tu componente Sidebar (de la librería)
 useEffect(() => {
   if (screenWidth > 0) {
     const isMobile = screenWidth <= breakpointMobile;
     
     if (isMobile) {
-      // En móvil: nunca reducido, se abre/cierra completamente
+      // En móvil: nunca reducido
       if (externalIsReduced === undefined) {
         setInternalIsReduced(false);
       }
       onToggleReduce(false);
     } else {
-      // No es móvil: aplicar lógica normal de reducción
+      // En desktop: aplicar lógica normal
       const shouldReduce = screenWidth <= breakpointReduce;
       if (externalIsReduced === undefined) {
         setInternalIsReduced(shouldReduce);
@@ -143,6 +142,7 @@ useEffect(() => {
     }
   }
 }, [screenWidth, breakpointReduce, breakpointMobile, externalIsReduced, onToggleReduce]);
+
   // Controlar scroll del body cuando está abierto en móvil
   useEffect(() => {
     if (screenWidth <= breakpointMobile) {
