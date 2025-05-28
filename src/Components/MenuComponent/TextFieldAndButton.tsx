@@ -40,7 +40,7 @@ export default function TextFieldAndButton({
             <TextField
                 InputProps={{
                     className: styles.search,
-                    endAdornment: <Image src={Search} alt='search' className={styles.search} height={40} width={40}/>,
+                    endAdornment: <Image src={Search} alt='search' className={styles.search} height={14} width={14}/>,
                     sx: {
                         ".MuiInputBase-input": {
                             fontSize: '13px',
