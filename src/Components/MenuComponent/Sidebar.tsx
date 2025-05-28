@@ -250,32 +250,31 @@ export function Sidebar({
     
     // Título estático - type: '0' corresponde a STATIC_TITLE
     if (itemType === '0' || itemType === 'STATIC_TITLE') {
-      return (
+      return (<>
+        {!shouldShowReduced &&
         <div 
           key={`title-${index}`}
           className={styles.staticTitle}
           data-reduce={shouldShowReduced}
         >
-          {!shouldShowReduced ? (
+          
             <span className={styles.titleText}>{item.text}</span>
-          ) : (
-            // En modo reducido, mostrar una línea divisoria
-            <></>
-          )}
+          
         </div>
-      );
+        }
+      </>);
     }
 
     // Componente React - type: '3' corresponde a REACT_TSX (basado en tus logs)
     if ((itemType === '3' || itemType === 'REACT_TSX') && item.component) {
       const Component = item.component;
-      return (
+      return (<>
+         {!shouldShowReduced && (
         <div 
           key={`component-${index}`}
           className={styles.reactComponent}
           data-reduce={shouldShowReduced}
         >
-          {!shouldShowReduced && (
             <Component 
               currentUserId={currentUserId}
               onNavigate={onNavigate}
@@ -288,9 +287,10 @@ export function Sidebar({
               isMobile={Boolean(externalIsMobile || isMobile)}
               className="sidebar-store-selector"
             />
-          )}
+         
         </div>
-      );
+         )}
+      </>);
     }
 
     // Link normal - type: '1' corresponde a LINK

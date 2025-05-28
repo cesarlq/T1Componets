@@ -215,10 +215,10 @@ export function ItemLink({
             src={ArrowMenu}
             className={styles.arrow}
             data-open={openSubMenu}
-            style={{maxWidth:'16px', maxHeight:'16px'}}
+            style={{maxWidth:'10px', maxHeight:'10px'}}
             alt='arrow'
-            width={16}
-            height={16}
+            width={10}
+            height={10}
           />
         </li>
         
