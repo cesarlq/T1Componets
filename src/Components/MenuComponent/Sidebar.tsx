@@ -250,16 +250,27 @@ export function Sidebar({
     // Normalizar el tipo - puede venir como string o enum
     const itemType = typeof item.type === 'string' ? item.type : item.type?.toString();
     
+    // Debug log
+    console.log(`Rendering item ${index}:`, {
+      text: item.text,
+      type: itemType,
+      href: item.href,
+      hasComponent: !!item.component
+    });
+    
     // Título estático
     if (itemType === 'STATIC_TITLE') {
       return (
         <div 
           key={`title-${index}`}
-          className={`${styles.staticTitle} ${shouldShowReduced ? styles.staticTitleReduced : ''}`}
+          className={styles.staticTitle}
           data-reduce={shouldShowReduced}
         >
-          {(!shouldShowReduced) && (
+          {!shouldShowReduced ? (
             <span className={styles.titleText}>{item.text}</span>
+          ) : (
+            // En modo reducido, mostrar una línea divisoria
+            <div className={styles.titleDivider}></div>
           )}
         </div>
       );
@@ -268,13 +279,14 @@ export function Sidebar({
     // Componente React
     if (itemType === 'REACT_TSX' && item.component) {
       const Component = item.component;
+      console.log('Rendering React component:', Component.name || 'Anonymous');
       return (
         <div 
           key={`component-${index}`}
-          className={`${styles.reactComponent} ${shouldShowReduced ? styles.reactComponentReduced : ''}`}
+          className={styles.reactComponent}
           data-reduce={shouldShowReduced}
         >
-          {(!shouldShowReduced) && (
+          {!shouldShowReduced && (
             <Component 
               currentUserId={currentUserId}
               onNavigate={onNavigate}
@@ -320,6 +332,7 @@ export function Sidebar({
     }
 
     // Si no es ningún tipo reconocido o no tiene href, no renderizar nada
+    console.log(`Item ${index} not rendered - no valid type or href`);
     return null;
   };
 

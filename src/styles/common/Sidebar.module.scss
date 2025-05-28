@@ -147,32 +147,20 @@
     text-transform: uppercase;
     letter-spacing: 0.5px;
     line-height: 1.2;
+    display: block;
   }
   
-  // En modo reducido, mostrar solo una línea divisoria
+  // Línea divisoria para modo reducido
+  .titleDivider {
+    width: 30px;
+    height: 1px;
+    background-color: #E5E7EB;
+    margin: 8px auto;
+  }
+  
+  // En modo reducido
   &[data-reduce="true"] {
     margin: 12px 0 8px 0;
-    
-    .titleText {
-      display: none;
-    }
-    
-    // Mostrar línea divisoria en lugar del texto
-    &::after {
-      content: '';
-      display: block;
-      width: 30px;
-      height: 1px;
-      background-color: #E5E7EB;
-      margin: 0 auto;
-    }
-  }
-}
-
-.staticTitleReduced {
-  // Esta clase ya no oculta completamente el título
-  .titleText {
-    display: none;
   }
 }
 
@@ -184,10 +172,6 @@
   &[data-reduce="true"] {
     display: none;
   }
-}
-
-.reactComponentReduced {
-  display: none;
 }
 
 // Espaciado adicional después de títulos
