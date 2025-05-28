@@ -35,3 +35,4 @@ export {default as T1Icon} from './Components/T1Icon';
 export {  Navbar } from './Components/MenuComponent/Navbar';
 export { Sidebar } from './Components/MenuComponent/Sidebar';
 export { T1ShippingBanner } from './Components/MenuComponent/T1ShippingBanner';
+export { StoreSelector } from './Components/MenuComponent/StoreSelector';
