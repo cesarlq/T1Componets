@@ -10,11 +10,9 @@ import { T1ShippingBanner } from './T1ShippingBanner';
 const mockRouter = {
   asPath: '/dashboard',
   push: (path: string) => {
-    console.log('Mock router push:', path);
     return Promise.resolve(true);
   },
   reload: () => {
-    console.log('Mock router reload');
   }
 };
 
@@ -250,18 +248,8 @@ export function Sidebar({
     // Normalizar el tipo - puede venir como string o enum
     const itemType = typeof item.type === 'string' ? item.type : item.type?.toString();
     
-    // Debug log
-    console.log(`Rendering item ${index}:`, {
-      text: item.text,
-      type: itemType,
-      rawType: item.type,
-      href: item.href,
-      hasComponent: !!item.component
-    });
-    
     // Título estático - type: '0' corresponde a STATIC_TITLE
     if (itemType === '0' || itemType === 'STATIC_TITLE') {
-      console.log(`Rendering title: ${item.text}`);
       return (
         <div 
           key={`title-${index}`}
@@ -281,7 +269,6 @@ export function Sidebar({
     // Componente React - type: '3' corresponde a REACT_TSX (basado en tus logs)
     if ((itemType === '3' || itemType === 'REACT_TSX') && item.component) {
       const Component = item.component;
-      console.log('Rendering React component:', Component.name || 'Anonymous', 'shouldShowReduced:', shouldShowReduced);
       return (
         <div 
           key={`component-${index}`}
@@ -333,8 +320,6 @@ export function Sidebar({
       );
     }
 
-    // Si no es ningún tipo reconocido, no renderizar nada
-    console.log(`Item ${index} not rendered - type: ${itemType}, href: ${item.href}`);
     return null;
   };
 
