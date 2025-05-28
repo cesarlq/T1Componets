@@ -4,6 +4,7 @@ import { Button } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import {ItemLink} from './ItemLink';
 import styles from '../../styles/common/Sidebar.module.scss';
+import { T1ShippingBanner } from './T1ShippingBanner';
 
 // Mock router for Storybook
 const mockRouter = {
@@ -291,30 +292,35 @@ export function Sidebar({
       );
     }
 
-    // Link normal (por defecto o tipo 'LINK')
-    return (
-      <ItemLink
-        {...item}
-        href={item.href || ''}
-        text={item.text || ''}
-        className={styles.itemLink}
-        key={index}
-        index={index}
-        sidebarReduce={isReduced}
-        enlargeByHover={enlargeByHover}
-        onClickPath={(index) => setCurrentSubmenuOpen(index)}
-        openSubMenu={currentSubmenuOpen === index}
-        activePath={activePath}
-        setActivePath={setActivePath}
-        activeSubPath={activeSubPath}
-        setActiveSubPath={setActiveSubPath}
-        mobile={isMobile}
-        currentUserId={currentUserId}
-        restrictedPaths={restrictedPaths}
-        onNavigate={onNavigate}
-        onToggleOpen={handleToggleOpen}
-      />
-    );
+    // Link normal (por defecto o tipo 'LINK') - Solo renderizar si tiene href válido
+    if (item.href && item.href.trim() !== '') {
+      return (
+        <ItemLink
+          {...item}
+          href={item.href}
+          text={item.text || ''}
+          className={styles.itemLink}
+          key={index}
+          index={index}
+          sidebarReduce={isReduced}
+          enlargeByHover={enlargeByHover}
+          onClickPath={(index) => setCurrentSubmenuOpen(index)}
+          openSubMenu={currentSubmenuOpen === index}
+          activePath={activePath}
+          setActivePath={setActivePath}
+          activeSubPath={activeSubPath}
+          setActiveSubPath={setActiveSubPath}
+          mobile={isMobile}
+          currentUserId={currentUserId}
+          restrictedPaths={restrictedPaths}
+          onNavigate={onNavigate}
+          onToggleOpen={handleToggleOpen}
+        />
+      );
+    }
+
+    // Si no es ningún tipo reconocido o no tiene href, no renderizar nada
+    return null;
   };
 
   return (
