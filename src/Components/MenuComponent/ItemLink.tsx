@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import Image from 'next/image';
 import ArrowMenu from '../../assets/arrow-menu.svg';
 import styles from '../../styles/common/ItemLink.module.scss';
-import { MenuPath, SubPath, PathTypes } from './Sidebar';
+import { MenuPath, SubPath } from './Sidebar';
 
 // Mock router for Storybook
 const mockRouter = {
@@ -59,7 +59,7 @@ export function ItemLink({
   onNavigate = () => {},
   onToggleOpen = () => {},
   // Nuevas props
-  type = PathTypes.LINK,
+  type,
   component,
   activeIcon
 }: ItemLinkProps) {
@@ -76,8 +76,13 @@ export function ItemLink({
   const [openSubMenuLocal, setOpenSubMenuLocal] = useState<boolean>(false);
   const [currentSubSteps, setCurrentSubSteps] = useState<SubPath[]>([]);
 
+  // Valores seguros con defaults
+  const safeHref = href || '';
+  const safeText = text || '';
+  
   // Si es un título estático o componente React, no renderizar como ItemLink
-  if (type === PathTypes.STATIC_TITLE || type === PathTypes.REACT_TSX) {
+  const itemType = typeof type === 'string' ? type : type?.toString();
+  if (itemType === 'STATIC_TITLE' || itemType === 'REACT_TSX') {
     return null; // Estos se manejan en el componente Sidebar principal
   }
 
@@ -95,20 +100,20 @@ export function ItemLink({
   useEffect(() => {
     if (subPaths && subPaths.some(item => item.href === router.asPath)) {
       // Si una subruta está activa
-      setActivePath(href);
+      setActivePath(safeHref);
       setActiveSubPath(router.asPath);
       onClickPath(index); // Esto activará el submenu
       onToggleOpen(false); // Cerrar sidebar en móvil
     } else if (subPaths && subPaths.some(item => router.asPath.includes(item.href))) {
       // Si la ruta actual contiene una subruta
-      setActivePath(href);
+      setActivePath(safeHref);
       onClickPath(index); // Esto activará el submenu
       onToggleOpen(false);
-    } else if (!subPaths && href === router.asPath) {
+    } else if (!subPaths && safeHref === router.asPath) {
       // Si es una ruta simple y está activa
       onToggleOpen(false);
       setTimeout(() => {
-        setActivePath(href);
+        setActivePath(safeHref);
       });
     }
     
@@ -117,17 +122,17 @@ export function ItemLink({
   }, [
     router.asPath, 
     subPaths, 
-    href, 
+    safeHref, // Usar safeHref en lugar de href
     index, 
     setActivePath, 
     setActiveSubPath, 
     onToggleOpen,
-    openSubMenu, // Agregar esta dependencia
+    openSubMenu,
     onClickPath
   ]);
 
   const handleOpenSubPaths = (index: number, targetHref?: string) => {
-    setActivePath(href);
+    setActivePath(safeHref);
     let finalHref = targetHref;
     
     // Concatenar storeId si es necesario
@@ -165,7 +170,7 @@ export function ItemLink({
   };
 
   // Determinar qué icono usar
-  const currentIcon = (href === activePath && activeIcon) ? activeIcon : icon;
+  const currentIcon = (safeHref === activePath && activeIcon) ? activeIcon : icon;
 
   // Si tiene subpaths
   if (subPaths) {
@@ -176,7 +181,7 @@ export function ItemLink({
       >
         <li
           className={styles.linkContainer}
-          data-active={href === activePath}
+          data-active={safeHref === activePath}
           data-has-sub-paths={true}
           style={
             openSubMenuLocal && (!sidebarReduce || enlargeByHover) 
@@ -193,13 +198,13 @@ export function ItemLink({
             {currentIcon && (
               <Image
                 src={currentIcon}
-                alt={text}
+                alt={safeText}
                 style={{maxWidth:'19px', maxHeight:'19px'}}
                 height={19}
                 width={19}
               />
             )}
-            {(!sidebarReduce || enlargeByHover) && text}
+            {(!sidebarReduce || enlargeByHover) && safeText}
             {endAdornment && !(sidebarReduce && !enlargeByHover) && (
               <div className={styles.endAdornment}>
                 {endAdornment}
@@ -250,30 +255,30 @@ export function ItemLink({
   return (
     <li
       className={`${styles.linkContainer} ${className}`}
-      data-active={href === activePath}
+      data-active={safeHref === activePath}
       data-reduce={sidebarReduce && !enlargeByHover}
       data-has-sub-paths={false}
     >
       <Link
-        href={concatStoreId && currentUserId ? `${href}${currentUserId}` : href}
+        href={concatStoreId && currentUserId ? `${safeHref}${currentUserId}` : safeHref}
         data-reduce={sidebarReduce && !enlargeByHover}
         className={styles.link}
         onClick={() => {
-          handleOpenSubPaths(index, href);
-          onNavigate(concatStoreId && currentUserId ? `${href}${currentUserId}` : href);
+          handleOpenSubPaths(index, safeHref);
+          onNavigate(concatStoreId && currentUserId ? `${safeHref}${currentUserId}` : safeHref);
         }}
       >
         {currentIcon && (
           <Image
             src={currentIcon}
-            alt={text}
+            alt={safeText}
             height={19}
             width={19}
             style={{maxWidth:'19px', maxHeight:'19px'}}
             className={styles.menuIcon}
           />
         )}
-        {(!sidebarReduce || enlargeByHover) && text}
+        {(!sidebarReduce || enlargeByHover) && safeText}
         {endAdornment && !(sidebarReduce && !enlargeByHover) && (
           <div className={styles.endAdornment}>
             {endAdornment}

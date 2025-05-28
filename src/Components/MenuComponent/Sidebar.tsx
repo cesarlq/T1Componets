@@ -4,7 +4,6 @@ import { Button } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import {ItemLink} from './ItemLink';
 import styles from '../../styles/common/Sidebar.module.scss';
-import { T1ShippingBanner } from './T1ShippingBanner';
 
 // Mock router for Storybook
 const mockRouter = {
@@ -18,28 +17,21 @@ const mockRouter = {
   }
 };
 
-// Enums
-export enum PathTypes {
-  LINK = 'LINK',
-  STATIC_TITLE = 'STATIC_TITLE',
-  REACT_TSX = 'REACT_TSX'
-}
-
-// Interfaces
+// Interfaces flexibles que aceptan múltiples formatos
 export interface SubPath {
   href: string;
   text: string;
 }
 
 export interface MenuPath {
-  href: string;
-  text: string;
-  icon: any;
+  href?: string;
+  text?: string;
+  icon?: any;
   subPaths?: SubPath[];
   concatStoreId?: boolean;
   endAdornment?: React.ReactNode;
-  // Nuevas propiedades para tipos avanzados
-  type?: PathTypes;
+  // Propiedades para tipos avanzados (compatibles con PathWithSubPathsI)
+  type?: string | any; // Flexible para aceptar enums de diferentes proyectos
   component?: React.ComponentType<any>;
   activeIcon?: any;
 }
@@ -59,9 +51,9 @@ export interface SidebarProps {
   // Configuration
   createButtonText?: string;
   createButtonPath?: string;
-  breakpointReduce?: number; // Ancho donde se reduce el sidebar
-  breakpointMobile?: number; // Ancho considerado móvil
-  // States from parent (si quieres control externo)
+  breakpointReduce?: number;
+  breakpointMobile?: number;
+  // States from parent
   isOpen?: boolean;
   isReduced?: boolean;
   // Event handlers
@@ -71,7 +63,13 @@ export interface SidebarProps {
   onNavigate?: (path: string) => void;
   // User context
   currentUserId?: string | number;
-  restrictedPaths?: string[]; // Rutas que no se deben mostrar
+  restrictedPaths?: string[];
+  // Props adicionales para StoreSelector (pasadas desde el padre)
+  stores?: any[];
+  currentStore?: any;
+  onStoreChange?: (storeId: number) => void;
+  createStoreUrl?: string;
+  isMobile?: boolean;
 }
 
 export function Sidebar({
@@ -94,7 +92,13 @@ export function Sidebar({
   onCreateClick,
   onNavigate = () => {},
   currentUserId = '',
-  restrictedPaths = []
+  restrictedPaths = [],
+  // Props adicionales para StoreSelector
+  stores = [],
+  currentStore,
+  onStoreChange = () => {},
+  createStoreUrl = '',
+  isMobile: externalIsMobile
 }: SidebarProps) {
   
   // Safe router hook - usar mock en Storybook
@@ -186,8 +190,8 @@ export function Sidebar({
   }, [router.asPath, activeSubPath]);
 
   useEffect(() => {
-    if (menuPaths[currentSubmenuOpen]) {
-      setActivePath(menuPaths[currentSubmenuOpen].href);
+    if (menuPaths[currentSubmenuOpen]?.href) {
+      setActivePath(menuPaths[currentSubmenuOpen].href || '');
     }
   }, [currentSubmenuOpen, menuPaths]);
 
@@ -234,7 +238,7 @@ export function Sidebar({
 
   // Filtrar rutas restringidas
   const visibleMenuPaths = menuPaths.filter(path => 
-    !restrictedPaths.includes(path.href)
+    !path.href || !restrictedPaths.includes(path.href)
   );
 
   const isMobile = screenWidth <= breakpointMobile;
@@ -242,8 +246,11 @@ export function Sidebar({
 
   // Función para renderizar elementos del menú
   const renderMenuItem = (item: MenuPath, index: number) => {
+    // Normalizar el tipo - puede venir como string o enum
+    const itemType = typeof item.type === 'string' ? item.type : item.type?.toString();
+    
     // Título estático
-    if (item.type === PathTypes.STATIC_TITLE) {
+    if (itemType === 'STATIC_TITLE') {
       return (
         <div 
           key={`title-${index}`}
@@ -258,7 +265,7 @@ export function Sidebar({
     }
 
     // Componente React
-    if (item.type === PathTypes.REACT_TSX && item.component) {
+    if (itemType === 'REACT_TSX' && item.component) {
       const Component = item.component;
       return (
         <div 
@@ -270,17 +277,26 @@ export function Sidebar({
             <Component 
               currentUserId={currentUserId}
               onNavigate={onNavigate}
-              // Pasar props adicionales si es necesario
+              // Props específicas para StoreSelector
+              stores={stores?.map(store => ({ id: store.id, name: store.name }))}
+              currentStore={currentStore ? { id: currentStore.id, name: currentStore.name } : undefined}
+              onStoreChange={onStoreChange}
+              createStoreUrl={createStoreUrl}
+              searchPlaceholder="Buscar tienda..."
+              isMobile={Boolean(externalIsMobile || isMobile)}
+              className="sidebar-store-selector"
             />
           )}
         </div>
       );
     }
 
-    // Link normal (por defecto)
+    // Link normal (por defecto o tipo 'LINK')
     return (
       <ItemLink
         {...item}
+        href={item.href || ''}
+        text={item.text || ''}
         className={styles.itemLink}
         key={index}
         index={index}
