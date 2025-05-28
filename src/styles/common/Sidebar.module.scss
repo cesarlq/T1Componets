@@ -173,6 +173,7 @@
   margin: 8px 0 !important;
   transition: all 0.3s ease;
   display: block !important;
+  height: 2rem;
   
   &[data-reduce="true"] {
     display: none !important;

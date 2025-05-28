@@ -23,7 +23,8 @@
 }
 
 .container {
-  position: relative;
+  position: fixed;
+  z-index: 99;
   flex-shrink: 0;
 }
 
