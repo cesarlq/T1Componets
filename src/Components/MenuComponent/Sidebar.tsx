@@ -272,7 +272,7 @@ export function Sidebar({
             <span className={styles.titleText}>{item.text}</span>
           ) : (
             // En modo reducido, mostrar una línea divisoria
-            <div className={styles.titleDivider}></div>
+            <></>
           )}
         </div>
       );

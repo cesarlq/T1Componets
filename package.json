@@ -42,11 +42,11 @@
   "license": "MIT",
   "description": "",
   "peerDependencies": {
-    "react": "^17.0.0 || ^18.0.0",
-    "react-dom": "^17.0.0 || ^18.0.0",
-    "next": ">=12.0.0",
     "@mui/material": "^5.0.0 || ^6.0.0 || ^7.0.0",
-    "@mui/system": "^5.0.0 || ^6.0.0 || ^7.0.0"
+    "@mui/system": "^5.0.0 || ^6.0.0 || ^7.0.0",
+    "next": ">=12.0.0",
+    "react": "^17.0.0 || ^18.0.0",
+    "react-dom": "^17.0.0 || ^18.0.0"
   },
   "dependencies": {
     "@mui/icons-material": "^7.0.2",
@@ -66,8 +66,9 @@
     "@mdx-js/mdx": "^1.6.22",
     "@mdx-js/react": "^3.1.0",
     "@mui/material": "^7.0.2",
-    "@mui/system": "^7.0.2",
     "@mui/styled-engine": "^7.0.2",
+    "@mui/system": "^7.0.2",
+    "@reduxjs/toolkit": "^2.8.2",
     "@rollup/plugin-commonjs": "^28.0.3",
     "@rollup/plugin-node-resolve": "^16.0.1",
     "@rollup/plugin-typescript": "^12.1.2",
@@ -103,7 +104,6 @@
     "postcss": "^8.5.3",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
-    "@reduxjs/toolkit": "^2.8.2",
     "react-redux": "^9.2.0",
     "rollup": "^2.79.2",
     "rollup-plugin-peer-deps-external": "^2.2.4",
