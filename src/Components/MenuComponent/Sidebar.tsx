@@ -18,6 +18,13 @@ const mockRouter = {
   }
 };
 
+// Enums
+export enum PathTypes {
+  LINK = 'LINK',
+  STATIC_TITLE = 'STATIC_TITLE',
+  REACT_TSX = 'REACT_TSX'
+}
+
 // Interfaces
 export interface SubPath {
   href: string;
@@ -31,6 +38,10 @@ export interface MenuPath {
   subPaths?: SubPath[];
   concatStoreId?: boolean;
   endAdornment?: React.ReactNode;
+  // Nuevas propiedades para tipos avanzados
+  type?: PathTypes;
+  component?: React.ComponentType<any>;
+  activeIcon?: any;
 }
 
 export interface SidebarProps {
@@ -123,25 +134,25 @@ export function Sidebar({
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-useEffect(() => {
-  if (screenWidth > 0) {
-    const isMobile = screenWidth <= breakpointMobile;
-    
-    if (isMobile) {
-      // En móvil: nunca reducido
-      if (externalIsReduced === undefined) {
-        setInternalIsReduced(false);
+  useEffect(() => {
+    if (screenWidth > 0) {
+      const isMobile = screenWidth <= breakpointMobile;
+      
+      if (isMobile) {
+        // En móvil: nunca reducido
+        if (externalIsReduced === undefined) {
+          setInternalIsReduced(false);
+        }
+        onToggleReduce(false);
+      } else {
+        const shouldReduce = screenWidth <= breakpointReduce;
+        if (externalIsReduced === undefined) {
+          setInternalIsReduced(shouldReduce);
+        }
+        onToggleReduce(shouldReduce);
       }
-      onToggleReduce(false);
-    } else {
-      const shouldReduce = screenWidth <= breakpointReduce;
-      if (externalIsReduced === undefined) {
-        setInternalIsReduced(shouldReduce);
-      }
-      onToggleReduce(shouldReduce);
     }
-  }
-}, [screenWidth, breakpointReduce, breakpointMobile, externalIsReduced, onToggleReduce]);
+  }, [screenWidth, breakpointReduce, breakpointMobile, externalIsReduced, onToggleReduce]);
 
   // Controlar scroll del body cuando está abierto en móvil
   useEffect(() => {
@@ -229,6 +240,67 @@ useEffect(() => {
   const isMobile = screenWidth <= breakpointMobile;
   const shouldShowReduced = isReduced && !enlargeByHover;
 
+  // Función para renderizar elementos del menú
+  const renderMenuItem = (item: MenuPath, index: number) => {
+    // Título estático
+    if (item.type === PathTypes.STATIC_TITLE) {
+      return (
+        <div 
+          key={`title-${index}`}
+          className={`${styles.staticTitle} ${shouldShowReduced ? styles.staticTitleReduced : ''}`}
+          data-reduce={shouldShowReduced}
+        >
+          {(!shouldShowReduced) && (
+            <span className={styles.titleText}>{item.text}</span>
+          )}
+        </div>
+      );
+    }
+
+    // Componente React
+    if (item.type === PathTypes.REACT_TSX && item.component) {
+      const Component = item.component;
+      return (
+        <div 
+          key={`component-${index}`}
+          className={`${styles.reactComponent} ${shouldShowReduced ? styles.reactComponentReduced : ''}`}
+          data-reduce={shouldShowReduced}
+        >
+          {(!shouldShowReduced) && (
+            <Component 
+              currentUserId={currentUserId}
+              onNavigate={onNavigate}
+              // Pasar props adicionales si es necesario
+            />
+          )}
+        </div>
+      );
+    }
+
+    // Link normal (por defecto)
+    return (
+      <ItemLink
+        {...item}
+        className={styles.itemLink}
+        key={index}
+        index={index}
+        sidebarReduce={isReduced}
+        enlargeByHover={enlargeByHover}
+        onClickPath={(index) => setCurrentSubmenuOpen(index)}
+        openSubMenu={currentSubmenuOpen === index}
+        activePath={activePath}
+        setActivePath={setActivePath}
+        activeSubPath={activeSubPath}
+        setActiveSubPath={setActiveSubPath}
+        mobile={isMobile}
+        currentUserId={currentUserId}
+        restrictedPaths={restrictedPaths}
+        onNavigate={onNavigate}
+        onToggleOpen={handleToggleOpen}
+      />
+    );
+  };
+
   return (
     <aside
       className={`${styles.container} ${className}`}
@@ -266,27 +338,7 @@ useEffect(() => {
 
         {/* Menu Items */}
         <ul className={styles.paths}>
-          {visibleMenuPaths.map((item, index) => (
-            <ItemLink
-              {...item}
-              className={styles.itemLink}
-              key={index}
-              index={index}
-              sidebarReduce={isReduced}
-              enlargeByHover={enlargeByHover}
-              onClickPath={(index) => setCurrentSubmenuOpen(index)}
-              openSubMenu={currentSubmenuOpen === index}
-              activePath={activePath}
-              setActivePath={setActivePath}
-              activeSubPath={activeSubPath}
-              setActiveSubPath={setActiveSubPath}
-              mobile={isMobile}
-              currentUserId={currentUserId}
-              restrictedPaths={restrictedPaths}
-              onNavigate={onNavigate}
-              onToggleOpen={handleToggleOpen}
-            />
-          ))}
+          {visibleMenuPaths.map((item, index) => renderMenuItem(item, index))}
         </ul>
       </section>
 

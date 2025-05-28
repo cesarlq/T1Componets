@@ -121,8 +121,9 @@ export function StoreSelector({
           <Image 
             src={DoubleArrowIcon} 
             alt='double-arrow' 
-            width={16}
-            height={16}
+            style={{width:'12px', minWidth:'12px', height:'auto'}}
+            width={12}
+            height={12}
           />
         </button>
       )}

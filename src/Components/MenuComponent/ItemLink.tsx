@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import Image from 'next/image';
 import ArrowMenu from '../../assets/arrow-menu.svg';
 import styles from '../../styles/common/ItemLink.module.scss';
-import { MenuPath, SubPath } from './Sidebar';
+import { MenuPath, SubPath, PathTypes } from './Sidebar';
 
 // Mock router for Storybook
 const mockRouter = {
@@ -57,7 +57,11 @@ export function ItemLink({
   currentUserId = '',
   restrictedPaths = [],
   onNavigate = () => {},
-  onToggleOpen = () => {}
+  onToggleOpen = () => {},
+  // Nuevas props
+  type = PathTypes.LINK,
+  component,
+  activeIcon
 }: ItemLinkProps) {
   
   // Safe router hook - usar mock en Storybook
@@ -71,6 +75,11 @@ export function ItemLink({
   
   const [openSubMenuLocal, setOpenSubMenuLocal] = useState<boolean>(false);
   const [currentSubSteps, setCurrentSubSteps] = useState<SubPath[]>([]);
+
+  // Si es un título estático o componente React, no renderizar como ItemLink
+  if (type === PathTypes.STATIC_TITLE || type === PathTypes.REACT_TSX) {
+    return null; // Estos se manejan en el componente Sidebar principal
+  }
 
   // Filtrar sub-rutas restringidas
   useEffect(() => {
@@ -155,6 +164,9 @@ export function ItemLink({
     onToggleOpen(false); // Cerrar sidebar en móvil
   };
 
+  // Determinar qué icono usar
+  const currentIcon = (href === activePath && activeIcon) ? activeIcon : icon;
+
   // Si tiene subpaths
   if (subPaths) {
     return (
@@ -178,13 +190,15 @@ export function ItemLink({
           )}
         >
           <div data-reduce={sidebarReduce && !enlargeByHover} className={styles.link}>
-            <Image
-              src={icon}
-              alt={text}
-              style={{maxWidth:'19px', maxHeight:'19px'}}
-              height={19}
-              width={19}
-            />
+            {currentIcon && (
+              <Image
+                src={currentIcon}
+                alt={text}
+                style={{maxWidth:'19px', maxHeight:'19px'}}
+                height={19}
+                width={19}
+              />
+            )}
             {(!sidebarReduce || enlargeByHover) && text}
             {endAdornment && !(sidebarReduce && !enlargeByHover) && (
               <div className={styles.endAdornment}>
@@ -249,14 +263,16 @@ export function ItemLink({
           onNavigate(concatStoreId && currentUserId ? `${href}${currentUserId}` : href);
         }}
       >
-        <Image
-          src={icon}
-          alt={text}
-          height={19}
-          width={19}
-          style={{maxWidth:'19px', maxHeight:'19px'}}
-          className={styles.menuIcon}
-        />
+        {currentIcon && (
+          <Image
+            src={currentIcon}
+            alt={text}
+            height={19}
+            width={19}
+            style={{maxWidth:'19px', maxHeight:'19px'}}
+            className={styles.menuIcon}
+          />
+        )}
         {(!sidebarReduce || enlargeByHover) && text}
         {endAdornment && !(sidebarReduce && !enlargeByHover) && (
           <div className={styles.endAdornment}>

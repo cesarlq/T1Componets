@@ -135,6 +135,88 @@
   // Estilos ya manejados en ItemLink.module.scss
 }
 
+// Estilos para títulos estáticos
+.staticTitle {
+  margin: 20px 0 12px 0;
+  transition: all 0.3s ease;
+  
+  &[data-reduce="true"] {
+    display: none;
+  }
+  
+  .titleText {
+    font-size: 13px;
+    font-weight: 700;
+    color: #6B7280;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    line-height: 1.2;
+  }
+}
+
+.staticTitleReduced {
+  display: none;
+}
+
+// Estilos para componentes React
+.reactComponent {
+  margin: 8px 0;
+  transition: all 0.3s ease;
+  
+  &[data-reduce="true"] {
+    display: none;
+  }
+}
+
+.reactComponentReduced {
+  display: none;
+}
+
+// Espaciado adicional después de títulos
+.staticTitle + .itemLink,
+.staticTitle + .reactComponent {
+  margin-top: 8px;
+}
+
+// Espaciado adicional después de componentes
+.reactComponent + .itemLink {
+  margin-top: 8px;
+}
+
+// Grouping visual - línea separadora opcional
+.staticTitle {
+  position: relative;
+  
+  &:not(:first-child) {
+    padding-top: 16px;
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background-color: #E5E7EB;
+    }
+  }
+}
+
 .bottomBanner {
   margin-top: auto;
+}
+
+// Media queries específicas para elementos especiales
+@media (max-width: variables.$breakpoint-md) {
+  .staticTitle {
+    margin: 16px 0 8px 0;
+    
+    .titleText {
+      font-size: 12px;
+    }
+  }
+  
+  .reactComponent {
+    margin: 6px 0;
+  }
 }
