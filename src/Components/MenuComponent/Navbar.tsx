@@ -156,16 +156,18 @@ export function Navbar({
           type="button"
           aria-label="Toggle menu"
         >
-          <T1Icon icon="menuInActive" width={18} height={16} />
+          <T1Icon icon="menuInActive" className='min-w-[18px] min-h-[16px]' width={18} height={16} />
         </button>
+        {!isMobile &&
+          <T1ShippingBanner
+            onReducerHandle={onReducerHandle}
+            sidebarReduce={sidebarReduce}
+            brandText={shippingBannerTitle}
+            onNavigate={onNavigate}
+            isMobile={isMobile}
+          />
+        }
         
-        <T1ShippingBanner
-          onReducerHandle={onReducerHandle}
-          sidebarReduce={sidebarReduce}
-          brandText={shippingBannerTitle}
-          onNavigate={onNavigate}
-          isMobile={isMobile}
-        />
         
         <StoreSelector 
           className={`${styles['store-selector-desktop']} hidden lg:flex`}

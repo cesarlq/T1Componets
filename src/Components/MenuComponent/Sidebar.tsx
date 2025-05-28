@@ -4,6 +4,7 @@ import { Button } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import {ItemLink} from './ItemLink';
 import styles from '../../styles/common/Sidebar.module.scss';
+import { T1ShippingBanner } from './T1ShippingBanner';
 
 // Mock router for Storybook
 const mockRouter = {
