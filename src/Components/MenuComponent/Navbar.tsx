@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { IconButton, ListItemText, Menu, MenuItem as MuiMenuItem } from '@mui/material';
 import { StoreSelector } from './StoreSelector';
 import { T1ShippingBanner } from './T1ShippingBanner';
-import { BalanceBanner } from './BalanceBanner';
 import { User, Store } from '../../interfaces/menu';
 import styles from '../../styles/common/Navbar.module.scss';
 import { T1Selector } from './T1Selector';
@@ -30,6 +29,9 @@ export interface NavbarProps {
   onNavigate?: (path: string) => void;
   onReducerHandle: () => void ;
   sidebarReduce: boolean;
+  
+  // Prop para controlar si está en móvil
+  isMobile?: boolean;
 
   // Component slots (solo los que realmente deben ser configurables)
   BalanceBanner?: React.ComponentType<{ className?: string }>;
@@ -81,6 +83,7 @@ export function Navbar({
   onNavigate = () => {},
   onReducerHandle = () => {},
   sidebarReduce = false,
+  isMobile = false, // Nuevo prop con valor por defecto
   
   // Component slots
   BalanceBanner = ({ className }) => <div className={className}>Balance Banner</div>,
@@ -156,12 +159,12 @@ export function Navbar({
           <T1Icon icon="menuInActive" width={18} height={16} />
         </button>
         
-        {/* T1ShippingBanner es fijo, solo el título es configurable */}
         <T1ShippingBanner
           onReducerHandle={onReducerHandle}
           sidebarReduce={sidebarReduce}
           brandText={shippingBannerTitle}
           onNavigate={onNavigate}
+          isMobile={isMobile}
         />
         
         <StoreSelector 

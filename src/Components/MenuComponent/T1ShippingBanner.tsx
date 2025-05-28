@@ -59,30 +59,32 @@ export function T1ShippingBanner({
 
   return (
     <div className={`flex items-center gap-[13.5px] ${className}`}>
-      <button
-        className="bg-transparent cursor-pointer"
-        onClick={handleToggleClick}
-        type="button"
-        aria-label={buttonIsReduced ? "Expandir sidebar" : "Reducir sidebar"}
-      >
-        <div>
-          {buttonIsReduced ? (
-            <Image
-              src={EnlargeIcon}
-              alt="expand sidebar"
-              width={18}
-              height={16}
-            />
-          ) : (
-            <Image
-              src={ReduceIcon}
-              alt="reduce sidebar"
-              width={18}
-              height={16}
-            />
-          )}
-        </div>
-      </button>
+      {!isMobile && (
+        <button
+          className="bg-transparent cursor-pointer"
+          onClick={handleToggleClick}
+          type="button"
+          aria-label={buttonIsReduced ? "Expandir sidebar" : "Reducir sidebar"}
+        >
+          <div>
+            {buttonIsReduced ? (
+              <Image
+                src={EnlargeIcon}
+                alt="expand sidebar"
+                width={18}
+                height={16}
+              />
+            ) : (
+              <Image
+                src={ReduceIcon}
+                alt="reduce sidebar"
+                width={18}
+                height={16}
+              />
+            )}
+          </div>
+        </button>
+      )}
       
       <button
         className="flex items-center gap-1 bg-transparent border-none cursor-pointer p-0 transition-opacity hover:opacity-80"
@@ -94,6 +96,7 @@ export function T1ShippingBanner({
           <Image 
             src={T1Logo} 
             alt="T1 Logo" 
+            style={{minHeight:'25px', maxWidth:'27px'}}
             width={27}
             height={25}
             className="object-contain" 
