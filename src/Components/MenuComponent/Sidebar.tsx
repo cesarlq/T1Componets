@@ -122,34 +122,27 @@ export function Sidebar({
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Auto-reducir según ancho de pantalla
-  useEffect(() => {
-    if (screenWidth > 0) {
-      const shouldReduce = screenWidth <= breakpointReduce && screenWidth > breakpointMobile;
-      const shouldNotReduce = screenWidth <= breakpointMobile;
-      
-      if (shouldNotReduce) {
-        // En móvil no se reduce, se oculta completamente
-        if (externalIsReduced === undefined) {
-          setInternalIsReduced(false);
-        }
-        onToggleReduce(false);
-      } else if (shouldReduce) {
-        // En tablet se reduce
-        if (externalIsReduced === undefined) {
-          setInternalIsReduced(true);
-        }
-        onToggleReduce(true);
-      } else {
-        // En desktop normal
-        if (externalIsReduced === undefined) {
-          setInternalIsReduced(false);
-        }
-        onToggleReduce(false);
+ // En tu componente Sidebar (de la librería)
+useEffect(() => {
+  if (screenWidth > 0) {
+    const isMobile = screenWidth <= breakpointMobile;
+    
+    if (isMobile) {
+      // En móvil: nunca reducido, se abre/cierra completamente
+      if (externalIsReduced === undefined) {
+        setInternalIsReduced(false);
       }
+      onToggleReduce(false);
+    } else {
+      // No es móvil: aplicar lógica normal de reducción
+      const shouldReduce = screenWidth <= breakpointReduce;
+      if (externalIsReduced === undefined) {
+        setInternalIsReduced(shouldReduce);
+      }
+      onToggleReduce(shouldReduce);
     }
-  }, [screenWidth, breakpointReduce, breakpointMobile, externalIsReduced, onToggleReduce]);
-
+  }
+}, [screenWidth, breakpointReduce, breakpointMobile, externalIsReduced, onToggleReduce]);
   // Controlar scroll del body cuando está abierto en móvil
   useEffect(() => {
     if (screenWidth <= breakpointMobile) {
@@ -189,10 +182,18 @@ export function Sidebar({
 
   // Handlers
   const handleToggleOpen = (newIsOpen: boolean) => {
-    if (externalIsOpen === undefined) {
-      setInternalIsOpen(newIsOpen);
-    }
-    onToggleOpen(newIsOpen);
+      if (externalIsOpen === undefined) {
+        setInternalIsOpen(newIsOpen);
+      }
+      onToggleOpen(newIsOpen);
+      
+      // En móvil, cuando se abre, asegurarse de no estar reducido
+      if (newIsOpen && screenWidth <= breakpointMobile) {
+        if (externalIsReduced === undefined) {
+          setInternalIsReduced(false);
+        }
+        onToggleReduce(false);
+      }
   };
 
   const handleCreateClick = () => {
