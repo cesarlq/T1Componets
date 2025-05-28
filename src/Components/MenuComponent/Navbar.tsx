@@ -204,7 +204,14 @@ export function Navbar({
               )}
             </span>
           )}
-          <ListItemText primary={item.label} />
+          <ListItemText sx={{
+            '& .MuiTypography-root': {
+              fontSize: '12px',
+              fontWeight: '500',
+              // Otros estilos que necesites
+            }
+
+          }} style={{}} primary={item.label} />
         </MuiMenuItem>
         {item.divider && <Divider />}
       </React.Fragment>
@@ -307,13 +314,20 @@ export function Navbar({
               {profileMenuItems.map((item, index) => renderProfileMenuItem(item, index))}
               
               {/* Separador antes del logout si hay items personalizados */}
-              {profileMenuItems.length > 0 && <Divider />}
+              {/* {profileMenuItems.length > 0 && <Divider />} */}
               
               {/* Item de logout (siempre presente y estático) */}
               <MuiMenuItem 
                 onClick={handleLogout} 
                 id='logout' 
-                sx={{ paddingLeft: '24px' }}
+                sx={{ 
+                  paddingLeft: '24px',
+                  '& .MuiTypography-root': {
+                    fontSize: '12px',
+                    fontWeight: '500',
+                    // Otros estilos que necesites
+                  }
+                }}
               >
                 <ListItemText primary={texts.logout} />
               </MuiMenuItem>
