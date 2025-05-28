@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { IconButton, ListItemText, Menu, MenuItem as MuiMenuItem } from '@mui/material';
+import { IconButton, ListItemText, Menu, MenuItem as MuiMenuItem, Divider } from '@mui/material';
 import { StoreSelector } from './StoreSelector';
 import { T1ShippingBanner } from './T1ShippingBanner';
 import { User, Store } from '../../interfaces/menu';
@@ -8,6 +8,19 @@ import { T1Selector } from './T1Selector';
 import { Profile } from './Profile';
 import TextFieldAndButton from './TextFieldAndButton';
 import T1Icon from '../T1Icon';
+
+// Interface para los items del menú del perfil
+export interface ProfileMenuItem {
+  id: string;
+  label: string;
+  icon?: React.ReactNode | string;
+  href?: string;
+  onClick?: (user?: User) => void;
+  target?: '_blank' | '_self';
+  disabled?: boolean;
+  divider?: boolean; // Para agregar un divider después del item
+  className?: string;
+}
 
 export interface NavbarProps {
   className?: string;
@@ -20,6 +33,9 @@ export interface NavbarProps {
   
   // Solo el título del banner es configurable
   shippingBannerTitle?: string;
+  
+  // Configuración de items del menú del perfil
+  profileMenuItems?: ProfileMenuItem[];
   
   // Event handlers
   onLogout?: () => void;
@@ -59,7 +75,6 @@ export interface NavbarProps {
   trackingUrl?: string;
   accountUrl?: string;
   texts?: {
-    manageAccount?: string;
     logout?: string;
     searchPlaceholder?: string;
   };
@@ -75,6 +90,18 @@ export function Navbar({
   currentStore,
   shippingBannerTitle = 'envíos', // Valor por defecto
   
+  // Configuración de items del menú
+  profileMenuItems = [
+    {
+      id: 'manage-account',
+      label: 'Gestionar cuenta',
+      onClick: (user) => {
+        // Comportamiento por defecto
+        console.log('Manage account clicked for user:', user);
+      }
+    }
+  ],
+  
   // Event handlers
   onLogout = () => {},
   onSearch = () => {},
@@ -83,7 +110,7 @@ export function Navbar({
   onNavigate = () => {},
   onReducerHandle = () => {},
   sidebarReduce = false,
-  isMobile = false, // Nuevo prop con valor por defecto
+  isMobile = false,
   
   // Component slots
   BalanceBanner = ({ className }) => <div className={className}>Balance Banner</div>,
@@ -106,7 +133,6 @@ export function Navbar({
   accountUrl = '',
   t1SelectorConfig = {},
   texts = {
-    manageAccount: 'Gestionar cuenta',
     logout: 'Cerrar sesión',
     searchPlaceholder: 'Número de rastreo'
   }
@@ -135,13 +161,54 @@ export function Navbar({
     onSearch(data);
   };
 
-  const handleManageAccount = () => {
-    if (user) {
-      if (accountUrl && user.storeId) {
-        window.open(`${accountUrl}${user.storeId}`, '_blank');
+  const handleMenuItemClick = (item: ProfileMenuItem) => {
+    // Cerrar el menú
+    handleProfileClose();
+    
+    // Si tiene href, navegar
+    if (item.href) {
+      if (item.target === '_blank') {
+        window.open(item.href, '_blank');
+      } else {
+        onNavigate(item.href);
       }
+    }
+    
+    // Ejecutar onClick si existe
+    if (item.onClick) {
+      item.onClick(user || undefined);
+    }
+    
+    // Backward compatibility: si es manage-account, ejecutar onManageAccount
+    if (item.id === 'manage-account' && user) {
       onManageAccount(user);
     }
+  };
+
+  const renderProfileMenuItem = (item: ProfileMenuItem, index: number) => {
+    return (
+      <React.Fragment key={item.id}>
+        <MuiMenuItem
+          onClick={() => handleMenuItemClick(item)}
+          id={item.id}
+          disabled={item.disabled}
+          className={item.className}
+          sx={{ paddingLeft: '24px' }}
+        >
+          {item.icon && (
+            <span style={{ marginRight: '8px', display: 'flex', alignItems: 'center' }}>
+              {typeof item.icon === 'string' ? (
+                <T1Icon icon={item.icon} width={16} height={16} />
+              ) : (
+                item.icon
+              )}
+            </span>
+          )}
+          <ListItemText primary={item.label} />
+        </MuiMenuItem>
+        {item.divider && <Divider />}
+      </React.Fragment>
+    );
   };
 
   return (
@@ -167,7 +234,6 @@ export function Navbar({
             isMobile={isMobile}
           />
         }
-        
         
         <StoreSelector 
           className={`${styles['store-selector-desktop']} hidden lg:flex`}
@@ -236,18 +302,14 @@ export function Navbar({
                 email={user.email}
                 name={user.name}
               />
-              <MuiMenuItem 
-                onClick={() => {
-                  if (accountUrl && user.storeId) {
-                    window.open(`${accountUrl}${user.storeId}`, '_blank');
-                  }
-                  handleManageAccount();
-                }} 
-                id='manage-account' 
-                sx={{ paddingLeft: '24px' }}
-              >
-                <ListItemText primary={texts.manageAccount} />
-              </MuiMenuItem>
+              
+              {/* Renderizar items configurables */}
+              {profileMenuItems.map((item, index) => renderProfileMenuItem(item, index))}
+              
+              {/* Separador antes del logout si hay items personalizados */}
+              {profileMenuItems.length > 0 && <Divider />}
+              
+              {/* Item de logout (siempre presente y estático) */}
               <MuiMenuItem 
                 onClick={handleLogout} 
                 id='logout' 
