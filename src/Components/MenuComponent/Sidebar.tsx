@@ -37,7 +37,14 @@ export interface SidebarProps {
   // Menu configuration
   menuPaths?: MenuPath[];
   // Component slots
-  TopBanner?: React.ComponentType<{ className?: string }>;
+  TopBanner?: React.ComponentType<{
+    className?: string;
+    onToggleReduce: () => void;
+    onToggleOpen: () => void;
+    isReduced: boolean;
+    isOpen: boolean;
+    isMobile: boolean;
+  }>;
   BottomBanner?: React.ComponentType<{ className?: string }> | React.ReactNode;
   BalanceBanner?: React.ComponentType<{ className?: string }>;
   // Features
@@ -294,7 +301,14 @@ export function Sidebar({
         >
           {/* Top Banner */}
           {TopBanner && (
-            <TopBanner className={`ml-3 lg:ml-[23px] mt-3 ${shouldShowReduced ? styles.bannerReduced : ''}`} />
+            <TopBanner 
+              className={`ml-3 lg:ml-[23px] mt-3 ${shouldShowReduced ? styles.bannerReduced : ''}`}
+              onToggleReduce={() => handleToggleOpen(!isOpen)}
+              onToggleOpen={() => handleToggleOpen(!isOpen)}
+              isReduced={shouldShowReduced}
+              isOpen={isOpen}
+              isMobile={isMobile}
+            />
           )}
 
           {/* Create Button */}
