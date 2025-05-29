@@ -4,8 +4,7 @@ import { useRouter } from 'next/router';
 import Image from 'next/image';
 import ArrowMenu from '../../assets/arrow-menu.svg';
 import styles from '../../styles/common/ItemLink.module.scss';
-import { MenuPath,  } from './Sidebar';
-import { SubPath } from '../../interfaces/menu';
+import { MenuPath, SubPath } from './Sidebar';
 
 // Mock router for Storybook
 const mockRouter = {
@@ -59,26 +58,32 @@ export function ItemLink({
   restrictedPaths = [],
   onNavigate = () => {},
   onToggleOpen = () => {},
+  // Nuevas props
   type,
   component,
   activeIcon
 }: ItemLinkProps) {
   
+  // Safe router hook - usar mock en Storybook
   let router;
   try {
     router = useRouter();
   } catch (error) {
+    // Si falla (como en Storybook), usar mock
     router = mockRouter;
   }
   
+  const [openSubMenuLocal, setOpenSubMenuLocal] = useState<boolean>(false);
   const [currentSubSteps, setCurrentSubSteps] = useState<SubPath[]>([]);
 
+  // Valores seguros con defaults
   const safeHref = href || '';
   const safeText = text || '';
   
+  // Si es un título estático o componente React, no renderizar como ItemLink
   const itemType = typeof type === 'string' ? type : type?.toString();
   if (itemType === 'STATIC_TITLE' || itemType === 'REACT_TSX') {
-    return null;
+    return null; // Estos se manejan en el componente Sidebar principal
   }
 
   // Filtrar sub-rutas restringidas
@@ -91,45 +96,83 @@ export function ItemLink({
     }
   }, [subPaths, restrictedPaths]);
 
+  // Detectar ruta activa y manejar submenus
+  useEffect(() => {
+    if (subPaths && subPaths.some(item => item.href === router.asPath)) {
+      // Si una subruta está activa
+      setActivePath(safeHref);
+      setActiveSubPath(router.asPath);
+      onClickPath(index); // Esto activará el submenu
+      onToggleOpen(false); // Cerrar sidebar en móvil
+    } else if (subPaths && subPaths.some(item => router.asPath.includes(item.href))) {
+      // Si la ruta actual contiene una subruta
+      setActivePath(safeHref);
+      onClickPath(index); // Esto activará el submenu
+      onToggleOpen(false);
+    } else if (!subPaths && safeHref === router.asPath) {
+      // Si es una ruta simple y está activa
+      onToggleOpen(false);
+      setTimeout(() => {
+        setActivePath(safeHref);
+      });
+    }
+    
+    // Sincronizar estado local con el prop openSubMenu
+    setOpenSubMenuLocal(openSubMenu);
+  }, [
+    router.asPath, 
+    subPaths, 
+    safeHref, // Usar safeHref en lugar de href
+    index, 
+    setActivePath, 
+    setActiveSubPath, 
+    onToggleOpen,
+    openSubMenu,
+    onClickPath
+  ]);
+
   const handleOpenSubPaths = (index: number, targetHref?: string) => {
+    setActivePath(safeHref);
     let finalHref = targetHref;
     
+    // Concatenar storeId si es necesario
     if (concatStoreId && finalHref && currentUserId) {
       finalHref = finalHref + currentUserId;
     }
     
-    // Solo actualizar el estado si es diferente al actual
-    if (safeHref !== activePath) {
-      setActivePath(safeHref);
-    }
-    
+    // Llamar al callback del padre para manejar el estado del submenu
     onClickPath(index);
     
     if (finalHref && !mobile) {
+      // En desktop, navegar directamente
       router.push(finalHref);
       setActiveSubPath(finalHref);
       onNavigate(finalHref);
-    } else if (mobile && finalHref) {
-      router.push(finalHref);
-      onNavigate(finalHref);
-      onToggleOpen(false);
+    } else if (mobile) {
+      // En móvil, solo manejar la navegación si hay href
+      if (subPaths && subPaths.some(item => item.href === router.asPath)) {
+        setActiveSubPath(router.asPath);
+      }
     }
   };
 
   const handleSubPathClick = (subHref: string) => {
     let finalSubHref = subHref;
     
+    // Concatenar storeId si es necesario
     if (concatStoreId && currentUserId) {
       finalSubHref = subHref + currentUserId;
     }
     
     setActiveSubPath(finalSubHref);
     onNavigate(finalSubHref);
-    onToggleOpen(false);
+    onToggleOpen(false); // Cerrar sidebar en móvil
   };
 
+  // Determinar qué icono usar
   const currentIcon = (safeHref === activePath && activeIcon) ? activeIcon : icon;
 
+  // Si tiene subpaths
   if (subPaths) {
     return (
       <div 
@@ -141,7 +184,7 @@ export function ItemLink({
           data-active={safeHref === activePath}
           data-has-sub-paths={true}
           style={
-            openSubMenu && (!sidebarReduce || enlargeByHover) 
+            openSubMenuLocal && (!sidebarReduce || enlargeByHover) 
               ? { marginBottom: '20px' } 
               : { marginBottom: 0 }
           }
@@ -179,6 +222,7 @@ export function ItemLink({
           />
         </li>
         
+        {/* Subpaths */}
         {(!sidebarReduce || enlargeByHover) && (
           <div 
             className={styles.subPaths} 
@@ -207,6 +251,7 @@ export function ItemLink({
     );
   }
 
+  // Si no tiene subpaths (link simple)
   return (
     <li
       className={`${styles.linkContainer} ${className}`}
