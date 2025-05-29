@@ -1,10 +1,23 @@
+// Sidebar.tsx - Versión corregida
 import React, { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Button } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import {ItemLink} from './ItemLink';
 import styles from '../../styles/common/Sidebar.module.scss';
-import { T1ShippingBanner } from './T1ShippingBanner';
+import { SidebarProps, SubPath } from '../../interfaces/menu';
+
+export interface MenuPath {
+  href?: string;
+  text?: string;
+  icon?: any;
+  subPaths?: SubPath[];
+  concatStoreId?: boolean;
+  endAdornment?: React.ReactNode;
+  type?: string | any;
+  component?: React.ComponentType<any>;
+  activeIcon?: any;
+}
 
 // Mock router for Storybook
 const mockRouter = {
@@ -15,61 +28,6 @@ const mockRouter = {
   reload: () => {
   }
 };
-
-// Interfaces flexibles que aceptan múltiples formatos
-export interface SubPath {
-  href: string;
-  text: string;
-}
-
-export interface MenuPath {
-  href?: string;
-  text?: string;
-  icon?: any;
-  subPaths?: SubPath[];
-  concatStoreId?: boolean;
-  endAdornment?: React.ReactNode;
-  // Propiedades para tipos avanzados (compatibles con PathWithSubPathsI)
-  type?: string | any; // Flexible para aceptar enums de diferentes proyectos
-  component?: React.ComponentType<any>;
-  activeIcon?: any;
-}
-
-export interface SidebarProps {
-  className?: string;
-  // Menu configuration
-  menuPaths?: MenuPath[];
-  // Component slots
-  TopBanner?: React.ComponentType<{ className?: string }>;
-  BottomBanner?: React.ComponentType<{ className?: string }> | React.ReactNode;
-  BalanceBanner?: React.ComponentType<{ className?: string }>;
-  // Features
-  showCreateButton?: boolean;
-  showInfoBand?: boolean;
-  showBalance?: boolean;
-  // Configuration
-  createButtonText?: string;
-  createButtonPath?: string;
-  breakpointReduce?: number;
-  breakpointMobile?: number;
-  // States from parent
-  isOpen?: boolean;
-  isReduced?: boolean;
-  // Event handlers
-  onToggleOpen?: (isOpen: boolean) => void;
-  onToggleReduce?: (isReduced: boolean) => void;
-  onCreateClick?: () => void;
-  onNavigate?: (path: string) => void;
-  // User context
-  currentUserId?: string | number;
-  restrictedPaths?: string[];
-  // Props adicionales para StoreSelector (pasadas desde el padre)
-  stores?: any[];
-  currentStore?: any;
-  onStoreChange?: (storeId: number) => void;
-  createStoreUrl?: string;
-  isMobile?: boolean;
-}
 
 export function Sidebar({
   className = '',
@@ -92,7 +50,6 @@ export function Sidebar({
   onNavigate = () => {},
   currentUserId = '',
   restrictedPaths = [],
-  // Props adicionales para StoreSelector
   stores = [],
   currentStore,
   onStoreChange = () => {},
@@ -105,7 +62,6 @@ export function Sidebar({
   try {
     router = useRouter();
   } catch (error) {
-    // Si falla (como en Storybook), usar mock
     router = mockRouter;
   }
   
@@ -119,12 +75,102 @@ export function Sidebar({
   
   // Estados de navegación
   const [activePath, setActivePath] = useState('');
-  const [currentSubmenuOpen, setCurrentSubmenuOpen] = useState<number>(0);
+  const [currentSubmenuOpen, setCurrentSubmenuOpen] = useState<number>(-1);
   const [activeSubPath, setActiveSubPath] = useState('');
+  const [isInitialized, setIsInitialized] = useState(false);
 
   // Usar estados externos si se proporcionan, sino usar internos
   const isOpen = externalIsOpen !== undefined ? externalIsOpen : internalIsOpen;
   const isReduced = externalIsReduced !== undefined ? externalIsReduced : internalIsReduced;
+
+  // Función para encontrar la ruta activa y su índice
+  const findActivePathAndIndex = (currentPath: string) => {
+    let foundPath = '';
+    let foundIndex = -1;
+    let foundSubPath = '';
+
+    // Filtrar rutas visibles primero
+    const visiblePaths = menuPaths.filter(path => 
+      !path.href || !restrictedPaths.includes(path.href)
+    );
+
+    // Buscar en rutas principales y sub-rutas
+    visiblePaths.forEach((item, index) => {
+      const itemType = typeof item.type === 'string' ? item.type : item.type?.toString();
+      
+      // Solo procesar links válidos
+      if ((itemType === '1' || itemType === 'LINK') && item.href) {
+        // Verificar si la ruta principal coincide exactamente
+        if (item.href === currentPath) {
+          foundPath = item.href;
+          foundIndex = index;
+          foundSubPath = currentPath;
+          return;
+        }
+
+        // Verificar sub-rutas
+        if (item.subPaths) {
+          const matchingSubPath = item.subPaths.find(subPath => {
+            const finalSubHref = (item.concatStoreId && currentUserId) 
+              ? `${subPath.href}${currentUserId}` 
+              : subPath.href;
+            return finalSubHref === currentPath || currentPath.startsWith(finalSubHref);
+          });
+
+          if (matchingSubPath) {
+            foundPath = item.href;
+            foundIndex = index;
+            foundSubPath = (item.concatStoreId && currentUserId) 
+              ? `${matchingSubPath.href}${currentUserId}` 
+              : matchingSubPath.href;
+            return;
+          }
+        }
+
+        // Verificar si la ruta actual comienza con la ruta del item (para rutas dinámicas)
+        if (currentPath.startsWith(item.href + '/')) {
+          foundPath = item.href;
+          foundIndex = index;
+          foundSubPath = currentPath;
+        }
+      }
+    });
+
+    return { foundPath, foundIndex, foundSubPath };
+  };
+
+  // Inicializar rutas activas al montar y cuando cambie la ruta
+  useEffect(() => {
+    if (!router.asPath) return;
+
+    const { foundPath, foundIndex, foundSubPath } = findActivePathAndIndex(router.asPath);
+    
+    if (foundPath) {
+      setActivePath(foundPath);
+      setActiveSubPath(foundSubPath);
+      setCurrentSubmenuOpen(foundIndex);
+    } else {
+      // Si no se encuentra una ruta activa, resetear
+      setActivePath('');
+      setActiveSubPath('');
+      setCurrentSubmenuOpen(-1);
+    }
+    
+    setIsInitialized(true);
+  }, [router.asPath, menuPaths, currentUserId, restrictedPaths]);
+
+  // Efecto para re-evaluar cuando cambie el store (currentUserId)
+  useEffect(() => {
+    if (!isInitialized || !router.asPath) return;
+    
+    const { foundPath, foundIndex, foundSubPath } = findActivePathAndIndex(router.asPath);
+    
+    if (foundPath) {
+      setActivePath(foundPath);
+      setActiveSubPath(foundSubPath);
+      setCurrentSubmenuOpen(foundIndex);
+    }
+  }, [currentUserId, isInitialized]);
 
   // Detectar ancho de pantalla
   useEffect(() => {
@@ -132,7 +178,7 @@ export function Sidebar({
       setScreenWidth(window.innerWidth);
     };
 
-    handleResize(); // Ejecutar al montar
+    handleResize();
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
@@ -142,7 +188,6 @@ export function Sidebar({
       const isMobile = screenWidth <= breakpointMobile;
       
       if (isMobile) {
-        // En móvil: nunca reducido
         if (externalIsReduced === undefined) {
           setInternalIsReduced(false);
         }
@@ -181,19 +226,6 @@ export function Sidebar({
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isOpen, screenWidth, breakpointMobile]);
 
-  // Inicializar rutas activas
-  useEffect(() => {
-    if (!activeSubPath) {
-      setActiveSubPath(router.asPath);
-    }
-  }, [router.asPath, activeSubPath]);
-
-  useEffect(() => {
-    if (menuPaths[currentSubmenuOpen]?.href) {
-      setActivePath(menuPaths[currentSubmenuOpen].href || '');
-    }
-  }, [currentSubmenuOpen, menuPaths]);
-
   // Handlers
   const handleToggleOpen = (newIsOpen: boolean) => {
     if (externalIsOpen === undefined) {
@@ -201,7 +233,6 @@ export function Sidebar({
     }
     onToggleOpen(newIsOpen);
     
-    // En móvil, asegurarse de no estar reducido cuando se abre
     if (newIsOpen && screenWidth <= breakpointMobile) {
       if (externalIsReduced === undefined) {
         setInternalIsReduced(false);
@@ -245,55 +276,51 @@ export function Sidebar({
 
   // Función para renderizar elementos del menú
   const renderMenuItem = (item: MenuPath, index: number) => {
-    // Normalizar el tipo - puede venir como string o enum
     const itemType = typeof item.type === 'string' ? item.type : item.type?.toString();
     
-    // Título estático - type: '0' corresponde a STATIC_TITLE
     if (itemType === '0' || itemType === 'STATIC_TITLE') {
-      return (<>
-        {!shouldShowReduced &&
-        <div 
-          key={`title-${index}`}
-          className={styles.staticTitle}
-          data-reduce={shouldShowReduced}
-        >
-          
-            <span className={styles.titleText}>{item.text}</span>
-          
-        </div>
-        }
-      </>);
+      return (
+        <>
+          {!shouldShowReduced && (
+            <div 
+              key={`title-${index}`}
+              className={styles.staticTitle}
+              data-reduce={shouldShowReduced}
+            >
+              <span className={styles.titleText}>{item.text}</span>
+            </div>
+          )}
+        </>
+      );
     }
 
-    // Componente React - type: '3' corresponde a REACT_TSX (basado en tus logs)
     if ((itemType === '3' || itemType === 'REACT_TSX') && item.component) {
       const Component = item.component;
-      return (<>
-         {!shouldShowReduced && (
-        <div 
-          key={`component-${index}`}
-          className={styles.reactComponent}
-          data-reduce={shouldShowReduced}
-        >
-            <Component 
-              currentUserId={currentUserId}
-              onNavigate={onNavigate}
-              // Props específicas para StoreSelector
-              stores={stores?.map(store => ({ id: store.id, name: store.name }))}
-              currentStore={currentStore ? { id: currentStore.id, name: currentStore.name } : undefined}
-              onStoreChange={onStoreChange}
-              createStoreUrl={createStoreUrl}
-              searchPlaceholder="Buscar tienda..."
-              isMobile={Boolean(externalIsMobile || isMobile)}
-              className="sidebar-store-selector"
-            />
-         
-        </div>
-         )}
-      </>);
+      return (
+        <>
+          {!shouldShowReduced && (
+            <div 
+              key={`component-${index}`}
+              className={styles.reactComponent}
+              data-reduce={shouldShowReduced}
+            >
+              <Component 
+                currentUserId={currentUserId}
+                onNavigate={onNavigate}
+                stores={stores?.map(store => ({ id: store.id, name: store.name }))}
+                currentStore={currentStore ? { id: currentStore.id, name: currentStore.name } : undefined}
+                onStoreChange={onStoreChange}
+                createStoreUrl={createStoreUrl}
+                searchPlaceholder="Buscar tienda..."
+                isMobile={Boolean(externalIsMobile || isMobile)}
+                className="sidebar-store-selector"
+              />
+            </div>
+          )}
+        </>
+      );
     }
 
-    // Link normal - type: '1' corresponde a LINK
     if ((itemType === '1' || itemType === 'LINK') && item.href && item.href.trim() !== '') {
       return (
         <ItemLink
@@ -305,7 +332,7 @@ export function Sidebar({
           index={index}
           sidebarReduce={isReduced}
           enlargeByHover={enlargeByHover}
-          onClickPath={(index) => setCurrentSubmenuOpen(index)}
+          onClickPath={setCurrentSubmenuOpen}
           openSubMenu={currentSubmenuOpen === index}
           activePath={activePath}
           setActivePath={setActivePath}
@@ -337,12 +364,10 @@ export function Sidebar({
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
-        {/* Top Banner */}
         {TopBanner && (
           <TopBanner className={`ml-3 lg:ml-[23px] mt-3 ${shouldShowReduced ? styles.bannerReduced : ''}`} />
         )}
 
-        {/* Create Button */}
         {showCreateButton && (
           <Button
             onClick={handleCreateClick}
@@ -353,18 +378,15 @@ export function Sidebar({
           </Button>
         )}
 
-        {/* Balance Banner - solo visible cuando no está reducido */}
         {BalanceBanner && showBalance && !shouldShowReduced && (
           <BalanceBanner className="lg:!hidden" />
         )}
 
-        {/* Menu Items */}
         <ul className={styles.paths}>
           {visibleMenuPaths.map((item, index) => renderMenuItem(item, index))}
         </ul>
       </section>
 
-      {/* Bottom Banner */}
       {BottomBanner && (
         <div className={styles.bottomBanner}>
           {React.isValidElement(BottomBanner) 
