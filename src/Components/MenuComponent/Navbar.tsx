@@ -301,6 +301,13 @@ export function Navbar({
               anchorEl={profileAnchor}
               open={profileOpen}
               onClose={handleProfileClose}
+              sx={{
+                '& .MuiMenu-paper': {
+                  fontSize: '12px',
+                  fontWeight: '500',
+                },
+
+              }}
               MenuListProps={{
                 'aria-labelledby': 'profile-button',
               }}

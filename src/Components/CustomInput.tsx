@@ -488,43 +488,44 @@ const CustomInput = forwardRef<HTMLDivElement, CustomInputProps>((
       </TextField>
       
       {/* Área de ayuda y contador */}
-      <Box 
-        sx={{ 
-          display: 'flex', 
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          mt: 0.5,
-          minHeight: '1.25rem' // Espacio consistente incluso sin texto
-        }}
-      >
-        {/* Texto de ayuda o error */}
-        {displayHelperText && (
-          <FormHelperText
-            error={hasError}
-            style={helperTextStyles}
-            sx={{
-              m: 0,
-              ...helperTextSx
-            }}
-          >
-            {displayHelperText}
-          </FormHelperText>
-        )}
-        
-        {/* Contador de caracteres */}
-        {showCharCount && maxLength && (
-          <Typography
-            variant="caption"
+      {displayHelperText && 
+          <Box 
             sx={{ 
-              color: inputValue.length >= maxLength ? 'error.main' : 'text.secondary',
-              ml: 'auto',
-              fontSize: '0.75rem'
+              display: 'flex', 
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              mt: 0.5,
+              minHeight: '1.25rem' // Espacio consistente incluso sin texto
             }}
           >
-            {charCount}
-          </Typography>
-        )}
-      </Box>
+          {/* Texto de ayuda o error */}
+            <FormHelperText
+              error={hasError}
+              style={helperTextStyles}
+              sx={{
+                m: 0,
+                ...helperTextSx
+              }}
+            >
+              {displayHelperText}
+            </FormHelperText>
+          
+          {/* Contador de caracteres */}
+          {showCharCount && maxLength && (
+            <Typography
+              variant="caption"
+              sx={{ 
+                color: inputValue.length >= maxLength ? 'error.main' : 'text.secondary',
+                ml: 'auto',
+                fontSize: '0.75rem'
+              }}
+            >
+              {charCount}
+            </Typography>
+          )}
+        </Box>
+      }
+
     </Box>
   );
 });

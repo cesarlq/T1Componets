@@ -325,7 +325,7 @@ export function Sidebar({
 
   return (
     <aside
-      className={`${styles.container} ${className}`}
+      className={`${styles.container} ${className} pt-4`}
       data-reduce={shouldShowReduced}
       data-enlarge-by-hover={enlargeByHover}
       data-show-info-band={showInfoBand}

@@ -199,7 +199,7 @@ export function ItemLink({
               <Image
                 src={currentIcon}
                 alt={safeText}
-                style={{maxWidth:'19px', maxHeight:'19px'}}
+                style={{maxWidth:'18px', maxHeight:'18px'}}
                 height={19}
                 width={19}
               />
