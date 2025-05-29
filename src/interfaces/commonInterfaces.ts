@@ -1,6 +1,7 @@
 import { ChipProps, CheckboxProps, ButtonProps, TextFieldProps, StandardTextFieldProps, Theme, SxProps, SelectChangeEvent, TypographyProps, OutlinedTextFieldProps } from "@mui/material";
 import { JSX, ReactNode, SetStateAction, Dispatch } from "react";
 import { FieldValues, UseControllerProps } from "react-hook-form";
+import { ProfileMenuItem } from "./Profile.interface";
 
 export interface AuthContentI {
   setOpenModal: Dispatch<SetStateAction<boolean>>
@@ -114,13 +115,6 @@ export interface MenuItemProps {
   [key: string]: any;
 }
 
-export interface ProfileMenuItem {
-  id: string;
-  label: string;
-  icon?: ReactNode;
-  onClick?: () => void;
-  divider?: boolean;
-}
 
 export interface ChildProps {
   label?: string;

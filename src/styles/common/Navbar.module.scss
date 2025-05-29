@@ -45,6 +45,14 @@
             place-items: center;
             flex-shrink: 0;
         }
+
+        .iconProfile {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            position: absolute;
+        }
     }
 
     // Sección izquierda del navbar
@@ -117,6 +125,13 @@
     margin-top: variables.$height-navbar;
 }
 
+.profileIcon {
+    min-width: 56px;
+    min-height: 56px;
+    object-fit: cover;
+    border-radius: 50%;
+    position: absolute;
+}
 
 @media (max-width: 1300px) {
     .progress {

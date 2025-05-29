@@ -1,9 +1,7 @@
 // Navbar.stories.tsx
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
-import { LayoutProvider } from '../Components/MenuComponent/LayoutProvider';
-import { Navbar } from '../Components/MenuComponent/Navbar';
-
+import { Navbar } from '../../Components/MenuComponent/Navbar';
 const mockUser = {
   name: 'Juan Pérez',
   email: 'juan.perez@empresa.com',
@@ -161,8 +159,8 @@ const MockProfile: React.ComponentType<{
 
 // Wrapper component - El T1ShippingBanner ahora es fijo interno
 const NavbarWrapper = (props: any) => (
-  <LayoutProvider>
-    <div style={{ minHeight: '100vh', background: '#f8fafc' }}>
+  <div>
+    <div style={{ minHeight: '100%', background: '#f8fafc' }}>
       <Navbar
         {...props}
         // T1ShippingBanner ya no se pasa como prop - es interno
@@ -265,11 +263,11 @@ const NavbarWrapper = (props: any) => (
         </div>
       </div>
     </div>
-  </LayoutProvider>
+  </div>
 );
 
 const meta: Meta<typeof NavbarWrapper> = {
-  title: 'Components/Navbar',
+  title: 'Menu/Navbar',
   component: NavbarWrapper,
   parameters: {
     layout: 'fullscreen',
@@ -288,6 +286,14 @@ const meta: Meta<typeof NavbarWrapper> = {
         type: { summary: 'string' },
         defaultValue: { summary: 'envíos' }
       }
+    },
+    iconProfile: {
+      control: 'text',
+      description: 'Cambia/Agrega Imagen del perfil'
+    },
+    colorProfile: {
+      control: 'text',
+      description: 'Cambia color del icno de perfil'
     },
     showBalance: {
       control: 'boolean',
@@ -453,7 +459,8 @@ export const CustomTexts: Story = {
     t1SelectorConfig: {
       ...(Default.args?.t1SelectorConfig ?? {}),
       ecosystemTitle: 'Suite Empresarial'
-    }
+    },
+    iconProfile: './image.png'
   },
   parameters: {
     docs: {

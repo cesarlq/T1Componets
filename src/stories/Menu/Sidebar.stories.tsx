@@ -9,7 +9,7 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import PeopleIcon from '@mui/icons-material/People';
 import AnalyticsIcon from '@mui/icons-material/Analytics';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import { Sidebar } from '../Components/MenuComponent/Sidebar';
+import { Sidebar } from '../../Components/MenuComponent/Sidebar';
 
 // Mock components para TopBanner y BottomBanner
 const MockTopBanner = ({ className }: { className?: string }) => (
@@ -147,7 +147,7 @@ const mockMenuPaths = [
 ];
 
 const meta: Meta<typeof Sidebar> = {
-  title: 'Components/Sidebar',
+  title: 'Menu/Sidebar',
   component: Sidebar,
   parameters: {
     layout: 'fullscreen',

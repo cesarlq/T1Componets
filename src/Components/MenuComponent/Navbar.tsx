@@ -5,22 +5,11 @@ import { T1ShippingBanner } from './T1ShippingBanner';
 import { User, Store } from '../../interfaces/menu';
 import styles from '../../styles/common/Navbar.module.scss';
 import { T1Selector } from './T1Selector';
-import { Profile } from './Profile';
+import { MenuProfile, Profile } from './Profile';
 import TextFieldAndButton from './TextFieldAndButton';
 import T1Icon from '../T1Icon';
+import { ProfileMenuItem } from '../../interfaces/Profile.interface';
 
-// Interface para los items del menú del perfil
-export interface ProfileMenuItem {
-  id: string;
-  label: string;
-  icon?: React.ReactNode | string;
-  href?: string;
-  onClick?: (user?: User) => void;
-  target?: '_blank' | '_self';
-  disabled?: boolean;
-  divider?: boolean; // Para agregar un divider después del item
-  className?: string;
-}
 
 export interface NavbarProps {
   className?: string;
@@ -78,6 +67,11 @@ export interface NavbarProps {
     logout?: string;
     searchPlaceholder?: string;
   };
+
+
+  //Configuration Profile
+  iconProfile?: string | undefined;
+  colorProfile?: string
 }
 
 export function Navbar({
@@ -91,16 +85,7 @@ export function Navbar({
   shippingBannerTitle = 'envíos', // Valor por defecto
   
   // Configuración de items del menú
-  profileMenuItems = [
-    {
-      id: 'manage-account',
-      label: 'Gestionar cuenta',
-      onClick: (user) => {
-        // Comportamiento por defecto
-        console.log('Manage account clicked for user:', user);
-      }
-    }
-  ],
+  profileMenuItems,
   
   // Event handlers
   onLogout = () => {},
@@ -114,18 +99,6 @@ export function Navbar({
   
   // Component slots
   BalanceBanner = ({ className }) => <div className={className}>Balance Banner</div>,
-  SearchComponent = ({ onSubmit, textFieldProps, className }) => (
-    <div className={className}>
-      <input
-        {...textFieldProps}
-        onKeyPress={(e) => {
-          if (e.key === 'Enter') {
-            onSubmit({ search: (e.target as HTMLInputElement).value });
-          }
-        }}
-      />
-    </div>
-  ),
   
   // Configuration
   searchPlaceholder = 'Número de rastreo',
@@ -135,7 +108,11 @@ export function Navbar({
   texts = {
     logout: 'Cerrar sesión',
     searchPlaceholder: 'Número de rastreo'
-  }
+  },
+
+  //profile Configuration
+  iconProfile,
+  colorProfile
 }: NavbarProps) {
 
   const [profileAnchor, setProfileAnchor] = useState<null | HTMLElement>(null);
@@ -286,59 +263,16 @@ export function Navbar({
         
         {user && user.name && (
           <>
-            <IconButton
-              id="profile-button"
-              aria-controls={profileOpen ? 'profile-menu' : undefined}
-              aria-haspopup="true"
-              aria-expanded={profileOpen ? 'true' : undefined}
-              onClick={handleProfileClick}
-              className={styles['first-letter']}
-            >
-              {user.name[0].toUpperCase()}
-            </IconButton>
-            <Menu
-              id="profile-menu"
-              anchorEl={profileAnchor}
-              open={profileOpen}
-              onClose={handleProfileClose}
-              sx={{
-                '& .MuiMenu-paper': {
-                  fontSize: '12px',
-                  fontWeight: '500',
-                },
-
-              }}
-              MenuListProps={{
-                'aria-labelledby': 'profile-button',
-              }}
-            >
-              <Profile
-                email={user.email}
-                name={user.name}
-              />
-              
-              {/* Renderizar items configurables */}
-              {profileMenuItems.map((item, index) => renderProfileMenuItem(item, index))}
-              
-              {/* Separador antes del logout si hay items personalizados */}
-              {/* {profileMenuItems.length > 0 && <Divider />} */}
-              
-              {/* Item de logout (siempre presente y estático) */}
-              <MuiMenuItem 
-                onClick={handleLogout} 
-                id='logout' 
-                sx={{ 
-                  paddingLeft: '24px',
-                  '& .MuiTypography-root': {
-                    fontSize: '12px',
-                    fontWeight: '500',
-                    // Otros estilos que necesites
-                  }
-                }}
-              >
-                <ListItemText primary={texts.logout} />
-              </MuiMenuItem>
-            </Menu>
+            <MenuProfile
+              profileOpen={profileOpen}
+              user={user}
+              profileMenuItems={profileMenuItems}
+              onLogout={onLogout}
+              textLogOut={texts.logout}
+              onNavigate={onNavigate}
+              iconProfile={iconProfile}
+              colorProfile={colorProfile}
+            />
           </>
         )}
       </div>
