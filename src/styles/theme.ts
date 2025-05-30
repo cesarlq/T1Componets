@@ -34,6 +34,26 @@ const theme = createTheme({
     fontSize: 13
   },
   components: {
+    MuiOutlinedInput: {
+      styleOverrides: {
+        notchedOutline: {
+          '&.Mui-focused': {
+            borderColor: '#E7E7E7 !important',
+            borderWidth: '1px !important',
+          }
+        },
+        root: {
+          '&:hover .MuiOutlinedInput-notchedOutline': {
+            borderColor: '#E7E7E7 !important',
+            borderWidth: '1px !important',
+          },
+          '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+            borderColor: '#E7E7E7 !important',
+            borderWidth: '1px !important',
+          }
+        }
+      }
+    },
     MuiButton: {
       variants: [
         {
