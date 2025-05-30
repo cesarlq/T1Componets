@@ -74,15 +74,14 @@ export function Navbar({
         >
           <T1Icon icon="menuInActive" className='min-w-[18px] min-h-[16px]' width={18} height={16} />
         </button>
-        {!isMobile &&
-          <T1ShippingBanner
-            onReducerHandle={onReducerHandle}
-            sidebarReduce={sidebarReduce}
-            brandText={shippingBannerTitle}
-            onNavigate={onNavigate}
-            isMobile={isMobile}
-          />
-        }
+        <T1ShippingBanner
+          className={`${styles['Banner-section']}`}
+          onReducerHandle={onReducerHandle}
+          sidebarReduce={sidebarReduce}
+          brandText={shippingBannerTitle}
+          onNavigate={onNavigate}
+          isMobile={isMobile}
+        />
         
         <StoreSelector 
           className={`${styles['store-selector-desktop']} hidden lg:flex`}
