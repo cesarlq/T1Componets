@@ -1,23 +1,43 @@
+'use client'; // 🔥 ASEGURAR QUE ESTÉ PRESENTE
 
 import React, { useEffect, useRef, useState } from 'react';
-import { useRouter } from 'next/router';
+import { useRouter, usePathname } from 'next/navigation'; // 🔥 CAMBIO PRINCIPAL
 import { Button } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import {ItemLink} from './ItemLink';
 import styles from '../../styles/common/Sidebar.module.scss';
 import { T1ShippingBanner } from './T1ShippingBanner';
 
-// Mock router for Storybook
+// 🔥 MOCK ROUTER ACTUALIZADO PARA APP ROUTER
 const mockRouter = {
-  asPath: '/dashboard',
   push: (path: string) => {
+    console.log('🔥 Mock router push (App Router):', path);
+    
+    if (typeof window !== 'undefined') {
+      try {
+        window.history.pushState({}, '', `${window.location.pathname}?story-path=${encodeURIComponent(path)}`);
+        window.dispatchEvent(new CustomEvent('storybook-navigation', { 
+          detail: { path } 
+        }));
+        console.log('✅ Navegación simulada exitosa a:', path);
+      } catch (error) {
+        console.warn('⚠️ No se pudo simular navegación:', error);
+      }
+    }
+    
     return Promise.resolve(true);
   },
-  reload: () => {
+  refresh: () => {
+    console.log('🔄 Mock router refresh');
+    if (typeof window !== 'undefined') {
+      window.location.reload();
+    }
   }
 };
 
-// Interfaces flexibles que aceptan múltiples formatos
+const mockPathname = '/dashboard';
+
+// Interfaces (sin cambios)
 export interface SubPath {
   href: string;
   text: string;
@@ -30,43 +50,34 @@ export interface MenuPath {
   subPaths?: SubPath[];
   concatStoreId?: boolean;
   endAdornment?: React.ReactNode;
-  autoNavigateOnClick?: boolean;
-  // Propiedades para tipos avanzados (compatibles con PathWithSubPathsI)
-  type?: string | any; // Flexible para aceptar enums de diferentes proyectos
+  autoNavigateOnClick?: boolean; // 🔥 NUEVA PROP
+  type?: string | any;
   component?: React.ComponentType<any>;
   activeIcon?: any;
 }
 
 export interface SidebarProps {
   className?: string;
-  // Menu configuration
   menuPaths?: MenuPath[];
-  defaultAutoNavigate?: boolean; 
-  // Component slots
+  defaultAutoNavigate?: boolean; // 🔥 NUEVA PROP GLOBAL
   TopBanner?: React.ComponentType<{ className?: string }>;
   BottomBanner?: React.ComponentType<{ className?: string }> | React.ReactNode;
   BalanceBanner?: React.ComponentType<{ className?: string }>;
-  // Features
   showCreateButton?: boolean;
   showInfoBand?: boolean;
   showBalance?: boolean;
-  // Configuration
   createButtonText?: string;
   createButtonPath?: string;
   breakpointReduce?: number;
   breakpointMobile?: number;
-  // States from parent
   isOpen?: boolean;
   isReduced?: boolean;
-  // Event handlers
   onToggleOpen?: (isOpen: boolean) => void;
   onToggleReduce?: (isReduced: boolean) => void;
   onCreateClick?: () => void;
   onNavigate?: (path: string) => void;
-  // User context
   currentUserId?: string | number;
   restrictedPaths?: string[];
-  // Props adicionales para StoreSelector (pasadas desde el padre)
   stores?: any[];
   currentStore?: any;
   onStoreChange?: (storeId: number) => void;
@@ -77,6 +88,7 @@ export interface SidebarProps {
 export function Sidebar({
   className = '',
   menuPaths = [],
+  defaultAutoNavigate = false, // 🔥 NUEVA PROP
   TopBanner,
   BottomBanner,
   BalanceBanner,
@@ -95,27 +107,37 @@ export function Sidebar({
   onNavigate = () => {},
   currentUserId = '',
   restrictedPaths = [],
-  // Props adicionales para StoreSelector
   stores = [],
   currentStore,
-  defaultAutoNavigate = false,
   onStoreChange = () => {},
   createStoreUrl = '',
   isMobile: externalIsMobile
 }: SidebarProps) {
   
-  // Safe router hook - usar mock en Storybook
+  // 🔥 USAR HOOKS DE APP ROUTER
   let router;
+  let pathname;
+  let isStorybook = false;
+  
   try {
     router = useRouter();
+    pathname = usePathname(); // 🔥 REEMPLAZA router.asPath
+    
+    // Verificar si estamos en Storybook
+    isStorybook = typeof window !== 'undefined' && 
+                  (window.location.href.includes('storybook') || 
+                   window.parent !== window);
   } catch (error) {
     // Si falla (como en Storybook), usar mock
     router = mockRouter;
+    pathname = mockPathname;
+    isStorybook = true;
+    console.log('🎭 Usando mock router para App Router (Storybook detectado)');
   }
   
   const refSideBar = useRef<HTMLDivElement>(null);
   
-  // Estados internos (se usan si no se pasan externos)
+  // Estados internos
   const [internalIsOpen, setInternalIsOpen] = useState(false);
   const [internalIsReduced, setInternalIsReduced] = useState(false);
   const [enlargeByHover, setEnlargeByHover] = useState(false);
@@ -136,7 +158,7 @@ export function Sidebar({
       setScreenWidth(window.innerWidth);
     };
 
-    handleResize(); // Ejecutar al montar
+    handleResize();
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
@@ -146,7 +168,6 @@ export function Sidebar({
       const isMobile = screenWidth <= breakpointMobile;
       
       if (isMobile) {
-        // En móvil: nunca reducido
         if (externalIsReduced === undefined) {
           setInternalIsReduced(false);
         }
@@ -185,12 +206,12 @@ export function Sidebar({
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isOpen, screenWidth, breakpointMobile]);
 
-  // Inicializar rutas activas
+  // 🔥 INICIALIZAR RUTAS ACTIVAS CON PATHNAME
   useEffect(() => {
     if (!activeSubPath) {
-      setActiveSubPath(router.asPath);
+      setActiveSubPath(pathname);
     }
-  }, [router.asPath, activeSubPath]);
+  }, [pathname, activeSubPath]);
 
   useEffect(() => {
     if (menuPaths[currentSubmenuOpen]?.href) {
@@ -205,7 +226,6 @@ export function Sidebar({
     }
     onToggleOpen(newIsOpen);
     
-    // En móvil, asegurarse de no estar reducido cuando se abre
     if (newIsOpen && screenWidth <= breakpointMobile) {
       if (externalIsReduced === undefined) {
         setInternalIsReduced(false);
@@ -218,8 +238,13 @@ export function Sidebar({
     if (onCreateClick) {
       onCreateClick();
     } else if (createButtonPath) {
-      if (router.asPath === createButtonPath) {
-        router.reload();
+      if (pathname === createButtonPath) {
+        // 🔥 EN APP ROUTER, USAR router.refresh() EN LUGAR DE router.reload()
+        if (isStorybook) {
+          mockRouter.refresh();
+        } else {
+          router.refresh();
+        }
       } else {
         router.push(createButtonPath);
         onNavigate(createButtonPath);
@@ -247,12 +272,10 @@ export function Sidebar({
   const isMobile = screenWidth <= breakpointMobile;
   const shouldShowReduced = isReduced && !enlargeByHover;
 
-  // Función para renderizar elementos del menú
+  // 🔥 FUNCIÓN PARA RENDERIZAR ELEMENTOS DEL MENÚ (ACTUALIZADA)
   const renderMenuItem = (item: MenuPath, index: number) => {
-    // Normalizar el tipo - puede venir como string o enum
     const itemType = typeof item.type === 'string' ? item.type : item.type?.toString();
     
-    // Título estático - type: '0' corresponde a STATIC_TITLE
     if (itemType === '0' || itemType === 'STATIC_TITLE') {
       return (<>
         {!shouldShowReduced &&
@@ -261,15 +284,12 @@ export function Sidebar({
           className={styles.staticTitle}
           data-reduce={shouldShowReduced}
         >
-          
-            <span className={styles.titleText}>{item.text}</span>
-          
+          <span className={styles.titleText}>{item.text}</span>
         </div>
         }
       </>);
     }
 
-    // Componente React - type: '3' corresponde a REACT_TSX (basado en tus logs)
     if ((itemType === '3' || itemType === 'REACT_TSX') && item.component) {
       const Component = item.component;
       return (<>
@@ -282,7 +302,6 @@ export function Sidebar({
             <Component 
               currentUserId={currentUserId}
               onNavigate={onNavigate}
-              // Props específicas para StoreSelector
               stores={stores?.map(store => ({ id: store.id, name: store.name }))}
               currentStore={currentStore ? { id: currentStore.id, name: currentStore.name } : undefined}
               onStoreChange={onStoreChange}
@@ -291,13 +310,11 @@ export function Sidebar({
               isMobile={Boolean(externalIsMobile || isMobile)}
               className="sidebar-store-selector"
             />
-         
         </div>
          )}
       </>);
     }
 
-    // Link normal - type: '1' corresponde a LINK
     if ((itemType === '1' || itemType === 'LINK') && item.href && item.href.trim() !== '') {
       return (
         <ItemLink
@@ -320,6 +337,7 @@ export function Sidebar({
           restrictedPaths={restrictedPaths}
           onNavigate={onNavigate}
           onToggleOpen={handleToggleOpen}
+          // 🔥 PASAR LA PROP DE AUTO-NAVEGACIÓN
           autoNavigateOnClick={item.autoNavigateOnClick ?? defaultAutoNavigate}
         />
       );
@@ -358,7 +376,7 @@ export function Sidebar({
           </Button>
         )}
 
-        {/* Balance Banner - solo visible cuando no está reducido */}
+        {/* Balance Banner */}
         {BalanceBanner && showBalance && !shouldShowReduced && (
           <BalanceBanner className="lg:!hidden" />
         )}

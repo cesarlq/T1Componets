@@ -1,6 +1,8 @@
+'use client'; // 🔥 IMPORTANTE PARA APP ROUTER
+
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
+import { useRouter, usePathname } from 'next/navigation'; // 🔥 CAMBIO PRINCIPAL
 import Image from 'next/image';
 import ArrowMenu from '../../assets/arrow-menu.svg';
 import styles from '../../styles/common/ItemLink.module.scss';
@@ -53,8 +55,9 @@ export function ItemLink({
   activeIcon
 }: ItemLinkProps) {
   
-  // 🔥 USAR ROUTER DE NEXT.JS CORRECTAMENTE
+  // 🔥 USAR HOOKS DE APP ROUTER (NEXT.JS 13+)
   const router = useRouter();
+  const pathname = usePathname(); // Equivalente a router.asPath en Pages Router
   
   const [openSubMenuLocal, setOpenSubMenuLocal] = useState<boolean>(false);
   const [currentSubSteps, setCurrentSubSteps] = useState<SubPath[]>([]);
@@ -79,18 +82,18 @@ export function ItemLink({
     }
   }, [subPaths, restrictedPaths]);
 
-  // Detectar ruta activa y manejar submenus
+  // 🔥 DETECTAR RUTA ACTIVA CON PATHNAME (APP ROUTER)
   useEffect(() => {
-    if (subPaths && subPaths.some(item => item.href === router.asPath)) {
+    if (subPaths && subPaths.some(item => item.href === pathname)) {
       setActivePath(safeHref);
-      setActiveSubPath(router.asPath);
+      setActiveSubPath(pathname);
       onClickPath(index);
       onToggleOpen(false);
-    } else if (subPaths && subPaths.some(item => router.asPath.includes(item.href))) {
+    } else if (subPaths && subPaths.some(item => pathname.includes(item.href))) {
       setActivePath(safeHref);
       onClickPath(index);
       onToggleOpen(false);
-    } else if (!subPaths && safeHref === router.asPath) {
+    } else if (!subPaths && safeHref === pathname) {
       onToggleOpen(false);
       setTimeout(() => {
         setActivePath(safeHref);
@@ -99,7 +102,7 @@ export function ItemLink({
     
     setOpenSubMenuLocal(openSubMenu);
   }, [
-    router.asPath, 
+    pathname, // 🔥 USAR PATHNAME EN LUGAR DE router.asPath
     subPaths, 
     safeHref,
     index, 
@@ -110,7 +113,7 @@ export function ItemLink({
     onClickPath
   ]);
 
-  // 🔥 FUNCIÓN HANDLEOPENSUBPATHS CORREGIDA PARA NEXT.JS
+  // 🔥 FUNCIÓN HANDLEOPENSUBPATHS PARA APP ROUTER
   const handleOpenSubPaths = async (index: number, targetHref?: string) => {
     console.log('🔍 handleOpenSubPaths called:', { 
       index, 
@@ -118,14 +121,14 @@ export function ItemLink({
       autoNavigateOnClick, 
       safeHref,
       hasSubPaths: !!subPaths,
-      currentPath: router.asPath
+      currentPath: pathname
     });
 
     // Siempre activar el path y manejar el submenu
     setActivePath(safeHref);
     onClickPath(index);
 
-    // 🔥 LÓGICA PARA AUTO-NAVEGACIÓN EN NEXT.JS
+    // 🔥 LÓGICA PARA AUTO-NAVEGACIÓN EN APP ROUTER
     if (subPaths && autoNavigateOnClick && safeHref) {
       let finalHref = safeHref;
       
@@ -135,20 +138,23 @@ export function ItemLink({
       }
       
       console.log('🚀 Auto-navegando a:', finalHref);
-      console.log('🌐 Ruta actual:', router.asPath);
+      console.log('🌐 Ruta actual:', pathname);
       
       try {
-        // 🔥 USAR ROUTER.PUSH DE NEXT.JS CORRECTAMENTE
-        await router.push(finalHref);
-        console.log('✅ Navegación exitosa a:', finalHref);
+        // 🔥 USAR ROUTER.PUSH DE APP ROUTER
+        // En App Router, router.push no devuelve una Promise, pero funciona igual
+        router.push(finalHref);
+        console.log('✅ Comando de navegación enviado a:', finalHref);
         
-        // Actualizar estados después de la navegación
+        // Actualizar estados
         setActiveSubPath(finalHref);
         onNavigate(finalHref);
         
         // En móvil, cerrar el sidebar después de navegar
         if (mobile) {
-          onToggleOpen(false);
+          setTimeout(() => {
+            onToggleOpen(false);
+          }, 100); // Pequeño delay para asegurar que la navegación se inicie
         }
         
       } catch (error) {
@@ -162,8 +168,8 @@ export function ItemLink({
     if (subPaths && !autoNavigateOnClick) {
       console.log('📂 Solo abriendo submenu, no navegando');
       
-      if (mobile && subPaths.some(item => item.href === router.asPath)) {
-        setActiveSubPath(router.asPath);
+      if (mobile && subPaths.some(item => item.href === pathname)) {
+        setActiveSubPath(pathname);
       }
       return;
     }
@@ -179,14 +185,16 @@ export function ItemLink({
       console.log('🔗 Navegando a item sin subpaths:', finalHref);
       
       try {
-        await router.push(finalHref);
-        console.log('✅ Navegación exitosa a:', finalHref);
+        router.push(finalHref);
+        console.log('✅ Comando de navegación enviado a:', finalHref);
         
         setActiveSubPath(finalHref);
         onNavigate(finalHref);
         
         if (mobile) {
-          onToggleOpen(false);
+          setTimeout(() => {
+            onToggleOpen(false);
+          }, 100);
         }
       } catch (error) {
         console.error('❌ Error en navegación:', error);
@@ -204,12 +212,15 @@ export function ItemLink({
     console.log('🎯 Navegando a subpath:', finalSubHref);
     
     try {
-      await router.push(finalSubHref);
-      console.log('✅ Navegación a subpath exitosa:', finalSubHref);
+      router.push(finalSubHref);
+      console.log('✅ Comando de navegación a subpath enviado:', finalSubHref);
       
       setActiveSubPath(finalSubHref);
       onNavigate(finalSubHref);
-      onToggleOpen(false);
+      
+      setTimeout(() => {
+        onToggleOpen(false);
+      }, 100);
     } catch (error) {
       console.error('❌ Error en navegación a subpath:', error);
     }
@@ -245,7 +256,7 @@ export function ItemLink({
               autoNavigateOnClick, 
               safeHref,
               subPathsCount: subPaths.length,
-              currentPath: router.asPath
+              currentPath: pathname
             });
             
             handleOpenSubPaths(index, safeHref);
