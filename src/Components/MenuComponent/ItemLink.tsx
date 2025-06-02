@@ -98,7 +98,6 @@ export function ItemLink({
     }
   }, [subPaths, restrictedPaths]);
 
-  // Detectar ruta activa y manejar submenus
   useEffect(() => {
     if (subPaths && subPaths.some(item => item.href === router.asPath)) {
       // Si una subruta está activa
@@ -124,7 +123,7 @@ export function ItemLink({
   }, [
     router.asPath, 
     subPaths, 
-    safeHref, // Usar safeHref en lugar de href
+    safeHref,
     index, 
     setActivePath, 
     setActiveSubPath, 
@@ -133,37 +132,73 @@ export function ItemLink({
     onClickPath
   ]);
 
+  // 🔥 FUNCIÓN CORREGIDA: handleOpenSubPaths
   const handleOpenSubPaths = (index: number, targetHref?: string) => {
+    console.log('🔍 handleOpenSubPaths called:', { 
+      index, 
+      targetHref, 
+      autoNavigateOnClick, 
+      safeHref,
+      hasSubPaths: !!subPaths 
+    });
+
+    // Siempre activar el path y manejar el submenu
     setActivePath(safeHref);
-    let finalHref = targetHref;
-    
-    // Concatenar storeId si es necesario
-    if (concatStoreId && finalHref && currentUserId) {
-      finalHref = finalHref + currentUserId;
-    }
-    
-    // Llamar al callback del padre para manejar el estado del submenu
     onClickPath(index);
-    
-    // LÓGICA ACTUALIZADA: Decidir si navegar automáticamente
-    if (finalHref && autoNavigateOnClick) {
-      // Si autoNavigateOnClick está habilitado, navegar inmediatamente
+
+    // 🔥 LÓGICA CORREGIDA PARA AUTO-NAVEGACIÓN
+    if (subPaths && autoNavigateOnClick && safeHref) {
+      // Si tiene subpaths Y auto-navegación está habilitada, navegar al href principal
+      let finalHref = safeHref;
+      
+      // Concatenar storeId si es necesario
+      if (concatStoreId && currentUserId) {
+        finalHref = safeHref + currentUserId;
+      }
+      
+      console.log('🚀 Auto-navegando a:', finalHref);
+      
+      // Navegar al href principal
       router.push(finalHref);
-      setActiveSubPath(finalHref);
-      onNavigate(finalHref);
+      setActiveSubPath(finalHref); // Marcar como activo
+      onNavigate(finalHref); // Notificar navegación
       
       // En móvil, cerrar el sidebar después de navegar
       if (mobile) {
         onToggleOpen(false);
       }
-    } else if (finalHref && !mobile && !subPaths) {
-      // Comportamiento original para links sin subpaths en desktop
+      
+      return; // Salir temprano para evitar lógica adicional
+    }
+
+    // 🔥 LÓGICA PARA CUANDO NO HAY AUTO-NAVEGACIÓN (comportamiento original)
+    if (subPaths && !autoNavigateOnClick) {
+      console.log('📂 Solo abriendo submenu, no navegando');
+      // Solo manejar el submenu, no navegar
+      if (mobile && subPaths.some(item => item.href === router.asPath)) {
+        setActiveSubPath(router.asPath);
+      }
+      return;
+    }
+
+    // 🔥 LÓGICA PARA ITEMS SIN SUBPATHS (comportamiento original)
+    if (!subPaths && targetHref) {
+      let finalHref = targetHref;
+      
+      // Concatenar storeId si es necesario
+      if (concatStoreId && currentUserId) {
+        finalHref = targetHref + currentUserId;
+      }
+      
+      console.log('🔗 Navegando a item sin subpaths:', finalHref);
+      
       router.push(finalHref);
       setActiveSubPath(finalHref);
       onNavigate(finalHref);
-    } else if (mobile && subPaths && subPaths.some(item => item.href === router.asPath)) {
-      // En móvil, manejar la navegación si ya estamos en una subruta
-      setActiveSubPath(router.asPath);
+      
+      if (mobile) {
+        onToggleOpen(false);
+      }
     }
   };
 
@@ -184,7 +219,7 @@ export function ItemLink({
   const currentIcon = (safeHref === activePath && activeIcon) ? activeIcon : icon;
 
   // Si tiene subpaths
-  if (subPaths) {
+if (subPaths) {
     return (
       <div 
         className={`${styles.itemSubPath} ${className}`} 
@@ -194,16 +229,22 @@ export function ItemLink({
           className={styles.linkContainer}
           data-active={safeHref === activePath}
           data-has-sub-paths={true}
+          data-auto-navigate={autoNavigateOnClick} // 🔥 Indicador visual
           style={
             openSubMenuLocal && (!sidebarReduce || enlargeByHover) 
               ? { marginBottom: '20px' } 
               : { marginBottom: 0 }
           }
           data-reduce={sidebarReduce && !enlargeByHover}
-          onClick={() => handleOpenSubPaths(
-            index, 
-            autoNavigateOnClick ? safeHref : (subPaths && subPaths[0] ? subPaths[0].href : undefined)
-          )}
+          onClick={() => {
+            console.log('🖱️ Click en item con subpaths:', { 
+              autoNavigateOnClick, 
+              safeHref,
+              subPathsCount: subPaths.length 
+            });
+            // 🔥 LLAMADA CORREGIDA
+            handleOpenSubPaths(index, safeHref); // Pasar safeHref como targetHref
+          }}
         >
           <div data-reduce={sidebarReduce && !enlargeByHover} className={styles.link}>
             {currentIcon && (
@@ -216,6 +257,17 @@ export function ItemLink({
               />
             )}
             {(!sidebarReduce || enlargeByHover) && safeText}
+            {/* 🔥 INDICADOR VISUAL OPCIONAL */}
+            {autoNavigateOnClick && (!sidebarReduce || enlargeByHover) && (
+              <span style={{ 
+                fontSize: '10px', 
+                color: '#4caf50', 
+                marginLeft: '4px',
+                fontWeight: 'bold'
+              }}>
+                ↗
+              </span>
+            )}
             {endAdornment && !(sidebarReduce && !enlargeByHover) && (
               <div className={styles.endAdornment}>
                 {endAdornment}
@@ -233,7 +285,7 @@ export function ItemLink({
           />
         </li>
         
-        {/* Subpaths */}
+        {/* Subpaths - sin cambios */}
         {(!sidebarReduce || enlargeByHover) && (
           <div 
             className={styles.subPaths} 
@@ -262,6 +314,7 @@ export function ItemLink({
     );
   }
 
+
   // Si no tiene subpaths (link simple)
   return (
     <li
@@ -275,6 +328,7 @@ export function ItemLink({
         data-reduce={sidebarReduce && !enlargeByHover}
         className={styles.link}
         onClick={() => {
+          console.log('🖱️ Click en link simple:', safeHref);
           handleOpenSubPaths(index, safeHref);
           onNavigate(concatStoreId && currentUserId ? `${safeHref}${currentUserId}` : safeHref);
         }}
@@ -298,4 +352,5 @@ export function ItemLink({
       </Link>
     </li>
   );
+
 }
