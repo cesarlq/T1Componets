@@ -34,6 +34,7 @@ export interface ItemLinkProps extends MenuPath {
   restrictedPaths?: string[];
   onNavigate?: (path: string) => void;
   onToggleOpen?: (isOpen: boolean) => void;
+  autoNavigateOnClick?: boolean;
 }
 
 export function ItemLink({
@@ -58,6 +59,7 @@ export function ItemLink({
   restrictedPaths = [],
   onNavigate = () => {},
   onToggleOpen = () => {},
+  autoNavigateOnClick = false,
   // Nuevas props
   type,
   component,
@@ -143,16 +145,25 @@ export function ItemLink({
     // Llamar al callback del padre para manejar el estado del submenu
     onClickPath(index);
     
-    if (finalHref && !mobile) {
-      // En desktop, navegar directamente
+    // LÓGICA ACTUALIZADA: Decidir si navegar automáticamente
+    if (finalHref && autoNavigateOnClick) {
+      // Si autoNavigateOnClick está habilitado, navegar inmediatamente
       router.push(finalHref);
       setActiveSubPath(finalHref);
       onNavigate(finalHref);
-    } else if (mobile) {
-      // En móvil, solo manejar la navegación si hay href
-      if (subPaths && subPaths.some(item => item.href === router.asPath)) {
-        setActiveSubPath(router.asPath);
+      
+      // En móvil, cerrar el sidebar después de navegar
+      if (mobile) {
+        onToggleOpen(false);
       }
+    } else if (finalHref && !mobile && !subPaths) {
+      // Comportamiento original para links sin subpaths en desktop
+      router.push(finalHref);
+      setActiveSubPath(finalHref);
+      onNavigate(finalHref);
+    } else if (mobile && subPaths && subPaths.some(item => item.href === router.asPath)) {
+      // En móvil, manejar la navegación si ya estamos en una subruta
+      setActiveSubPath(router.asPath);
     }
   };
 
@@ -191,7 +202,7 @@ export function ItemLink({
           data-reduce={sidebarReduce && !enlargeByHover}
           onClick={() => handleOpenSubPaths(
             index, 
-            subPaths && subPaths[0] ? subPaths[0].href : undefined
+            autoNavigateOnClick ? safeHref : (subPaths && subPaths[0] ? subPaths[0].href : undefined)
           )}
         >
           <div data-reduce={sidebarReduce && !enlargeByHover} className={styles.link}>

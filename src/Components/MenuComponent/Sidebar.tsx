@@ -30,6 +30,7 @@ export interface MenuPath {
   subPaths?: SubPath[];
   concatStoreId?: boolean;
   endAdornment?: React.ReactNode;
+  autoNavigateOnClick?: boolean;
   // Propiedades para tipos avanzados (compatibles con PathWithSubPathsI)
   type?: string | any; // Flexible para aceptar enums de diferentes proyectos
   component?: React.ComponentType<any>;
@@ -40,6 +41,7 @@ export interface SidebarProps {
   className?: string;
   // Menu configuration
   menuPaths?: MenuPath[];
+  defaultAutoNavigate?: boolean; 
   // Component slots
   TopBanner?: React.ComponentType<{ className?: string }>;
   BottomBanner?: React.ComponentType<{ className?: string }> | React.ReactNode;
@@ -96,6 +98,7 @@ export function Sidebar({
   // Props adicionales para StoreSelector
   stores = [],
   currentStore,
+  defaultAutoNavigate = false,
   onStoreChange = () => {},
   createStoreUrl = '',
   isMobile: externalIsMobile
@@ -317,6 +320,7 @@ export function Sidebar({
           restrictedPaths={restrictedPaths}
           onNavigate={onNavigate}
           onToggleOpen={handleToggleOpen}
+          autoNavigateOnClick={item.autoNavigateOnClick ?? defaultAutoNavigate}
         />
       );
     }
