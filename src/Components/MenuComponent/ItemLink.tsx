@@ -113,17 +113,7 @@ export function ItemLink({
     onClickPath
   ]);
 
-  // 🔥 FUNCIÓN HANDLEOPENSUBPATHS PARA APP ROUTER
   const handleOpenSubPaths = async (index: number, targetHref?: string) => {
-    console.log('🔍 handleOpenSubPaths called:', { 
-      index, 
-      targetHref, 
-      autoNavigateOnClick, 
-      safeHref,
-      hasSubPaths: !!subPaths,
-      currentPath: pathname
-    });
-
     // Siempre activar el path y manejar el submenu
     setActivePath(safeHref);
     onClickPath(index);
@@ -137,14 +127,10 @@ export function ItemLink({
         finalHref = safeHref + currentUserId;
       }
       
-      console.log('🚀 Auto-navegando a:', finalHref);
-      console.log('🌐 Ruta actual:', pathname);
-      
       try {
         // 🔥 USAR ROUTER.PUSH DE APP ROUTER
         // En App Router, router.push no devuelve una Promise, pero funciona igual
         router.push(finalHref);
-        console.log('✅ Comando de navegación enviado a:', finalHref);
         
         // Actualizar estados
         setActiveSubPath(finalHref);
@@ -166,7 +152,6 @@ export function ItemLink({
     
     // 🔥 LÓGICA PARA CUANDO NO HAY AUTO-NAVEGACIÓN
     if (subPaths && !autoNavigateOnClick) {
-      console.log('📂 Solo abriendo submenu, no navegando');
       
       if (mobile && subPaths.some(item => item.href === pathname)) {
         setActiveSubPath(pathname);
@@ -182,11 +167,9 @@ export function ItemLink({
         finalHref = targetHref + currentUserId;
       }
       
-      console.log('🔗 Navegando a item sin subpaths:', finalHref);
       
       try {
         router.push(finalHref);
-        console.log('✅ Comando de navegación enviado a:', finalHref);
         
         setActiveSubPath(finalHref);
         onNavigate(finalHref);
@@ -209,11 +192,8 @@ export function ItemLink({
       finalSubHref = subHref + currentUserId;
     }
     
-    console.log('🎯 Navegando a subpath:', finalSubHref);
-    
     try {
       router.push(finalSubHref);
-      console.log('✅ Comando de navegación a subpath enviado:', finalSubHref);
       
       setActiveSubPath(finalSubHref);
       onNavigate(finalSubHref);
@@ -222,7 +202,7 @@ export function ItemLink({
         onToggleOpen(false);
       }, 100);
     } catch (error) {
-      console.error('❌ Error en navegación a subpath:', error);
+      console.error('Error en navegación a subpath:', error);
     }
   };
 
@@ -248,16 +228,8 @@ export function ItemLink({
           }
           data-reduce={sidebarReduce && !enlargeByHover}
           onClick={(e) => {
-            // 🔥 PREVENIR COMPORTAMIENTO POR DEFECTO
             e.preventDefault();
             e.stopPropagation();
-            
-            console.log('🖱️ Click en item con subpaths:', { 
-              autoNavigateOnClick, 
-              safeHref,
-              subPathsCount: subPaths.length,
-              currentPath: pathname
-            });
             
             handleOpenSubPaths(index, safeHref);
           }}
@@ -336,7 +308,6 @@ export function ItemLink({
         className={styles.link}
         onClick={(e) => {
           e.preventDefault();
-          console.log('🖱️ Click en link simple:', safeHref);
           handleOpenSubPaths(index, safeHref);
           onNavigate(concatStoreId && currentUserId ? `${safeHref}${currentUserId}` : safeHref);
         }}
