@@ -273,18 +273,6 @@ export function ItemLink({
               />
             )}
             {(!sidebarReduce || enlargeByHover) && safeText}
-            {/* Indicador visual para auto-navegación */}
-            {autoNavigateOnClick && (!sidebarReduce || enlargeByHover) && (
-              <span style={{ 
-                fontSize: '10px', 
-                color: '#4caf50', 
-                marginLeft: '4px',
-                fontWeight: 'bold',
-                opacity: 0.8
-              }}>
-                ↗
-              </span>
-            )}
             {endAdornment && !(sidebarReduce && !enlargeByHover) && (
               <div className={styles.endAdornment}>
                 {endAdornment}
