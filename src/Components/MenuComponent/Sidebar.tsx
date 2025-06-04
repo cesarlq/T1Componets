@@ -24,6 +24,7 @@ export interface MenuPath {
   endAdornment?: React.ReactNode;
   type?: string | any;
   component?: React.ComponentType<any>;
+  autoNavigateToFirstSubPath?: boolean;
 }
 
 export interface SidebarPropsI {
@@ -45,6 +46,8 @@ export interface SidebarPropsI {
   currentStore?: any;
   onStoreChange?: (storeId: number) => void;
   createStoreUrl?: string;
+  
+  defaultAutoNavigateToFirstSubPath?: boolean;
   
   // Props opcionales para override externo (solo si se necesita)
   isOpen?: boolean;
@@ -75,6 +78,8 @@ export function Sidebar({
   currentStore,
   onStoreChange = () => {},
   createStoreUrl = '',
+  
+  defaultAutoNavigateToFirstSubPath = false,
   
   // Props opcionales para override externo
   isOpen: externalIsOpen,
@@ -444,6 +449,8 @@ export function Sidebar({
           restrictedPaths={restrictedPaths}
           onNavigate={handleInternalNavigation}
           onToggleOpen={handleToggleOpen}
+          // 🔥 PASAR LA CONFIGURACIÓN DE AUTO-NAVEGACIÓN
+          autoNavigateToFirstSubPath={item.autoNavigateToFirstSubPath ?? defaultAutoNavigateToFirstSubPath}
         />
       );
     }

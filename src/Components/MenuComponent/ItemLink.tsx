@@ -24,6 +24,8 @@ export interface ItemLinkProps extends MenuPath {
   restrictedPaths?: string[];
   onNavigate?: (path: string) => void;
   onToggleOpen?: (isOpen: boolean) => void;
+  // 🔥 NUEVA PROP: Auto-navegar al primer subPath
+  autoNavigateToFirstSubPath?: boolean;
 }
 
 export function ItemLink({
@@ -50,7 +52,9 @@ export function ItemLink({
   onNavigate = () => {},
   onToggleOpen = () => {},
   type,
-  component
+  component,
+  // 🔥 NUEVA PROP
+  autoNavigateToFirstSubPath = false
 }: ItemLinkProps) {
   
   const router = useRouter();
@@ -87,9 +91,25 @@ export function ItemLink({
     setActivePath(safeHref);
     onClickPath(index);
 
-    // Si tiene subPaths, solo expandir/contraer
+    // Si tiene subPaths
     if (subPaths && subPaths.length > 0) {
-      console.log(`📂 ItemLink [${safeText}] - Toggle submenu`);
+      console.log(`📂 ItemLink [${safeText}] - Has subPaths, autoNavigate:`, autoNavigateToFirstSubPath);
+      
+      // 🔥 NUEVA LÓGICA: Auto-navegar al primer subPath si está habilitado
+      if (autoNavigateToFirstSubPath) {
+        const firstValidSubPath = currentSubSteps[0]; // Usar currentSubSteps que ya está filtrado
+        
+        if (firstValidSubPath) {
+          console.log(`🚀 ItemLink [${safeText}] - Auto-navigating to first subPath:`, firstValidSubPath.href);
+          await handleSubPathNavigation(firstValidSubPath.href);
+          return;
+        } else {
+          console.warn(`⚠️ ItemLink [${safeText}] - No valid subPaths available for auto-navigation`);
+        }
+      }
+      
+      // Comportamiento original: solo expandir/contraer
+      console.log(`📂 ItemLink [${safeText}] - Toggle submenu only`);
       
       // Si estamos en móvil y ya hay un subpath activo, mantener el estado
       if (mobile && subPaths.some(subPath => subPath.href === pathname)) {
@@ -101,6 +121,33 @@ export function ItemLink({
     // Si no tiene subPaths, navegar directamente
     if (!subPaths && safeHref) {
       await handleDirectNavigation(safeHref);
+    }
+  };
+
+  // 🔥 NUEVA FUNCIÓN: Manejar navegación a subPaths
+  const handleSubPathNavigation = async (subHref: string) => {
+    let finalSubHref = subHref;
+    
+    if (concatStoreId && currentUserId) {
+      finalSubHref = subHref + currentUserId;
+    }
+    
+    console.log(`🔗 ItemLink [${safeText}] - SubPath auto-navigation:`, finalSubHref);
+    
+    try {
+      // Navegación interna
+      await router.push(finalSubHref);
+      
+      // Actualizar estados
+      setActiveSubPath(finalSubHref);
+      onNavigate(finalSubHref);
+      
+      // Cerrar sidebar en móvil
+      if (mobile) {
+        setTimeout(() => onToggleOpen(false), 100);
+      }
+    } catch (error) {
+      console.error('❌ Error en auto-navegación a subpath:', error);
     }
   };
 
@@ -135,29 +182,7 @@ export function ItemLink({
     e.preventDefault();
     e.stopPropagation();
 
-    let finalSubHref = subHref;
-    
-    if (concatStoreId && currentUserId) {
-      finalSubHref = subHref + currentUserId;
-    }
-    
-    console.log(`🔗 ItemLink [${safeText}] - Subpath navigation:`, finalSubHref);
-    
-    try {
-      // Navegación interna
-      await router.push(finalSubHref);
-      
-      // Actualizar estados
-      setActiveSubPath(finalSubHref);
-      onNavigate(finalSubHref);
-      
-      // Cerrar sidebar en móvil
-      if (mobile) {
-        setTimeout(() => onToggleOpen(false), 100);
-      }
-    } catch (error) {
-      console.error('❌ Error en navegación a subpath:', error);
-    }
+    await handleSubPathNavigation(subHref);
   };
 
   // Determinar si este item está activo
