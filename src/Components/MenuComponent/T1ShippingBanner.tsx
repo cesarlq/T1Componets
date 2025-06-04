@@ -99,10 +99,10 @@ export function T1ShippingBanner({
   const buttonIsReduced = sidebarReduce !== undefined ? sidebarReduce : isReduced;
 
   return (
-    <div className={`flex items-center gap-[13.5px] ${className}`}>
+    <div className={`flex items-center gap-[10px] ${className}`}>
       {!isMobile && (
         <button
-          className={`bg-transparent cursor-pointer border-none p-0 ${style.toogleIcon}`}
+          className={`bg-transparent cursor-pointer border-none ${style.toogleIcon}`}
           onClick={handleToggleClick}
           type="button"
           aria-label={buttonIsReduced ? "Expandir sidebar" : "Reducir sidebar"}
