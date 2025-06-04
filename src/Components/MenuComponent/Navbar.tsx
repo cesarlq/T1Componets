@@ -8,7 +8,6 @@ import { MenuProfile } from './Profile';
 import TextFieldAndButton from './TextFieldAndButton';
 import T1Icon from '../T1Icon';
 
-
 export function Navbar({
   className = '',
   showInfoBand = false,
@@ -21,15 +20,6 @@ export function Navbar({
   
   // Configuración de items del menú
   profileMenuItems,
-  
-  // Event handlers
-  onLogout = () => {},
-  onSearch = () => {},
-  onStoreChange = () => {},
-  onNavigate = () => {},
-  onReducerHandle = () => {},
-  sidebarReduce = false,
-  isMobile = false,
   
   // Component slots
   BalanceBanner = ({ className }) => <div className={className}>Balance Banner</div>,
@@ -44,21 +34,67 @@ export function Navbar({
     searchPlaceholder: 'Número de rastreo'
   },
 
-  //profile Configuration
+  // Profile Configuration
   iconProfile,
-  colorProfile
+  colorProfile,
+
+  // Props opcionales para override externo (compatibilidad)
+  onLogout,
+  onSearch,
+  onStoreChange,
+  onNavigate,
+  onReducerHandle,
+  sidebarReduce,
+  isMobile
 }: NavbarPropsI) {
 
   const [profileAnchor, setProfileAnchor] = useState<null | HTMLElement>(null);
   const profileOpen = Boolean(profileAnchor);
 
+  // Handler interno para búsqueda
   const handleSearch = (data: { search: string }) => {
     if (trackingUrl) {
       window.open(`${trackingUrl}=${data.search}`, '_blank');
     }
-    onSearch(data);
+    // Llamar callback externo si existe
+    onSearch?.(data);
   };
 
+  // Handler interno para cambio de tienda
+  const handleStoreChange = (storeId: number) => {
+    // Lógica interna de cambio de tienda si es necesario
+    console.log('Cambiando a tienda:', storeId);
+    
+    // Llamar callback externo
+    onStoreChange?.(storeId);
+  };
+
+  // Handler interno para navegación
+  const handleNavigation = (path: string) => {
+    // Lógica interna de navegación si es necesario
+    console.log('Navegando a:', path);
+    
+    // Llamar callback externo
+    onNavigate?.(path);
+  };
+
+  // Handler interno para logout
+  const handleLogout = () => {
+    // Lógica interna de logout si es necesario
+    console.log('Cerrando sesión...');
+    
+    // Llamar callback externo
+    onLogout?.();
+  };
+
+  // Handler interno para toggle del menú
+  const handleMenuToggle = () => {
+    // Lógica interna si es necesario
+    console.log('Toggle menu');
+    
+    // Llamar callback externo si existe
+    onReducerHandle?.();
+  };
 
   return (
     <nav
@@ -68,26 +104,28 @@ export function Navbar({
       <div className={`${styles['navbar-left-section']} flex items-center gap-4`}>
         <button
           className={`${styles['menu-toggle-button']} block lg:hidden`}
-          onClick={onReducerHandle}
+          onClick={handleMenuToggle}
           type="button"
           aria-label="Toggle menu"
         >
           <T1Icon icon="menuInActive" className='min-w-[18px] min-h-[16px]' width={18} height={16} />
         </button>
+        
         <T1ShippingBanner
           className={`${styles['Banner-section']}`}
-          onReducerHandle={onReducerHandle}
-          sidebarReduce={sidebarReduce}
+          onNavigate={handleNavigation}
           brandText={shippingBannerTitle}
-          onNavigate={onNavigate}
-          isMobile={isMobile}
+          isMobile={Boolean(isMobile)}
+          // Props legacy para compatibilidad
+          onReducerHandle={handleMenuToggle}
+          sidebarReduce={sidebarReduce}
         />
         
         <StoreSelector 
           className={`${styles['store-selector-desktop']} hidden lg:flex`}
           stores={stores}
           currentStore={currentStore}
-          onStoreChange={onStoreChange} 
+          onStoreChange={handleStoreChange}
           createStoreUrl={accountUrl}      
         />
       </div>
@@ -107,6 +145,7 @@ export function Navbar({
         {showBalance && (
           <BalanceBanner className={`${styles['balance-banner-desktop']} hidden lg:flex`} />
         )}
+        
         {t1SelectorConfig && 
           <T1Selector 
             className={className}
@@ -118,28 +157,25 @@ export function Navbar({
           />
         }
         
-        
         <StoreSelector 
           className={`${styles['store-selector-mobile']} flex lg:hidden`}
           stores={stores}
           currentStore={currentStore}
-          onStoreChange={onStoreChange} 
+          onStoreChange={handleStoreChange}
           createStoreUrl={accountUrl}        
         />
         
         {user && user.name && (
-          <>
-            <MenuProfile
-              profileOpen={profileOpen}
-              user={user}
-              profileMenuItems={profileMenuItems}
-              onLogout={onLogout}
-              textLogOut={texts.logout}
-              onNavigate={onNavigate}
-              iconProfile={iconProfile}
-              colorProfile={colorProfile}
-            />
-          </>
+          <MenuProfile
+            profileOpen={profileOpen}
+            user={user}
+            profileMenuItems={profileMenuItems}
+            onLogout={handleLogout}
+            textLogOut={texts.logout}
+            onNavigate={handleNavigation}
+            iconProfile={iconProfile}
+            colorProfile={colorProfile}
+          />
         )}
       </div>
     </nav>

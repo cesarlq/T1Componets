@@ -1,9 +1,9 @@
 import React, { useEffect, useRef } from 'react';
 import { MenuProvider, useMenu } from './menuContext';
-import { MenuPath, Sidebar, SidebarPropsI } from './Sidebar';
+import { Sidebar, SidebarPropsI } from './Sidebar';
 import { Navbar } from './Navbar';
 import useScreenDimensions from '../../hooks/useScreenDimensions';
-import { NavbarPropsI, User } from '../../interfaces/menu';
+import { NavbarPropsI } from '../../interfaces/menu';
 import { T1ShippingBanner } from './T1ShippingBanner';
 
 export interface layoutMenuI {
@@ -19,9 +19,9 @@ function LayoutMenuContent({ navBarProps, sideBarProps }: layoutMenuI) {
     
     const { isOpen, isReduced, setOpen, setReduced, toggleOpen, toggleReduced } = useMenu();
 
+    // Inicialización responsive
     useEffect(() => {
         if (width && width > 0 && !isInitialized.current) {
-            
             if (isMobile) {
                 setOpen(false);
                 setReduced(false);
@@ -37,8 +37,8 @@ function LayoutMenuContent({ navBarProps, sideBarProps }: layoutMenuI) {
         }
     }, [width, isMobile, isTablet, setOpen, setReduced]);
 
+    // Handler para el contexto (solo para pasar al navbar/banner como callback)
     const handleReducerHandle = () => {
-        
         if (isMobile) {
             toggleOpen();
         } else {
@@ -46,25 +46,19 @@ function LayoutMenuContent({ navBarProps, sideBarProps }: layoutMenuI) {
         }
     };
 
-    const handleToggleOpen = (newIsOpen: boolean) => {
-        setOpen(newIsOpen);
-    };
-
-    const handleToggleReduce = (newIsReduced: boolean) => {
-        setReduced(newIsReduced);
-    };
-
+    // Banner personalizado para móvil
     const MockTopBanner: React.ComponentType<{ className?: string }> = ({ className }) => (
         <div className={className + ' mt-[0.75rem] '}>
             <T1ShippingBanner
-                onReducerHandle={handleReducerHandle}
-                sidebarReduce={isReduced}
                 brandText={"cuenta"}
                 isMobile={Boolean(isMobile)}
-                onToggleReduce={toggleReduced}
-                onToggleOpen={toggleOpen}
                 isReduced={isReduced}
                 isOpen={isOpen}
+                onToggleReduce={toggleReduced}
+                onToggleOpen={toggleOpen}
+                // Props legacy para compatibilidad
+                onReducerHandle={handleReducerHandle}
+                sidebarReduce={isReduced}
             />
         </div>
     );
@@ -76,13 +70,14 @@ function LayoutMenuContent({ navBarProps, sideBarProps }: layoutMenuI) {
                 className='pt-4'
                 TopBanner={isMobile ? MockTopBanner : sideBarProps.TopBanner}
                 
-                useExternalControl={true}
+                // Pasar estados del contexto como override
                 isReduced={isReduced}
                 isOpen={isOpen}
-                onToggleOpen={handleToggleOpen}
-                onToggleReduce={handleToggleReduce}
-                
                 isMobile={Boolean(isMobile)}
+                onToggleOpen={setOpen}
+                onToggleReduce={setReduced}
+                
+                // Configuración responsive
                 breakpointMobile={750}
                 breakpointReduce={1110}
             />
@@ -95,6 +90,7 @@ function LayoutMenuContent({ navBarProps, sideBarProps }: layoutMenuI) {
                     logout: "Cerrar sesión",
                     ...navBarProps.texts
                 }}
+                // Solo pasar como callback para compatibilidad
                 onReducerHandle={handleReducerHandle}
                 sidebarReduce={isReduced}
             />

@@ -1,43 +1,14 @@
-'use client'; // 🔥 ASEGURAR QUE ESTÉ PRESENTE
+'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
-import { useRouter, usePathname } from 'next/navigation'; // 🔥 CAMBIO PRINCIPAL
+import { useRouter, usePathname } from 'next/navigation';
 import { Button } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
-import {ItemLink} from './ItemLink';
+import { ItemLink } from './ItemLink';
 import styles from '../../styles/common/Sidebar.module.scss';
 import { T1ShippingBanner } from './T1ShippingBanner';
 
-// 🔥 MOCK ROUTER ACTUALIZADO PARA APP ROUTER
-const mockRouter = {
-  push: (path: string) => {
-    console.log('🔥 Mock router push (App Router):', path);
-    
-    if (typeof window !== 'undefined') {
-      try {
-        window.history.pushState({}, '', `${window.location.pathname}?story-path=${encodeURIComponent(path)}`);
-        window.dispatchEvent(new CustomEvent('storybook-navigation', { 
-          detail: { path } 
-        }));
-        console.log('✅ Navegación simulada exitosa a:', path);
-      } catch (error) {
-        console.warn('⚠️ No se pudo simular navegación:', error);
-      }
-    }
-    
-    return Promise.resolve(true);
-  },
-  refresh: () => {
-    console.log('🔄 Mock router refresh');
-    if (typeof window !== 'undefined') {
-      window.location.reload();
-    }
-  }
-};
-
-const mockPathname = '/dashboard';
-
-// Interfaces (sin cambios)
+// Interfaces
 export interface SubPath {
   href: string;
   text: string;
@@ -47,19 +18,17 @@ export interface MenuPath {
   href?: string;
   text?: string;
   icon?: any;
+  activeIcon?: any;
   subPaths?: SubPath[];
   concatStoreId?: boolean;
   endAdornment?: React.ReactNode;
-  autoNavigateOnClick?: boolean; // 🔥 NUEVA PROP
   type?: string | any;
   component?: React.ComponentType<any>;
-  activeIcon?: any;
 }
 
 export interface SidebarPropsI {
   className?: string;
   menuPaths?: MenuPath[];
-  defaultAutoNavigate?: boolean; // 🔥 NUEVA PROP GLOBAL
   TopBanner?: React.ComponentType<{ className?: string }>;
   BottomBanner?: React.ComponentType<{ className?: string }> | React.ReactNode;
   BalanceBanner?: React.ComponentType<{ className?: string }>;
@@ -70,27 +39,26 @@ export interface SidebarPropsI {
   createButtonPath?: string;
   breakpointReduce?: number;
   breakpointMobile?: number;
-  isOpen?: boolean;
-  isReduced?: boolean;
-  onToggleOpen?: (isOpen: boolean) => void;
-  onToggleReduce?: (isReduced: boolean) => void;
-  onCreateClick?: () => void;
-  onNavigate?: (path: string) => void;
   currentUserId?: string | number;
   restrictedPaths?: string[];
   stores?: any[];
   currentStore?: any;
   onStoreChange?: (storeId: number) => void;
   createStoreUrl?: string;
+  
+  // Props opcionales para override externo (solo si se necesita)
+  isOpen?: boolean;
+  isReduced?: boolean;
   isMobile?: boolean;
-  // 🔥 NUEVA PROP PARA CONTROLAR SI USAR LÓGICA EXTERNA
-  useExternalControl?: boolean;
+  onToggleOpen?: (isOpen: boolean) => void;
+  onToggleReduce?: (isReduced: boolean) => void;
+  onCreateClick?: () => void;
+  onNavigate?: (path: string) => void;
 }
 
 export function Sidebar({
   className = '',
   menuPaths = [],
-  defaultAutoNavigate = false, // 🔥 NUEVA PROP
   TopBanner,
   BottomBanner,
   BalanceBanner,
@@ -101,133 +69,118 @@ export function Sidebar({
   createButtonPath = '/create',
   breakpointReduce = 1110,
   breakpointMobile = 768,
-  isOpen: externalIsOpen,
-  isReduced: externalIsReduced,
-  onToggleOpen = () => {},
-  onToggleReduce = () => {},
-  onCreateClick,
-  onNavigate = () => {},
   currentUserId = '',
   restrictedPaths = [],
   stores = [],
   currentStore,
   onStoreChange = () => {},
   createStoreUrl = '',
+  
+  // Props opcionales para override externo
+  isOpen: externalIsOpen,
+  isReduced: externalIsReduced,
   isMobile: externalIsMobile,
-  useExternalControl = false // 🔥 NUEVA PROP
+  onToggleOpen,
+  onToggleReduce,
+  onCreateClick,
+  onNavigate
 }: SidebarPropsI) {
   
-  // 🔥 USAR HOOKS DE APP ROUTER
+  // Router hooks
   let router;
   let pathname;
   let isStorybook = false;
   
   try {
     router = useRouter();
-    pathname = usePathname(); // 🔥 REEMPLAZA router.asPath
+    pathname = usePathname();
     
-    // Verificar si estamos en Storybook
     isStorybook = typeof window !== 'undefined' && 
                   (window.location.href.includes('storybook') || 
                    window.parent !== window);
   } catch (error) {
-    // Si falla (como en Storybook), usar mock
-    router = mockRouter;
-    pathname = mockPathname;
+    // Mock para Storybook
+    router = {
+      push: (path: string) => {
+        console.log('Mock router push:', path);
+        if (typeof window !== 'undefined') {
+          window.history.pushState({}, '', `${window.location.pathname}?story-path=${encodeURIComponent(path)}`);
+        }
+        return Promise.resolve(true);
+      },
+      refresh: () => {
+        console.log('Mock router refresh');
+        if (typeof window !== 'undefined') {
+          window.location.reload();
+        }
+      }
+    };
+    pathname = '/dashboard';
     isStorybook = true;
-    console.log('🎭 Usando mock router para App Router (Storybook detectado)');
   }
   
   const refSideBar = useRef<HTMLDivElement>(null);
   
   // Estados internos
-  const [internalIsOpen, setInternalIsOpen] = useState(false);
+  const [internalIsOpen, setInternalIsOpen] = useState(true);
   const [internalIsReduced, setInternalIsReduced] = useState(false);
+  const [internalIsMobile, setInternalIsMobile] = useState(false);
   const [enlargeByHover, setEnlargeByHover] = useState(false);
   const [screenWidth, setScreenWidth] = useState<number>(0);
   
-  // Estados de navegación
+  // Estados de navegación - MANEJADOS INTERNAMENTE
   const [activePath, setActivePath] = useState('');
-  const [currentSubmenuOpen, setCurrentSubmenuOpen] = useState<number>(0);
+  const [currentSubmenuOpen, setCurrentSubmenuOpen] = useState<number>(-1);
   const [activeSubPath, setActiveSubPath] = useState('');
 
-  // 🔥 DETECTAR SI ESTAMOS EN MODO CONTROL EXTERNO
-  const isExternallyControlled = externalIsOpen !== undefined || externalIsReduced !== undefined || useExternalControl;
-  
-  console.log('🎯 Sidebar - Control externo:', { 
-    isExternallyControlled, 
-    externalIsOpen, 
-    externalIsReduced, 
-    useExternalControl 
-  });
+  // Determinar valores finales (externo tiene prioridad si se proporciona)
+  const isOpen = externalIsOpen !== undefined ? externalIsOpen : internalIsOpen;
+  const isReduced = externalIsReduced !== undefined ? externalIsReduced : internalIsReduced;
+  const isMobile = externalIsMobile !== undefined ? externalIsMobile : internalIsMobile;
 
-  // Usar estados externos si se proporcionan, sino usar internos
-  const isOpen = isExternallyControlled ? (externalIsOpen ?? true) : internalIsOpen;
-  const isReduced = isExternallyControlled ? (externalIsReduced ?? false) : internalIsReduced;
-
-  // 🔥 DETECTAR ANCHO DE PANTALLA (SOLO SI NO ESTÁ CONTROLADO EXTERNAMENTE)
+  // Detectar tamaño de pantalla
   useEffect(() => {
-    if (isExternallyControlled) {
-      console.log('🚫 Sidebar - Detectar ancho desactivado (control externo)');
-      return;
-    }
-
     const handleResize = () => {
-      setScreenWidth(window.innerWidth);
+      const width = window.innerWidth;
+      setScreenWidth(width);
+      
+      // Solo actualizar estados internos si no hay override externo
+      if (externalIsMobile === undefined) {
+        setInternalIsMobile(width <= breakpointMobile);
+      }
+      
+      if (externalIsReduced === undefined && externalIsOpen === undefined) {
+        if (width <= breakpointMobile) {
+          setInternalIsOpen(false);
+          setInternalIsReduced(false);
+        } else if (width <= breakpointReduce) {
+          setInternalIsOpen(true);
+          setInternalIsReduced(true);
+        } else {
+          setInternalIsOpen(true);
+          setInternalIsReduced(false);
+        }
+      }
     };
 
     handleResize();
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  }, [isExternallyControlled]);
+  }, [breakpointMobile, breakpointReduce, externalIsMobile, externalIsReduced, externalIsOpen]);
 
-  // 🔥 LÓGICA RESPONSIVE INTERNA (SOLO SI NO ESTÁ CONTROLADO EXTERNAMENTE)
+  // Control del scroll del body en móvil
   useEffect(() => {
-    if (isExternallyControlled) {
-      console.log('🚫 Sidebar - Lógica responsive desactivada (control externo)');
-      return;
-    }
-
-    if (screenWidth > 0) {
-      const isMobile = screenWidth <= breakpointMobile;
-      
-      if (isMobile) {
-        if (externalIsReduced === undefined) {
-          setInternalIsReduced(false);
-        }
-        onToggleReduce(false);
-      } else {
-        const shouldReduce = screenWidth <= breakpointReduce;
-        if (externalIsReduced === undefined) {
-          setInternalIsReduced(shouldReduce);
-        }
-        onToggleReduce(shouldReduce);
-      }
-    }
-  }, [screenWidth, breakpointReduce, breakpointMobile, externalIsReduced, onToggleReduce, isExternallyControlled]);
-
-  // Controlar scroll del body cuando está abierto en móvil
-  useEffect(() => {
-    // Usar externalIsMobile si está disponible, sino calcular internamente
-    const isMobileCheck = externalIsMobile !== undefined 
-      ? externalIsMobile 
-      : screenWidth <= breakpointMobile;
-
-    if (isMobileCheck) {
+    if (isMobile) {
       document.body.style.overflow = isOpen ? "hidden" : "auto";
     }
     return () => {
       document.body.style.overflow = "auto";
     };
-  }, [isOpen, screenWidth, breakpointMobile, externalIsMobile]);
+  }, [isOpen, isMobile]);
 
-  // Click outside handler
+  // Click outside handler para móvil
   useEffect(() => {
-    const isMobileCheck = externalIsMobile !== undefined 
-      ? externalIsMobile 
-      : screenWidth <= breakpointMobile;
-
-    if (!isOpen || !isMobileCheck) return;
+    if (!isOpen || !isMobile) return;
 
     const handleClickOutside = (event: MouseEvent) => {
       if (refSideBar.current && !refSideBar.current.contains(event.target as Node)) {
@@ -237,67 +190,76 @@ export function Sidebar({
 
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [isOpen, screenWidth, breakpointMobile, externalIsMobile]);
+  }, [isOpen, isMobile]);
 
-  // 🔥 INICIALIZAR RUTAS ACTIVAS CON PATHNAME
+  // Inicializar rutas activas basado en pathname
   useEffect(() => {
-    if (!activeSubPath) {
-      setActiveSubPath(pathname);
-    }
-    
-    // 🔥 RESETEAR SUBMENU CUANDO CAMBIE LA RUTA
-    const currentPathMatchesAnySubmenu = menuPaths.some((menuItem, index) => {
-      if (menuItem.subPaths) {
-        return menuItem.subPaths.some(subPath => subPath.href === pathname);
-      }
-      return false;
-    });
-    
-    // Si la ruta actual no pertenece a ningún submenu, cerrar todos los submenus
-    if (!currentPathMatchesAnySubmenu) {
-      const currentPathMatchesMainItem = menuPaths.findIndex(item => item.href === pathname);
-      if (currentPathMatchesMainItem !== -1) {
-        setCurrentSubmenuOpen(currentPathMatchesMainItem);
-        setActivePath(menuPaths[currentPathMatchesMainItem].href || '');
-      }
-    }
-  }, [pathname, activeSubPath, menuPaths]);
+    if (!pathname) return;
 
-  useEffect(() => {
-    // 🔥 MEJORAR LA LÓGICA DE ACTIVACIÓN DE PATHS
-    const menuItem = menuPaths[currentSubmenuOpen];
-    if (menuItem?.href) {
-      setActivePath(menuItem.href);
-    }
-    
-    console.log('🔄 Sidebar - Submenu changed:', {
-      currentSubmenuOpen,
-      menuItem: menuItem?.text,
-      activePath: menuItem?.href
-    });
-  }, [currentSubmenuOpen, menuPaths]);
+    // Buscar el item que coincide con la ruta actual
+    let matchFound = false;
 
-  // Handlers
+    menuPaths.forEach((item, index) => {
+      // Verificar si es un item directo
+      if (item.href === pathname) {
+        setActivePath(item.href);
+        setActiveSubPath(item.href);
+        setCurrentSubmenuOpen(index);
+        matchFound = true;
+        return;
+      }
+
+      // Verificar si es un subPath
+      if (item.subPaths) {
+        const matchingSubPath = item.subPaths.find(subPath => subPath.href === pathname);
+        if (matchingSubPath) {
+          setActivePath(item.href || '');
+          setActiveSubPath(pathname);
+          setCurrentSubmenuOpen(index);
+          matchFound = true;
+          return;
+        }
+      }
+    });
+
+    // Si no se encontró match exacto, buscar match parcial
+    if (!matchFound) {
+      menuPaths.forEach((item, index) => {
+        if (item.subPaths) {
+          const partialMatch = item.subPaths.find(subPath => 
+            pathname.startsWith(subPath.href) && subPath.href !== '/'
+          );
+          if (partialMatch) {
+            setActivePath(item.href || '');
+            setActiveSubPath(pathname);
+            setCurrentSubmenuOpen(index);
+            matchFound = true;
+          }
+        }
+      });
+    }
+  }, [pathname, menuPaths]);
+
+  // Handlers internos
   const handleToggleOpen = (newIsOpen: boolean) => {
-    console.log('🔄 Sidebar - handleToggleOpen:', { newIsOpen, isExternallyControlled });
-    
-    if (!isExternallyControlled && externalIsOpen === undefined) {
+    if (externalIsOpen === undefined) {
       setInternalIsOpen(newIsOpen);
     }
-    onToggleOpen(newIsOpen);
-    
-    // 🔥 SOLO HACER ESTO SI NO ESTÁ CONTROLADO EXTERNAMENTE
-    if (!isExternallyControlled) {
-      const isMobileCheck = externalIsMobile !== undefined 
-        ? externalIsMobile 
-        : screenWidth <= breakpointMobile;
-        
-      if (newIsOpen && isMobileCheck) {
-        if (externalIsReduced === undefined) {
-          setInternalIsReduced(false);
-        }
-        onToggleReduce(false);
-      }
+    onToggleOpen?.(newIsOpen);
+  };
+
+  const handleToggleReduce = (newIsReduced: boolean) => {
+    if (externalIsReduced === undefined) {
+      setInternalIsReduced(newIsReduced);
+    }
+    onToggleReduce?.(newIsReduced);
+  };
+
+  const handleToggleSidebar = () => {
+    if (isMobile) {
+      handleToggleOpen(!isOpen);
+    } else {
+      handleToggleReduce(!isReduced);
     }
   };
 
@@ -306,16 +268,20 @@ export function Sidebar({
       onCreateClick();
     } else if (createButtonPath) {
       if (pathname === createButtonPath) {
-        // 🔥 EN APP ROUTER, USAR router.refresh() EN LUGAR DE router.reload()
-        if (isStorybook) {
-          mockRouter.refresh();
-        } else {
-          router.refresh();
-        }
+        router.refresh();
       } else {
         router.push(createButtonPath);
-        onNavigate(createButtonPath);
+        onNavigate?.(createButtonPath);
       }
+    }
+  };
+
+  const handleInternalNavigation = (path: string) => {
+    router.push(path);
+    onNavigate?.(path);
+    
+    if (isMobile) {
+      setTimeout(() => handleToggleOpen(false), 100);
     }
   };
 
@@ -335,64 +301,54 @@ export function Sidebar({
   const visibleMenuPaths = menuPaths.filter(path => 
     !path.href || !restrictedPaths.includes(path.href)
   );
-
-  // Usar el isMobile apropiado
-  const isMobile = externalIsMobile !== undefined 
-    ? externalIsMobile 
-    : screenWidth <= breakpointMobile;
     
   const shouldShowReduced = isReduced && !enlargeByHover;
 
-  console.log('📊 Sidebar - Estados finales:', { 
-    isOpen, 
-    isReduced, 
-    isMobile, 
-    shouldShowReduced, 
-    isExternallyControlled,
-    screenWidth 
-  });
-
-  // 🔥 FUNCIÓN PARA RENDERIZAR ELEMENTOS DEL MENÚ (ACTUALIZADA)
+  // Función para renderizar elementos del menú
   const renderMenuItem = (item: MenuPath, index: number) => {
     const itemType = typeof item.type === 'string' ? item.type : item.type?.toString();
     
     if (itemType === '0' || itemType === 'STATIC_TITLE') {
-      return (<>
-        {!shouldShowReduced &&
-        <div 
-          key={`title-${index}`}
-          className={styles.staticTitle}
-          data-reduce={shouldShowReduced}
-        >
-          <span className={styles.titleText}>{item.text}</span>
-        </div>
-        }
-      </>);
+      return (
+        <>
+          {!shouldShowReduced && (
+            <div 
+              key={`title-${index}`}
+              className={styles.staticTitle}
+              data-reduce={shouldShowReduced}
+            >
+              <span className={styles.titleText}>{item.text}</span>
+            </div>
+          )}
+        </>
+      );
     }
 
     if ((itemType === '3' || itemType === 'REACT_TSX') && item.component) {
       const Component = item.component;
-      return (<>
-         {!shouldShowReduced && (
-        <div 
-          key={`component-${index}`}
-          className={styles.reactComponent}
-          data-reduce={shouldShowReduced}
-        >
-            <Component 
-              currentUserId={currentUserId}
-              onNavigate={onNavigate}
-              stores={stores?.map(store => ({ id: store.id, name: store.name }))}
-              currentStore={currentStore ? { id: currentStore.id, name: currentStore.name } : undefined}
-              onStoreChange={onStoreChange}
-              createStoreUrl={createStoreUrl}
-              searchPlaceholder="Buscar tienda..."
-              isMobile={Boolean(externalIsMobile || isMobile)}
-              className="sidebar-store-selector"
-            />
-        </div>
-         )}
-      </>);
+      return (
+        <>
+          {!shouldShowReduced && (
+            <div 
+              key={`component-${index}`}
+              className={styles.reactComponent}
+              data-reduce={shouldShowReduced}
+            >
+              <Component 
+                currentUserId={currentUserId}
+                onNavigate={handleInternalNavigation}
+                stores={stores?.map(store => ({ id: store.id, name: store.name }))}
+                currentStore={currentStore ? { id: currentStore.id, name: currentStore.name } : undefined}
+                onStoreChange={onStoreChange}
+                createStoreUrl={createStoreUrl}
+                searchPlaceholder="Buscar tienda..."
+                isMobile={isMobile}
+                className="sidebar-store-selector"
+              />
+            </div>
+          )}
+        </>
+      );
     }
 
     if ((itemType === '1' || itemType === 'LINK') && item.href && item.href.trim() !== '') {
@@ -406,7 +362,7 @@ export function Sidebar({
           index={index}
           sidebarReduce={isReduced}
           enlargeByHover={enlargeByHover}
-          onClickPath={(index) => setCurrentSubmenuOpen(index)}
+          onClickPath={setCurrentSubmenuOpen}
           openSubMenu={currentSubmenuOpen === index}
           activePath={activePath}
           setActivePath={setActivePath}
@@ -415,10 +371,8 @@ export function Sidebar({
           mobile={isMobile}
           currentUserId={currentUserId}
           restrictedPaths={restrictedPaths}
-          onNavigate={onNavigate}
+          onNavigate={handleInternalNavigation}
           onToggleOpen={handleToggleOpen}
-          // 🔥 PASAR LA PROP DE AUTO-NAVEGACIÓN
-          autoNavigateOnClick={item.autoNavigateOnClick ?? defaultAutoNavigate}
         />
       );
     }
