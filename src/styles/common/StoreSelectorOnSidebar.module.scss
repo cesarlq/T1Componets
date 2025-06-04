@@ -184,6 +184,11 @@
     background-color: #F8F8F8;
   }
 
+  &:hover .storeItemName {
+    background-color: #F8F8F8;
+    text-decoration: underline;
+  }
+
   &.storeItemSelected {
     background-color: #F8F8F8;
   }
@@ -191,7 +196,7 @@
 
 .storeItemName {
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 500;
   color: #111827;
 }
 
@@ -220,7 +225,7 @@
 
   &:hover {
     background-color: #F9FAFB;
-    text-decoration: none;
+    text-decoration: underline;
     color: #111827;
   }
 

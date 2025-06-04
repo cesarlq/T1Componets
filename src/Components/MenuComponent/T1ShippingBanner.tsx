@@ -101,12 +101,12 @@ export function T1ShippingBanner({
     <div className={`flex items-center gap-[13.5px] ${className}`}>
       {!isMobile && (
         <button
-          className="bg-transparent cursor-pointer border-none p-0"
+          className="bg-transparent cursor-pointer border-none p-0 hover:bg-[#f8f8f8] hover:rounded-[5px]"
           onClick={handleToggleClick}
           type="button"
           aria-label={buttonIsReduced ? "Expandir sidebar" : "Reducir sidebar"}
         >
-          <div>
+          <div >
             {buttonIsReduced ? (
               <Image
                 src={EnlargeIcon}
@@ -129,7 +129,7 @@ export function T1ShippingBanner({
       )}
       
       <button
-        className="flex items-center gap-1 bg-transparent border-none cursor-pointer p-0 transition-opacity hover:opacity-80"
+        className="flex items-center gap-1 bg-transparent border-none cursor-pointer p-0 transition-opacity "
         onClick={handleNavigate}
         type="button"
         aria-label="Ir al dashboard"

@@ -50,7 +50,7 @@ function LayoutMenuContent({ navBarProps, sideBarProps }: layoutMenuI) {
     const MockTopBanner: React.ComponentType<{ className?: string }> = ({ className }) => (
         <div className={className + ' mt-[0.75rem] '}>
             <T1ShippingBanner
-                brandText={"cuenta"}
+                brandText={sideBarProps.shippingBannerTitle}
                 isMobile={Boolean(isMobile)}
                 isReduced={isReduced}
                 isOpen={isOpen}

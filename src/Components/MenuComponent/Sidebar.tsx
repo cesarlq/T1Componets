@@ -28,6 +28,7 @@ export interface MenuPath {
 }
 
 export interface SidebarPropsI {
+  shippingBannerTitle?: string;
   className?: string;
   menuPaths?: MenuPath[];
   TopBanner?: React.ComponentType<{ className?: string }>;
