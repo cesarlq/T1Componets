@@ -24,7 +24,7 @@ export interface SubMenuItem {
   text: string;
 }
 
-export interface NavbarProps {
+export interface NavbarPropsI {
   className?: string;
   showInfoBand?: boolean;
   showSearchInput?: boolean;
