@@ -25,7 +25,7 @@ export interface T1ShippingBannerProps {
 
 export function T1ShippingBanner({
   className = '',
-  dashboardPath = '/dashboard',
+  dashboardPath = '/',
   brandText = 'envíos',
   isMobile = false,
   
@@ -155,7 +155,7 @@ export function T1ShippingBanner({
 // Versión simplificada sin botón de reducir
 export function SimpleT1Banner({
   className = '',
-  dashboardPath = '/dashboard',
+  dashboardPath = '/',
   brandText = 'envíos',
   onNavigate
 }: Pick<T1ShippingBannerProps, 'className' | 'dashboardPath' | 'brandText' | 'onNavigate'>) {

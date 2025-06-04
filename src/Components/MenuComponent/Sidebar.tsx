@@ -115,7 +115,7 @@ export function Sidebar({
         }
       }
     };
-    pathname = '/dashboard';
+    pathname = '/';
     isStorybook = true;
   }
   
@@ -196,12 +196,18 @@ export function Sidebar({
   useEffect(() => {
     if (!pathname) return;
 
+    console.log('🔍 Sidebar - Checking active path for:', pathname);
+
     // Buscar el item que coincide con la ruta actual
     let matchFound = false;
 
+    // PASO 1: Buscar matches exactos primero (mayor prioridad)
     menuPaths.forEach((item, index) => {
-      // Verificar si es un item directo
+      if (matchFound) return;
+
+      // Verificar si es un item directo con match exacto
       if (item.href === pathname) {
+        console.log('✅ Exact match found (main item):', item.href);
         setActivePath(item.href);
         setActiveSubPath(item.href);
         setCurrentSubmenuOpen(index);
@@ -209,10 +215,11 @@ export function Sidebar({
         return;
       }
 
-      // Verificar si es un subPath
+      // Verificar si es un subPath con match exacto
       if (item.subPaths) {
         const matchingSubPath = item.subPaths.find(subPath => subPath.href === pathname);
         if (matchingSubPath) {
+          console.log('✅ Exact match found (subpath):', matchingSubPath.href);
           setActivePath(item.href || '');
           setActiveSubPath(pathname);
           setCurrentSubmenuOpen(index);
@@ -222,21 +229,85 @@ export function Sidebar({
       }
     });
 
-    // Si no se encontró match exacto, buscar match parcial
+    // PASO 2: Si no hay match exacto, buscar matches parciales (excluyendo raíz)
     if (!matchFound) {
-      menuPaths.forEach((item, index) => {
-        if (item.subPaths) {
-          const partialMatch = item.subPaths.find(subPath => 
-            pathname.startsWith(subPath.href) && subPath.href !== '/'
+      // Ordenar por longitud de href descendente para priorizar rutas más específicas
+      const sortedMenuPaths = [...menuPaths].map((item, originalIndex) => ({ ...item, originalIndex }))
+        .sort((a, b) => {
+          const aMaxLength = Math.max(
+            a.href?.length || 0,
+            ...(a.subPaths?.map(sub => sub.href.length) || [0])
           );
+          const bMaxLength = Math.max(
+            b.href?.length || 0,
+            ...(b.subPaths?.map(sub => sub.href.length) || [0])
+          );
+          return bMaxLength - aMaxLength;
+        });
+
+      sortedMenuPaths.forEach((item) => {
+        if (matchFound) return;
+
+        if (item.subPaths) {
+          const partialMatch = item.subPaths.find(subPath => {
+            // Excluir explícitamente la ruta raíz de matches parciales
+            if (subPath.href === '/') return false;
+            
+            // Solo hacer match parcial si:
+            // 1. pathname empieza con subPath.href
+            // 2. El siguiente carácter es '/' o es el final de la string
+            // Esto evita matches como '/user' matcheando con '/users'
+            return pathname.startsWith(subPath.href) && 
+                   (pathname.length === subPath.href.length || 
+                    pathname[subPath.href.length] === '/');
+          });
+          
           if (partialMatch) {
+            console.log('✅ Partial match found:', partialMatch.href, 'for', pathname);
             setActivePath(item.href || '');
             setActiveSubPath(pathname);
+            setCurrentSubmenuOpen(item.originalIndex);
+            matchFound = true;
+          }
+        }
+      });
+    }
+
+    // PASO 3: Si aún no hay match y pathname es exactamente '/', buscar la ruta raíz
+    if (!matchFound && pathname === '/') {
+      menuPaths.forEach((item, index) => {
+        if (matchFound) return;
+
+        // Buscar item principal con href='/'
+        if (item.href === '/') {
+          console.log('✅ Root path match found (main item)');
+          setActivePath('/');
+          setActiveSubPath('/');
+          setCurrentSubmenuOpen(index);
+          matchFound = true;
+          return;
+        }
+
+        // Buscar subPath con href='/'
+        if (item.subPaths) {
+          const rootSubPath = item.subPaths.find(subPath => subPath.href === '/');
+          if (rootSubPath) {
+            console.log('✅ Root path match found (subpath)');
+            setActivePath(item.href || '');
+            setActiveSubPath('/');
             setCurrentSubmenuOpen(index);
             matchFound = true;
           }
         }
       });
+    }
+
+    if (!matchFound) {
+      console.log('❌ No match found for:', pathname);
+      // Resetear estados si no hay match
+      setActivePath('');
+      setActiveSubPath('');
+      setCurrentSubmenuOpen(-1);
     }
   }, [pathname, menuPaths]);
 
