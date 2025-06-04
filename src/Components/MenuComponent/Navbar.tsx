@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StoreSelector } from './StoreSelector';
 import { T1ShippingBanner } from './T1ShippingBanner';
-import { NavbarProps } from '../../interfaces/menu';
+import { NavbarPropsI } from '../../interfaces/menu';
 import styles from '../../styles/common/Navbar.module.scss';
 import { T1Selector } from './T1Selector';
 import { MenuProfile } from './Profile';
@@ -17,7 +17,7 @@ export function Navbar({
   user = null,
   stores = [],
   currentStore,
-  shippingBannerTitle = 'envíos', // Valor por defecto
+  shippingBannerTitle = 'envíos',
   
   // Configuración de items del menú
   profileMenuItems,
@@ -47,7 +47,7 @@ export function Navbar({
   //profile Configuration
   iconProfile,
   colorProfile
-}: NavbarProps) {
+}: NavbarPropsI) {
 
   const [profileAnchor, setProfileAnchor] = useState<null | HTMLElement>(null);
   const profileOpen = Boolean(profileAnchor);
@@ -107,15 +107,17 @@ export function Navbar({
         {showBalance && (
           <BalanceBanner className={`${styles['balance-banner-desktop']} hidden lg:flex`} />
         )}
+        {t1SelectorConfig && 
+          <T1Selector 
+            className={className}
+            storeId={user?.storeId?.toString() || ''}
+            storeBaseUrl={t1SelectorConfig?.storeBaseUrl || ''}
+            shippingBaseUrl={t1SelectorConfig?.shippingBaseUrl || ''}
+            paymentBaseUrl={t1SelectorConfig?.paymentBaseUrl || ''}
+            ecosystemTitle={t1SelectorConfig?.ecosystemTitle || 'Ecosistema'}
+          />
+        }
         
-        <T1Selector 
-          className={className}
-          storeId={user?.storeId?.toString() || ''}
-          storeBaseUrl={t1SelectorConfig?.storeBaseUrl || ''}
-          shippingBaseUrl={t1SelectorConfig?.shippingBaseUrl || ''}
-          paymentBaseUrl={t1SelectorConfig?.paymentBaseUrl || ''}
-          ecosystemTitle={t1SelectorConfig?.ecosystemTitle || 'Ecosistema'}
-        />
         
         <StoreSelector 
           className={`${styles['store-selector-mobile']} flex lg:hidden`}

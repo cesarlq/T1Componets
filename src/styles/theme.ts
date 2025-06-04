@@ -66,7 +66,8 @@ const theme = createTheme({
             letterSpacing:'0%',
             boxShadow: 'none',
             '&:hover': {
-              boxShadow: 'none'
+              boxShadow: 'none',
+              backgroundColor: '#a30000'
             },
             ':disabled': {
               backgroundColor: '#F1B0A9',
