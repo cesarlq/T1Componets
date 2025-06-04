@@ -28,6 +28,7 @@ const mockRouter = {
     return Promise.resolve(true);
   },
   refresh: () => {
+    console.log('🔄 Mock router refresh');
     if (typeof window !== 'undefined') {
       window.location.reload();
     }
@@ -49,7 +50,7 @@ export interface MenuPath {
   subPaths?: SubPath[];
   concatStoreId?: boolean;
   endAdornment?: React.ReactNode;
-  autoNavigateOnClick?: boolean;
+  autoNavigateOnClick?: boolean; // 🔥 NUEVA PROP
   type?: string | any;
   component?: React.ComponentType<any>;
   activeIcon?: any;
@@ -58,7 +59,7 @@ export interface MenuPath {
 export interface SidebarPropsI {
   className?: string;
   menuPaths?: MenuPath[];
-  defaultAutoNavigate?: boolean;
+  defaultAutoNavigate?: boolean; // 🔥 NUEVA PROP GLOBAL
   TopBanner?: React.ComponentType<{ className?: string }>;
   BottomBanner?: React.ComponentType<{ className?: string }> | React.ReactNode;
   BalanceBanner?: React.ComponentType<{ className?: string }>;
@@ -82,14 +83,14 @@ export interface SidebarPropsI {
   onStoreChange?: (storeId: number) => void;
   createStoreUrl?: string;
   isMobile?: boolean;
-
+  // 🔥 NUEVA PROP PARA CONTROLAR SI USAR LÓGICA EXTERNA
   useExternalControl?: boolean;
 }
 
 export function Sidebar({
   className = '',
   menuPaths = [],
-  defaultAutoNavigate = false, 
+  defaultAutoNavigate = false, // 🔥 NUEVA PROP
   TopBanner,
   BottomBanner,
   BalanceBanner,
@@ -113,16 +114,17 @@ export function Sidebar({
   onStoreChange = () => {},
   createStoreUrl = '',
   isMobile: externalIsMobile,
-  useExternalControl = false
+  useExternalControl = false // 🔥 NUEVA PROP
 }: SidebarPropsI) {
-
+  
+  // 🔥 USAR HOOKS DE APP ROUTER
   let router;
   let pathname;
   let isStorybook = false;
   
   try {
     router = useRouter();
-    pathname = usePathname();
+    pathname = usePathname(); // 🔥 REEMPLAZA router.asPath
     
     // Verificar si estamos en Storybook
     isStorybook = typeof window !== 'undefined' && 
@@ -133,6 +135,7 @@ export function Sidebar({
     router = mockRouter;
     pathname = mockPathname;
     isStorybook = true;
+    console.log('🎭 Usando mock router para App Router (Storybook detectado)');
   }
   
   const refSideBar = useRef<HTMLDivElement>(null);
@@ -148,7 +151,15 @@ export function Sidebar({
   const [currentSubmenuOpen, setCurrentSubmenuOpen] = useState<number>(0);
   const [activeSubPath, setActiveSubPath] = useState('');
 
+  // 🔥 DETECTAR SI ESTAMOS EN MODO CONTROL EXTERNO
   const isExternallyControlled = externalIsOpen !== undefined || externalIsReduced !== undefined || useExternalControl;
+  
+  console.log('🎯 Sidebar - Control externo:', { 
+    isExternallyControlled, 
+    externalIsOpen, 
+    externalIsReduced, 
+    useExternalControl 
+  });
 
   // Usar estados externos si se proporcionan, sino usar internos
   const isOpen = isExternallyControlled ? (externalIsOpen ?? true) : internalIsOpen;
@@ -157,6 +168,7 @@ export function Sidebar({
   // 🔥 DETECTAR ANCHO DE PANTALLA (SOLO SI NO ESTÁ CONTROLADO EXTERNAMENTE)
   useEffect(() => {
     if (isExternallyControlled) {
+      console.log('🚫 Sidebar - Detectar ancho desactivado (control externo)');
       return;
     }
 
@@ -169,8 +181,10 @@ export function Sidebar({
     return () => window.removeEventListener('resize', handleResize);
   }, [isExternallyControlled]);
 
+  // 🔥 LÓGICA RESPONSIVE INTERNA (SOLO SI NO ESTÁ CONTROLADO EXTERNAMENTE)
   useEffect(() => {
     if (isExternallyControlled) {
+      console.log('🚫 Sidebar - Lógica responsive desactivada (control externo)');
       return;
     }
 
@@ -225,28 +239,54 @@ export function Sidebar({
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isOpen, screenWidth, breakpointMobile, externalIsMobile]);
 
-  
+  // 🔥 INICIALIZAR RUTAS ACTIVAS CON PATHNAME
   useEffect(() => {
     if (!activeSubPath) {
       setActiveSubPath(pathname);
     }
-  }, [pathname, activeSubPath]);
+    
+    // 🔥 RESETEAR SUBMENU CUANDO CAMBIE LA RUTA
+    const currentPathMatchesAnySubmenu = menuPaths.some((menuItem, index) => {
+      if (menuItem.subPaths) {
+        return menuItem.subPaths.some(subPath => subPath.href === pathname);
+      }
+      return false;
+    });
+    
+    // Si la ruta actual no pertenece a ningún submenu, cerrar todos los submenus
+    if (!currentPathMatchesAnySubmenu) {
+      const currentPathMatchesMainItem = menuPaths.findIndex(item => item.href === pathname);
+      if (currentPathMatchesMainItem !== -1) {
+        setCurrentSubmenuOpen(currentPathMatchesMainItem);
+        setActivePath(menuPaths[currentPathMatchesMainItem].href || '');
+      }
+    }
+  }, [pathname, activeSubPath, menuPaths]);
 
   useEffect(() => {
-    if (menuPaths[currentSubmenuOpen]?.href) {
-      setActivePath(menuPaths[currentSubmenuOpen].href || '');
+    // 🔥 MEJORAR LA LÓGICA DE ACTIVACIÓN DE PATHS
+    const menuItem = menuPaths[currentSubmenuOpen];
+    if (menuItem?.href) {
+      setActivePath(menuItem.href);
     }
+    
+    console.log('🔄 Sidebar - Submenu changed:', {
+      currentSubmenuOpen,
+      menuItem: menuItem?.text,
+      activePath: menuItem?.href
+    });
   }, [currentSubmenuOpen, menuPaths]);
 
   // Handlers
   const handleToggleOpen = (newIsOpen: boolean) => {
-
+    console.log('🔄 Sidebar - handleToggleOpen:', { newIsOpen, isExternallyControlled });
+    
     if (!isExternallyControlled && externalIsOpen === undefined) {
       setInternalIsOpen(newIsOpen);
     }
     onToggleOpen(newIsOpen);
     
-    
+    // 🔥 SOLO HACER ESTO SI NO ESTÁ CONTROLADO EXTERNAMENTE
     if (!isExternallyControlled) {
       const isMobileCheck = externalIsMobile !== undefined 
         ? externalIsMobile 
@@ -266,7 +306,7 @@ export function Sidebar({
       onCreateClick();
     } else if (createButtonPath) {
       if (pathname === createButtonPath) {
-        
+        // 🔥 EN APP ROUTER, USAR router.refresh() EN LUGAR DE router.reload()
         if (isStorybook) {
           mockRouter.refresh();
         } else {
@@ -303,7 +343,16 @@ export function Sidebar({
     
   const shouldShowReduced = isReduced && !enlargeByHover;
 
+  console.log('📊 Sidebar - Estados finales:', { 
+    isOpen, 
+    isReduced, 
+    isMobile, 
+    shouldShowReduced, 
+    isExternallyControlled,
+    screenWidth 
+  });
 
+  // 🔥 FUNCIÓN PARA RENDERIZAR ELEMENTOS DEL MENÚ (ACTUALIZADA)
   const renderMenuItem = (item: MenuPath, index: number) => {
     const itemType = typeof item.type === 'string' ? item.type : item.type?.toString();
     

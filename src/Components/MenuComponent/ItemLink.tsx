@@ -55,9 +55,8 @@ export function ItemLink({
   activeIcon
 }: ItemLinkProps) {
   
-  // 🔥 USAR HOOKS DE APP ROUTER (NEXT.JS 13+)
   const router = useRouter();
-  const pathname = usePathname(); // Equivalente a router.asPath en Pages Router
+  const pathname = usePathname();
   
   const [openSubMenuLocal, setOpenSubMenuLocal] = useState<boolean>(false);
   const [currentSubSteps, setCurrentSubSteps] = useState<SubPath[]>([]);
@@ -82,27 +81,51 @@ export function ItemLink({
     }
   }, [subPaths, restrictedPaths]);
 
-  // 🔥 DETECTAR RUTA ACTIVA CON PATHNAME (APP ROUTER)
+  // 🔥 MEJORAR LA DETECCIÓN DE RUTA ACTIVA
   useEffect(() => {
-    if (subPaths && subPaths.some(item => item.href === pathname)) {
-      setActivePath(safeHref);
-      setActiveSubPath(pathname);
-      onClickPath(index);
-      onToggleOpen(false);
-    } else if (subPaths && subPaths.some(item => pathname.includes(item.href))) {
-      setActivePath(safeHref);
-      onClickPath(index);
-      onToggleOpen(false);
-    } else if (!subPaths && safeHref === pathname) {
-      onToggleOpen(false);
-      setTimeout(() => {
+    console.log(`🔍 ItemLink [${safeText}] - Checking route:`, {
+      pathname,
+      safeHref,
+      hasSubPaths: !!subPaths,
+      index
+    });
+
+    // 🔥 CASO 1: Item con subPaths
+    if (subPaths && subPaths.length > 0) {
+      // Verificar si algún subPath coincide exactamente con la ruta actual
+      const matchingSubPath = subPaths.find(item => item.href === pathname);
+      const partialMatchSubPath = subPaths.find(item => pathname.includes(item.href) && item.href !== '/');
+      
+      if (matchingSubPath) {
+        console.log(`✅ ItemLink [${safeText}] - Exact subpath match:`, matchingSubPath.href);
         setActivePath(safeHref);
-      });
+        setActiveSubPath(pathname);
+        onClickPath(index);
+        if (mobile) onToggleOpen(false);
+      } else if (partialMatchSubPath) {
+        console.log(`✅ ItemLink [${safeText}] - Partial subpath match:`, partialMatchSubPath.href);
+        setActivePath(safeHref);
+        setActiveSubPath(pathname);
+        onClickPath(index);
+        if (mobile) onToggleOpen(false);
+      } else {
+        // 🔥 SI NO HAY MATCH CON SUBPATHS, VERIFICAR SI ESTE ITEM DEBE DESACTIVARSE
+        console.log(`❌ ItemLink [${safeText}] - No subpath match, checking if should deactivate`);
+      }
+    } 
+    // 🔥 CASO 2: Item sin subPaths
+    else if (!subPaths && safeHref === pathname) {
+      console.log(`✅ ItemLink [${safeText}] - Direct match:`, safeHref);
+      setActivePath(safeHref);
+      setActiveSubPath(safeHref);
+      onClickPath(index);
+      if (mobile) onToggleOpen(false);
     }
     
+    // 🔥 SINCRONIZAR ESTADO LOCAL CON ESTADO GLOBAL
     setOpenSubMenuLocal(openSubMenu);
   }, [
-    pathname, // 🔥 USAR PATHNAME EN LUGAR DE router.asPath
+    pathname,
     subPaths, 
     safeHref,
     index, 
@@ -110,48 +133,52 @@ export function ItemLink({
     setActiveSubPath, 
     onToggleOpen,
     openSubMenu,
-    onClickPath
+    onClickPath,
+    mobile,
+    safeText
   ]);
 
   const handleOpenSubPaths = async (index: number, targetHref?: string) => {
-    // Siempre activar el path y manejar el submenu
+    console.log(`🎯 ItemLink [${safeText}] - handleOpenSubPaths:`, {
+      index,
+      targetHref,
+      hasSubPaths: !!subPaths,
+      autoNavigateOnClick
+    });
+
+    // 🔥 SIEMPRE ACTIVAR EL PATH Y MANEJAR EL SUBMENU PRIMERO
     setActivePath(safeHref);
     onClickPath(index);
 
-    // 🔥 LÓGICA PARA AUTO-NAVEGACIÓN EN APP ROUTER
+    // 🔥 CASO 1: Item con subPaths y auto-navegación
     if (subPaths && autoNavigateOnClick && safeHref) {
       let finalHref = safeHref;
       
-      // Concatenar storeId si es necesario
       if (concatStoreId && currentUserId) {
         finalHref = safeHref + currentUserId;
       }
       
       try {
-        // 🔥 USAR ROUTER.PUSH DE APP ROUTER
-        // En App Router, router.push no devuelve una Promise, pero funciona igual
+        console.log(`🔗 ItemLink [${safeText}] - Navigating to:`, finalHref);
         router.push(finalHref);
         
-        // Actualizar estados
         setActiveSubPath(finalHref);
         onNavigate(finalHref);
         
-        // En móvil, cerrar el sidebar después de navegar
         if (mobile) {
-          setTimeout(() => {
-            onToggleOpen(false);
-          }, 100); // Pequeño delay para asegurar que la navegación se inicie
+          setTimeout(() => onToggleOpen(false), 100);
         }
         
       } catch (error) {
         console.error('❌ Error en navegación:', error);
       }
       
-      return; // Salir temprano para evitar lógica adicional
+      return;
     }
     
-    // 🔥 LÓGICA PARA CUANDO NO HAY AUTO-NAVEGACIÓN
+    // 🔥 CASO 2: Item con subPaths sin auto-navegación (solo expandir/colapsar)
     if (subPaths && !autoNavigateOnClick) {
+      console.log(`📂 ItemLink [${safeText}] - Toggle submenu only`);
       
       if (mobile && subPaths.some(item => item.href === pathname)) {
         setActiveSubPath(pathname);
@@ -159,7 +186,7 @@ export function ItemLink({
       return;
     }
 
-    // 🔥 LÓGICA PARA ITEMS SIN SUBPATHS
+    // 🔥 CASO 3: Item sin subPaths (navegación directa)
     if (!subPaths && targetHref) {
       let finalHref = targetHref;
       
@@ -167,17 +194,15 @@ export function ItemLink({
         finalHref = targetHref + currentUserId;
       }
       
-      
       try {
+        console.log(`🔗 ItemLink [${safeText}] - Direct navigation to:`, finalHref);
         router.push(finalHref);
         
         setActiveSubPath(finalHref);
         onNavigate(finalHref);
         
         if (mobile) {
-          setTimeout(() => {
-            onToggleOpen(false);
-          }, 100);
+          setTimeout(() => onToggleOpen(false), 100);
         }
       } catch (error) {
         console.error('❌ Error en navegación:', error);
@@ -192,15 +217,15 @@ export function ItemLink({
       finalSubHref = subHref + currentUserId;
     }
     
+    console.log(`🔗 ItemLink [${safeText}] - Subpath click:`, finalSubHref);
+    
     try {
       router.push(finalSubHref);
       
       setActiveSubPath(finalSubHref);
       onNavigate(finalSubHref);
       
-      setTimeout(() => {
-        onToggleOpen(false);
-      }, 100);
+      setTimeout(() => onToggleOpen(false), 100);
     } catch (error) {
       console.error('Error en navegación a subpath:', error);
     }
@@ -208,6 +233,30 @@ export function ItemLink({
 
   // Determinar qué icono usar
   const currentIcon = (safeHref === activePath && activeIcon) ? activeIcon : icon;
+
+  // 🔥 DETERMINAR SI ESTE ITEM ESTÁ ACTIVO
+  const isThisItemActive = () => {
+    if (subPaths && subPaths.length > 0) {
+      // Para items con subpaths, está activo si algún subpath coincide con la ruta actual
+      return subPaths.some(subPath => 
+        subPath.href === pathname || 
+        (pathname.includes(subPath.href) && subPath.href !== '/')
+      ) || safeHref === activePath;
+    } else {
+      // Para items sin subpaths, está activo si coincide exactamente
+      return safeHref === pathname || safeHref === activePath;
+    }
+  };
+
+  const itemIsActive = isThisItemActive();
+
+  console.log(`📊 ItemLink [${safeText}] - Render state:`, {
+    itemIsActive,
+    activePath,
+    activeSubPath,
+    openSubMenu,
+    pathname
+  });
 
   // 🔥 SI TIENE SUBPATHS
   if (subPaths) {
@@ -218,7 +267,7 @@ export function ItemLink({
       >
         <li
           className={styles.linkContainer}
-          data-active={safeHref === activePath}
+          data-active={itemIsActive} // 🔥 USAR LA FUNCIÓN MEJORADA
           data-has-sub-paths={true}
           data-auto-navigate={autoNavigateOnClick}
           style={
@@ -277,7 +326,7 @@ export function ItemLink({
                 data-active={
                   concatStoreId && currentUserId 
                     ? `${subItem.href}${currentUserId}` === activeSubPath
-                    : subItem.href === activeSubPath
+                    : subItem.href === activeSubPath || subItem.href === pathname // 🔥 MEJORAR DETECCIÓN
                 }
                 onClick={(e) => {
                   e.preventDefault();
@@ -298,7 +347,7 @@ export function ItemLink({
   return (
     <li
       className={`${styles.linkContainer} ${className}`}
-      data-active={safeHref === activePath}
+      data-active={itemIsActive} // 🔥 USAR LA FUNCIÓN MEJORADA
       data-reduce={sidebarReduce && !enlargeByHover}
       data-has-sub-paths={false}
     >
