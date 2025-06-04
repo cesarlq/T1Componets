@@ -76,7 +76,6 @@
             position: absolute;
         }
     }
-
     // Sección izquierda del navbar
     .navbar-left-section {
     display: flex;
@@ -153,6 +152,14 @@
 
 .container[data-show-info-band=true] {
     margin-top: variables.$height-navbar;
+}
+
+.toogleIcon {
+    &:hover {
+        background-color: #f8f8f8;
+        border-radius: 5px;
+    }
+   
 }
 
 .profileIcon {

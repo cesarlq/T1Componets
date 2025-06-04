@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import T1Logo from '../../assets/T1.svg';
 import ReduceIcon from '../../assets/reduce-icon.svg';
 import EnlargeIcon from '../../assets/enlarge-icon.svg';
+import style from '../../styles/common/Navbar.module.scss';
 
 export interface T1ShippingBannerProps {
   className?: string;
@@ -101,7 +102,7 @@ export function T1ShippingBanner({
     <div className={`flex items-center gap-[13.5px] ${className}`}>
       {!isMobile && (
         <button
-          className="bg-transparent cursor-pointer border-none p-0 hover:bg-[#f8f8f8] hover:rounded-[5px]"
+          className={`bg-transparent cursor-pointer border-none p-0 ${style.toogleIcon}`}
           onClick={handleToggleClick}
           type="button"
           aria-label={buttonIsReduced ? "Expandir sidebar" : "Reducir sidebar"}
