@@ -57,20 +57,7 @@ export interface NavbarPropsI {
   SearchComponent?: React.ComponentType<any>;
   
   // Configuration for T1Selector
-  t1SelectorConfig?: {
-    storeBaseUrl?: string;
-    shippingBaseUrl?: string;
-    paymentBaseUrl?: string;
-    ecosystemTitle?: string;
-    menuItems?: Array<{
-      icon: string | React.ReactNode;
-      label: string;
-      href?: string;
-      onClick?: () => void;
-      target?: '_blank' | '_self';
-      isActive?: boolean;
-    }>;
-  };
+  t1SelectorConfig?: t1SelectorConfigI | null | undefined;
   
   // Configuration
   searchPlaceholder?: string;
@@ -81,13 +68,25 @@ export interface NavbarPropsI {
     searchPlaceholder?: string;
   };
 
-
-  //Configuration Profile
+  
   iconProfile?: string | undefined;
   colorProfile?: string
 }
 
-
+export interface t1SelectorConfigI {
+  storeBaseUrl?: string;
+  shippingBaseUrl?: string;
+  paymentBaseUrl?: string;
+  ecosystemTitle?: string;
+  menuItems?: Array<{
+    icon: string | React.ReactNode;
+    label: string;
+    href?: string;
+    onClick?: () => void;
+    target?: '_blank' | '_self';
+    isActive?: boolean;
+  }>;
+}
 
 
 // Interfaces flexibles que aceptan múltiples formatos

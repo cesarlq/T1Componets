@@ -11,7 +11,6 @@ export interface layoutMenuI {
     sideBarProps: Omit<SidebarPropsI, 'onToggleOpen' | 'onToggleReduce' | 'isOpen' | 'isReduced'>;
 }
 
-// Componente interno que usa el contexto
 function LayoutMenuContent({ navBarProps, sideBarProps }: layoutMenuI) {
     const { width } = useScreenDimensions();
     const isMobile = width && width <= 750;
@@ -41,10 +40,8 @@ function LayoutMenuContent({ navBarProps, sideBarProps }: layoutMenuI) {
     const handleReducerHandle = () => {
         
         if (isMobile) {
-            console.log('📱 Móvil: toggleando overlay');
             toggleOpen();
         } else {
-            console.log('💻 Desktop: toggleando reduce');
             toggleReduced();
         }
     };
@@ -79,14 +76,12 @@ function LayoutMenuContent({ navBarProps, sideBarProps }: layoutMenuI) {
                 className='pt-4'
                 TopBanner={isMobile ? MockTopBanner : sideBarProps.TopBanner}
                 
-                // 🔥 CONTROL EXTERNO TOTAL
                 useExternalControl={true}
                 isReduced={isReduced}
                 isOpen={isOpen}
                 onToggleOpen={handleToggleOpen}
                 onToggleReduce={handleToggleReduce}
                 
-                // Props de configuración
                 isMobile={Boolean(isMobile)}
                 breakpointMobile={750}
                 breakpointReduce={1110}

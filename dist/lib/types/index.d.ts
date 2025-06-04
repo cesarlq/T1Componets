@@ -25,3 +25,4 @@ export { Sidebar } from './Components/MenuComponent/Sidebar';
 export { T1ShippingBanner } from './Components/MenuComponent/T1ShippingBanner';
 export { StoreSelector } from './Components/MenuComponent/StoreSelector';
 export { StoreSelectorOnSidebar } from './Components/MenuComponent/StoreSelectorOnSidebar';
+export { default as LayoutMenu } from './Components/MenuComponent/layoutMenu';
