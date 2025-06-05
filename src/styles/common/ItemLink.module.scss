@@ -110,6 +110,7 @@
 }
 
 .link {
+  background-color: transparent;
   -webkit-user-select: none;
   -ms-user-select: none;
   user-select: none;
@@ -189,6 +190,8 @@
 }
 
 .subPath {
+  background-color: transparent;
+  border: 0px;
   height: 30px;
   display: flex;
   align-items: center;

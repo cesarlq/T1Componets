@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
 import Image from 'next/image';
 import ArrowMenu from '../../assets/arrow-menu.svg';
+import Ellipse from '../../assets/Ellipse55.svg';
 import styles from '../../styles/common/ItemLink.module.scss';
 import { MenuPath, SubPath } from './Sidebar';
 
@@ -235,6 +236,15 @@ export function ItemLink({
               />
             )}
             {(!sidebarReduce || enlargeByHover) && safeText}
+            {itemIsActive && 
+              <Image
+                src={Ellipse}
+                alt='ellipse'
+                height={4}
+                width={4}
+                style={{maxWidth:'4px', maxHeight:'4px', marginLeft:'-4px'}}
+              />
+            }
             {endAdornment && !(sidebarReduce && !enlargeByHover) && (
               <div className={styles.endAdornment}>
                 {endAdornment}
@@ -310,6 +320,15 @@ export function ItemLink({
           />
         )}
         {(!sidebarReduce || enlargeByHover) && safeText}
+        {itemIsActive && 
+          <Image
+            src={Ellipse}
+            alt='ellipse'
+            height={4}
+            width={4}
+            style={{maxWidth:'4px', maxHeight:'4px', marginLeft:'-4px'}}
+          />
+        }
         {endAdornment && !(sidebarReduce && !enlargeByHover) && (
           <div className={styles.endAdornment}>
             {endAdornment}
