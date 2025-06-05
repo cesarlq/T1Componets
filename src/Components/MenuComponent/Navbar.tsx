@@ -101,18 +101,23 @@ export function Navbar({
       className={`${className} ${styles.container}`}
       data-show-info-band={showInfoBand}
     >
-      <div className={`${styles['navbar-left-section']} flex items-center gap-4`}>
+      <div className={styles['navbar-left-section']}>
         <button
-          className={`${styles['menu-toggle-button']} block lg:hidden`}
+          className={styles['menu-toggle-button']}
           onClick={handleMenuToggle}
           type="button"
           aria-label="Toggle menu"
         >
-          <T1Icon icon="menuInActive" className='min-w-[18px] min-h-[16px]' width={18} height={16} />
+          <T1Icon 
+            icon="menuInActive" 
+            className={styles['menu-icon']} 
+            width={18} 
+            height={16} 
+          />
         </button>
         
         <T1ShippingBanner
-          className={`${styles['Banner-section']}`}
+          className={styles['Banner-section']}
           onNavigate={handleNavigation}
           brandText={shippingBannerTitle}
           isMobile={Boolean(isMobile)}
@@ -122,7 +127,7 @@ export function Navbar({
         />
         
         <StoreSelector 
-          className={`${styles['store-selector-desktop']} hidden lg:flex`}
+          className={styles['store-selector-desktop']}
           stores={stores}
           currentStore={currentStore}
           onStoreChange={handleStoreChange}
@@ -134,16 +139,16 @@ export function Navbar({
         <TextFieldAndButton
           onSubmit={handleSearch}
           textFieldClassName={styles.search}
-          className={`${styles['search-section']} hidden lg:block`}
+          className={styles['search-section']}
           textFieldProps={{
             placeholder: texts.searchPlaceholder || searchPlaceholder,
           }}
         />
       )}
       
-      <div className={`${styles['user-info-container']} flex items-center gap-3`}>
+      <div className={styles['user-info-container']}>
         {showBalance && (
-          <BalanceBanner className={`${styles['balance-banner-desktop']} hidden lg:flex`} />
+          <BalanceBanner className={styles['balance-banner-desktop']} />
         )}
         
         {t1SelectorConfig && 
@@ -158,7 +163,7 @@ export function Navbar({
         }
         
         <StoreSelector 
-          className={`${styles['store-selector-mobile']} flex lg:hidden`}
+          className={styles['store-selector-mobile']}
           stores={stores}
           currentStore={currentStore}
           onStoreChange={handleStoreChange}

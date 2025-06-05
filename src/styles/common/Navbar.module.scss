@@ -22,7 +22,7 @@
 
     .search {
         max-width: 100%;
-        width: 400px ;
+        width: 400px;
     }
 
     .progress {
@@ -76,77 +76,77 @@
             position: absolute;
         }
     }
-    // Sección izquierda del navbar
+
+    // Sección izquierda del navbar (flex items-center gap-4)
     .navbar-left-section {
-    display: flex;
-    align-items: center;
-    gap: 6rem;
-    }
-
-    // Botón del menú móvil
-    .menu-toggle-button {
-    display: block;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    padding: 8px;
-    
-    @media (min-width: 1024px) {
-        display: none;
-    }
-    }
-
-    .Banner-section{
-        display: none;
-        gap: 10px;
-        @media (min-width: 1024px) {
         display: flex;
+        align-items: center;
+        gap: 1rem; // gap-4 = 16px = 1rem
+    }
+
+    // Botón del menú móvil (block lg:hidden)
+    .menu-toggle-button {
+        display: block;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        padding: 8px;
+        
+        @media (min-width: 1024px) {
+            display: none;
         }
     }
 
-    // Banner T1 en desktop
-    .t1-banner-desktop {
-    display: none;
-    
-    @media (min-width: 1024px) {
-        display: flex;
-    }
-    }
-
-    // Selector de tienda en desktop
-    .store-selector-desktop {
-    display: none;
-    
-    @media (min-width: 1024px) {
-        display: flex;
-    }
-    }
-
-    // Selector de tienda en móvil
-    .store-selector-mobile {
-    display: flex;
-    
-    @media (min-width: 1024px) {
+    // Banner section
+    .Banner-section {
         display: none;
-    }
-    }
-
-    // Sección de búsqueda
-    .search-section {
-    display: none;
-    
-    @media (min-width: 1024px) {
-        display: block;
-    }
+        gap: 10px;
+        @media (min-width: 1024px) {
+            display: flex;
+        }
     }
 
-    // Banner de balance en desktop
-    .balance-banner-desktop {
-    display: none;
-    
-    @media (min-width: 1024px) {
+    // Selector de tienda en desktop (hidden lg:flex)
+    .store-selector-desktop {
+        display: none;
+        
+        @media (min-width: 1024px) {
+            display: flex;
+        }
+    }
+
+    // Selector de tienda en móvil (flex lg:hidden)
+    .store-selector-mobile {
         display: flex;
+        
+        @media (min-width: 1024px) {
+            display: none;
+        }
     }
+
+    // Sección de búsqueda (hidden lg:block)
+    .search-section {
+        display: none;
+        
+        @media (min-width: 1024px) {
+            display: block;
+        }
+    }
+
+    // Container de información del usuario (flex items-center gap-3)
+    .user-info-container {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem; // gap-3 = 12px = 0.75rem
+    }
+
+    // Banner de balance en desktop (hidden lg:flex)
+    .balance-banner-desktop {
+        display: none;
+        
+        @media (min-width: 1024px) {
+            display: flex;
+        }
     }
 }
 
@@ -159,9 +159,7 @@
     padding: 5px;
     &:hover {
         background-color: #f8f8f8;
-        
     }
-   
 }
 
 .profileIcon {
