@@ -83,7 +83,8 @@ export function ItemLink({
     }
   }, [subPaths, restrictedPaths]);
 
-  // Lógica de navegación INTERNA
+
+  // Modificación en handleItemClick
   const handleItemClick = async (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
@@ -96,8 +97,8 @@ export function ItemLink({
     if (subPaths && subPaths.length > 0) {
       console.log(`📂 ItemLink [${safeText}] - Has subPaths, autoNavigate:`, autoNavigateToFirstSubPath);
       
-      // NUEVA LÓGICA: Auto-navegar al primer subPath si está habilitado
-      if (autoNavigateToFirstSubPath) {
+      // 🔥 NUEVA CONDICIÓN: No auto-navegar si es móvil
+      if (autoNavigateToFirstSubPath && !mobile) {
         const firstValidSubPath = currentSubSteps[0];
         
         if (firstValidSubPath) {
