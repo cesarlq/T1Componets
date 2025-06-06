@@ -126,6 +126,7 @@
   line-height: normal;
   position: relative;
   width: 100%;
+  padding: 0px;
 
   // Estado activo cuando SÍ está reducido y SÍ tiene subpaths
   &[data-reduce="true"] {
@@ -140,8 +141,16 @@
   .menuIcon {
     flex-shrink: 0;
     fill: variables.$font-color;
-    max-width: 50px;
-    max-height: 25px;
+    max-width: 19px;
+    max-height: 19px;
+    @media (max-width: variables.$breakpoint-md) {
+      max-width: 18px;
+      max-height: 18px;
+    }
+  }
+
+  @media (max-width: variables.$breakpoint-md) {
+    font-size: 13px;
   }
 }
 
@@ -186,6 +195,10 @@
       top: 0;
       bottom: 0;
     }
+  }
+
+  @media (max-width: variables.$breakpoint-md) {
+    gap: 5px;
   }
 }
 
@@ -235,6 +248,10 @@
 
   &[data-notification-count='']::before {
     display: none;
+  }
+
+  @media (max-width: variables.$breakpoint-md) {
+    font-size: 13px;
   }
 }
 

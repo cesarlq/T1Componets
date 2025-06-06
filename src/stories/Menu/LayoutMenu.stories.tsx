@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { MenuPath } from '../../Components/MenuComponent/Sidebar';
 import LayoutMenu from '../../Components/MenuComponent/layoutMenu';
 import React from 'react';
+import * as MenuIcon from '../../assets/menu-icons/index';
 
 
 // Mock de datos para las historias
@@ -25,38 +26,34 @@ const mockMenuPaths: MenuPath[] = [
     type: 'LINK',
     href: '/dashboard',
     text: 'Dashboard',
-    icon: 'dashboard',
-    autoNavigateOnClick: true
+    icon: MenuIcon.homeIcon,
   },
   {
     type: 'LINK',
     href: '/envios',
     text: 'Envíos',
-    icon: 'shipping',
+    icon: MenuIcon.fullfillmentIcon,
     subPaths: [
       { href: '/envios/crear', text: 'Crear envío' },
       { href: '/envios/lista', text: 'Lista de envíos' },
       { href: '/envios/tracking', text: 'Tracking' }
     ],
-    autoNavigateOnClick: true
   },
   {
     type: 'LINK',
     href: '/clientes',
     text: 'Clientes',
-    icon: 'users',
-    autoNavigateOnClick: true
+    icon: MenuIcon.clientsIcon,
   },
   {
     type: 'LINK',
     href: '/reportes',
     text: 'Reportes',
-    icon: 'reports',
+    icon: MenuIcon.reportsIcon,
     subPaths: [
       { href: '/reportes/ventas', text: 'Ventas' },
       { href: '/reportes/envios', text: 'Envíos' }
     ],
-    autoNavigateOnClick: true
   },
   {
     type: 'STATIC_TITLE',
@@ -66,15 +63,14 @@ const mockMenuPaths: MenuPath[] = [
     type: 'LINK',
     href: '/configuracion',
     text: 'Configuración',
-    icon: 'settings',
-    autoNavigateOnClick: true
+    icon: MenuIcon.settingsIcon,
   }
 ];
 
 const mockProfileMenuItems = [
-  { text: 'Mi Perfil', href: '/perfil', icon: 'user', color: 'red', label: '#', id: '1' },
-  { text: 'Configuración', href: '/config', icon: 'settings', color: 'red', label: '#', id: '2'  },
-  { text: 'Ayuda', href: '/ayuda', icon: 'help', color: 'red', label: '#', id: '2'  }
+  { text: 'Mi Perfil', href: '/perfil' , color: 'red', label: '#', id: '1' },
+  { text: 'Configuración', href: '/config', color: 'red', label: '#', id: '2'  },
+  { text: 'Ayuda', href: '/ayuda', color: 'red', label: '#', id: '2'  }
 ];
 
 // Funciones mock para los handlers
@@ -123,7 +119,6 @@ const baseNavbarProps = {
     ecosystemTitle: 'Ecosistema T1'
   },
   colorProfile: '#3B82F6',
-  iconProfile: 'user',
   texts: {
     logout: 'Cerrar sesión',
     searchPlaceholder: 'Buscar...'
@@ -232,7 +227,7 @@ export const Simplified: Story = {
     },
     sideBarProps: {
       ...baseSidebarProps,
-      defaultAutoNavigate: true,
+      defaultAutoNavigateToFirstSubPath: true,
       showCreateButton: false,
       showBalance: false,
       menuPaths: [
@@ -240,13 +235,13 @@ export const Simplified: Story = {
           type: 'LINK',
           href: '/dashboard',
           text: 'Dashboard',
-          icon: 'dashboard'
+          icon: MenuIcon.homeIcon
         },
         {
           type: 'LINK',
           href: '/configuracion',
           text: 'Configuración',
-          icon: 'settings'
+          icon: MenuIcon.settingsIcon
         }
       ]
     }
@@ -292,8 +287,8 @@ export const ExtendedMenu: Story = {
       ...baseSidebarProps,
       menuPaths: [
         { type: 'STATIC_TITLE', text: 'PRINCIPAL' },
-        { type: 'LINK', href: '/dashboard', text: 'Dashboard', icon: 'dashboard' },
-        { type: 'LINK', href: '/envios', text: 'Envíos', icon: 'shipping', 
+        { type: 'LINK', href: '/dashboard', text: 'Dashboard', icon: MenuIcon.homeIcon },
+        { type: 'LINK', href: '/envios', text: 'Envíos', icon: MenuIcon.fullfillmentIcon,
           subPaths: [
             { href: '/envios/crear', text: 'Crear envío' },
             { href: '/envios/lista', text: 'Lista de envíos' },
@@ -301,21 +296,21 @@ export const ExtendedMenu: Story = {
             { href: '/envios/historial', text: 'Historial' }
           ]
         },
-        { type: 'LINK', href: '/clientes', text: 'Clientes', icon: 'users',
+        { type: 'LINK', href: '/clientes', text: 'Clientes', icon: MenuIcon.clientsIcon,
           subPaths: [
             { href: '/clientes/lista', text: 'Lista de clientes' },
             { href: '/clientes/nuevo', text: 'Nuevo cliente' }
           ]
         },
-        { type: 'LINK', href: '/productos', text: 'Productos', icon: 'package' },
+        { type: 'LINK', href: '/productos', text: 'Productos', icon: MenuIcon.productsIcon },
         { type: 'STATIC_TITLE', text: 'REPORTES' },
-        { type: 'LINK', href: '/reportes/ventas', text: 'Ventas', icon: 'chart' },
-        { type: 'LINK', href: '/reportes/envios', text: 'Envíos', icon: 'truck' },
-        { type: 'LINK', href: '/reportes/clientes', text: 'Clientes', icon: 'users' },
+        { type: 'LINK', href: '/reportes/ventas', text: 'Ventas', icon: MenuIcon.reportsIcon },
+        { type: 'LINK', href: '/reportes/envios', text: 'Envíos', icon: MenuIcon.fullfillmentIcon },
+        { type: 'LINK', href: '/reportes/clientes', text: 'Clientes', icon: MenuIcon.clientsIcon },
         { type: 'STATIC_TITLE', text: 'CONFIGURACIÓN' },
-        { type: 'LINK', href: '/configuracion', text: 'Configuración', icon: 'settings' },
-        { type: 'LINK', href: '/usuarios', text: 'Usuarios', icon: 'user-group' },
-        { type: 'LINK', href: '/integraciones', text: 'Integraciones', icon: 'plug' }
+        { type: 'LINK', href: '/configuracion', text: 'Configuración', icon: MenuIcon.settingsIcon },
+        { type: 'LINK', href: '/usuarios', text: 'Usuarios', icon: MenuIcon.clientsIcon },
+        { type: 'LINK', href: '/integraciones', text: 'Integraciones', icon: MenuIcon.reportsIcon }
       ]
     }
   },

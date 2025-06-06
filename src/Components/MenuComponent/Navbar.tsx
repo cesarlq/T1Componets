@@ -6,7 +6,8 @@ import styles from '../../styles/common/Navbar.module.scss';
 import { T1Selector } from './T1Selector';
 import { MenuProfile } from './Profile';
 import TextFieldAndButton from './TextFieldAndButton';
-import T1Icon from '../T1Icon';
+import Image from 'next/image';
+import MenuInActive from '../../assets/menus/inactive/menu-inactive.svg';
 
 export function Navbar({
   className = '',
@@ -108,11 +109,11 @@ export function Navbar({
           type="button"
           aria-label="Toggle menu"
         >
-          <T1Icon 
-            icon="menuInActive" 
-            className={styles['menu-icon']} 
-            width={18} 
-            height={16} 
+          <Image
+            src={MenuInActive}
+            alt='grid'
+            width={17}
+            height={17}
           />
         </button>
         

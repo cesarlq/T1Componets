@@ -460,8 +460,8 @@ export function Sidebar({
   };
 
   return (
-    <aside
-      className={`${styles.container} ${className} pt-4`}
+<aside
+      className={`${styles.container} ${className}`}
       data-reduce={shouldShowReduced}
       data-enlarge-by-hover={enlargeByHover}
       data-show-info-band={showInfoBand}
@@ -475,7 +475,9 @@ export function Sidebar({
       >
         {/* Top Banner */}
         {TopBanner && (
-          <TopBanner className={`ml-3 lg:ml-[23px] mt-3 ${shouldShowReduced ? styles.bannerReduced : ''}`} />
+          <div className={`${styles.topBanner} ${shouldShowReduced ? styles.bannerReduced : ''}`}>
+            <TopBanner />
+          </div>
         )}
 
         {/* Create Button */}
@@ -491,7 +493,9 @@ export function Sidebar({
 
         {/* Balance Banner */}
         {BalanceBanner && showBalance && !shouldShowReduced && (
-          <BalanceBanner className="lg:!hidden" />
+          <div className={styles.balanceBanner}>
+            <BalanceBanner />
+          </div>
         )}
 
         {/* Menu Items */}

@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import T1Logo from '../../assets/T1.svg';
 import ReduceIcon from '../../assets/reduce-icon.svg';
 import EnlargeIcon from '../../assets/enlarge-icon.svg';
-import style from '../../styles/common/Navbar.module.scss';
+import styles from '../../styles/common/Navbar.module.scss';
 
 export interface T1ShippingBannerProps {
   className?: string;
@@ -99,15 +99,15 @@ export function T1ShippingBanner({
   const buttonIsReduced = sidebarReduce !== undefined ? sidebarReduce : isReduced;
 
   return (
-    <div className={`flex items-center gap-[10px] ${className}`}>
+    <div className={`${styles['t1-shipping-banner']} ${className}`}>
       {!isMobile && (
         <button
-          className={`bg-transparent cursor-pointer border-none ${style.toogleIcon}`}
+          className={`${styles['toggle-button']} ${styles.toogleIcon}`}
           onClick={handleToggleClick}
           type="button"
           aria-label={buttonIsReduced ? "Expandir sidebar" : "Reducir sidebar"}
         >
-          <div >
+          <div className={styles['toggle-icon-wrapper']}>
             {buttonIsReduced ? (
               <Image
                 src={EnlargeIcon}
@@ -130,22 +130,22 @@ export function T1ShippingBanner({
       )}
       
       <button
-        className="flex items-center gap-1 bg-transparent border-none cursor-pointer p-0 transition-opacity "
+        className={styles['navigate-button']}
         onClick={handleNavigate}
         type="button"
         aria-label="Ir al dashboard"
       >
-        <div className="w-[27px] h-[25px] flex items-center justify-center">
+        <div className={styles['logo-wrapper']}>
           <Image 
             src={T1Logo} 
             alt="T1 Logo" 
             style={{minHeight:'25px', maxWidth:'27px'}}
             width={27}
             height={25}
-            className="object-contain" 
+            className={styles['logo-image']} 
           />
         </div>
-        <span className="text-[25px] font-medium text-gray-800">
+        <span className={styles['brand-text']}>
           {brandText}
         </span>
       </button>
@@ -194,22 +194,22 @@ export function SimpleT1Banner({
 
   return (
     <button
-      className={`flex items-center gap-1 bg-transparent border-none cursor-pointer p-0 transition-opacity hover:opacity-80 ${className}`}
+      className={`${styles['simple-t1-banner']} ${className}`}
       onClick={handleNavigate}
       type="button"
       aria-label="Ir al dashboard"
     >
-      <div className="w-[27px] h-[25px] flex items-center justify-center">
+      <div className={styles['logo-wrapper']}>
         <Image 
           src={T1Logo} 
           alt="T1 Logo" 
           width={27}
           height={25}
-          className="object-contain"
+          className={styles['logo-image']}
           style={{minHeight:'25px', maxWidth:'27px'}}
         />
       </div>
-      <span className="text-[25px] font-medium text-gray-800">
+      <span className={styles['brand-text']}>
         {brandText}
       </span>
     </button>

@@ -38,7 +38,7 @@
 
     .sideBar {
       align-items: center;
-      gap: 12px!important;
+      gap: 5px;
     }
 
     .paths {
@@ -74,7 +74,7 @@
     }
 
     .sideBar{
-      gap: 12px;
+      gap: 5px;
     }
   }
 
@@ -87,6 +87,20 @@
         }
       }
     }
+  }
+}
+
+.topBanner {
+  margin-top: 0.75rem; // mt-3
+  
+  @media (min-width: 1024px) {
+    margin-left: 23px; // lg:ml-[23px]
+  }
+}
+
+.balanceBanner {
+  @media (min-width: 1024px) {
+    display: none !important; // lg:!hidden
   }
 }
 
@@ -113,6 +127,11 @@
   font-size: 12px !important;
   text-transform: none !important;
   padding: 0px;
+  @media (max-width: variables.$breakpoint-md) {
+    margin-bottom: 10px!important;
+    margin-top: 10px!important;
+  }
+
 
   &[data-reduce="true"] {
     width: 40px !important;
@@ -133,10 +152,9 @@
   height: 100%;
   flex-direction: column;
   gap: 3px;
-}
-
-.itemLink {
-  // Estilos ya manejados en ItemLink.module.scss
+  @media (max-width: variables.$breakpoint-md) {
+    gap: 5px;
+  }
 }
 
 // Estilos para títulos estáticos
@@ -208,6 +226,8 @@
 .bottomBanner {
   margin-top: auto;
 }
+
+
 
 // Media queries específicas para elementos especiales
 @media (max-width: variables.$breakpoint-md) {

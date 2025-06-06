@@ -81,7 +81,7 @@
     .navbar-left-section {
         display: flex;
         align-items: center;
-        gap: 1rem; // gap-4 = 16px = 1rem
+        gap: 5rem; // gap-4 = 16px = 1rem
     }
 
     // Botón del menú móvil (block lg:hidden)
@@ -191,5 +191,76 @@
                 display: none;
             }
         }
+    }
+}
+
+
+// Nuevos estilos para T1ShippingBanner
+.t1-shipping-banner {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.toggle-button {
+    background-color: transparent;
+    cursor: pointer;
+    border: none;
+}
+
+.toggle-icon-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.navigate-button {
+    display: flex;
+    align-items: center;
+    gap: 4px; // gap-1 = 0.25rem = 4px
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    transition: opacity 0.2s ease;
+    
+    &:hover {
+        opacity: 0.8;
+    }
+}
+
+.logo-wrapper {
+    width: 27px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo-image {
+    object-fit: contain;
+    min-height: 25px;
+    max-width: 27px;
+}
+
+.brand-text {
+    font-size: 25px;
+    font-weight: 500;
+    color: #1f2937; // gray-800
+}
+
+// Versión simple del banner
+.simple-t1-banner {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    transition: opacity 0.2s ease;
+    
+    &:hover {
+        opacity: 0.8;
     }
 }

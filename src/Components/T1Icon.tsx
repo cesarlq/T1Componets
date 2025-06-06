@@ -91,7 +91,7 @@ import SmallUserIcon from '../assets/svg-icons/small-user-icon.svg';
 import LanguageIcon from '../assets/svg-icons/language-icon.svg';
 import PadlockIcon from '../assets/svg-icons/padlock-icon.svg';
 import ArrowLeftIcon from '../assets/svg-icons/arrow-left-2.svg';
-import MenuInActive from '../assets/menus/inactive/menu-inactive.svg'; // ← Agregar este
+import MenuInActive from '../assets/menus/inactive/menu-inactive.svg';
 
 // Ahora el plugin de Rollup convertirá automáticamente estos imports a base64
 const T1Icon: React.FC<PBIconProps> = ({ icon, width, height, sx, className }) => {

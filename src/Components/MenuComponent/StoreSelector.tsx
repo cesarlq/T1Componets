@@ -93,114 +93,124 @@ export function StoreSelector({
 
   const hasStores = stores.length > 0;
 
-  return (
-    <div className={`${styles.container} ${className}`}>
-      {/* Botón trigger - solo se muestra si hay tienda actual */}
-      {currentStore && (
-        <button
-          onClick={() => setIsOpen(!isOpen)}
-          className={styles.triggerButton}
-          type="button"
-          aria-label="Seleccionar tienda"
-          aria-expanded={isOpen}
-        >
-          {/* Avatar de la tienda actual */}
-          <span
-            className={styles.storeAvatar}
-            style={{ backgroundColor: storeColors[0] }}
-          >
-            {getLetters(currentStore.name)}
-          </span>
-          
-          {/* Nombre de la tienda (oculto en móvil) */}
-          <span className={styles.storeName}>
-            {currentStore.name}
-          </span>
-          
-          {/* Flecha */}
-          <Image 
-            src={DoubleArrowIcon} 
-            alt='double-arrow' 
-            style={{width:'12px', minWidth:'12px', height:'auto'}}
-            width={12}
-            height={12}
-          />
-        </button>
+return (
+    <>
+      {/* Overlay - solo en móvil */}
+      {isOpen && (
+        <div 
+          className={styles.overlay}
+          onClick={() => setIsOpen(false)}
+          aria-hidden="true"
+        />
       )}
 
-      {/* Dropdown */}
-      <div
-        data-open={isOpen}
-        className={`${styles.dropdown} ${isOpen ? styles.dropdownOpen : styles.dropdownClosed}`}
-        ref={ref}
-      >
-        <div className={styles.dropdownContent}>
-          {/* Título */}
-          <span className={styles.title}>{title}</span>
-          
-          {/* Campo de búsqueda */}
-          <CustomInput
-            textFieldProps={{
-              className: styles.searchInput,
-              value: search,
-              onChange: (event: { target: { value: React.SetStateAction<string>; }; }) => setSearch(event.target.value),
-              placeholder: searchPlaceholder,
-              InputProps: {
-                endAdornment: <Image src={Search} alt='search' width={16} height={16} />,
-              },
-              inputProps: {
-                enterKeyHint: 'search',
-              }
-            }}
-          />
-          
-          {/* Lista de tiendas */}
-          <section className={styles.storesList}>
-            {filteredStores.map((store, index) => {
-              const color = storeColors[index % storeColors.length];
-              const isSelected = currentStore?.id === store.id;
-              
-              return (
-                <button
-                  key={store.id}
-                  onClick={() => handleStoreSelect(store.id)}
-                  className={`${styles.storeItem} ${isSelected ? styles.storeItemSelected : ''}`}
-                  data-selected={isSelected}
-                >
-                  {/* Avatar de la tienda */}
-                  <span
-                    className={styles.storeAvatar}
-                    style={{ backgroundColor: color }}
-                  >
-                    {getLetters(store.name)}
-                  </span>
-                  
-                  {/* Nombre de la tienda */}
-                  <span className={styles.storeItemName}>{store.name}</span>
-                  
-                  {/* Check icon si está seleccionada */}
-                  {isSelected && (
-                    <Image
-                      src={CheckIcon}
-                      alt='check'
-                      height={20}
-                      width={20}
-                      className={styles.checkIcon}
-                    />
-                  )}
-                </button>
-              );
-            })}
+      <div className={`${styles.container} ${className}`}>
+        {/* Botón trigger - solo se muestra si hay tienda actual */}
+        {currentStore && (
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className={styles.triggerButton}
+            type="button"
+            aria-label="Seleccionar tienda"
+            aria-expanded={isOpen}
+          >
+            {/* Avatar de la tienda actual */}
+            <span
+              className={styles.storeAvatar}
+              style={{ backgroundColor: storeColors[0] }}
+            >
+              {getLetters(currentStore.name)}
+            </span>
             
-            {/* Mensaje si no hay resultados */}
-            {filteredStores.length === 0 && search && (
-              <div className={styles.noResults}>
-                No se encontraron tiendas
-              </div>
-            )}
-          </section>
-          
-          {/* Link para crear nueva tienda */}
+            {/* Nombre de la tienda (oculto en móvil) */}
+            <span className={styles.storeName}>
+              {currentStore.name}
+            </span>
+            
+            {/* Flecha */}
+            <Image 
+              src={DoubleArrowIcon} 
+              alt='double-arrow' 
+              style={{width:'12px', minWidth:'12px', height:'auto'}}
+              width={12}
+              height={12}
+            />
+          </button>
+        )}
+
+        {/* Dropdown */}
+        <div
+          data-open={isOpen}
+          className={`${styles.dropdown} ${isOpen ? styles.dropdownOpen : styles.dropdownClosed}`}
+          ref={ref}
+        >
+          <div className={styles.dropdownContent}>
+            {/* Título */}
+            <span className={styles.title}>{title}</span>
+            
+            {/* Campo de búsqueda */}
+            <CustomInput
+              textFieldProps={{
+                className: styles.searchInput,
+                value: search,
+                onChange: (event: { target: { value: React.SetStateAction<string>; }; }) => setSearch(event.target.value),
+                placeholder: searchPlaceholder,
+                InputProps: {
+                  endAdornment: <Image src={Search} alt='search' width={16} height={16} />,
+                },
+                inputProps: {
+                  enterKeyHint: 'search',
+                }
+              }}
+            />
+            
+            {/* Lista de tiendas */}
+            <section className={styles.storesList}>
+              {filteredStores.map((store, index) => {
+                const color = storeColors[index % storeColors.length];
+                const isSelected = currentStore?.id === store.id;
+                
+                return (
+                  <button
+                    key={store.id}
+                    onClick={() => handleStoreSelect(store.id)}
+                    className={`${styles.storeItem} ${isSelected ? styles.storeItemSelected : ''}`}
+                    data-selected={isSelected}
+                  >
+                    {/* Avatar de la tienda */}
+                    <span
+                      className={styles.storeAvatar}
+                      style={{ backgroundColor: color }}
+                    >
+                      {getLetters(store.name)}
+                    </span>
+                    
+                    {/* Nombre de la tienda */}
+                    <span className={styles.storeItemName}>{store.name}</span>
+                    
+                    {/* Check icon si está seleccionada */}
+                    {isSelected && (
+                      <Image
+                        src={CheckIcon}
+                        alt='check'
+                        height={20}
+                        width={20}
+                        className={styles.checkIcon}
+                      />
+                    )}
+                  </button>
+                );
+              })}
+              
+              {/* Mensaje si no hay resultados */}
+              {filteredStores.length === 0 && search && (
+                <div className={styles.noResults}>
+                  No se encontraron tiendas
+                </div>
+              )}
+            </section>
+            
+            {/* Link para crear nueva tienda */}
             <Link
               href={createStoreUrl}
               target='_blank'
@@ -214,8 +224,9 @@ export function StoreSelector({
               />
               <span>{newStoreText}</span>
             </Link>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

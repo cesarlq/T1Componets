@@ -2,12 +2,12 @@
 
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { useRouter, usePathname } from 'next/navigation';
 import Image from 'next/image';
 import ArrowMenu from '../../assets/arrow-menu.svg';
 import Ellipse from '../../assets/Ellipse55.svg';
 import styles from '../../styles/common/ItemLink.module.scss';
 import { MenuPath, SubPath } from './Sidebar';
+import { useSmartRouter } from '../../util/router-adapter'; // Importar el adaptador
 
 export interface ItemLinkProps extends MenuPath {
   className?: string;
@@ -25,7 +25,6 @@ export interface ItemLinkProps extends MenuPath {
   restrictedPaths?: string[];
   onNavigate?: (path: string) => void;
   onToggleOpen?: (isOpen: boolean) => void;
-  // 🔥 NUEVA PROP: Auto-navegar al primer subPath
   autoNavigateToFirstSubPath?: boolean;
 }
 
@@ -54,12 +53,11 @@ export function ItemLink({
   onToggleOpen = () => {},
   type,
   component,
-  // 🔥 NUEVA PROP
   autoNavigateToFirstSubPath = false
 }: ItemLinkProps) {
   
-  const router = useRouter();
-  const pathname = usePathname();
+  // Usar el adaptador de router
+  const { push: routerPush, pathname, isReady } = useSmartRouter();
   
   const [currentSubSteps, setCurrentSubSteps] = useState<SubPath[]>([]);
 
@@ -96,9 +94,9 @@ export function ItemLink({
     if (subPaths && subPaths.length > 0) {
       console.log(`📂 ItemLink [${safeText}] - Has subPaths, autoNavigate:`, autoNavigateToFirstSubPath);
       
-      // 🔥 NUEVA LÓGICA: Auto-navegar al primer subPath si está habilitado
+      // NUEVA LÓGICA: Auto-navegar al primer subPath si está habilitado
       if (autoNavigateToFirstSubPath) {
-        const firstValidSubPath = currentSubSteps[0]; // Usar currentSubSteps que ya está filtrado
+        const firstValidSubPath = currentSubSteps[0];
         
         if (firstValidSubPath) {
           console.log(`🚀 ItemLink [${safeText}] - Auto-navigating to first subPath:`, firstValidSubPath.href);
@@ -125,7 +123,7 @@ export function ItemLink({
     }
   };
 
-  // 🔥 NUEVA FUNCIÓN: Manejar navegación a subPaths
+  // Manejar navegación a subPaths
   const handleSubPathNavigation = async (subHref: string) => {
     let finalSubHref = subHref;
     
@@ -137,7 +135,7 @@ export function ItemLink({
     
     try {
       // Navegación interna
-      await router.push(finalSubHref);
+      await routerPush(finalSubHref);
       
       // Actualizar estados
       setActiveSubPath(finalSubHref);
@@ -162,8 +160,8 @@ export function ItemLink({
     try {
       console.log(`🔗 ItemLink [${safeText}] - Navigating to:`, finalHref);
       
-      // Navegación interna usando Next.js router
-      await router.push(finalHref);
+      // Navegación interna usando router
+      await routerPush(finalHref);
       
       // Actualizar estados
       setActiveSubPath(finalHref);
@@ -230,9 +228,9 @@ export function ItemLink({
               <Image
                 src={currentIcon}
                 alt={safeText}
-                style={{maxWidth:'18px', maxHeight:'18px'}}
                 height={19}
                 width={19}
+                className={styles.menuIcon}
               />
             )}
             {(!sidebarReduce || enlargeByHover) && safeText}
@@ -315,7 +313,6 @@ export function ItemLink({
             alt={safeText}
             height={19}
             width={19}
-            style={{maxWidth:'19px', maxHeight:'19px'}}
             className={styles.menuIcon}
           />
         )}
