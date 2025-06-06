@@ -163,8 +163,6 @@
 }
 
 .endAdornmentSubPath {
-    position: absolute;
-    right: 4px;
     min-width: 19px;
     min-height: 20px;
     font-size: 11px;
@@ -172,6 +170,13 @@
     align-content: center;
     background-color: #F9D2D2;
     border-radius: 6px;
+    margin: 5px;
+}
+
+.containerEndAdornmentSubPath{
+    display: flex;
+    width: fit-content;
+    align-items: anchor-center;
 }
 
 .arrow {
@@ -216,11 +221,11 @@
 
 .subPath {
   background-color: transparent;
+  justify-content: space-between;
   border: 0px;
   height: 30px;
   display: flex;
   align-items: center;
-  justify-content: flex-start;
   border-radius: 5px;
   padding: 4px;
   width: calc(100% - 10px);

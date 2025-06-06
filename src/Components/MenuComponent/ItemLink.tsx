@@ -269,35 +269,51 @@ export function ItemLink({
             className={styles.subPaths} 
             data-open={openSubMenu}
           >
-            {currentSubSteps.map((subItem, subIndex) => {
-              const subItemHref = concatStoreId && currentUserId 
-                ? `${subItem.href}${currentUserId}` 
-                : subItem.href;
-              
-              const isSubItemActive = subItemHref === activeSubPath || 
-                                   subItem.href === pathname ||
-                                   subItem.href === activeSubPath;
+          {currentSubSteps.map((subItem, subIndex) => {
+            const subItemHref = concatStoreId && currentUserId 
+              ? `${subItem.href}${currentUserId}` 
+              : subItem.href;
+            
+            const isSubItemActive = subItemHref === activeSubPath || 
+                                subItem.href === pathname ||
+                                subItem.href === activeSubPath;
 
-              return (
-                <button
-                  key={subIndex}
-                  className={styles.subPath}
-                  data-active={isSubItemActive}
-                  data-reduce={sidebarReduce && !enlargeByHover}
-                  onClick={(e) => handleSubPathClick(e, subItem.href)}
-                  data-notification-count={''}
-                >
-                  
-                  {subItem.text}
-                  {subItem.endAdornmentSubPath &&
-                    <div className={styles.endAdornmentSubPath}>
-                      {subItem.endAdornmentSubPath}
-                    </div>
-                  }
-                  
-                </button>
-              );
-            })}
+            return (
+              <button
+                key={subIndex}
+                className={styles.subPath}
+                data-active={isSubItemActive}
+                data-reduce={sidebarReduce && !enlargeByHover}
+                onClick={(e) => handleSubPathClick(e, subItem.href)}
+                data-notification-count={''}
+              >
+                {subItem.text}
+                
+                <div className={styles.containerEndAdornmentSubPath}>
+                  {subItem.haveNotification && (
+                    <Image
+                      src={Ellipse}
+                      alt='ellipse'
+                      height={4}
+                      width={4}
+                      style={{maxWidth:'4px', maxHeight:'4px'}}
+                    />
+                  )}
+                  {subItem.endAdornmentSubPath && (
+                    React.isValidElement(subItem.endAdornmentSubPath) ? (
+                      // Si es un componente, renderizarlo directamente sin wrapper
+                      subItem.endAdornmentSubPath
+                    ) : (
+                      // Si es string o cualquier otro tipo, envolverlo en div
+                      <div className={styles.endAdornmentSubPath}>
+                        {subItem.endAdornmentSubPath}
+                      </div>
+                    )
+                  )}
+                </div>
+              </button>
+            );
+          })}
           </div>
         )}
       </div>
