@@ -35,7 +35,7 @@ const mockMenuPaths: MenuPath[] = [
     icon: MenuIcon.fullfillmentIcon,
     haveNotification: true,
     subPaths: [
-      { href: '/envios/crear', text: 'Crear envío',  endAdornmentSubPath: <h1>test</h1>, haveNotification: false},
+      { href: '/envios/crear', text: 'Crear envío',  endAdornmentSubPath: 22, haveNotification: false},
       { href: '/envios/lista', text: 'Lista de envíos' },
       { href: '/envios/tracking', text: 'Tracking' }
     ],
