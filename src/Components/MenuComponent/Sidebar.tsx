@@ -455,7 +455,7 @@ export function Sidebar({
           restrictedPaths={restrictedPaths}
           onNavigate={handleInternalNavigation}
           onToggleOpen={handleToggleOpen}
-          autoNavigateToFirstSubPath={isMobile ? item.autoNavigateToFirstSubPath ?? defaultAutoNavigateToFirstSubPath : false}
+          autoNavigateToFirstSubPath={item.autoNavigateToFirstSubPath ?? defaultAutoNavigateToFirstSubPath}
         />
       );
     }
