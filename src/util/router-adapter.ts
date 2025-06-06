@@ -41,7 +41,6 @@ export function useUniversalRouter(): UniversalRouter {
             }
             return;
           } catch (e) {
-            // App Router no disponible, continuar
           }
         }
 

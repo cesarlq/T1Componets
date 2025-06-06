@@ -26,6 +26,7 @@ export interface ItemLinkProps extends MenuPath {
   onNavigate?: (path: string) => void;
   onToggleOpen?: (isOpen: boolean) => void;
   autoNavigateToFirstSubPath?: boolean;
+  haveNotification?: boolean;
 }
 
 export function ItemLink({
@@ -53,7 +54,8 @@ export function ItemLink({
   onToggleOpen = () => {},
   type,
   component,
-  autoNavigateToFirstSubPath = false
+  autoNavigateToFirstSubPath = false,
+  haveNotification = false
 }: ItemLinkProps) {
   
   // Usar el adaptador de router
@@ -234,7 +236,7 @@ export function ItemLink({
               />
             )}
             {(!sidebarReduce || enlargeByHover) && safeText}
-            {itemIsActive && 
+            {haveNotification && 
               <Image
                 src={Ellipse}
                 alt='ellipse'
@@ -284,7 +286,14 @@ export function ItemLink({
                   onClick={(e) => handleSubPathClick(e, subItem.href)}
                   data-notification-count={''}
                 >
+                  
                   {subItem.text}
+                  {subItem.endAdornmentSubPath &&
+                    <div className={styles.endAdornmentSubPath}>
+                      {subItem.endAdornmentSubPath}
+                    </div>
+                  }
+                  
                 </button>
               );
             })}
@@ -317,7 +326,7 @@ export function ItemLink({
           />
         )}
         {(!sidebarReduce || enlargeByHover) && safeText}
-        {itemIsActive && 
+        {haveNotification && 
           <Image
             src={Ellipse}
             alt='ellipse'

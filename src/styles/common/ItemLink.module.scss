@@ -162,6 +162,18 @@
   height: 17px;
 }
 
+.endAdornmentSubPath {
+    position: absolute;
+    right: 4px;
+    min-width: 19px;
+    min-height: 20px;
+    font-size: 11px;
+    font-weight: 400 ;
+    align-content: center;
+    background-color: #F9D2D2;
+    border-radius: 6px;
+}
+
 .arrow {
   transition: all ease 0.3s;
   transform: rotate(180deg);

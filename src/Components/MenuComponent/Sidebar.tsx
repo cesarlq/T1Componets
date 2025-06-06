@@ -12,6 +12,8 @@ import { T1ShippingBanner } from './T1ShippingBanner';
 export interface SubPath {
   href: string;
   text: string;
+  haveNotification?: boolean;
+  endAdornmentSubPath?: React.ReactNode | string;
 }
 
 export interface MenuPath {
@@ -24,6 +26,7 @@ export interface MenuPath {
   endAdornment?: React.ReactNode;
   type?: string | any;
   component?: React.ComponentType<any>;
+  haveNotification?: boolean;
   autoNavigateToFirstSubPath?: boolean;
 }
 
@@ -383,6 +386,8 @@ export function Sidebar({
 
   // Función para renderizar elementos del menú
   const renderMenuItem = (item: MenuPath, index: number) => {
+    console.log(item);
+
     const itemType = typeof item.type === 'string' ? item.type : item.type?.toString();
     
     if (itemType === '0' || itemType === 'STATIC_TITLE') {
@@ -450,8 +455,7 @@ export function Sidebar({
           restrictedPaths={restrictedPaths}
           onNavigate={handleInternalNavigation}
           onToggleOpen={handleToggleOpen}
-          // 🔥 PASAR LA CONFIGURACIÓN DE AUTO-NAVEGACIÓN
-          autoNavigateToFirstSubPath={item.autoNavigateToFirstSubPath ?? defaultAutoNavigateToFirstSubPath}
+          autoNavigateToFirstSubPath={isMobile ? item.autoNavigateToFirstSubPath ?? defaultAutoNavigateToFirstSubPath : false}
         />
       );
     }

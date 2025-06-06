@@ -33,8 +33,9 @@ const mockMenuPaths: MenuPath[] = [
     href: '/envios',
     text: 'Envíos',
     icon: MenuIcon.fullfillmentIcon,
+    haveNotification: true,
     subPaths: [
-      { href: '/envios/crear', text: 'Crear envío' },
+      { href: '/envios/crear', text: 'Crear envío',  endAdornmentSubPath: 22},
       { href: '/envios/lista', text: 'Lista de envíos' },
       { href: '/envios/tracking', text: 'Tracking' }
     ],
@@ -290,7 +291,7 @@ export const ExtendedMenu: Story = {
         { type: 'LINK', href: '/dashboard', text: 'Dashboard', icon: MenuIcon.homeIcon },
         { type: 'LINK', href: '/envios', text: 'Envíos', icon: MenuIcon.fullfillmentIcon,
           subPaths: [
-            { href: '/envios/crear', text: 'Crear envío' },
+            { href: '/envios/crear', text: 'Crear envío', endAdornmentSubPath: 22 },
             { href: '/envios/lista', text: 'Lista de envíos' },
             { href: '/envios/tracking', text: 'Tracking' },
             { href: '/envios/historial', text: 'Historial' }
