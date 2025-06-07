@@ -26,7 +26,7 @@ export interface ItemLinkProps extends MenuPath {
   onNavigate?: (path: string) => void;
   onToggleOpen?: (isOpen: boolean) => void;
   autoNavigateToFirstSubPath?: boolean;
-  haveNotification?: boolean;
+  hasNotification?: boolean;
 }
 
 export function ItemLink({
@@ -55,7 +55,7 @@ export function ItemLink({
   type,
   component,
   autoNavigateToFirstSubPath = false,
-  haveNotification = false
+  hasNotification = false
 }: ItemLinkProps) {
   
   // Usar el adaptador de router
@@ -237,7 +237,7 @@ export function ItemLink({
               />
             )}
             {(!sidebarReduce || enlargeByHover) && safeText}
-            {haveNotification && 
+            {hasNotification && 
               <Image
                 src={Ellipse}
                 alt='ellipse'
@@ -290,7 +290,7 @@ export function ItemLink({
                 {subItem.text}
                 
                 <div className={styles.containerEndAdornmentSubPath}>
-                  {subItem.haveNotification && (
+                  {subItem.hasNotification && (
                     <Image
                       src={Ellipse}
                       alt='ellipse'
@@ -343,7 +343,7 @@ export function ItemLink({
           />
         )}
         {(!sidebarReduce || enlargeByHover) && safeText}
-        {haveNotification && 
+        {hasNotification && 
           <Image
             src={Ellipse}
             alt='ellipse'

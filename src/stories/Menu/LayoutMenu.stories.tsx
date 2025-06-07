@@ -27,15 +27,16 @@ const mockMenuPaths: MenuPath[] = [
     href: '/dashboard',
     text: 'Dashboard',
     icon: MenuIcon.homeIcon,
+    hasNotification: true,
   },
   {
     type: 'LINK',
     href: '/envios',
     text: 'Envíos',
     icon: MenuIcon.fullfillmentIcon,
-    haveNotification: true,
+    hasNotification: true,
     subPaths: [
-      { href: '/envios/crear', text: 'Crear envío',  endAdornmentSubPath: 22, haveNotification: false},
+      { href: '/envios/crear', text: 'Crear envío', endAdornmentSubPath: 22, hasNotification: true },
       { href: '/envios/lista', text: 'Lista de envíos' },
       { href: '/envios/tracking', text: 'Tracking' }
     ],
@@ -291,7 +292,7 @@ export const ExtendedMenu: Story = {
         { type: 'LINK', href: '/dashboard', text: 'Dashboard', icon: MenuIcon.homeIcon },
         { type: 'LINK', href: '/envios', text: 'Envíos', icon: MenuIcon.fullfillmentIcon,
           subPaths: [
-            { href: '/envios/crear', text: 'Crear envío', endAdornmentSubPath: <div>test</div>, haveNotification: true },
+            { href: '/envios/crear', text: 'Crear envío', endAdornmentSubPath: <div style={{backgroundColor: 'red', width:'3px', height:'3px'}}></div>, hasNotification: true },
             { href: '/envios/lista', text: 'Lista de envíos' },
             { href: '/envios/tracking', text: 'Tracking' },
             { href: '/envios/historial', text: 'Historial' }

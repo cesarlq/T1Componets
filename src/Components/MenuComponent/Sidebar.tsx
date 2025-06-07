@@ -12,7 +12,7 @@ import { T1ShippingBanner } from './T1ShippingBanner';
 export interface SubPath {
   href: string;
   text: string;
-  haveNotification?: boolean;
+  hasNotification?: boolean;
   endAdornmentSubPath?: React.ReactNode | string;
 }
 
@@ -26,7 +26,7 @@ export interface MenuPath {
   endAdornment?: React.ReactNode;
   type?: string | any;
   component?: React.ComponentType<any>;
-  haveNotification?: boolean;
+  hasNotification?: boolean;
   autoNavigateToFirstSubPath?: boolean;
 }
 
@@ -471,11 +471,11 @@ export function Sidebar({
       data-show-info-band={showInfoBand}
       data-open-side-bar={isOpen}
       ref={refSideBar}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
     >
       <section
         className={styles.sideBar}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
       >
         {/* Top Banner */}
         {TopBanner && (
