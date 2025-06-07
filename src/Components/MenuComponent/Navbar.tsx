@@ -63,36 +63,24 @@ export function Navbar({
 
   // Handler interno para cambio de tienda
   const handleStoreChange = (storeId: number) => {
-    // Lógica interna de cambio de tienda si es necesario
-    console.log('Cambiando a tienda:', storeId);
-    
     // Llamar callback externo
     onStoreChange?.(storeId);
   };
 
   // Handler interno para navegación
   const handleNavigation = (path: string) => {
-    // Lógica interna de navegación si es necesario
-    console.log('Navegando a:', path);
-    
     // Llamar callback externo
     onNavigate?.(path);
   };
 
   // Handler interno para logout
   const handleLogout = () => {
-    // Lógica interna de logout si es necesario
-    console.log('Cerrando sesión...');
-    
     // Llamar callback externo
     onLogout?.();
   };
 
   // Handler interno para toggle del menú
   const handleMenuToggle = () => {
-    // Lógica interna si es necesario
-    console.log('Toggle menu');
-    
     // Llamar callback externo si existe
     onReducerHandle?.();
   };

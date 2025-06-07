@@ -127,14 +127,14 @@ export const WithCheckboxSelect: Story = {
         <CheckBoxSelect
           checkbox={false}
           icon={<PersonOutlineIcon />}
-          onCheckboxClick={() => console.log('User checkbox clicked')}
+          onCheckboxClick={() => {}}
         >
           User Management
         </CheckBoxSelect>
         <CheckBoxSelect
           checkbox={false}
           icon={<SettingsOutlinedIcon />}
-          onCheckboxClick={() => console.log('Settings checkbox clicked')}
+          onCheckboxClick={() => {}}
         >
           System Settings
         </CheckBoxSelect>
@@ -147,14 +147,14 @@ export const WithCheckboxSelect: Story = {
         <CheckBoxSelect
           checkbox={true}
           icon={<HomeOutlinedIcon />}
-          onCheckboxClick={() => console.log('Home checkbox clicked')}
+          onCheckboxClick={() => {}}
         >
           Home Configuration
         </CheckBoxSelect>
         <CheckBoxSelect
           checkbox={false}
           icon={<EmailOutlinedIcon />}
-          onCheckboxClick={() => console.log('Email checkbox clicked')}
+          onCheckboxClick={() => {}}
         >
           Email Preferences
         </CheckBoxSelect>

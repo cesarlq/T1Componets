@@ -55,7 +55,6 @@ export function T1ShippingBanner({
     // Mock para Storybook
     router = {
       push: (path: string) => {
-        console.log('Mock router push:', path);
         if (typeof window !== 'undefined') {
           window.history.pushState({}, '', `${window.location.pathname}?story-path=${encodeURIComponent(path)}`);
         }
@@ -91,7 +90,6 @@ export function T1ShippingBanner({
       onToggleReduce();
     } else {
       // Lógica interna por defecto
-      console.log(isMobile ? 'Toggle sidebar open/close' : 'Toggle sidebar reduce/expand');
     }
   };
 
@@ -173,7 +171,6 @@ export function SimpleT1Banner({
   } catch (error) {
     router = {
       push: (path: string) => {
-        console.log('Mock router push:', path);
         return Promise.resolve(true);
       }
     };

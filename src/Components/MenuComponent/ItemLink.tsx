@@ -95,23 +95,17 @@ export function ItemLink({
 
     // Si tiene subPaths
     if (subPaths && subPaths.length > 0) {
-      console.log(`📂 ItemLink [${safeText}] - Has subPaths, autoNavigate:`, autoNavigateToFirstSubPath);
       
       // 🔥 NUEVA CONDICIÓN: No auto-navegar si es móvil
       if (autoNavigateToFirstSubPath && !mobile) {
         const firstValidSubPath = currentSubSteps[0];
         
         if (firstValidSubPath) {
-          console.log(`🚀 ItemLink [${safeText}] - Auto-navigating to first subPath:`, firstValidSubPath.href);
           await handleSubPathNavigation(firstValidSubPath.href);
           return;
         } else {
-          console.warn(`⚠️ ItemLink [${safeText}] - No valid subPaths available for auto-navigation`);
         }
       }
-      
-      // Comportamiento original: solo expandir/contraer
-      console.log(`📂 ItemLink [${safeText}] - Toggle submenu only`);
       
       // Si estamos en móvil y ya hay un subpath activo, mantener el estado
       if (mobile && subPaths.some(subPath => subPath.href === pathname)) {
@@ -134,7 +128,6 @@ export function ItemLink({
       finalSubHref = subHref + currentUserId;
     }
     
-    console.log(`🔗 ItemLink [${safeText}] - SubPath auto-navigation:`, finalSubHref);
     
     try {
       // Navegación interna
@@ -161,7 +154,6 @@ export function ItemLink({
     }
     
     try {
-      console.log(`🔗 ItemLink [${safeText}] - Navigating to:`, finalHref);
       
       // Navegación interna usando router
       await routerPush(finalHref);

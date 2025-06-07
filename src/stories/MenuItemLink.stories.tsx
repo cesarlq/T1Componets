@@ -43,19 +43,15 @@ const MenuItemWrapper = (props: any) => {
         <MenuItemLink
           {...props}
           onNavigate={(path) => {
-            console.log('Navigate to:', path);
             setActiveSubPath(path);
           }}
           onSetActivePath={(path) => {
-            console.log('Set active path:', path);
             setActivePath(path);
           }}
           onSetActiveSubPath={(path) => {
-            console.log('Set active sub path:', path);
             setActiveSubPath(path);
           }}
           onSetSubmenuOpen={(index) => {
-            console.log('Set submenu open:', index);
             setSubmenuOpen(index);
           }}
           isActive={props.item.href === activePath}

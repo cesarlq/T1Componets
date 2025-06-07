@@ -111,14 +111,12 @@ export function Sidebar({
     // Mock para Storybook
     router = {
       push: (path: string) => {
-        console.log('Mock router push:', path);
         if (typeof window !== 'undefined') {
           window.history.pushState({}, '', `${window.location.pathname}?story-path=${encodeURIComponent(path)}`);
         }
         return Promise.resolve(true);
       },
       refresh: () => {
-        console.log('Mock router refresh');
         if (typeof window !== 'undefined') {
           window.location.reload();
         }
@@ -205,8 +203,6 @@ export function Sidebar({
   useEffect(() => {
     if (!pathname) return;
 
-    console.log('🔍 Sidebar - Checking active path for:', pathname);
-
     // Buscar el item que coincide con la ruta actual
     let matchFound = false;
 
@@ -216,7 +212,6 @@ export function Sidebar({
 
       // Verificar si es un item directo con match exacto
       if (item.href === pathname) {
-        console.log('✅ Exact match found (main item):', item.href);
         setActivePath(item.href);
         setActiveSubPath(item.href);
         setCurrentSubmenuOpen(index);
@@ -228,7 +223,6 @@ export function Sidebar({
       if (item.subPaths) {
         const matchingSubPath = item.subPaths.find(subPath => subPath.href === pathname);
         if (matchingSubPath) {
-          console.log('✅ Exact match found (subpath):', matchingSubPath.href);
           setActivePath(item.href || '');
           setActiveSubPath(pathname);
           setCurrentSubmenuOpen(index);
@@ -272,7 +266,6 @@ export function Sidebar({
           });
           
           if (partialMatch) {
-            console.log('✅ Partial match found:', partialMatch.href, 'for', pathname);
             setActivePath(item.href || '');
             setActiveSubPath(pathname);
             setCurrentSubmenuOpen(item.originalIndex);
@@ -289,7 +282,6 @@ export function Sidebar({
 
         // Buscar item principal con href='/'
         if (item.href === '/') {
-          console.log('✅ Root path match found (main item)');
           setActivePath('/');
           setActiveSubPath('/');
           setCurrentSubmenuOpen(index);
@@ -301,7 +293,6 @@ export function Sidebar({
         if (item.subPaths) {
           const rootSubPath = item.subPaths.find(subPath => subPath.href === '/');
           if (rootSubPath) {
-            console.log('✅ Root path match found (subpath)');
             setActivePath(item.href || '');
             setActiveSubPath('/');
             setCurrentSubmenuOpen(index);
@@ -312,7 +303,6 @@ export function Sidebar({
     }
 
     if (!matchFound) {
-      console.log('❌ No match found for:', pathname);
       // Resetear estados si no hay match
       setActivePath('');
       setActiveSubPath('');
@@ -386,7 +376,6 @@ export function Sidebar({
 
   // Función para renderizar elementos del menú
   const renderMenuItem = (item: MenuPath, index: number) => {
-    console.log(item);
 
     const itemType = typeof item.type === 'string' ? item.type : item.type?.toString();
     

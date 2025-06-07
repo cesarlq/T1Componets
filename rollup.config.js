@@ -18,8 +18,6 @@ const inlineSvgPlugin = {
         const svgContent = readFileSync(id, 'utf8');
         const fileName = basename(id);
         
-        console.log(`📄 Processing SVG: ${fileName}`);
-        
         // Opción 1: Como base64 (funciona siempre)
         const base64 = Buffer.from(svgContent).toString('base64');
         const dataUrl = `data:image/svg+xml;base64,${base64}`;
