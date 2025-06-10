@@ -333,18 +333,24 @@ export function Sidebar({
     }
   };
 
-  const handleCreateClick = () => {
-    if (onCreateClick) {
-      onCreateClick();
-    } else if (createButtonPath) {
-      if (pathname === createButtonPath) {
-        router.refresh();
-      } else {
-        router.push(createButtonPath);
-        onNavigate?.(createButtonPath);
-      }
+const handleCreateClick = () => {
+  if (onCreateClick) {
+    onCreateClick();
+  } else if (createButtonPath) {
+    if (pathname === createButtonPath) {
+      router.refresh();
+    } else {
+      router.push(createButtonPath);
+      onNavigate?.(createButtonPath);
     }
-  };
+  }
+  
+  if (isMobile) {
+    setTimeout(() => {
+      handleToggleOpen(false);
+    }, 100);
+  }
+};
 
   const handleInternalNavigation = (path: string) => {
     router.push(path);
