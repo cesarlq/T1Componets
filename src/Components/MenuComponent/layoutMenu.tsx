@@ -145,6 +145,8 @@ function LayoutMenuContent({ navBarProps, sideBarProps, menuCallbacks }: layoutM
 
 // Componente principal que provee el contexto
 function LayoutMenu({ navBarProps, sideBarProps, menuCallbacks }: layoutMenuI) {
+
+    console.log('LayoutMenu rendered with props:', { navBarProps });
     return (
         <MenuProvider>
             <LayoutMenuContent 

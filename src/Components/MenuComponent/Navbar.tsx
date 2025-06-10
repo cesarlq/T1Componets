@@ -85,6 +85,8 @@ export function Navbar({
     onReducerHandle?.();
   };
 
+  console.log('navbar render: ', t1SelectorConfig?.shipping, t1SelectorConfig?.payment, t1SelectorConfig?.store);
+
   return (
     <nav
       className={`${className} ${styles.container}`}
@@ -144,10 +146,14 @@ export function Navbar({
           <T1Selector 
             className={className}
             storeId={user?.storeId?.toString() || ''}
+            store={t1SelectorConfig?.store}
+            shipping={t1SelectorConfig?.shipping}
+            payment={t1SelectorConfig?.payment}
             storeBaseUrl={t1SelectorConfig?.storeBaseUrl || ''}
             shippingBaseUrl={t1SelectorConfig?.shippingBaseUrl || ''}
             paymentBaseUrl={t1SelectorConfig?.paymentBaseUrl || ''}
             ecosystemTitle={t1SelectorConfig?.ecosystemTitle || 'Ecosistema'}
+            itemsOrder={t1SelectorConfig?.itemsOrder}
           />
         }
         

@@ -218,6 +218,64 @@ export const Default: Story = {
   }
 };
 
+const t1SelectorConfig = {
+        storeBaseUrl: "https://store.example.com",
+        shippingBaseUrl: "https://shipping.example.com",
+        paymentBaseUrl: "https://payment.example.com",
+        ecosystemTitle: "Ecosistema T1",
+        payment: true,
+        store: true, 
+        shipping: true,
+        itemsOrder: ["store", "payment", "shipping"] as ("store" | "payment" | "shipping")[]
+  };
+// layout t1confirguration
+export const T1Configuration: Story = {
+  args: {
+    navBarProps: {
+      ...baseNavbarProps,
+      showBalance: false,
+      showSearchInput: false,
+      profileMenuItems: [],
+      t1SelectorConfig: t1SelectorConfig
+    },
+    sideBarProps: {
+      ...baseSidebarProps,
+      defaultAutoNavigateToFirstSubPath: true,
+      showCreateButton: false,
+      showBalance: false,
+      menuPaths: [
+        {
+          type: 'STATIC_TITLE',
+          text: 'CONFIGURACIÓN'
+        },
+        {
+          type: 'LINK',
+          href: '/dashboard',
+          text: 'Dashboard',
+          icon: MenuIcon.homeIcon
+        },
+        {
+          type: 'LINK',
+          href: '/envios',
+          text: 'Envíos',
+          icon: MenuIcon.fullfillmentIcon,
+          subPaths: [
+            { href: '/envios/crear', text: 'Crear envío', endAdornmentSubPath: 22, hasNotification: true },
+            { href: '/envios/lista', text: 'Lista de envíos' },
+            { href: '/envios/tracking', text: 'Tracking' }
+          ]
+        }]
+    }
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Layout configurado para la sección de T1 Configuration, T1 Selector y T1 Ecosystem. acomodo de t1'
+      }
+    }
+  }
+};
+
 // layout con informative text
 
 export const WithInfoBand: Story = {

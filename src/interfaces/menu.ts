@@ -58,7 +58,8 @@ export interface NavbarPropsI {
   
   // Configuration for T1Selector
   t1SelectorConfig?: t1SelectorConfigI | null | undefined;
-  
+  itemsOrder?: ('store' | 'shipping' | 'payment')[];
+
   // Configuration
   searchPlaceholder?: string;
   trackingUrl?: string;
@@ -75,9 +76,13 @@ export interface NavbarPropsI {
 
 export interface t1SelectorConfigI {
   storeBaseUrl?: string;
+  shipping?: boolean;
+  payment?: boolean;
+  store?: boolean;
   shippingBaseUrl?: string;
   paymentBaseUrl?: string;
   ecosystemTitle?: string;
+  itemsOrder?: ('store' | 'shipping' | 'payment')[];
   menuItems?: Array<{
     icon: string | React.ReactNode;
     label: string;

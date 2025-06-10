@@ -8,16 +8,29 @@ import Pay from '../../assets/menus/t1-selector/pay.svg';
 import CloseButtonT1 from '../CloseButtonT1';
 import styles from '../../styles/common/T1Selector.module.scss';
 
+// Tipo para identificar los items
+export type T1ItemType = 'store' | 'shipping' | 'payment';
+
 export interface T1SelectorProps {
   className?: string;
   // URLs base para construir links
   storeBaseUrl?: string;
   shippingBaseUrl?: string;
   paymentBaseUrl?: string;
+
+  // Configuración de qué se muestra
+  shipping?: boolean;
+  payment?: boolean;
+  store?: boolean;
+  
   // ID del usuario/tienda para construir URLs
   storeId?: string;
+  
   // Configuración visual
   ecosystemTitle?: string;
+  
+  // NUEVO: Orden de los items
+  itemsOrder?: ('store' | 'shipping' | 'payment')[];
 }
 
 export function T1Selector({
@@ -25,30 +38,50 @@ export function T1Selector({
   storeBaseUrl = '',
   shippingBaseUrl = '',
   paymentBaseUrl = '',
-  ecosystemTitle = 'Ecosistema'
+  shipping = true,
+  payment = true,
+  store = true,
+  ecosystemTitle = 'Ecosistema',
+  itemsOrder = ['store', 'shipping', 'payment'] // Orden por defecto
 }: T1SelectorProps) {
   
   const [isOpen, setIsOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
-  // Menu items fijos - no configurables
-  const menuItems = [
-    {
+  // Mapa de items con su configuración
+  const itemsMap: Record<T1ItemType, {
+    isActive: boolean;
+    icon: any;
+    label: string;
+    href: string | undefined;
+  }> = {
+    store: {
+      isActive: store,
       icon: Store,
       label: 'Tienda',
       href: storeBaseUrl ? `${storeBaseUrl}` : undefined
     },
-    {
+    shipping: {
+      isActive: shipping,
       icon: Shipping,
       label: 'Envíos',
       href: shippingBaseUrl ? `${shippingBaseUrl}` : undefined
     },
-    {
+    payment: {
+      isActive: payment,
       icon: Pay,
       label: 'Pagos',
       href: paymentBaseUrl ? `${paymentBaseUrl}` : undefined
     }
-  ];
+  };
+
+  // Ordenar los items según itemsOrder
+  const orderedMenuItems = itemsOrder
+    .filter(itemType => itemsMap[itemType] && itemsMap[itemType].isActive)
+    .map(itemType => ({
+      type: itemType,
+      ...itemsMap[itemType]
+    }));
 
   // Click outside para cerrar
   useEffect(() => {
@@ -101,7 +134,7 @@ export function T1Selector({
         
         {/* Menu Items */}
         <div className={styles.menuItems}>
-          {menuItems.map((item, index) => {
+          {orderedMenuItems.map((item, index) => {
             const content = (
               <>
                 <div className={styles.iconContainer}>
@@ -122,7 +155,7 @@ export function T1Selector({
             if (item.href) {
               return (
                 <a
-                  key={index}
+                  key={`${item.type}-${index}`}
                   href={item.href}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -132,10 +165,10 @@ export function T1Selector({
                 </a>
               );
             } else {
-              // Sin href, solo visual (como "Envíos" que está activo)
+              // Sin href, solo visual
               return (
                 <div
-                  key={index}
+                  key={`${item.type}-${index}`}
                   className={styles.menuItem}
                 >
                   {content}
