@@ -41,7 +41,7 @@ export function StoreSelectorOnSidebar({
   onStoreChange = () => {},
   title = 'Mis tiendas',
   searchPlaceholder = '',
-  newStoreText = 'Nueva tienda',
+  newStoreText = 'Crear tienda',
   showNewStoreLink = true,
   createStoreUrl = '',
   closeOnOutsideClick = true,

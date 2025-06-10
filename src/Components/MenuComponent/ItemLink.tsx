@@ -27,6 +27,7 @@ export interface ItemLinkProps extends MenuPath {
   onToggleOpen?: (isOpen: boolean) => void;
   autoNavigateToFirstSubPath?: boolean;
   hasNotification?: boolean;
+  informativeText?: string;
 }
 
 export function ItemLink({

@@ -26,7 +26,7 @@ const IconDisplay: React.FC<IconDisplayProps> = ({ name, children, icon }) => {
       {/* {IconComponent && <IconComponent {...props} />} */}
       {children}
       <CopyToClipboard
-        text={`import { ${name} } from "@t1-org/t1components/src/assets/publicIcons`}
+        text={`import { ${name} } from "@t1-org/t1components/public/icons"`}
       >
         <Button
           sx={{ width: 50, height: 20, fontSize: 10 }}

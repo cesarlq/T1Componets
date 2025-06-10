@@ -6,6 +6,20 @@ import stylesProfile from '../../styles/common/Profile.module.scss';
 import styles from '../../styles/common/Navbar.module.scss';
 import { MenuProfileI, ProfileMenuItem, ProfileProps } from '../../interfaces/Profile.interface';
 
+export function getInitials(name: string): string {
+    if (!name || name.trim() === '') return '';
+    
+    const nameParts = name.trim().split(/\s+/).filter(part => part.length > 0);
+    
+    if (nameParts.length === 0) return '';
+    
+    if (nameParts.length === 1) {
+      return nameParts[0].substring(0, 2).toUpperCase();
+    }
+    
+    return (nameParts[0][0] + nameParts[1][0]).toUpperCase();
+  }
+
 export function Profile({
   name,
   email,
@@ -28,7 +42,7 @@ export function Profile({
       </article>
       :
       <article style={{backgroundColor: color ? color : '#db3b2b'}} className={stylesProfile.letter}>
-        {name[0].toUpperCase()}
+        {getInitials(name)}
       </article>
       }
       
@@ -51,13 +65,14 @@ export function ProfileWithFont({
   className = '',
   fontFamily = 'Manrope, sans-serif'
 }: ProfileProps & { fontFamily?: string }) {
+
   return (
     <main 
       className={`${stylesProfile.container} ${className}`}
       style={{ fontFamily }}
     >
       <article className={stylesProfile.letter}>
-        {name[0].toUpperCase()}
+        {getInitials(name)}
       </article>
       <article className={stylesProfile['name-and-email']}>
         <Tooltip title={name} arrow>
@@ -173,8 +188,7 @@ export function MenuProfile({
           style={{backgroundColor: colorProfile ? colorProfile : '#db3b2b'}}
           className={styles['first-letter']}
         >
-        
-          {user.name[0].toUpperCase()}
+          {getInitials(user.name)}
         </IconButton>
     }
     
