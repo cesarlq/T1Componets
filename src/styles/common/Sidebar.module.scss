@@ -117,6 +117,12 @@
   transition: all 0.3s ease;
 }
 
+.informativeText {
+  font-size: 12px;
+  font-weight: 400;
+  text-align: center;
+}
+
 .callToActionCreateGuide {
   transition: all ease 0.3s !important;
   flex-shrink: 0 !important;

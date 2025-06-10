@@ -27,7 +27,6 @@ export interface ItemLinkProps extends MenuPath {
   onToggleOpen?: (isOpen: boolean) => void;
   autoNavigateToFirstSubPath?: boolean;
   hasNotification?: boolean;
-  informativeText?: string;
 }
 
 export function ItemLink({
@@ -70,7 +69,7 @@ export function ItemLink({
   
   // Si es un título estático o componente React, no renderizar
   const itemType = typeof type === 'string' ? type : type?.toString();
-  if (itemType === 'STATIC_TITLE' || itemType === 'REACT_TSX' || itemType === '0' || itemType === '3') {
+  if (itemType === 'STATIC_TITLE' || itemType === 'REACT_TSX' || itemType === '0' || itemType === '3' || itemType === 'INFORMATIVE_TEXT') {
     return null;
   }
 

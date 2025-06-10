@@ -24,7 +24,7 @@ export interface MenuPath {
   subPaths?: SubPath[];
   concatStoreId?: boolean;
   endAdornment?: React.ReactNode;
-  type?: string | any;
+  type?: string | any | 'INFORMATIVE_TEXT';
   component?: React.ComponentType<any>;
   hasNotification?: boolean;
   autoNavigateToFirstSubPath?: boolean;
@@ -419,6 +419,14 @@ export function Sidebar({
             </div>
           )}
         </>
+      );
+    }
+
+    if(itemType === 'INFORMATIVE_TEXT'){
+      return(
+        <p className={styles.informativeText} key={index}>
+          {item.text ? item.text : 'Configuración de tienda únicamente disponible para administradores.'}
+        </p>
       );
     }
 
