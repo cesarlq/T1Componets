@@ -218,6 +218,113 @@ export const Default: Story = {
   }
 };
 
+// layout con informative text
+
+export const WithInfoBand: Story = {
+  args: {
+    navBarProps: {
+      ...baseNavbarProps,
+      showBalance: false,
+      showSearchInput: false,
+      profileMenuItems: []
+    },
+    sideBarProps: {
+      ...baseSidebarProps,
+      defaultAutoNavigateToFirstSubPath: true,
+      showCreateButton: false,
+      showBalance: false,
+      menuPaths: [
+    {
+      "type": "STATIC_TITLE",
+      "text": "NAVEGACIÓN"
+    },
+    {
+      "type": "LINK",
+      "href": "/dashboard",
+      "text": "Dashboard",
+      "icon": {
+        "src": "static/media/src/assets/menu-icons/home-icon.svg",
+        "height": 20,
+        "width": 20,
+        "blurDataURL": "static/media/src/assets/menu-icons/home-icon.svg"
+      },
+      "hasNotification": true
+    },
+    {
+      "type": "LINK",
+      "href": "/envios",
+      "text": "Envíos",
+      "icon": {
+        "src": "static/media/src/assets/menu-icons/fullfillment-icon.svg",
+        "height": 20,
+        "width": 20,
+        "blurDataURL": "static/media/src/assets/menu-icons/fullfillment-icon.svg"
+      },
+      "hasNotification": true,
+      "subPaths": [
+        {
+          "href": "/envios/crear",
+          "text": "Crear envío",
+          "endAdornmentSubPath": 22,
+          "hasNotification": true
+        },
+        {
+          "href": "/envios/lista",
+          "text": "Lista de envíos"
+        },
+        {
+          "href": "/envios/tracking",
+          "text": "Tracking"
+        }
+      ]
+    },
+    {
+      "type": "LINK",
+      "href": "/clientes",
+      "text": "Clientes",
+      "icon": {
+        "src": "static/media/src/assets/menu-icons/clients-icon.svg",
+        "height": 15,
+        "width": 13,
+        "blurDataURL": "static/media/src/assets/menu-icons/clients-icon.svg"
+      }
+    },
+    {
+      "type": "LINK",
+      "href": "/reportes",
+      "text": "Reportes",
+      "icon": {
+        "src": "static/media/src/assets/menu-icons/reports-icon.svg",
+        "height": 14,
+        "width": 18,
+        "blurDataURL": "static/media/src/assets/menu-icons/reports-icon.svg"
+      },
+      "subPaths": [
+        {
+          "href": "/reportes/ventas",
+          "text": "Ventas"
+        },
+        {
+          "href": "/reportes/envios",
+          "text": "Envíos"
+        }
+      ]
+    },
+    {
+      "type": "INFORMATIVE_TEXT"
+    }
+  ]
+    }
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Layout con una banda informativa en el sidebar.'
+      }
+    }
+  }
+};
+
 // Layout simplificado
 export const Simplified: Story = {
   args: {
