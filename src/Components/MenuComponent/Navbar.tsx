@@ -85,7 +85,6 @@ export function Navbar({
     onReducerHandle?.();
   };
 
-  console.log('navbar render: ', t1SelectorConfig?.shipping, t1SelectorConfig?.payment, t1SelectorConfig?.store);
 
   return (
     <nav
