@@ -26,6 +26,32 @@
   position: relative;
 }
 
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #00000033;
+  z-index: 40;
+  transition: opacity 0.3s ease;
+  
+  &.overlayHidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+  
+  &.overlayVisible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  // Hide overlay on desktop
+  @media (min-width: 1024px) {
+    display: none;
+  }
+}
+
 .triggerButton {
   background: transparent;
   padding: 5px;

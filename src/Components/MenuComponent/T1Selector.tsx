@@ -99,6 +99,13 @@ export function T1Selector({
 
   return (
     <div className={`${styles.container} ${className}`}>
+      {/* Overlay for mobile */}
+      <div
+        className={`${styles.overlay} ${isOpen ? styles.overlayVisible : styles.overlayHidden}`}
+        onClick={() => setIsOpen(false)}
+        aria-hidden="true"
+      />
+      
       {/* Botón para abrir/cerrar */}
       <button
         onClick={() => setIsOpen(!isOpen)}
