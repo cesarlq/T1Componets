@@ -394,32 +394,44 @@ const theme = createTheme({
       }
     },
     MuiCheckbox: {
-      defaultProps: {
-        checkedIcon: React.createElement(CheckboxIcon),
-        icon: React.createElement(UnCheckboxIcon),
-        indeterminateIcon: React.createElement(IndeterminateCheckboxIcon),
-      },
-      styleOverrides: {
-        root: {
-          "&.Mui-disabled": {
-            "& svg": {
-              borderRadius: 3,
-              "& g": {
-                "& path": {
-                  fill: "#f3f3f3",
-                  color: "#C3C3C3",
-                  backgroundColor: "#f3f3f3",
-                  stroke: '#d3d3d3'
+            defaultProps: {
+                checkedIcon: React.createElement(CheckboxIcon),
+                icon: React.createElement(UnCheckboxIcon),
+                indeterminateIcon: React.createElement(IndeterminateCheckboxIcon),
+            },
+            styleOverrides: {
+                root: {
+                    '&:hover': {
+                        backgroundColor: 'transparent',
+                    },
+                    '&.Mui-disabled': {
+                        '& svg': {
+                            borderRadius: 3,
+                            '& g': {
+                                '& path': {
+                                    fill: '#f3f3f3',
+                                    color: '#C3C3C3',
+                                    backgroundColor: '#f3f3f3',
+                                    stroke: '#d3d3d3',
+                                },
+                                '& rect': {
+                                    fill: '#f3f3f3',
+                                },
+                            },
+                        },
+                    },
+                    // Your custom hover effect with fill
+                    '&:hover:not(.Mui-checked):not(.Mui-disabled)': {
+                        backgroundColor: 'transparent', // Ensure no background change
+                        '& svg': {
+                            '& path': {
+                                fill: '#f8f8f8',
+                            },
+                        },
+                    },
                 },
-                "& rect": {
-                  fill: "#f3f3f3"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
+            },
+        },
     MuiSelect: {
       styleOverrides: {
         select: {
