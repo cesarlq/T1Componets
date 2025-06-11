@@ -382,6 +382,13 @@ export const WithInfoBand: Story = {
     }
   }
 };
+const BalanceBanner = () =>{
+  return(<>
+  <div onClick={()=> alert('entro')} style={{borderRadius:'2rem', border: '1px solid gray', height: '20px', width:'100%'}}>
+    component
+  </div>
+  </>);
+}
 
 //LayoutWhit Compoenent on Sidebar
 export const CompoenentOnSidebar: Story = {
@@ -396,7 +403,8 @@ export const CompoenentOnSidebar: Story = {
       ...baseSidebarProps,
       defaultAutoNavigateToFirstSubPath: true,
       showCreateButton: false,
-      showBalance: false,
+      BalanceBanner: BalanceBanner,
+      showBalance: true,
       menuPaths: [
         {
           type: 'LINK',
