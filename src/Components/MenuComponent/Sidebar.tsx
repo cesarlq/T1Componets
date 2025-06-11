@@ -333,24 +333,32 @@ export function Sidebar({
     }
   };
 
-const handleCreateClick = () => {
-  if (onCreateClick) {
-    onCreateClick();
-  } else if (createButtonPath) {
-    if (pathname === createButtonPath) {
-      router.refresh();
-    } else {
-      router.push(createButtonPath);
-      onNavigate?.(createButtonPath);
+  const handleCreateClick = () => {
+    if (onCreateClick) {
+      onCreateClick();
+    } else if (createButtonPath) {
+      if (pathname === createButtonPath) {
+        router.refresh();
+      } else {
+        router.push(createButtonPath);
+        onNavigate?.(createButtonPath);
+      }
     }
-  }
-  
-  if (isMobile) {
+    
+    if (isMobile) {
+      setTimeout(() => {
+        handleToggleOpen(false);
+      }, 100);
+    }
+  };
+
+  const handleExternalComponent = () => {
+    if (isMobile) {
     setTimeout(() => {
       handleToggleOpen(false);
     }, 100);
   }
-};
+  }
 
   const handleInternalNavigation = (path: string) => {
     router.push(path);
@@ -500,8 +508,8 @@ const handleCreateClick = () => {
 
         {/* Balance Banner */}
         {BalanceBanner && showBalance && !shouldShowReduced && (
-          <div className={styles.balanceBanner}>
-            <BalanceBanner />
+          <div onClick={handleExternalComponent} className={styles.balanceBanner}>
+            <BalanceBanner/>
           </div>
         )}
 

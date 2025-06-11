@@ -383,6 +383,45 @@ export const WithInfoBand: Story = {
   }
 };
 
+//LayoutWhit Compoenent on Sidebar
+export const CompoenentOnSidebar: Story = {
+  args: {
+    navBarProps: {
+      ...baseNavbarProps,
+      showBalance: false,
+      showSearchInput: false,
+      profileMenuItems: []
+    },
+    sideBarProps: {
+      ...baseSidebarProps,
+      defaultAutoNavigateToFirstSubPath: true,
+      showCreateButton: false,
+      showBalance: false,
+      menuPaths: [
+        {
+          type: 'LINK',
+          href: '/dashboard',
+          text: 'Dashboard',
+          icon: MenuIcon.homeIcon
+        },
+        {
+          type: 'LINK',
+          href: '/configuracion',
+          text: 'Configuración',
+          icon: MenuIcon.settingsIcon
+        }
+      ]
+    }
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Version with external component and automatic Close on Mobile.'
+      }
+    }
+  }
+}
+
 // Layout simplificado
 export const Simplified: Story = {
   args: {
