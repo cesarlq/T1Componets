@@ -1,7 +1,7 @@
 import React from 'react';
 import IconDisplay from "./IconDisplay";
 
-import T1IconStory from '../../Components/T1IconStory';
+import T1IconStory from '@/Components/T1IconStory';
 
 export default {
   title: "Foundations/icons",

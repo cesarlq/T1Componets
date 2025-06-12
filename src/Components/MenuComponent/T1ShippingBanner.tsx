@@ -1,10 +1,10 @@
 import React from 'react';
 import Image from "next/image";
 import { useRouter } from 'next/navigation';
-import T1Logo from '../../assets/T1.svg';
-import ReduceIcon from '../../assets/reduce-icon.svg';
-import EnlargeIcon from '../../assets/enlarge-icon.svg';
-import styles from '../../styles/common/Navbar.module.scss';
+import T1Logo from '@/assets/T1.svg';
+import ReduceIcon from '@/assets/reduce-icon.svg';
+import EnlargeIcon from '@/assets/enlarge-icon.svg';
+import styles from '@/styles/common/Navbar.module.scss';
 
 export interface T1ShippingBannerProps {
   className?: string;

@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { StoreSelector } from './StoreSelector';
 import { T1ShippingBanner } from './T1ShippingBanner';
-import { NavbarPropsI } from '../../interfaces/menu';
-import styles from '../../styles/common/Navbar.module.scss';
+import { NavbarPropsI } from '@/interfaces/menu';
+import styles from '@/styles/common/Navbar.module.scss';
 import { T1Selector } from './T1Selector';
 import { MenuProfile } from './Profile';
 import TextFieldAndButton from './TextFieldAndButton';
 import Image from 'next/image';
-import MenuInActive from '../../assets/menus/inactive/menu-inactive.svg';
+import MenuInActive from '@/assets/menus/inactive/menu-inactive.svg';
 import BalanceBanner from './BalanceBanner';
 
 export function Navbar({

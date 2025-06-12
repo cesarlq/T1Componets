@@ -1,12 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
-import GridIcon from '../../assets/menus/grid-icon.svg';
-import T1Logo from '../../assets/T1.svg';
-import Store from '../../assets/menus/t1-selector/store.svg';
-import Shipping from '../../assets/menus/t1-selector/shipping.svg';
-import Pay from '../../assets/menus/t1-selector/pay.svg';
+import GridIcon from '@/assets/menus/grid-icon.svg';
+import T1Logo from '@/assets/T1.svg';
+import Store from '@/assets/menus/t1-selector/store.svg';
+import Shipping from '@/assets/menus/t1-selector/shipping.svg';
+import Pay from '@/assets/menus/t1-selector/pay.svg';
 import CloseButtonT1 from '../CloseButtonT1';
-import styles from '../../styles/common/T1Selector.module.scss';
+import styles from '@/styles/common/T1Selector.module.scss';
 
 // Tipo para identificar los items
 export type T1ItemType = 'store' | 'shipping' | 'payment';

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Stack, Typography } from '@mui/material';
-import T1Icon from '../../Components/T1Icon';
+import T1Icon from '@/Components/T1Icon';
 
 /**
  * `T1Icon` is a versatile component for displaying SVG icons in your application.

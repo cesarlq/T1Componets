@@ -9,10 +9,10 @@ import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
 
-import SelectComponent from '../../Components/SelectComponent/SelectComponent';
-import SelectItem from '../../Components/SelectComponent/SelectItem';
-import CheckBoxSelect from '../../Components/SelectComponent/CheckBoxSelect';
-import FormControlSelect from '../../Components/SelectComponent/FormControlSelect';
+import SelectComponent from '@/Components/SelectComponent/SelectComponent';
+import SelectItem from '@/Components/SelectComponent/SelectItem';
+import CheckBoxSelect from '@/Components/SelectComponent/CheckBoxSelect';
+import FormControlSelect from '@/Components/SelectComponent/FormControlSelect';
 
 /**
  * `SelectComponent` is a flexible dropdown component for displaying selectable options.

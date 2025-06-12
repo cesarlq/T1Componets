@@ -2,7 +2,7 @@ import React, { Children, isValidElement, useEffect, useState } from 'react';
 import { TypographyProps, RadioGroup, Radio, MenuItem, FormControlLabel } from '@mui/material';
 import SelectItem from './SelectItem';
 import Image from "next/image";
-import { FormControlSelectItemProps } from '../../interfaces/commonInterfaces';
+import { FormControlSelectItemProps } from '@/interfaces/commonInterfaces';
 
 
 const FormControlSelect: React.FC<FormControlSelectItemProps> = ({ 

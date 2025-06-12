@@ -1,7 +1,7 @@
 // MenuItemLink.stories.tsx
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
-import { MenuItemLink } from '../../Components/MenuComponent/MenuItemLink';
+import { MenuItemLink } from '@/Components/MenuComponent/MenuItemLink';
 
 // Safe inline SVG icons
 const dashboardIcon = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMCAyMCIgZmlsbD0iIzY2NiI+PHJlY3Qgd2lkdGg9IjgiIGhlaWdodD0iOCIgeD0iMSIgeT0iMSIgcng9IjEiLz48cmVjdCB3aWR0aD0iOCIgaGVpZ2h0PSI4IiB4PSIxMSIgeT0iMSIgcng9IjEiLz48cmVjdCB3aWR0aD0iOCIgaGVpZ2h0PSI4IiB4PSIxIiB5PSIxMSIgcng9IjEiLz48cmVjdCB3aWR0aD0iOCIgaGVpZ2h0PSI4IiB4PSIxMSIgeT0iMTEiIHJ4PSIxIi8+PC9zdmc+';

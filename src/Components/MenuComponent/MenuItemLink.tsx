@@ -1,5 +1,5 @@
 import React from 'react';
-import { MenuItem, User } from '../../interfaces/menu';
+import { MenuItem, User } from '@/interfaces/menu';
 
 interface MenuItemLinkProps {
   item: MenuItem;

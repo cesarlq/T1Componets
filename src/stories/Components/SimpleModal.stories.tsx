@@ -1,7 +1,7 @@
 import React from 'react';
 import { Meta, StoryObj } from '@storybook/react';
-import SimpleModalComponent from '../../Components/SimpleModal';
-import CloseButtonT1 from '../../Components/CloseButtonT1';
+import SimpleModalComponent from '@/Components/SimpleModal';
+import CloseButtonT1 from '@/Components/CloseButtonT1';
 
 // Fondo de ejemplo para mostrar el efecto modal
 const BackgroundDecorator = (Story: React.FC) => (

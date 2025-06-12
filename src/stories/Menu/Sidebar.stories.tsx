@@ -11,7 +11,7 @@ import AnalyticsIcon from '@mui/icons-material/Analytics';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import ReportsIcon from '@mui/icons-material/Assessment';
 import PaymentIcon from '@mui/icons-material/Payment';
-import { Sidebar } from '../../Components/MenuComponent/Sidebar';
+import { Sidebar } from '@/Components/MenuComponent/Sidebar';
 
 // Mock components para TopBanner y BottomBanner
 const MockTopBanner = ({ className }: { className?: string }) => (

@@ -1,11 +1,11 @@
 import React from 'react';
 import { Meta, StoryObj } from '@storybook/react';
-import ButtonT1 from '../../Components/ButtonT1';
+import ButtonT1 from '@/Components/ButtonT1';
 import AddIcon from '@mui/icons-material/Add';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { action } from '@storybook/addon-actions';
-import Cards from '../../Components/Cards';
+import Cards from '@/Components/Cards';
 
 // Definición de meta para Storybook
 const meta: Meta<typeof Cards> = {

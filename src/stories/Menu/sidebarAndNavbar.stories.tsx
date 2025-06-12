@@ -7,9 +7,9 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import AssessmentIcon from '@mui/icons-material/Assessment';
 import SettingsIcon from '@mui/icons-material/Settings';
 import GroupIcon from '@mui/icons-material/Group';
-import { T1ShippingBanner } from '../../Components/MenuComponent/T1ShippingBanner';
-import { Navbar } from '../../Components/MenuComponent/Navbar';
-import Sidebar from '../../Components/Sidebar';
+import { T1ShippingBanner } from '@/Components/MenuComponent/T1ShippingBanner';
+import { Navbar } from '@/Components/MenuComponent/Navbar';
+import Sidebar from '@/Components/Sidebar';
 
 // Mock de stores
 const mockStores = [

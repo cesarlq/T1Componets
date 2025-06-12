@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { fn } from '@storybook/test';
 import React from 'react';
-import ActionMenu from '../../Components/ActionMenu/ActionMenu';
+import ActionMenu from '@/Components/ActionMenu/ActionMenu';
 import { Box, Divider, Typography } from '@mui/material';
 import MenuItem from '@mui/material/MenuItem';
 import EditIcon from '@mui/icons-material/Edit';

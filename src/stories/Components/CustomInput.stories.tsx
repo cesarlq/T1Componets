@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { fn } from '@storybook/test';
 import React, { useState } from 'react';
-import CustomInput from '../../Components/CustomInput';
+import CustomInput from '@/Components/CustomInput';
 import { Box, MenuItem, Stack, Typography, Paper } from '@mui/material';
-import T1Icon from '../../Components/T1Icon';
+import T1Icon from '@/Components/T1Icon';
 
 // Define metadatos básicos para Storybook
 type CustomInputStoryMeta = Meta<typeof CustomInput>;

@@ -1,12 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import DoubleArrowIcon from '../../assets/inputs/double-arrow.svg';
-import Search from '../../assets/search-input.svg';
-import CheckIcon from '../../assets/CheckIcon.svg';
-import PlusIconBlack from '../../assets/buttonIcons/plus-icon-black.svg';
+import DoubleArrowIcon from '@/assets/inputs/double-arrow.svg';
+import Search from '@/assets/search-input.svg';
+import CheckIcon from '@/assets/CheckIcon.svg';
+import PlusIconBlack from '@/assets/buttonIcons/plus-icon-black.svg';
 import CustomInput from '../CustomInput';
-import styles from '../../styles/common/StoreSelector.module.scss';
+import styles from '@/styles/common/StoreSelector.module.scss';
 
 // Interfaces
 export interface Store {

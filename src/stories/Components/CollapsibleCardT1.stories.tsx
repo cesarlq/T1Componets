@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
-import CollapsibleCardT1 from '../../Components/CollapsibleCardT1';
+import CollapsibleCardT1 from '@/Components/CollapsibleCardT1';
 import { Box, Button, Typography, Select, MenuItem, TextField } from '@mui/material';
 import { fn } from '@storybook/test';
 

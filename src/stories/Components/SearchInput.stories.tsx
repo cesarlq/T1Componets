@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { fn } from '@storybook/test';
 import React from 'react';
-import SearchInput from '../../Components/SearchInput';
+import SearchInput from '@/Components/SearchInput';
 import { Box } from '@mui/material';
 
 // Define el meta para el componente

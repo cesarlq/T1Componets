@@ -7,7 +7,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import PersonIcon from '@mui/icons-material/Person';
 import StorefrontIcon from '@mui/icons-material/Storefront';
 import SettingsIcon from '@mui/icons-material/Settings';
-import UserProfileMenu from '../../Components/UserProfileMenu';
+import UserProfileMenu from '@/Components/UserProfileMenu';
 
 const meta: Meta<typeof UserProfileMenu> = {
   title: 'Components/UserProfileMenu',

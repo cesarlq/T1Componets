@@ -1,7 +1,7 @@
 // Navbar.stories.tsx
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
-import { Navbar } from '../../Components/MenuComponent/Navbar';
+import { Navbar } from '@/Components/MenuComponent/Navbar';
 const mockUser = {
   name: 'Juan Pérez',
   email: 'juan.perez@empresa.com',

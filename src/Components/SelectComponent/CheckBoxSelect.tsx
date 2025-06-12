@@ -1,6 +1,6 @@
 import React from 'react';
 import { Typography } from '@mui/material';
-import { CheckBoxSelectProps } from '../../interfaces/commonInterfaces';
+import { CheckBoxSelectProps } from '@/interfaces/commonInterfaces';
 
 
 

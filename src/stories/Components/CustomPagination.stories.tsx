@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Meta, StoryObj } from '@storybook/react';
 import { Box } from '@mui/material';
-import CustomPagination from '../../Components/CustomPagination';
+import CustomPagination from '@/Components/CustomPagination';
 
 /**
  * `CustomPagination` is a responsive pagination component for tables and data grids

@@ -3,7 +3,7 @@ import { MenuProvider, useMenu } from './menuContext';
 import { Sidebar, SidebarPropsI } from './Sidebar';
 import { Navbar } from './Navbar';
 import useScreenDimensions from '../../hooks/useScreenDimensions';
-import { NavbarPropsI } from '../../interfaces/menu';
+import { NavbarPropsI } from '@/interfaces/menu';
 import { T1ShippingBanner } from './T1ShippingBanner';
 
 // Tipo para los estados del menú

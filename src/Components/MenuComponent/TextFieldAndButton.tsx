@@ -1,8 +1,8 @@
 import { TextField, TextFieldProps } from '@mui/material';
 import React, { useEffect } from 'react';
 import Image from 'next/image';
-import Search from '../../assets/search-input.svg';
-import styles from '../../styles/common/TextFieldAndButton.module.scss';
+import Search from '@/assets/search-input.svg';
+import styles from '@/styles/common/TextFieldAndButton.module.scss';
 import { useForm } from 'react-hook-form';
 
 export interface TextFieldAndButtonI {

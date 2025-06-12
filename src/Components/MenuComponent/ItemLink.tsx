@@ -3,11 +3,11 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import ArrowMenu from '../../assets/arrow-menu.svg';
-import Ellipse from '../../assets/Ellipse55.svg';
-import styles from '../../styles/common/ItemLink.module.scss';
+import ArrowMenu from '@/assets/arrow-menu.svg';
+import Ellipse from '@/assets/Ellipse55.svg';
+import styles from '@/styles/common/ItemLink.module.scss';
 import { MenuPath, SubPath } from './Sidebar';
-import { useSmartRouter } from '../../util/router-adapter'; // Importar el adaptador
+import { useSmartRouter } from '@/util/router-adapter';
 
 export interface ItemLinkProps extends MenuPath {
   className?: string;

@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { Meta, StoryObj } from '@storybook/react';
 import { Box, Typography, Stack, Paper, Divider } from '@mui/material';
 import Grid from '@mui/material/Grid';
-import PhoneInputT1 from '../../Components/PhoneInputT1';
-import { Country } from '../../interfaces/commonInterfaces';
+import PhoneInputT1 from '@/Components/PhoneInputT1';
+import { Country } from '@/interfaces/commonInterfaces';
 
 /**
  * `PhoneInputT1` is an enhanced international phone number input component with extensive customization options.

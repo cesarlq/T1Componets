@@ -1,7 +1,7 @@
 import React from 'react';
 import { Meta, StoryObj } from '@storybook/react';
 import { Stack } from '@mui/material';
-import ChipT1 from '../../Components/ChipT1';
+import ChipT1 from '@/Components/ChipT1';
 
 /**
  * `ChipT1` is a customizable chip component based on Material UI's Chip.

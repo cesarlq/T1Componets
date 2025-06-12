@@ -1,7 +1,7 @@
 // StoreSelector.stories.tsx
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
-import { StoreSelector } from '../../Components/MenuComponent/StoreSelector';
+import { StoreSelector } from '@/Components/MenuComponent/StoreSelector';
 
 const mockStores = [
   { id: 1, name: 'Tienda Principal' },
