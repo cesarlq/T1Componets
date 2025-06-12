@@ -229,7 +229,7 @@ const t1SelectorConfig = {
         itemsOrder: ["store", "payment", "shipping"] as ("store" | "payment" | "shipping")[]
   };
 // layout t1confirguration
-export const T1Configuration: Story = {
+export const SidebarNotificationPointer: Story = {
   args: {
     navBarProps: {
       ...baseNavbarProps,
@@ -547,75 +547,3 @@ export const ExtendedMenu: Story = {
   }
 };
 
-// Móvil simulado
-export const Mobile: Story = {
-  args: {
-    navBarProps: baseNavbarProps,
-    sideBarProps: baseSidebarProps
-  },
-  parameters: {
-    viewport: {
-      defaultViewport: 'mobile1'
-    },
-    docs: {
-      description: {
-        story: 'Vista del layout en dispositivos móviles. El sidebar se convierte en un overlay.'
-      }
-    }
-  }
-};
-
-// Tablet simulado
-export const Tablet: Story = {
-  args: {
-    navBarProps: baseNavbarProps,
-    sideBarProps: baseSidebarProps
-  },
-  parameters: {
-    viewport: {
-      defaultViewport: 'tablet'
-    },
-    docs: {
-      description: {
-        story: 'Vista del layout en tablets. El sidebar se muestra reducido por defecto.'
-      }
-    }
-  }
-};
-
-// Debug Story - Para verificar el estado del contexto
-export const Debug: Story = {
-  render: (args) => {
-    return (
-      <div>
-        <div className="bg-blue-50 border border-blue-200 p-4 mb-4 rounded">
-          <h3 className="font-bold text-blue-800 mb-2">🔍 Modo Debug</h3>
-          <p className="text-blue-700 text-sm">
-            Abre la consola del navegador para ver los logs del estado del menú.
-            El layout controla automáticamente el comportamiento del sidebar.
-          </p>
-          <div className="mt-2 text-xs text-blue-600">
-            <p>• Móvil (≤750px): Sidebar como overlay</p>
-            <p>• Tablet (751-1110px): Sidebar reducido</p>
-            <p>• Desktop (1110px): Sidebar expandido</p>
-          </div>
-        </div>
-        <LayoutMenu 
-          navBarProps={args.navBarProps}
-          sideBarProps={args.sideBarProps}
-        />
-      </div>
-    );
-  },
-  args: {
-    navBarProps: baseNavbarProps,
-    sideBarProps: baseSidebarProps
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Historia de debug para verificar el funcionamiento del contexto. Revisa la consola para ver los logs del estado.'
-      }
-    }
-  }
-};
