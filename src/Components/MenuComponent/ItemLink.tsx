@@ -3,9 +3,9 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import ArrowMenu from '@/assets/arrow-menu.svg';
-import Ellipse from '@/assets/Ellipse55.svg';
-import styles from '@/styles/common/ItemLink.module.scss';
+import ArrowMenu from '../../assets/arrow-menu.svg';
+import Ellipse from '../../assets/Ellipse55.svg';
+import styles from '../../styles/common/ItemLink.module.scss';
 import { MenuPath, SubPath } from './Sidebar';
 import { useSmartRouter } from '@/util/router-adapter';
 
@@ -230,9 +230,7 @@ export function ItemLink({
             )}
             {(!sidebarReduce || enlargeByHover) && safeText}
             {hasNotification && 
-              <Image
-                src={Ellipse}
-                alt='ellipse'
+              <Ellipse
                 height={4}
                 width={4}
                 style={{maxWidth:'4px', maxHeight:'4px', marginLeft:'-4px'}}
@@ -244,12 +242,10 @@ export function ItemLink({
               </div>
             )}
           </div>
-          <Image
-            src={ArrowMenu}
+          <ArrowMenu
             className={styles.arrow}
             data-open={openSubMenu}
             style={{maxWidth:'10px', maxHeight:'10px'}}
-            alt='arrow'
             width={10}
             height={10}
           />
@@ -283,9 +279,7 @@ export function ItemLink({
                 
                 <div className={styles.containerEndAdornmentSubPath}>
                   {subItem.hasNotification && (
-                    <Image
-                      src={Ellipse}
-                      alt='ellipse'
+                    <Ellipse
                       height={4}
                       width={4}
                       style={{maxWidth:'4px', maxHeight:'4px'}}
@@ -336,9 +330,7 @@ export function ItemLink({
         )}
         {(!sidebarReduce || enlargeByHover) && safeText}
         {hasNotification && 
-          <Image
-            src={Ellipse}
-            alt='ellipse'
+          <Ellipse
             height={4}
             width={4}
             style={{maxWidth:'4px', maxHeight:'4px', marginLeft:'-4px'}}

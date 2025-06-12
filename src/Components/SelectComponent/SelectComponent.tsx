@@ -20,7 +20,7 @@ import {
 } from "@mui/material";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Image from "next/image";
-import styles from '@/styles/common/CommonStyles.module.scss';
+import styles from '../../styles/common/CommonStyles.module.scss';
 import FormControlSelect from "./FormControlSelect";
 import CheckBoxSelect from "./CheckBoxSelect";
 import SelectItem from "./SelectItem";

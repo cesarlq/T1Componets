@@ -1,8 +1,8 @@
 import { TextField, TextFieldProps } from '@mui/material';
 import React, { useEffect } from 'react';
 import Image from 'next/image';
-import Search from '@/assets/search-input.svg';
-import styles from '@/styles/common/TextFieldAndButton.module.scss';
+import Search from '../../assets/search-input.svg';
+import styles from '../../styles/common/TextFieldAndButton.module.scss';
 import { useForm } from 'react-hook-form';
 
 export interface TextFieldAndButtonI {
@@ -40,7 +40,7 @@ export default function TextFieldAndButton({
             <TextField
                 InputProps={{
                     className: styles.search,
-                    endAdornment: <Image src={Search} alt='search' className={styles.search} height={14} width={14}/>,
+                    endAdornment: <Search className={styles.search} height={14} width={14}/>,
                     sx: {
                         ".MuiInputBase-input": {
                             fontSize: '13px',

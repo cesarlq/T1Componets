@@ -1,12 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import DoubleArrowIcon from '@/assets/inputs/double-arrow.svg';
-import Search from '@/assets/search-input.svg';
-import CheckIcon from '@/assets/CheckIcon.svg';
-import PlusIconBlack from '@/assets/buttonIcons/plus-icon-black.svg';
+import DoubleArrowIcon from '../../assets/inputs/double-arrow.svg';
+import Search from '../../assets/search-input.svg';
+import CheckIcon from '../../assets/CheckIcon.svg';
+import PlusIconBlack from '../../assets/buttonIcons/plus-icon-black.svg';
 import CustomInput from '../CustomInput';
-import styles from '@/styles/common/StoreSelector.module.scss';
+import styles from '../../styles/common/StoreSelector.module.scss';
 
 // Interfaces
 export interface Store {
@@ -128,9 +128,7 @@ return (
             </span>
             
             {/* Flecha */}
-            <Image 
-              src={DoubleArrowIcon} 
-              alt='double-arrow' 
+            <DoubleArrowIcon
               style={{width:'12px', minWidth:'12px', height:'auto'}}
               width={12}
               height={12}
@@ -156,7 +154,7 @@ return (
                 onChange: (event: { target: { value: React.SetStateAction<string>; }; }) => setSearch(event.target.value),
                 placeholder: searchPlaceholder,
                 InputProps: {
-                  endAdornment: <Image src={Search} alt='search' width={16} height={16} />,
+                  endAdornment: <Search width={16} height={16} />,
                 },
                 inputProps: {
                   enterKeyHint: 'search',
@@ -190,9 +188,7 @@ return (
                     
                     {/* Check icon si está seleccionada */}
                     {isSelected && (
-                      <Image
-                        src={CheckIcon}
-                        alt='check'
+                      <CheckIcon
                         height={20}
                         width={20}
                         className={styles.checkIcon}
@@ -216,9 +212,7 @@ return (
               target='_blank'
               className={styles.newStoreLink}
             >
-              <Image 
-                src={PlusIconBlack} 
-                alt='plus' 
+              <PlusIconBlack
                 width={16}
                 height={16}
               />

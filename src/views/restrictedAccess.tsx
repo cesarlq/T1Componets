@@ -3,7 +3,7 @@ import { Box, Typography, Container } from '@mui/material';
 import Image from 'next/image';
 import ButtonT1 from '../Components/ButtonT1';
 import LockIcon from '../assets/svg-icons/Lock.svg';
-import replyIcon from '../assets/svg-icons/reply.svg';
+import ReplyIcon from '../assets/svg-icons/reply.svg';
 
 export interface RestrictedAccessProps {
   /**
@@ -96,7 +96,7 @@ const RestrictedAccess: React.FC<RestrictedAccessProps> = ({
           gap: '1rem'
         }}
       >
-        <Image src={LockIcon} width={28.24} height={43} alt='LockIcon' />
+        <LockIcon width={28.24} height={43} />
         <Typography
             variant="h4"
             component="h1"
@@ -156,7 +156,7 @@ const RestrictedAccess: React.FC<RestrictedAccessProps> = ({
       <ButtonT1
         variant='text'
         onClick={handleReturnHome}
-        startIcon={<Image src={replyIcon} width={18} height={18} alt='replyIcon' />}
+        startIcon={<ReplyIcon width={18} height={18} />}
         sx={{
           textTransform: 'none',
           padding: '10px 24px',

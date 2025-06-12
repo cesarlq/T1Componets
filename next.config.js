@@ -49,6 +49,7 @@ const nextConfig = {
 
     return config
   },
+  transpilePackages: ['@t1-org/t1components'], 
 
   // Configurar rutas públicas
   async rewrites() {

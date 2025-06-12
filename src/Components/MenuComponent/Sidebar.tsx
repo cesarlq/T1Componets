@@ -5,7 +5,7 @@ import { useRouter, usePathname } from 'next/navigation';
 import { Button } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { ItemLink } from './ItemLink';
-import styles from '@/styles/common/Sidebar.module.scss';
+import styles from '../../styles/common/Sidebar.module.scss';
 import BalanceBanner from './BalanceBanner';
 import { balanceI } from '@/interfaces/commonInterfaces';
 

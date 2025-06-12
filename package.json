@@ -14,7 +14,8 @@
     "*.scss"
   ],
   "files": [
-    "dist"
+    "dist",
+    "src/assets"
   ],
   "exports": {
     ".": {
@@ -29,7 +30,8 @@
   "scripts": {
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build -o storybook-static",
-    "build": "rollup -c",
+    "build": "rollup -c && npm run copy-assets",
+    "copy-assets": "node scripts/copy-build-assets.js",
     "vercel-build": "npm run build-storybook",
     "dev": "rollup -c -w"
   },
@@ -51,6 +53,7 @@
   "dependencies": {
     "@mui/icons-material": "^7.0.2",
     "@mui/lab": "^7.0.0-beta.11",
+    "@svgr/rollup": "^8.1.0",
     "clsx": "^2.1.1",
     "country-flag-icons": "^1.5.19",
     "date-fns": "^4.1.0",

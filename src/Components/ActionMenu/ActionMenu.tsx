@@ -3,7 +3,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Image from "next/image";
 import React, { Children, cloneElement, isValidElement, useState } from 'react';
 import { actionMenuI, ChildProps, MenuItemProps } from '@/interfaces/commonInterfaces';
-import styles from '@/styles/common/CommonStyles.module.scss';
+import styles from '../../styles/common/CommonStyles.module.scss';
 
 const ActionMenu: React.FC<actionMenuI> = ({
     children,

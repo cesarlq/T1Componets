@@ -1,12 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
-import GridIcon from '@/assets/menus/grid-icon.svg';
-import T1Logo from '@/assets/T1.svg';
-import Store from '@/assets/menus/t1-selector/store.svg';
-import Shipping from '@/assets/menus/t1-selector/shipping.svg';
-import Pay from '@/assets/menus/t1-selector/pay.svg';
+import GridIcon from '../../assets/menus/grid-icon.svg';
+import T1Logo from '../../assets/T1.svg';
+import Store from '../../assets/menus/t1-selector/store.svg';
+import Shipping from '../../assets/menus/t1-selector/shipping.svg';
+import Pay from '../../assets/menus/t1-selector/pay.svg';
 import CloseButtonT1 from '../CloseButtonT1';
-import styles from '@/styles/common/T1Selector.module.scss';
+import styles from '../../styles/common/T1Selector.module.scss';
 
 // Tipo para identificar los items
 export type T1ItemType = 'store' | 'shipping' | 'payment';
@@ -114,9 +114,7 @@ export function T1Selector({
         aria-label="Abrir selector T1"
         aria-expanded={isOpen}
       >
-        <Image
-          src={GridIcon}
-          alt='grid'
+        <GridIcon
           width={17}
           height={17}
         />
@@ -136,7 +134,7 @@ export function T1Selector({
         {/* Header */}
         <div className={styles.header}>
           <span className={styles.ecosystemTitle}>{ecosystemTitle}</span>
-          <div className={styles.t1Logo}><Image src={T1Logo} alt="T1 Logo" width={23} height={23} /></div>
+          <div className={styles.t1Logo}><T1Logo width={23} height={23} /></div>
         </div>
         
         {/* Menu Items */}

@@ -9,7 +9,6 @@ import IndeterminateCheckboxIcon from '../assets/icons/IndeterminateCheckboxIcon
 import UnCheckRadioIcon from '../assets/icons/UnCheckRadio';
 import CheckRadio from '../assets/icons/CheckRadio';
 import ChevronDown from '../assets/svg-icons/chevron-down-icon.svg';
-import Image from 'next/image';
 
 const manrope = {
   style: {
@@ -291,7 +290,7 @@ const theme = createTheme({
         }
       },
       defaultProps: {
-        popupIcon: React.createElement("span", null, React.createElement(Image, { src: ChevronDown, alt: "arrow" , width: 16, height: 16}))
+        popupIcon: React.createElement(ChevronDown, { width: 16, height: 16 })
       }
     },
     MuiPaper: {
@@ -457,7 +456,7 @@ const theme = createTheme({
         }
       },
       defaultProps: {
-        IconComponent: (props) => React.createElement("span", props, React.createElement(Image, { src: ChevronDown, alt: "arrow", width: 16, height:16 }))
+        IconComponent: (props) => React.createElement("span", props, React.createElement(ChevronDown, { width: 16, height: 16 }))
       }
     },
     MuiTypography: {

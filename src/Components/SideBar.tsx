@@ -257,13 +257,11 @@ const Sidebar: React.FC<SidebarProps> = ({
               e.stopPropagation();
               handleToggle();
             }}>
-              <Image
-                src={ArrowMenu}
+              <ArrowMenu
                 width={10}
                 height={10}
                 className={commonStyle.icon}
                 data-rotate={showOptions}
-                alt='arrow'
               />
             </IconButton>
           )}
@@ -323,12 +321,10 @@ const Sidebar: React.FC<SidebarProps> = ({
                       transform: currentSubmenuOpen === index ? 'rotate(180deg)' : 'rotate(0deg)',
                       transition: 'transform 0.3s ease'
                     }}>
-                      <Image
-                        src={ArrowMenu}
+                      <ArrowMenu
                         className={commonStyle.icon}
                         width={10}
                         height={10}
-                        alt='arrow'
                       />
                   </span>
                   )}
@@ -369,9 +365,7 @@ const Sidebar: React.FC<SidebarProps> = ({
           handleSidebarReduceChange(!sidebarReduce);
         }}
       >
-        <Image
-					src={DoubleArrow}
-					alt='button'
+        <DoubleArrow
           width={24}
           height={24}
           style={styles.doubleArrow}

@@ -43,9 +43,7 @@ const SearchInput: React.FC<SearchInputI> = ({ textFieldProps, defaultValue, onC
 	return (
 		<CustomSearchField className={className} style={{ ...(textFieldProps?.sx as React.StyleHTMLAttributes<HTMLDivElement>) }}>
 			<span className="search-icon">
-				<Image
-					src={MagnifierIcon}
-					alt="Search Icon"
+				<MagnifierIcon
 					width={20}
 					height={20}
 				/>

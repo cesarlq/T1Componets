@@ -5,67 +5,7 @@ import commonjs from '@rollup/plugin-commonjs';
 import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 import postcss from 'rollup-plugin-postcss';
 import { terser } from 'rollup-plugin-terser';
-import { readFileSync } from 'fs';
-import { basename } from 'path';
-
-// Plugin para convertir TUS SVGs existentes a base64/inline
-const inlineSvgPlugin = {
-  name: 'inline-svg',
-  load(id) {
-    if (id.endsWith('.svg')) {
-      try {
-        // Leer tu SVG existente
-        const svgContent = readFileSync(id, 'utf8');
-        const fileName = basename(id);
-        
-        // Opción 1: Como base64 (funciona siempre)
-        const base64 = Buffer.from(svgContent).toString('base64');
-        const dataUrl = `data:image/svg+xml;base64,${base64}`;
-        
-        return `export default "${dataUrl}";`;
-        
-        // Opción 2: Como componente React (descomenta para usar esta opción)
-        /*
-        // Limpiar el SVG para React
-        let cleanSvg = svgContent
-          .replace(/fill-rule/g, 'fillRule')
-          .replace(/clip-rule/g, 'clipRule')
-          .replace(/stroke-width/g, 'strokeWidth')
-          .replace(/stroke-linecap/g, 'strokeLinecap')
-          .replace(/stroke-linejoin/g, 'strokeLinejoin')
-          .replace(/class=/g, 'className=');
-        
-        // Extraer contenido del SVG
-        const svgMatch = cleanSvg.match(/<svg[^>]*>(.*)<\/svg>/s);
-        const innerContent = svgMatch ? svgMatch[1] : '';
-        const svgAttrs = cleanSvg.match(/<svg([^>]*)/);
-        
-        // Generar componente React
-        return `
-          import React from 'react';
-          const SvgComponent = ({ width, height, className, style, ...props }) => (
-            <svg 
-              width={width || 24} 
-              height={height || 24} 
-              viewBox="0 0 24 24"
-              className={className}
-              style={style}
-              {...props}
-            >
-              ${innerContent}
-            </svg>
-          );
-          export default SvgComponent;
-        `;
-        */
-        
-      } catch (error) {
-        console.warn(`Failed to process SVG ${id}:`, error.message);
-        return `export default "";`;
-      }
-    }
-  }
-};
+import svgr from '@svgr/rollup';
 
 // Plugin personalizado para eliminar directivas 'use client'
 const removeUseClientDirectivePlugin = {
@@ -103,10 +43,25 @@ export default {
       include: /node_modules/,
       exclude: ['fs', 'path', 'crypto', 'util', 'stream', 'buffer', 'events']
     }),
+    svgr({
+      // Configure SVGR options
+      typescript: true,
+      ref: true,
+      svgo: true,
+      svgoConfig: {
+        plugins: [
+          {
+            name: 'preset-default',
+            params: {
+              overrides: {
+                removeViewBox: false,
+              },
+            },
+          },
+        ],
+      },
+    }),
     removeUseClientDirectivePlugin,
-    
-    // Plugin que convierte TUS SVGs existentes a inline
-    inlineSvgPlugin,
     
     postcss({
       modules: true,

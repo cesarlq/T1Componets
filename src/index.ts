@@ -1,43 +1,46 @@
 export { default as theme } from './styles/theme';
 //action menu
-export { default as ActionMenu } from '@/Components/ActionMenu/ActionMenu';
-export { default as ModalComponent } from '@/Components/ModalComponent';
-export { default as SimpleModalComponent } from '@/Components/SimpleModal';
+export { default as ActionMenu } from './Components/ActionMenu/ActionMenu';
+export { default as ModalComponent } from './Components/ModalComponent';
+export { default as SimpleModalComponent } from './Components/SimpleModal';
 //select Component
-export { default as SelectComponent} from '@/Components/SelectComponent/SelectComponent'
-export { default as SelectItem } from '@/Components/SelectComponent/SelectItem';
-export { default as FormControlSelect } from '@/Components/SelectComponent/FormControlSelect';
-export { default as CheckBoxSelect } from '@/Components/SelectComponent/CheckBoxSelect';
+export { default as SelectComponent} from './Components/SelectComponent/SelectComponent'
+export { default as SelectItem } from './Components/SelectComponent/SelectItem';
+export { default as FormControlSelect } from './Components/SelectComponent/FormControlSelect';
+export { default as CheckBoxSelect } from './Components/SelectComponent/CheckBoxSelect';
 //button
-export { default as ButtonT1 } from '@/Components/ButtonT1'
-export { default as CloseButtonT1 } from '@/Components/CloseButtonT1';
+export { default as ButtonT1 } from './Components/ButtonT1'
+export { default as CloseButtonT1 } from './Components/CloseButtonT1';
 //chips
-export { default as ChipT1 } from '@/Components/ChipT1';
+export { default as ChipT1 } from './Components/ChipT1';
 //Input
-export { default as PhoneInputT1 } from '@/Components/PhoneInputT1';
-export { default as CheckBoxT1 } from '@/Components/CheckBoxT1';
-export { default as CustomInput } from '@/Components/CustomInput';
-export { default as AmountInput } from '@/Components/AmountInput';
-export { default as SearchInput } from '@/Components/SearchInput';
+export { default as PhoneInputT1 } from './Components/PhoneInputT1';
+export { default as CheckBoxT1 } from './Components/CheckBoxT1';
+export { default as CustomInput } from './Components/CustomInput';
+export { default as AmountInput } from './Components/AmountInput';
+export { default as SearchInput } from './Components/SearchInput';
 //Table
-export { default as TableT1 } from '@/Components/TableT1';
+export { default as TableT1 } from './Components/TableT1';
 // Collapse
-export { default as CollapsibleCardT1 } from '@/Components/CollapsibleCardT1';
+export { default as CollapsibleCardT1 } from './Components/CollapsibleCardT1';
 //UserProfileMenu
-export { default as UserProfileMenu } from '@/Components/UserProfileMenu';
+export { default as UserProfileMenu } from './Components/UserProfileMenu';
 //CustomPagination
-export { default as CustomPagination } from '@/Components/CustomPagination';
+export { default as CustomPagination } from './Components/CustomPagination';
 //Card
-export { default as Cards } from '@/Components/Cards'
+export { default as Cards } from './Components/Cards'
 //ITemIcon 
-export {default as T1Icon} from '@/Components/T1Icon';
+export {default as T1Icon} from './Components/T1Icon';
 //MenuComponent
-export {  Navbar } from '@/Components/MenuComponent/Navbar';
-export { Sidebar } from '@/Components/MenuComponent/Sidebar';
-export { T1ShippingBanner } from '@/Components/MenuComponent/T1ShippingBanner';
-export { StoreSelector } from '@/Components/MenuComponent/StoreSelector';
-export { StoreSelectorOnSidebar } from '@/Components/MenuComponent/StoreSelectorOnSidebar';
-export { default as LayoutMenu, type MenuState, type MenuCallbacks  } from '@/Components/MenuComponent/layoutMenu';
-export { useMenu } from '@/Components/MenuComponent/menuContext';
+export {  Navbar } from './Components/MenuComponent/Navbar';
+export { Sidebar } from './Components/MenuComponent/Sidebar';
+export { T1ShippingBanner } from './Components/MenuComponent/T1ShippingBanner';
+export { StoreSelector } from './Components/MenuComponent/StoreSelector';
+export { StoreSelectorOnSidebar } from './Components/MenuComponent/StoreSelectorOnSidebar';
+export { default as LayoutMenu, type MenuState, type MenuCallbacks  } from './Components/MenuComponent/layoutMenu';
+export { useMenu } from './Components/MenuComponent/menuContext';
 //Views
-export { default as RestrictedAccess } from '@/views/restrictedAccess';
+export { default as RestrictedAccess } from './views/restrictedAccess';
+
+export * as Icons from './assets/iconsT1/icons';
+export * as Logos from './assets/iconsT1/logos';

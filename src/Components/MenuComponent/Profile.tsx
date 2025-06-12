@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import { IconButton, ListItemText, Menu, MenuItem as MuiMenuItem, Divider, Tooltip } from '@mui/material';
 import T1Icon from '../T1Icon';
-import stylesProfile from '@/styles/common/Profile.module.scss';
-import styles from '@/styles/common/Navbar.module.scss';
+import stylesProfile from '../../styles/common/Profile.module.scss';
+import styles from '../../styles/common/Navbar.module.scss';
 import { MenuProfileI, ProfileMenuItem, ProfileProps } from '@/interfaces/Profile.interface';
 
 export function getInitials(name: string): string {

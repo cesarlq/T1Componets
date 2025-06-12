@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { MenuPath } from '@/Components/MenuComponent/Sidebar';
 import LayoutMenu from '@/Components/MenuComponent/layoutMenu';
 import React from 'react';
-import * as MenuIcon from '@/assets/menu-icons/index';
+import * as MenuIcon from '../../assets/menu-icons/index';
 
 
 // Mock de datos para las historias

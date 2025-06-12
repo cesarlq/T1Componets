@@ -1,10 +1,10 @@
 import React from 'react';
 import Image from "next/image";
 import { useRouter } from 'next/navigation';
-import T1Logo from '@/assets/T1.svg';
-import ReduceIcon from '@/assets/reduce-icon.svg';
-import EnlargeIcon from '@/assets/enlarge-icon.svg';
-import styles from '@/styles/common/Navbar.module.scss';
+import T1Logo from '../../assets/T1.svg';
+import ReduceIcon from '../../assets/reduce-icon.svg';
+import EnlargeIcon from '../../assets/enlarge-icon.svg';
+import styles from '../../styles/common/Navbar.module.scss';
 
 export interface T1ShippingBannerProps {
   className?: string;
@@ -107,17 +107,13 @@ export function T1ShippingBanner({
         >
           <div className={styles['toggle-icon-wrapper']}>
             {buttonIsReduced ? (
-              <Image
-                src={EnlargeIcon}
-                alt="expand sidebar"
+              <EnlargeIcon
                 width={18}
                 height={16}
                 style={{minWidth:'18px', minHeight:'16px'}}
               />
             ) : (
-              <Image
-                src={ReduceIcon}
-                alt="reduce sidebar"
+              <ReduceIcon
                 width={18}
                 height={16}
                 style={{minWidth:'18px', minHeight:'16px'}}
@@ -134,9 +130,7 @@ export function T1ShippingBanner({
         aria-label="Ir al dashboard"
       >
         <div className={styles['logo-wrapper']}>
-          <Image 
-            src={T1Logo} 
-            alt="T1 Logo" 
+          <T1Logo
             style={{minHeight:'25px', maxWidth:'27px'}}
             width={27}
             height={25}
@@ -197,9 +191,7 @@ export function SimpleT1Banner({
       aria-label="Ir al dashboard"
     >
       <div className={styles['logo-wrapper']}>
-        <Image 
-          src={T1Logo} 
-          alt="T1 Logo" 
+        <T1Logo
           width={27}
           height={25}
           className={styles['logo-image']}
