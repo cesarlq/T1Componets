@@ -8,6 +8,7 @@ import { MenuProfile } from './Profile';
 import TextFieldAndButton from './TextFieldAndButton';
 import Image from 'next/image';
 import MenuInActive from '../../assets/menus/inactive/menu-inactive.svg';
+import BalanceBanner from './BalanceBanner';
 
 export function Navbar({
   className = '',
@@ -23,7 +24,7 @@ export function Navbar({
   profileMenuItems,
   
   // Component slots
-  BalanceBanner = ({ className }) => <div className={className}>Balance Banner</div>,
+  balanceBannerConfig,
   
   // Configuration
   searchPlaceholder = 'Número de rastreo',
@@ -137,8 +138,8 @@ export function Navbar({
       )}
       
       <div className={styles['user-info-container']}>
-        {showBalance && (
-          <BalanceBanner className={styles['balance-banner-desktop']} />
+        {showBalance && !isMobile && balanceBannerConfig && (
+            <BalanceBanner balance={balanceBannerConfig.balance} BALLANCE_PATH={balanceBannerConfig.BALLANCE_PATH}/>
         )}
         
         {t1SelectorConfig && 

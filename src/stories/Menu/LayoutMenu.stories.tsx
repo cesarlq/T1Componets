@@ -382,20 +382,22 @@ export const WithInfoBand: Story = {
     }
   }
 };
-const BalanceBanner = () =>{
-  return(<>
-  <div onClick={()=> alert('entro')} style={{borderRadius:'2rem', border: '1px solid gray', height: '20px', width:'100%'}}>
-    component
-  </div>
-  </>);
-}
 
 //LayoutWhit Compoenent on Sidebar
-export const CompoenentOnSidebar: Story = {
+export const BalanceBanner: Story = {
   args: {
     navBarProps: {
       ...baseNavbarProps,
-      showBalance: false,
+      balanceBannerConfig: {
+        balance: {
+          monto_actual: 10000,
+          comercio_id: 12028,
+          comercio_id_t1paginas: '',
+          credito: true
+        },
+        BALLANCE_PATH: ''
+      },
+      showBalance: true,
       showSearchInput: false,
       profileMenuItems: []
     },
@@ -403,7 +405,15 @@ export const CompoenentOnSidebar: Story = {
       ...baseSidebarProps,
       defaultAutoNavigateToFirstSubPath: true,
       showCreateButton: false,
-      BalanceBanner: BalanceBanner,
+      balanceBannerConfig: {
+        balance: {
+          monto_actual: 10000,
+          comercio_id: 12028,
+          comercio_id_t1paginas: '',
+          credito: true
+        },
+        BALLANCE_PATH: ''
+      },
       showBalance: true,
       menuPaths: [
         {

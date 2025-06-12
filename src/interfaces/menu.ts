@@ -1,3 +1,4 @@
+import { balanceI } from "./commonInterfaces";
 import { ProfileMenuItem } from "./Profile.interface";
 
 export interface User {
@@ -52,7 +53,10 @@ export interface NavbarPropsI {
   isMobile?: boolean;
 
   // Component slots (solo los que realmente deben ser configurables)
-  BalanceBanner?: React.ComponentType<{ className?: string }>;
+  balanceBannerConfig?: {
+    balance: balanceI,
+    BALLANCE_PATH: string
+  }
   T1Selector?: React.ComponentType<any>;
   SearchComponent?: React.ComponentType<any>;
   

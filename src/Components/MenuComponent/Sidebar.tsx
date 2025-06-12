@@ -6,7 +6,8 @@ import { Button } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { ItemLink } from './ItemLink';
 import styles from '../../styles/common/Sidebar.module.scss';
-import { T1ShippingBanner } from './T1ShippingBanner';
+import BalanceBanner from './BalanceBanner';
+import { balanceI } from '../../interfaces/commonInterfaces';
 
 // Interfaces
 export interface SubPath {
@@ -36,10 +37,14 @@ export interface SidebarPropsI {
   menuPaths?: MenuPath[];
   TopBanner?: React.ComponentType<{ className?: string }>;
   BottomBanner?: React.ComponentType<{ className?: string }> | React.ReactNode;
-  BalanceBanner?: React.ComponentType<{ className?: string }>;
+  // BalanceBanner?: React.ComponentType<{ className?: string }>;
   showCreateButton?: boolean;
   showInfoBand?: boolean;
   showBalance?: boolean;
+  balanceBannerConfig?: {
+    balance: balanceI,
+    BALLANCE_PATH: string
+  }
   createButtonText?: string;
   createButtonPath?: string;
   breakpointReduce?: number;
@@ -68,10 +73,11 @@ export function Sidebar({
   menuPaths = [],
   TopBanner,
   BottomBanner,
-  BalanceBanner,
+  // BalanceBanner,
   showCreateButton = true,
   showInfoBand = false,
   showBalance = false,
+  balanceBannerConfig,
   createButtonText = '+ Crear envío',
   createButtonPath = '/create',
   breakpointReduce = 1110,
@@ -507,9 +513,9 @@ export function Sidebar({
         )}
 
         {/* Balance Banner */}
-        {BalanceBanner && showBalance && !shouldShowReduced && (
+        {showBalance && !shouldShowReduced && balanceBannerConfig?.balance && (
           <div onClick={handleExternalComponent} className={styles.balanceBanner}>
-            <BalanceBanner/>
+            <BalanceBanner balance={balanceBannerConfig.balance} BALLANCE_PATH={balanceBannerConfig.BALLANCE_PATH}/>
           </div>
         )}
 
