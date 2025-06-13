@@ -96,7 +96,7 @@ const RestrictedAccess: React.FC<RestrictedAccessProps> = ({
           gap: '1rem'
         }}
       >
-        {React.createElement(LockIcon, { width: 28.24, height: 43 })}
+        <LockIcon width={28.24} height={43}  />
         <Typography
             variant="h4"
             component="h1"
@@ -156,7 +156,7 @@ const RestrictedAccess: React.FC<RestrictedAccessProps> = ({
       <ButtonT1
         variant='text'
         onClick={handleReturnHome}
-        startIcon={React.createElement(ReplyIcon, { width: 18, height: 18 })}
+        startIcon={<ReplyIcon width={18} height={18} />}
         sx={{
           textTransform: 'none',
           padding: '10px 24px',

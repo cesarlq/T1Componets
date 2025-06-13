@@ -18,82 +18,82 @@ export const ExternalLogos = () => {
         gap: '3rem',
         justifySelf:'center'
       }}>
-      <IconDisplay icon={false} name="T1PaginasLogos">
+      <IconDisplay type={'logo'} name="T1PaginasLogos">
         <T1IconStory icon="T1PaginasLogos" width={140} height={140} sx={undefined} className={undefined} type={'logo'} />
       </IconDisplay>
-      <IconDisplay icon={false} name="T1PagosLogos">
+      <IconDisplay type={'logo'} name="T1PagosLogos">
         <T1IconStory icon="T1PagosLogos" width={140} height={140} sx={undefined} className={undefined}type={'logo'}  />
       </IconDisplay>
-      <IconDisplay icon={false} name="NewT1PagosLogoWhite">
+      <IconDisplay type={'logo'} name="NewT1PagosLogoWhite">
         <T1IconStory icon="NewT1PagosLogoWhite" width={140} height={140} sx={undefined} className={undefined}type={'logo'}  />
       </IconDisplay>
-      <IconDisplay icon={false} name="T1EnviosLogo">
+      <IconDisplay type={'logo'} name="T1EnviosLogo">
         <T1IconStory icon="T1EnviosLogo" width={140} height={140} sx={undefined} className={undefined}type={'logo'}  />
       </IconDisplay>
-      <IconDisplay icon={false} name="T1ComerciosLogo">
+      <IconDisplay type={'logo'} name="T1ComerciosLogo">
         <T1IconStory icon="T1ComerciosLogo" width={140} height={140} sx={undefined} className={undefined}type={'logo'}  />
       </IconDisplay>
-      <IconDisplay icon={false} name="AmericanExpressLogo">
+      <IconDisplay type={'logo'} name="AmericanExpressLogo">
         <T1IconStory icon="AmericanExpressLogo" width={140} height={140} sx={undefined} className={undefined}type={'logo'}  />
       </IconDisplay>
-      <IconDisplay icon={false} name="CarnetLogo">
+      <IconDisplay type={'logo'} name="CarnetLogo">
         <T1IconStory icon="CarnetLogo" width={140} height={140} sx={undefined} className={undefined}type={'logo'}  />
       </IconDisplay>
-      <IconDisplay icon={false} name="MastercardLogo">
+      <IconDisplay type={'logo'} name="MastercardLogo">
         <T1IconStory icon="MastercardLogo" width={140} height={140} sx={undefined} className={undefined}type={'logo'}  />
       </IconDisplay>
-      <IconDisplay icon={false} name="VisaLogo">
+      <IconDisplay type={'logo'} name="VisaLogo">
         <T1IconStory icon="VisaLogo" width={140} height={140} sx={undefined} className={undefined}type={'logo'}  />
       </IconDisplay>
-      <IconDisplay icon={false} name="CreditoClaroShopLogo">
+      <IconDisplay type={'logo'} name="CreditoClaroShopLogo">
         <T1IconStory icon="CreditoClaroShopLogo" width={140} height={140} sx={undefined} className={undefined}type={'logo'}  />
       </IconDisplay>
-      <IconDisplay icon={false} name="OxxoLogo">
+      <IconDisplay type={'logo'} name="OxxoLogo">
         <T1IconStory icon="OxxoLogo" width={140} height={140} sx={undefined} className={undefined}type={'logo'}  />
       </IconDisplay>
-      <IconDisplay icon={false} name="FedexExpressLogo">
+      <IconDisplay type={'logo'} name="FedexExpressLogo">
         <T1IconStory icon="FedexExpressLogo" width={140} height={140} sx={undefined} className={undefined} type={'logo'}  />
       </IconDisplay>
-      <IconDisplay icon={false} name="EstafetaLogo">
+      <IconDisplay type={'logo'} name="EstafetaLogo">
         <T1IconStory icon="EstafetaLogo" width={140} height={140} sx={undefined} className={undefined} type={'logo'}  />
       </IconDisplay>
-      <IconDisplay icon={false} name="DhlLogo">
+      <IconDisplay type={'logo'} name="DhlLogo">
         <T1IconStory icon="DhlLogo" width={140} height={140} sx={undefined} className={undefined} type={'logo'}  />
       </IconDisplay>
-      <IconDisplay icon={false} name="ExpressLogo">
+      <IconDisplay type={'logo'} name="ExpressLogo">
         <T1IconStory icon="ExpressLogo" width={140} height={140} sx={undefined} className={undefined} type={'logo'}  />
       </IconDisplay>
-      <IconDisplay icon={false} name="ClaroScoreLogo">
+      <IconDisplay type={'logo'} name="ClaroScoreLogo">
         <T1IconStory icon="ClaroScoreLogo" width={140} height={140} sx={undefined} className={undefined} type={'logo'}  />
       </IconDisplay>
-      <IconDisplay icon={false} name="BanorteLogo">
+      <IconDisplay type={'logo'} name="BanorteLogo">
         <T1IconStory icon="BanorteLogo" width={140} height={140} sx={undefined} className={undefined} type={'logo'}  />
       </IconDisplay>
-      <IconDisplay icon={false} name="BBVALogo">
+      <IconDisplay type={'logo'} name="BBVALogo">
         <T1IconStory icon="BBVALogo" width={140} height={140} sx={undefined} className={undefined} type={'logo'}  />
       </IconDisplay>
-      <IconDisplay icon={false} name="CitibanamexLogo">
+      <IconDisplay type={'logo'} name="CitibanamexLogo">
         <T1IconStory icon="CitibanamexLogo" width={140} height={140} sx={undefined} className={undefined} type={'logo'}  />
       </IconDisplay>
-      <IconDisplay icon={false} name="HSBCLogo">
+      <IconDisplay type={'logo'} name="HSBCLogo">
         <T1IconStory icon="HSBCLogo" width={140} height={140} sx={undefined} className={undefined} type={'logo'}  />
       </IconDisplay>
-      <IconDisplay icon={false} name="InbursaLogo">
+      <IconDisplay type={'logo'} name="InbursaLogo">
         <T1IconStory icon="InbursaLogo" width={140} height={140} sx={undefined} className={undefined} type={'logo'}  />
       </IconDisplay>
-      <IconDisplay icon={false} name="InvexLogo">
+      <IconDisplay type={'logo'} name="InvexLogo">
         <T1IconStory icon="InvexLogo" width={140} height={140} sx={undefined} className={undefined} type={'logo'}  />
       </IconDisplay>
-      <IconDisplay icon={false} name="PayPalLogo">
+      <IconDisplay type={'logo'} name="PayPalLogo">
         <T1IconStory icon="PayPalLogo" width={140} height={140} sx={undefined} className={undefined} type={'logo'}  />
       </IconDisplay>
-      <IconDisplay icon={false} name="SantanderLogo">
+      <IconDisplay type={'logo'} name="SantanderLogo">
         <T1IconStory icon="SantanderLogo" width={140} height={140} sx={undefined} className={undefined} type={'logo'}  />
       </IconDisplay>
-      <IconDisplay icon={false} name="ScotiabankLogo">
+      <IconDisplay type={'logo'} name="ScotiabankLogo">
         <T1IconStory icon="ScotiabankLogo" width={140} height={140} sx={undefined} className={undefined} type={'logo'}  />
       </IconDisplay>
-      <IconDisplay icon={false} name="StripeLogo">
+      <IconDisplay type={'logo'} name="StripeLogo">
         <T1IconStory icon="StripeLogo" width={140} height={140} sx={undefined} className={undefined} type={'logo'}  />
       </IconDisplay>
     </div>
@@ -126,19 +126,19 @@ export const EcommerceIcons = () => {
         gap: '3rem',
         justifySelf:'center'
       }}>
-      <IconDisplay icon={false} name="T1Paginas">
+      <IconDisplay type={'logo'} name="T1Paginas">
         <T1IconStory icon="T1Paginas" width={24} height={24} sx={undefined} className={undefined} type={'logo'}  />
       </IconDisplay>
-      <IconDisplay icon={false} name="SearsLogo">
+      <IconDisplay type={'logo'} name="SearsLogo">
         <T1IconStory icon="SearsLogo" width={24} height={24} sx={undefined} className={undefined} type={'logo'}  />
       </IconDisplay>
-      <IconDisplay icon={false} name="SanbornsLogo">
+      <IconDisplay type={'logo'} name="SanbornsLogo">
         <T1IconStory icon="SanbornsLogo" width={24} height={24} sx={undefined} className={undefined} type={'logo'}  />
       </IconDisplay>
-      <IconDisplay icon={false} name="MercadoLibreIconLogo">
+      <IconDisplay type={'logo'} name="MercadoLibreIconLogo">
         <T1IconStory icon="MercadoLibreIconLogo" width={24} height={24} sx={undefined} className={undefined} type={'logo'}  />
       </IconDisplay>
-      <IconDisplay icon={false} name="AmazonIconLogo">
+      <IconDisplay type={'logo'} name="AmazonIconLogo">
         <T1IconStory icon="AmazonIconLogo" width={24} height={24} sx={undefined} className={undefined} type={'logo'}  />
       </IconDisplay>
     </div>
@@ -171,332 +171,332 @@ export const AllLegacyIcons = () => {
         justifySelf:'center'
       }}>
       <div>
-        <IconDisplay icon={true} name="AbacusIcon">
+        <IconDisplay type={'icon'} name="AbacusIcon">
           <T1IconStory icon="AbacusIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="AddressesAlternativeIcon">
+        <IconDisplay type={'icon'} name="AddressesAlternativeIcon">
           <T1IconStory icon="AddressesAlternativeIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="AddressesIcon">
+        <IconDisplay type={'icon'} name="AddressesIcon">
           <T1IconStory icon="AddressesIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="AlertIcon">
+        <IconDisplay type={'icon'} name="AlertIcon">
           <T1IconStory icon="AlertIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="AnalysisIcon">
+        <IconDisplay type={'icon'} name="AnalysisIcon">
           <T1IconStory icon="AnalysisIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="AntifraudIcon">
+        <IconDisplay type={'icon'} name="AntifraudIcon">
           <T1IconStory icon="AntifraudIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="AverageWeightIcon">
+        <IconDisplay type={'icon'} name="AverageWeightIcon">
           <T1IconStory icon="AverageWeightIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="BagMoneyIcon">
+        <IconDisplay type={'icon'} name="BagMoneyIcon">
           <T1IconStory icon="BagMoneyIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="BalanceIcon">
+        <IconDisplay type={'icon'} name="BalanceIcon">
           <T1IconStory icon="BalanceIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="BillsIcon">
+        <IconDisplay type={'icon'} name="BillsIcon">
           <T1IconStory icon="BillsIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="BusinessAndFinanceIcon">
+        <IconDisplay type={'icon'} name="BusinessAndFinanceIcon">
           <T1IconStory icon="BusinessAndFinanceIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="CalendarIcon">
+        <IconDisplay type={'icon'} name="CalendarIcon">
           <T1IconStory icon="CalendarIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="CatalogsIcon">
+        <IconDisplay type={'icon'} name="CatalogsIcon">
           <T1IconStory icon="CatalogsIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="CloseIcon">
+        <IconDisplay type={'icon'} name="CloseIcon">
           <T1IconStory icon="CloseIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="CoinsIcon">
+        <IconDisplay type={'icon'} name="CoinsIcon">
           <T1IconStory icon="CoinsIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="CompanyIcon">
+        <IconDisplay type={'icon'} name="CompanyIcon">
           <T1IconStory icon="CompanyIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="DashboardIcon">
+        <IconDisplay type={'icon'} name="DashboardIcon">
           <T1IconStory icon="DashboardIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="DealIcon">
+        <IconDisplay type={'icon'} name="DealIcon">
           <T1IconStory icon="DealIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="DeleteIcon">
+        <IconDisplay type={'icon'} name="DeleteIcon">
           <T1IconStory icon="DeleteIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="DevelopmentIcon">
+        <IconDisplay type={'icon'} name="DevelopmentIcon">
           <T1IconStory icon="DevelopmentIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="DownloadIcon">
+        <IconDisplay type={'icon'} name="DownloadIcon">
           <T1IconStory icon="DownloadIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="EditIcon">
+        <IconDisplay type={'icon'} name="EditIcon">
           <T1IconStory icon="EditIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="EmailIcon">
+        <IconDisplay type={'icon'} name="EmailIcon">
           <T1IconStory icon="EmailIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="ExitIcon">
+        <IconDisplay type={'icon'} name="ExitIcon">
           <T1IconStory icon="ExitIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="FilterIcon">
+        <IconDisplay type={'icon'} name="FilterIcon">
           <T1IconStory icon="FilterIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="FlowIcon">
+        <IconDisplay type={'icon'} name="FlowIcon">
           <T1IconStory icon="FlowIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="GenerateCollectionsIcon">
+        <IconDisplay type={'icon'} name="GenerateCollectionsIcon">
           <T1IconStory icon="GenerateCollectionsIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="GenerateGuidesIcon">
+        <IconDisplay type={'icon'} name="GenerateGuidesIcon">
           <T1IconStory icon="GenerateGuidesIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="GuideHistoryIcon">
+        <IconDisplay type={'icon'} name="GuideHistoryIcon">
           <T1IconStory icon="GuideHistoryIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="GuideTrackingIcon">
+        <IconDisplay type={'icon'} name="GuideTrackingIcon">
           <T1IconStory icon="GuideTrackingIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="HelpIcon">
+        <IconDisplay type={'icon'} name="HelpIcon">
           <T1IconStory icon="HelpIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="HomeIcon">
+        <IconDisplay type={'icon'} name="HomeIcon">
           <T1IconStory icon="HomeIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="InventoryIcon">
+        <IconDisplay type={'icon'} name="InventoryIcon">
           <T1IconStory icon="InventoryIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="ListIcon">
+        <IconDisplay type={'icon'} name="ListIcon">
           <T1IconStory icon="ListIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="LocationIcon">
+        <IconDisplay type={'icon'} name="LocationIcon">
           <T1IconStory icon="LocationIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="MoneyIcon">
+        <IconDisplay type={'icon'} name="MoneyIcon">
           <T1IconStory icon="MoneyIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="MyOrdersIcon">
+        <IconDisplay type={'icon'} name="MyOrdersIcon">
           <T1IconStory icon="MyOrdersIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="MyProductsIcon">
+        <IconDisplay type={'icon'} name="MyProductsIcon">
           <T1IconStory icon="MyProductsIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="NotificationIcon">
+        <IconDisplay type={'icon'} name="NotificationIcon">
           <T1IconStory icon="NotificationIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="PaymentLinkIcon">
+        <IconDisplay type={'icon'} name="PaymentLinkIcon">
           <T1IconStory icon="PaymentLinkIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="RatesIcon">
+        <IconDisplay type={'icon'} name="RatesIcon">
           <T1IconStory icon="RatesIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="ReportIcon">
+        <IconDisplay type={'icon'} name="ReportIcon">
           <T1IconStory icon="ReportIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="ReportsIcon">
+        <IconDisplay type={'icon'} name="ReportsIcon">
           <T1IconStory icon="ReportsIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="ReputationIcon">
+        <IconDisplay type={'icon'} name="ReputationIcon">
           <T1IconStory icon="ReputationIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="RulesIcon">
+        <IconDisplay type={'icon'} name="RulesIcon">
           <T1IconStory icon="RulesIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="SalesChannelIcon">
+        <IconDisplay type={'icon'} name="SalesChannelIcon">
           <T1IconStory icon="SalesChannelIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="SalesChannelsIcon">
+        <IconDisplay type={'icon'} name="SalesChannelsIcon">
           <T1IconStory icon="SalesChannelsIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="SalesIcon">
+        <IconDisplay type={'icon'} name="SalesIcon">
           <T1IconStory icon="SalesIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="SearchIcon">
+        <IconDisplay type={'icon'} name="SearchIcon">
           <T1IconStory icon="SearchIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="TicketIcon">
+        <IconDisplay type={'icon'} name="TicketIcon">
           <T1IconStory icon="TicketIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="TrackOrdersIcon">
+        <IconDisplay type={'icon'} name="TrackOrdersIcon">
           <T1IconStory icon="TrackOrdersIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="TransactionsIcon">
+        <IconDisplay type={'icon'} name="TransactionsIcon">
           <T1IconStory icon="TransactionsIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="UserIcon">
+        <IconDisplay type={'icon'} name="UserIcon">
           <T1IconStory icon="UserIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="UsersIcon">
+        <IconDisplay type={'icon'} name="UsersIcon">
           <T1IconStory icon="UsersIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="VideoIcon">
+        <IconDisplay type={'icon'} name="VideoIcon">
           <T1IconStory icon="VideoIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="WhatsAppIcon">
+        <IconDisplay type={'icon'} name="WhatsAppIcon">
           <T1IconStory icon="WhatsAppIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="NavigationArrowIcon">
+        <IconDisplay type={'icon'} name="NavigationArrowIcon">
           <T1IconStory icon="NavigationArrowIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="ChargebackIcon">
+        <IconDisplay type={'icon'} name="ChargebackIcon">
           <T1IconStory icon="ChargebackIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="DevelopersIcon">
+        <IconDisplay type={'icon'} name="DevelopersIcon">
           <T1IconStory icon="DevelopersIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="LinkIcon">
+        <IconDisplay type={'icon'} name="LinkIcon">
           <T1IconStory icon="LinkIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="GraphicReportsListIcon">
+        <IconDisplay type={'icon'} name="GraphicReportsListIcon">
           <T1IconStory icon="GraphicReportsListIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="FinancialCardIcon">
+        <IconDisplay type={'icon'} name="FinancialCardIcon">
           <T1IconStory icon="FinancialCardIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="CheckIcon">
+        <IconDisplay type={'icon'} name="CheckIcon">
           <T1IconStory icon="CheckIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="AddIcon">
+        <IconDisplay type={'icon'} name="AddIcon">
           <T1IconStory icon="AddIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="PaginationNextIcon">
+        <IconDisplay type={'icon'} name="PaginationNextIcon">
           <T1IconStory icon="PaginationNextIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="PaginationNextIcon">
+        <IconDisplay type={'icon'} name="PaginationNextIcon">
           <T1IconStory 
             icon="PaginationNextIcon"
             width={24}
@@ -505,7 +505,7 @@ export const AllLegacyIcons = () => {
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="PaginationSkipIcon">
+        <IconDisplay type={'icon'} name="PaginationSkipIcon">
           <T1IconStory 
             icon="PaginationSkipIcon"
             width={24}
@@ -514,12 +514,12 @@ export const AllLegacyIcons = () => {
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="PaginationSkipIcon">
+        <IconDisplay type={'icon'} name="PaginationSkipIcon">
           <T1IconStory icon="PaginationSkipIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="NextOutlinedIcon">
+        <IconDisplay type={'icon'} name="NextOutlinedIcon">
           <T1IconStory 
             icon="NextOutlinedIcon"
             width={24}
@@ -528,12 +528,12 @@ export const AllLegacyIcons = () => {
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="NextOutlinedIcon">
+        <IconDisplay type={'icon'} name="NextOutlinedIcon">
           <T1IconStory icon="NextOutlinedIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="SkipOutlinedIcon">
+        <IconDisplay type={'icon'} name="SkipOutlinedIcon">
           <T1IconStory 
             icon="SkipOutlinedIcon"
             width={24}
@@ -542,17 +542,17 @@ export const AllLegacyIcons = () => {
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="SkipOutlinedIcon">
+        <IconDisplay type={'icon'} name="SkipOutlinedIcon">
           <T1IconStory icon="SkipOutlinedIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="MenuArrowIcon">
+        <IconDisplay type={'icon'} name="MenuArrowIcon">
           <T1IconStory icon="MenuArrowIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="MenuArrowIcon">
+        <IconDisplay type={'icon'} name="MenuArrowIcon">
           <T1IconStory 
             icon="MenuArrowIcon"
             width={24}
@@ -588,107 +588,107 @@ export const AllNewIcons = () => {
         justifySelf:'center'
       }}>
       <div>
-        <IconDisplay icon={true} name="NewChangeNameIcon">
+        <IconDisplay type={'icon'} name="NewChangeNameIcon">
           <T1IconStory icon="NewChangeNameIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="NewChargebacksIcon">
+        <IconDisplay type={'icon'} name="NewChargebacksIcon">
           <T1IconStory icon="NewChargebacksIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="NewCompanyRegistrationIcon">
+        <IconDisplay type={'icon'} name="NewCompanyRegistrationIcon">
           <T1IconStory icon="NewCompanyRegistrationIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="NewDeactivateIcon">
+        <IconDisplay type={'icon'} name="NewDeactivateIcon">
           <T1IconStory icon="NewDeactivateIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="NewDecisionManagerIcon">
+        <IconDisplay type={'icon'} name="NewDecisionManagerIcon">
           <T1IconStory icon="NewDecisionManagerIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="NewDevelopersIcon">
+        <IconDisplay type={'icon'} name="NewDevelopersIcon">
           <T1IconStory icon="NewDevelopersIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="NewDragAndMoveIcon">
+        <IconDisplay type={'icon'} name="NewDragAndMoveIcon">
           <T1IconStory icon="NewDragAndMoveIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="NewFinanceIcon">
+        <IconDisplay type={'icon'} name="NewFinanceIcon">
           <T1IconStory icon="NewFinanceIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="NewFlowAdminIcon">
+        <IconDisplay type={'icon'} name="NewFlowAdminIcon">
           <T1IconStory icon="NewFlowAdminIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="NewHomeIcon">
+        <IconDisplay type={'icon'} name="NewHomeIcon">
           <T1IconStory icon="NewHomeIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="NewMyStoreIcon">
+        <IconDisplay type={'icon'} name="NewMyStoreIcon">
           <T1IconStory icon="NewMyStoreIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="NewPaymentLinkIcon">
+        <IconDisplay type={'icon'} name="NewPaymentLinkIcon">
           <T1IconStory icon="NewPaymentLinkIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="NewProfilesIcon">
+        <IconDisplay type={'icon'} name="NewProfilesIcon">
           <T1IconStory icon="NewProfilesIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="NewReportsIcon">
+        <IconDisplay type={'icon'} name="NewReportsIcon">
           <T1IconStory icon="NewReportsIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="NewRolesAndUsersIcon">
+        <IconDisplay type={'icon'} name="NewRolesAndUsersIcon">
           <T1IconStory icon="NewRolesAndUsersIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="NewSupplierAdminIcon">
+        <IconDisplay type={'icon'} name="NewSupplierAdminIcon">
           <T1IconStory icon="NewSupplierAdminIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="NewTransactionsIcon">
+        <IconDisplay type={'icon'} name="NewTransactionsIcon">
           <T1IconStory icon="NewTransactionsIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="NewHubFlowsIcon">
+        <IconDisplay type={'icon'} name="NewHubFlowsIcon">
           <T1IconStory icon="NewHubFlowsIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="NewSettingsIcon">
+        <IconDisplay type={'icon'} name="NewSettingsIcon">
           <T1IconStory icon="NewSettingsIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="NewExpandMenuIcon">
+        <IconDisplay type={'icon'} name="NewExpandMenuIcon">
           <T1IconStory icon="NewExpandMenuIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="NewExpandMenuIcon">
+        <IconDisplay type={'icon'} name="NewExpandMenuIcon">
           <T1IconStory 
             icon="NewExpandMenuIcon"
             width={24}
@@ -698,152 +698,182 @@ export const AllNewIcons = () => {
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="NewRulesetIcon">
+        <IconDisplay type={'icon'} name="NewRulesetIcon">
           <T1IconStory icon="NewRulesetIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="NewCustomFieldsIcon">
+        <IconDisplay type={'icon'} name="NewCustomFieldsIcon">
           <T1IconStory icon="NewCustomFieldsIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="NewAntiFraudIcon">
+        <IconDisplay type={'icon'} name="NewAntiFraudIcon">
           <T1IconStory icon="NewAntiFraudIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="NewBalancesIcon">
+        <IconDisplay type={'icon'} name="NewBalancesIcon">
           <T1IconStory icon="NewBalancesIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="NewAmexIcon">
+        <IconDisplay type={'icon'} name="NewAmexIcon">
           <T1IconStory icon="NewAmexIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="NewApprovedIcon">
+        <IconDisplay type={'icon'} name="NewApprovedIcon">
           <T1IconStory icon="NewApprovedIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="NewCalendarIcon">
+        <IconDisplay type={'icon'} name="NewCalendarIcon">
           <T1IconStory icon="NewCalendarIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="NewCarnetIcon">
+        <IconDisplay type={'icon'} name="NewCarnetIcon">
           <T1IconStory icon="NewCarnetIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="NewEditIcon">
+        <IconDisplay type={'icon'} name="NewEditIcon">
           <T1IconStory icon="NewEditIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="NewExcelIcon">
+        <IconDisplay type={'icon'} name="NewExcelIcon">
           <T1IconStory icon="NewExcelIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="NewFilterIcon">
+        <IconDisplay type={'icon'} name="NewFilterIcon">
           <T1IconStory icon="NewFilterIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="NewInfoIcon">
+        <IconDisplay type={'icon'} name="NewInfoIcon">
           <T1IconStory icon="NewInfoIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="NewMailIcon">
+        <IconDisplay type={'icon'} name="NewMailIcon">
           <T1IconStory icon="NewMailIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="NewMastercardIcon">
+        <IconDisplay type={'icon'} name="NewMastercardIcon">
           <T1IconStory icon="NewMastercardIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="NewSpeiIcon">
+        <IconDisplay type={'icon'} name="NewSpeiIcon">
           <T1IconStory icon="NewSpeiIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="NewVisaIcon">
+        <IconDisplay type={'icon'} name="NewVisaIcon">
           <T1IconStory icon="NewVisaIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="NewCopyIcon">
+        <IconDisplay type={'icon'} name="NewCopyIcon">
           <T1IconStory icon="NewCopyIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="NewEyeIcon">
+        <IconDisplay type={'icon'} name="NewEyeIcon">
           <T1IconStory icon="NewEyeIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="NewIntegrationIcon">
+        <IconDisplay type={'icon'} name="NewIntegrationIcon">
           <T1IconStory icon="NewIntegrationIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="NewFileTextIcon">
+        <IconDisplay type={'icon'} name="NewFileTextIcon">
           <T1IconStory icon="NewFileTextIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="NewLockIcon">
+        <IconDisplay type={'icon'} name="NewLockIcon">
           <T1IconStory icon="NewLockIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="NewMobileIcon">
+        <IconDisplay type={'icon'} name="NewMobileIcon">
           <T1IconStory icon="NewMobileIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="NewPCIcon">
+        <IconDisplay type={'icon'} name="NewPCIcon">
           <T1IconStory icon="NewPCIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="NewCameraIcon">
+        <IconDisplay type={'icon'} name="NewCameraIcon">
           <T1IconStory icon="NewCameraIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="NewCreditCardIcon">
+        <IconDisplay type={'icon'} name="NewCreditCardIcon">
           <T1IconStory icon="NewCreditCardIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="NewBoxIcon">
+        <IconDisplay type={'icon'} name="NewBoxIcon">
           <T1IconStory icon="NewBoxIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="NewCurrencyIcon">
+        <IconDisplay type={'icon'} name="NewCurrencyIcon">
           <T1IconStory icon="NewCurrencyIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="NewFacebookIcon">
+        <IconDisplay type={'icon'} name="NewFacebookIcon">
           <T1IconStory icon="NewFacebookIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
       <div>
-        <IconDisplay icon={true} name="NewWhatsappIcon">
+        <IconDisplay type={'icon'} name="NewWhatsappIcon">
           <T1IconStory icon="NewWhatsappIcon" width={24} height={24} sx={undefined} className={undefined} type={'icon'}  />
         </IconDisplay>
       </div>
     </div>
   );
+};
+
+
+export const MenuIcons = () => {
+  return (<>
+    <div style={{display:'grid', gap:'1rem', gridArea:'head', textAlign:'center' }}>
+      <h1>
+        Menu Icons
+      </h1>
+      <hr style={{height:'2px', width:'90%', color:'gray'}} />
+    </div>
+    <div 
+      style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
+        gap: '3rem',
+        justifySelf:'center'
+      }}>
+
+      <IconDisplay type={'menuIcon'} name="crownIcon">
+        <T1IconStory icon="crownIcon" width={140} height={140} sx={undefined} className={undefined} type={'menuIcon'} />
+      </IconDisplay>
+    
+      <IconDisplay type={'menuIcon'} name="gridIcon">
+        <T1IconStory icon="gridIcon" width={140} height={140} sx={undefined} className={undefined} type={'menuIcon'} />
+      </IconDisplay>
+
+     
+    </div>
+  </>);
 };
 
 export const Iconography = () => {

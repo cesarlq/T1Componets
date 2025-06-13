@@ -143,11 +143,9 @@ export function T1Selector({
             const content = (
               <>
                 <div className={styles.iconContainer}>
-                  <Image
-                    src={item.icon}
-                    alt={item.label}
-                    width={24}
-                    height={24}
+                  <item.icon 
+                    width={56}
+                    height={56}
                   />
                 </div>
                 <span className={`${styles.itemLabel} `}>
