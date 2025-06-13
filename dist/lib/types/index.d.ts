@@ -30,3 +30,6 @@ export { useMenu } from './Components/MenuComponent/menuContext';
 export { default as RestrictedAccess } from './views/RestrictedAccess';
 export * as Icons from './assets/iconsT1/icons';
 export * as Logos from './assets/iconsT1/logos';
+export * as MenuIcon from './assets/iconsT1/menuIcons';
+export * as MenuIconActive from './assets/iconsT1/menuIcons/active';
+export * as MenuIconInactive from './assets/iconsT1/menuIcons/inactive';
