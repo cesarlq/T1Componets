@@ -1,7 +1,7 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
-import RestrictedAccess from '@/views/restrictedAccess';
+import RestrictedAccess from '../../views/RestrictedAccess';
 
 const meta: Meta<typeof RestrictedAccess> = {
   title: 'Views/RestrictedAccess',

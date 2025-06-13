@@ -7,7 +7,7 @@ import ArrowMenu from '../../assets/arrow-menu.svg';
 import Ellipse from '../../assets/Ellipse55.svg';
 import styles from '../../styles/common/ItemLink.module.scss';
 import { MenuPath, SubPath } from './Sidebar';
-import { useSmartRouter } from '@/util/router-adapter';
+import { useSmartRouter } from '../../util/router-adapter';
 
 export interface ItemLinkProps extends MenuPath {
   className?: string;
