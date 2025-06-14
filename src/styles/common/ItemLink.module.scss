@@ -36,6 +36,7 @@
       padding: 4px;
       margin-left: -4px;
       font-weight: 700;
+      font-family: variables.$font-family!important;
       height: 32.99px;
 
       &::before {
@@ -127,6 +128,7 @@
   position: relative;
   width: 100%;
   padding: 0px;
+  font-family: variables.$font-family!important;
 
   // Estado activo cuando SÍ está reducido y SÍ tiene subpaths
   &[data-reduce="true"] {
@@ -165,6 +167,7 @@
 .endAdornmentSubPath {
     min-width: 19px;
     min-height: 20px;
+    font-family: variables.$font-family!important;
     font-size: 11px;
     font-weight: 400 ;
     align-content: center;
@@ -231,6 +234,7 @@
   width: calc(100% - 10px);
   margin-left: -4px;
   color: #000;
+  font-family: variables.$font-family!important;
   font-size: 12px;
   font-style: normal;
   font-weight: 400;
@@ -252,6 +256,7 @@
     content: attr(data-notification-count);
     position: absolute;
     right: 18px;
+    font-family: variables.$font-family!important;
     font-size: 11px;
     font-weight: 400;
     border-radius: 6px;

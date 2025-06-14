@@ -1,5 +1,5 @@
 // T1Selector.module.scss
-
+@use './variables.scss';
 // Clases de transición personalizadas (como en tu original)
 .transition-ease-all {
   transition: all 0.3s ease;
@@ -148,6 +148,7 @@
   border-radius: 4px;
   color: #6B7280;
   font-size: 20px;
+  font-family: variables.$font-family!important;
   line-height: 1;
   cursor: pointer;
   transition: background-color 0.2s ease;

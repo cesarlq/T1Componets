@@ -1,6 +1,8 @@
 @use './variables.scss';
 
 .container {
+    font-family: variables.$font-family!important;
+
     button {
         border: none;
     }
@@ -37,6 +39,7 @@
         .first-letter {
             cursor: pointer;
             font-size: 14px;
+            font-family: variables.$font-family!important;
             height: 28px;
             width: 28px;
             background-color: variables.$primary-color;
@@ -247,7 +250,7 @@
     font-size: 25px;
     font-weight: 500;
     color: #1f2937;
-    font-family: variables.$font-family;
+    font-family: variables.$font-family!important;
 }
 
 // Versión simple del banner
