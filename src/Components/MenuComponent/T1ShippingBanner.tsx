@@ -131,7 +131,7 @@ export function T1ShippingBanner({
       >
         <div className={styles['logo-wrapper']}>
           <T1Logo
-            style={{minHeight:'25px', maxWidth:'27px'}}
+            style={{minHeight:'25px', maxWidth:'27px', flexShrink: 0 }}
             width={27}
             height={25}
             className={styles['logo-image']} 
@@ -195,7 +195,7 @@ export function SimpleT1Banner({
           width={27}
           height={25}
           className={styles['logo-image']}
-          style={{minHeight:'25px', maxWidth:'27px'}}
+          style={{minHeight:'25px', maxWidth:'27px', flexShrink: 0 }}
         />
       </div>
       <span className={styles['brand-text']}>

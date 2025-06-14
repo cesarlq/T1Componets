@@ -246,7 +246,8 @@
 .brand-text {
     font-size: 25px;
     font-weight: 500;
-    color: #1f2937; // gray-800
+    color: #1f2937;
+    font-family: variables.$font-family;
 }
 
 // Versión simple del banner

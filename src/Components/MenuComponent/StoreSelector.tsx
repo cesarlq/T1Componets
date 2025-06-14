@@ -48,6 +48,8 @@ export function StoreSelector({
   closeOnStoreSelect = true,
   storeColors = ['#51AF70', '#4F6EE0', '#2180FF', '#6FCF97']
 }: StoreSelectorProps) {
+
+  const maxNameLength=20;
   
   const [isOpen, setIsOpen] = useState(false);
   const [search, setSearch] = useState('');
@@ -66,6 +68,11 @@ export function StoreSelector({
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isOpen, closeOnOutsideClick]);
+
+  const truncateText = (text: string, maxLength: number): string => {
+    if (text.length <= maxLength) return text;
+    return `${text.substring(0, maxLength)}...`;
+  };
 
   // Función para obtener las iniciales de la tienda
   const getLetters = (label: string): string => {
@@ -124,7 +131,7 @@ return (
             
             {/* Nombre de la tienda (oculto en móvil) */}
             <span className={styles.storeName}>
-              {currentStore.name}
+              {truncateText(currentStore.name, maxNameLength)}
             </span>
             
             {/* Flecha */}
