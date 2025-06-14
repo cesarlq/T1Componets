@@ -49,6 +49,7 @@ export function StoreSelectorOnSidebar({
   storeColors = ['#51AF70', '#4F6EE0', '#2180FF', '#6FCF97']
 }: StoreSelectorProps) {
   
+  const maxNameLength=20;
   const [isOpen, setIsOpen] = useState(false);
   const [search, setSearch] = useState('');
   const ref = useRef<HTMLDivElement>(null);
@@ -91,6 +92,11 @@ export function StoreSelectorOnSidebar({
     store.name.toLowerCase().includes(search.toLowerCase())
   );
 
+  const truncateText = (text: string, maxLength: number): string => {
+    if (text.length <= maxLength) return text;
+    return `${text.substring(0, maxLength)}...`;
+  };
+
   const hasStores = stores.length > 0;
 
   return (
@@ -114,7 +120,7 @@ export function StoreSelectorOnSidebar({
           
           {/* Nombre de la tienda (oculto en móvil) */}
           <span className={styles.storeName}>
-            {currentStore.name}
+            {truncateText(currentStore.name, maxNameLength)}
           </span>
           
           {/* Flecha */}
