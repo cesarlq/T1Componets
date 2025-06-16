@@ -17,13 +17,8 @@ interface MenuProviderProps {
 }
 
 export function MenuProvider({ children }: MenuProviderProps) {
-  const getInitialOpenState = () => {
-    if (typeof window === 'undefined') return true;
-    return window.innerWidth > 750;
-  };
-
-  const [isOpen, setIsOpen] = useState<boolean>(getInitialOpenState());
-  const [isReduced, setIsReduced] = useState<boolean>(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false); // Abierto por defecto (se ajustará según pantalla)
+  const [isReduced, setIsReduced] = useState<boolean>(false); // Expandido por defecto
 
   const setOpen = (open: boolean) => {
     setIsOpen(open);

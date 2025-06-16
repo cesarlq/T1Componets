@@ -6,18 +6,10 @@ export interface UseScreenDimensionsI {
 }
 
 export const useScreenDimensions = () => {
-	
-	const getInitialSize = (): UseScreenDimensionsI => {
-		if (typeof window === 'undefined') {
-			return { width: null, height: null };
-		}
-		return {
-			width: window.innerWidth,
-			height: window.innerHeight,
-		};
-	};
-
-	const [windowSize, setWindowSize] = useState<UseScreenDimensionsI>(getInitialSize);
+	const [windowSize, setWindowSize] = useState<UseScreenDimensionsI>({
+		width: null,
+		height: null,
+	});
 
 	useEffect(() => {
 		let timeoutId: NodeJS.Timeout;
@@ -34,10 +26,7 @@ export const useScreenDimensions = () => {
 
 		window.addEventListener('resize', handleResize);
 
-		// Solo llamar handleResize si no tenemos dimensiones iniciales
-		if (windowSize.width === null) {
-			handleResize();
-		}
+		handleResize();
 
 		return () => {
 			window.removeEventListener('resize', handleResize);

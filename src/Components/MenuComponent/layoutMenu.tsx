@@ -36,9 +36,6 @@ function LayoutMenuContent({ navBarProps, sideBarProps, menuCallbacks }: layoutM
     
     const { isOpen, isReduced, setOpen, setReduced, toggleOpen, toggleReduced } = useMenu();
 
-    
-    const isInitialMobile = typeof window !== 'undefined' && window.innerWidth <= 750;
-
     useEffect(() => {
         if (menuCallbacks?.onMenuStateChange) {
             menuCallbacks.onMenuStateChange({
@@ -69,8 +66,7 @@ function LayoutMenuContent({ navBarProps, sideBarProps, menuCallbacks }: layoutM
     }, [isMobile, menuCallbacks]);
 
     useEffect(() => {
-        // Sincronizar estado inmediatamente si tenemos dimensiones
-        if (width !== null && !isInitialized.current) {
+        if (width && width > 0 && !isInitialized.current) {
             if (isMobile) {
                 setOpen(false);
                 setReduced(false);
@@ -85,17 +81,6 @@ function LayoutMenuContent({ navBarProps, sideBarProps, menuCallbacks }: layoutM
             isInitialized.current = true;
         }
     }, [width, isMobile, isTablet, setOpen, setReduced]);
-
-    // Efecto adicional para manejar cambios de tamaño después de la inicialización
-    useEffect(() => {
-        if (width !== null && isInitialized.current) {
-            if (isMobile && isOpen) {
-                setOpen(false);
-            } else if (!isMobile && !isOpen && !isTablet) {
-                setOpen(true);
-            }
-        }
-    }, [isMobile, isTablet, width, isOpen, setOpen]);
 
     // Handler para el contexto (solo para pasar al navbar/banner como callback)
     const handleReducerHandle = () => {
