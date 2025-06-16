@@ -11,15 +11,18 @@ export default function BalanceBanner({ className, balance, BALLANCE_PATH }: Bal
 
    
     return (
-        <Link
-            className={`${styles['balance-container']} ${className}`}
-            href={BALLANCE_PATH}
-        >
-            <WalletIcon/>
-            <span className={styles.balance}>
-                $ {numberFormatWithoutRound((balance && balance.monto_actual) || 0)}
-            </span>
-            <ArrowMenu/>
+        <Link href={BALLANCE_PATH} legacyBehavior>
+            <a
+                className={`${styles['balance-container']} ${className}`}
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                <WalletIcon />
+                <span className={styles.balance}>
+                    $ {numberFormatWithoutRound((balance && balance.monto_actual) || 0)}
+                </span>
+                <ArrowMenu />
+            </a>
         </Link>
     );
 }
