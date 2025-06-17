@@ -29,6 +29,7 @@ export interface MenuPath {
   component?: React.ComponentType<any>;
   hasNotification?: boolean;
   autoNavigateToFirstSubPath?: boolean;
+  dataTourTarget?: string;
 }
 
 export interface SidebarPropsI {

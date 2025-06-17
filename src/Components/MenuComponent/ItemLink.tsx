@@ -27,6 +27,7 @@ export interface ItemLinkProps extends MenuPath {
   onToggleOpen?: (isOpen: boolean) => void;
   autoNavigateToFirstSubPath?: boolean;
   hasNotification?: boolean;
+  dataTourTarget?: string;
 }
 
 export function ItemLink({
@@ -55,7 +56,8 @@ export function ItemLink({
   type,
   component,
   autoNavigateToFirstSubPath = false,
-  hasNotification = false
+  hasNotification = false,
+  dataTourTarget=''
 }: ItemLinkProps) {
   
   // Usar el adaptador de router
@@ -205,6 +207,7 @@ export function ItemLink({
       <div 
         className={`${styles.itemSubPath} ${className}`} 
         data-reduce={sidebarReduce && !enlargeByHover}
+        data-tour-target={dataTourTarget}
       >
         <li
           className={styles.linkContainer}
@@ -309,6 +312,7 @@ export function ItemLink({
   // Renderizar item simple (sin subPaths)
   return (
     <li
+      data-tour-target={dataTourTarget}
       className={`${styles.linkContainer} ${className}`}
       data-active={itemIsActive}
       data-reduce={sidebarReduce && !enlargeByHover}

@@ -28,6 +28,7 @@ const mockMenuPaths: MenuPath[] = [
     text: 'Dashboard',
     icon: MenuIcon.homeIcon,
     hasNotification: true,
+    dataTourTarget:'my access'
   },
   {
     type: 'LINK',
@@ -35,6 +36,7 @@ const mockMenuPaths: MenuPath[] = [
     text: 'Envíos',
     icon: MenuIcon.fullfillmentIcon,
     hasNotification: true,
+     dataTourTarget:'my access',
     subPaths: [
       { href: '/envios/crear', text: 'Crear envío', endAdornmentSubPath: 22, hasNotification: true },
       { href: '/envios/lista', text: 'Lista de envíos' },
@@ -45,6 +47,7 @@ const mockMenuPaths: MenuPath[] = [
     type: 'LINK',
     href: '/clientes',
     text: 'Clientes',
+     dataTourTarget:'my access',
     icon: MenuIcon.clientsIcon,
   },
   {
