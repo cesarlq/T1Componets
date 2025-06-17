@@ -8,6 +8,7 @@ on:
   push:
     tags:
       - 'v*'
+  workflow_dispatch:  # ← allows manual triggering
 
 jobs:
   notify:
