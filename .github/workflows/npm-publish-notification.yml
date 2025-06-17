@@ -24,6 +24,7 @@ jobs:
       
       - name: Send Google Chat notification
         run: |
+          echo ${{ secrets.GOOGLE_CHAT_WEBHOOK }}
           curl -X POST -H 'Content-Type: application/json' \
           -d '{
             "text": "🚀 *${{ steps.package.outputs.NAME }}* v${{ steps.package.outputs.VERSION }} has been published to npm!\n\nView on npm: https://www.npmjs.com/package/${{ steps.package.outputs.NAME }}\nGitHub Release: ${{ github.event.release.html_url }}"
