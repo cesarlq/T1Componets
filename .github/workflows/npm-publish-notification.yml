@@ -2,13 +2,11 @@
 name: NPM Publish Notification
 
 on:
-  release:
-    types: [published]
-  # Or trigger on npm publish
   push:
-    tags:
-      - 'v*'
-  workflow_dispatch:  # ← allows manual triggering
+    branches:
+      - main
+      - dev
+  workflow_dispatch:
 
 jobs:
   notify:
