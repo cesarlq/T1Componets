@@ -27,7 +27,7 @@ export { StoreSelector } from './Components/MenuComponent/StoreSelector';
 export { StoreSelectorOnSidebar } from './Components/MenuComponent/StoreSelectorOnSidebar';
 export { default as LayoutMenu, type MenuState, type MenuCallbacks } from './Components/MenuComponent/layoutMenu';
 export { useMenu } from './Components/MenuComponent/menuContext';
-export { default as RestrictedAccess } from './views/RestrictedAccess';
+export { default as RestrictedAccess } from './views/restrictedAccess';
 export * as Icons from './assets/iconsT1/icons';
 export * as Logos from './assets/iconsT1/logos';
 export * as MenuIcon from './assets/iconsT1/menuIcons';

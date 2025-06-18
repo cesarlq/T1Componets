@@ -9,7 +9,7 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import GroupIcon from '@mui/icons-material/Group';
 import { T1ShippingBanner } from '@/Components/MenuComponent/T1ShippingBanner';
 import { Navbar } from '@/Components/MenuComponent/Navbar';
-import Sidebar from '@/Components/Sidebar';
+import Sidebar from '@/Components/SideBar';
 
 // Mock de stores
 const mockStores = [
@@ -64,7 +64,7 @@ const SidebarWithState = (args: any) => {
       isReduced={isReduced}
       isOpen={isOpen}
       isMobile={isMobile}
-      onNavigate={(path) => console.log('Navigate to:', path)}
+      onNavigate={() => console.log('Navigate to:')}
     />
   );
 
@@ -96,7 +96,7 @@ const SidebarWithState = (args: any) => {
     },
     showBalance: true,
     showSearchInput: true,
-    onNavigate: (path: string) => console.log('Navigate to:', path),
+    onNavigate: () => console.log('Navigate to:'),
     onSearch: (data: any) => console.log('Search:', data),
     onLogout: () => console.log('Logout'),
     BalanceBanner: ({ className }: { className?: string }) => (

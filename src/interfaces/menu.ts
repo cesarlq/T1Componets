@@ -45,7 +45,7 @@ export interface NavbarPropsI {
   onSearch?: (data: { search: string }) => void;
   onManageAccount?: (user: User) => void;
   onStoreChange?: (storeId: number) => void;
-  onNavigate?: (path: string) => void;
+  onNavigate?: () => void;
   onReducerHandle: () => void ;
   sidebarReduce: boolean;
   
