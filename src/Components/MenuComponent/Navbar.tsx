@@ -69,9 +69,9 @@ export function Navbar({
   };
 
   // Handler interno para navegación
-  const handleNavigation = (path: string) => {
+  const handleNavigation = () => {
     // Llamar callback externo
-    onNavigate?.(path);
+    onNavigate?.();
   };
 
   // Handler interno para logout

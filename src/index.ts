@@ -40,7 +40,7 @@ export { StoreSelectorOnSidebar } from './Components/MenuComponent/StoreSelector
 export { default as LayoutMenu, type MenuState, type MenuCallbacks  } from './Components/MenuComponent/layoutMenu';
 export { useMenu } from './Components/MenuComponent/menuContext';
 //Views
-export { default as RestrictedAccess } from './views/RestrictedAccess';
+export { default as RestrictedAccess } from './views/restrictedAccess';
 
 export * as Icons from './assets/iconsT1/icons';
 export * as Logos from './assets/iconsT1/logos';
