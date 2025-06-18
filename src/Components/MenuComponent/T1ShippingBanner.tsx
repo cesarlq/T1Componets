@@ -13,7 +13,7 @@ export interface T1ShippingBannerProps {
   isMobile?: boolean;
   
   // Props opcionales para override externo (compatibilidad)
-  onNavigate?: (path: string) => void;
+  onNavigate?: () => void;
   onToggleReduce?: () => void;
   onToggleOpen?: () => void;
   isReduced?: boolean;
@@ -26,7 +26,6 @@ export interface T1ShippingBannerProps {
 
 export function T1ShippingBanner({
   className = '',
-  dashboardPath = '/',
   brandText = 'envíos',
   isMobile = false,
   
@@ -68,13 +67,8 @@ export function T1ShippingBanner({
   const handleNavigate = (e: React.MouseEvent) => {
     e.preventDefault();
     
-    // Navegación interna
-    if (!isStorybook) {
-      router.push(dashboardPath);
-    }
-    
     // Callback externo si existe
-    onNavigate?.(dashboardPath);
+    onNavigate?.();
   };
 
   // Handler interno para toggle
@@ -173,14 +167,8 @@ export function SimpleT1Banner({
 
   const handleNavigate = (e: React.MouseEvent) => {
     e.preventDefault();
-    
-    // Navegación interna
-    if (!isStorybook) {
-      router.push(dashboardPath);
-    }
-    
     // Callback externo si existe
-    onNavigate?.(dashboardPath);
+    onNavigate?.();
   };
 
   return (
