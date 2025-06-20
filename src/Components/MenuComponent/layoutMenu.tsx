@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useMemo } from 'react';
+import React, { useEffect, useCallback, useMemo, useRef } from 'react';
 import { useTheme } from '@mui/material/styles';
 import { MenuProvider, useMenu } from './menuContext';
 import { Sidebar, SidebarPropsI } from './Sidebar';
@@ -7,10 +7,6 @@ import { NavbarPropsI } from '@/interfaces/menu';
 import { T1ShippingBanner } from './T1ShippingBanner';
 import { useMediaQuery } from '@mui/material';
 import { motion, AnimatePresence } from 'framer-motion';
-import clsx from 'clsx';
-
-// Importar estilos con fixes de z-index
-import styles from '../../styles/common/LayoutMenu.module.scss';
 
 // ============================================================================
 // TYPES & INTERFACES
@@ -58,6 +54,20 @@ const DEFAULT_BREAKPOINTS = {
   tablet: 1110,
 } as const;
 
+const TRANSITIONS = {
+  sidebar: {
+    type: "spring",
+    stiffness: 260,
+    damping: 20,
+    duration: ANIMATION_DURATION / 1000,
+  },
+  content: {
+    type: "tween",
+    ease: "easeInOut",
+    duration: ANIMATION_DURATION / 1000,
+  },
+} as const;
+
 // ============================================================================
 // HOOKS
 // ============================================================================
@@ -84,6 +94,39 @@ const useViewport = (customBreakpoints?: { mobile?: number; tablet?: number }) =
   return { viewport, isMobile, isTablet, isDesktop, dimensions };
 };
 
+// Hook para persistir preferencias del usuario
+const useMenuPreferences = (enabled: boolean = true) => {
+  const [preferences, setPreferences] = React.useState<{
+    isReduced?: boolean;
+    lastViewport?: MenuState['viewport'];
+  }>({});
+  
+  useEffect(() => {
+    if (!enabled || typeof window === 'undefined') return;
+    
+    try {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      if (stored) {
+        setPreferences(JSON.parse(stored));
+      }
+    } catch (error) {
+      console.warn('Failed to load menu preferences:', error);
+    }
+  }, [enabled]);
+  
+  const savePreferences = useCallback((prefs: typeof preferences) => {
+    if (!enabled || typeof window === 'undefined') return;
+    
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(prefs));
+    } catch (error) {
+      console.warn('Failed to save menu preferences:', error);
+    }
+  }, [enabled]);
+  
+  return { preferences, savePreferences };
+};
+
 // ============================================================================
 // MAIN COMPONENT
 // ============================================================================
@@ -98,6 +141,12 @@ function LayoutMenuContent({
   const theme = useTheme();
   const { isOpen, isReduced, setOpen, setReduced, toggleOpen, toggleReduced } = useMenu();
   const { viewport, isMobile, isTablet, isDesktop, dimensions } = useViewport(config.customBreakpoints);
+  const { preferences, savePreferences } = useMenuPreferences(config.persistPreferences ?? true);
+  
+  // Referencias para evitar re-renderizados innecesarios
+  const isInitialized = useRef(false);
+  const userHasInteracted = useRef(false);
+  const lastViewport = useRef(viewport);
   
   // Estado del menú para callbacks
   const menuState: MenuState = useMemo(() => ({
@@ -113,9 +162,14 @@ function LayoutMenuContent({
     menuCallbacks?.onMenuStateChange?.(menuState);
   }, [menuState, menuCallbacks]);
   
-  // Inicialización basada en viewport
+  // Inicialización y cambios de viewport
   useEffect(() => {
-    if (dimensions.width > 0) {
+    // Solo ejecutar si:
+    // 1. No se ha inicializado aún
+    // 2. El viewport cambió Y el usuario no ha interactuado recientemente
+    if (!isInitialized.current || (lastViewport.current !== viewport && !userHasInteracted.current)) {
+      
+      // Aplicar estado por defecto según viewport
       switch (viewport) {
         case 'mobile':
           setOpen(false);
@@ -123,29 +177,55 @@ function LayoutMenuContent({
           break;
         case 'tablet':
           setOpen(true);
-          setReduced(true);
+          // Usar preferencia guardada si existe, sino usar default
+          setReduced(preferences.isReduced ?? true);
           break;
         case 'desktop':
           setOpen(true);
-          setReduced(false);
+          // Usar preferencia guardada si existe, sino usar default
+          setReduced(preferences.isReduced ?? false);
           break;
       }
+      
+      isInitialized.current = true;
+      lastViewport.current = viewport;
     }
-  }, [viewport, dimensions.width, setOpen, setReduced]);
+    
+    // Reset el flag de interacción después de un tiempo
+    if (userHasInteracted.current) {
+      const timer = setTimeout(() => {
+        userHasInteracted.current = false;
+      }, 1000); // 1 segundo de "gracia" después de la interacción
+      
+      return () => clearTimeout(timer);
+    }
+  }, [viewport, setOpen, setReduced, preferences.isReduced]);
+  
+  // Guardar preferencias cuando cambie isReduced
+  useEffect(() => {
+    if (userHasInteracted.current && !isMobile) {
+      savePreferences({
+        isReduced,
+        lastViewport: viewport,
+      });
+    }
+  }, [isReduced, viewport, isMobile, savePreferences]);
   
   // Handlers con callbacks
   const handleToggleOpen = useCallback(() => {
+    userHasInteracted.current = true;
     toggleOpen();
     menuCallbacks?.onToggleOpen?.(!isOpen);
   }, [toggleOpen, isOpen, menuCallbacks]);
   
   const handleToggleReduce = useCallback(() => {
+    userHasInteracted.current = true;
     toggleReduced();
     menuCallbacks?.onToggleReduced?.(!isReduced);
   }, [toggleReduced, isReduced, menuCallbacks]);
   
-  // Handler para el toggle desde navbar
-  const handleReducerHandle = useCallback(() => {
+  // Handler para el toggle desde navbar/sidebar
+  const handleToggleWithAnimation = useCallback(() => {
     if (isMobile) {
       handleToggleOpen();
     } else {
@@ -154,8 +234,13 @@ function LayoutMenuContent({
   }, [isMobile, handleToggleOpen, handleToggleReduce]);
   
   // TopBanner para móvil
-  const MobileTopBanner = useCallback(() => (
-    <div className={styles.mobileTopBanner}>
+  const MobileTopBanner: React.FC<{ className?: string }> = ({ className = '' }) => (
+    <motion.div
+      className={`${className} mt-3`}
+      initial={{ opacity: 0, y: -10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={TRANSITIONS.content}
+    >
       <T1ShippingBanner
         brandText={sideBarProps.shippingBannerTitle || navBarProps.shippingBannerTitle}
         isMobile={true}
@@ -163,71 +248,97 @@ function LayoutMenuContent({
         isOpen={isOpen}
         onToggleOpen={handleToggleOpen}
       />
-    </div>
-  ), [sideBarProps.shippingBannerTitle, navBarProps.shippingBannerTitle, isReduced, isOpen, handleToggleOpen]);
+    </motion.div>
+  );
   
   return (
-    <div className={styles.layoutContainer}>
-      {/* Navbar con z-index alto */}
-      <nav 
-        className={clsx(styles.navbarWrapper, 'navbar-container')}
-        data-sidebar-open={isOpen}
-      >
-        <Navbar
-          {...navBarProps}
-          shippingBannerTitle={navBarProps.shippingBannerTitle}
-          isMobile={isMobile}
-          onReducerHandle={handleReducerHandle}
-          sidebarReduce={isReduced}
-        />
-      </nav>
-      
-      {/* Sidebar con z-index dinámico */}
-      <aside 
-        className={clsx(styles.sidebarWrapper, 'sidebar-container')}
-        data-reduce={isReduced}
-        data-open-side-bar={isOpen}
-      >
-        <Sidebar
-          {...sideBarProps}
-          TopBanner={isMobile ? MobileTopBanner : undefined}
-          isOpen={isOpen}
-          isReduced={isReduced}
-          isMobile={isMobile}
-          onToggleOpen={handleToggleOpen}
-          onToggleReduce={handleToggleReduce}
-        />
-      </aside>
-      
-      {/* Overlay para móvil */}
+    <div className="layout-menu-container">
+      {/* Sidebar con overlay para móvil */}
       <AnimatePresence>
         {isMobile && isOpen && (
           <motion.div
-            className={styles.mobileOverlay}
+            className="mobile-overlay"
             initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
+            animate={{ opacity: 0.3 }}
             exit={{ opacity: 0 }}
             onClick={handleToggleOpen}
+            style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundColor: '#000',
+              zIndex: 10,
+            }}
           />
         )}
       </AnimatePresence>
       
-      {/* Área de contenido */}
-      <main 
-        className={clsx(styles.mainContent, 'main-content')}
-        data-sidebar-expanded={!isMobile && isOpen && !isReduced}
-        data-sidebar-reduced={!isMobile && isOpen && isReduced}
+      <Sidebar
+        {...sideBarProps}
+        TopBanner={isMobile ? MobileTopBanner : undefined}
+        isOpen={isOpen}
+        isReduced={isReduced}
+        isMobile={isMobile}
+        onToggleOpen={handleToggleOpen}
+        onToggleReduce={handleToggleReduce}
+      />
+      
+      {/* Main content area */}
+      <motion.main
+        className={`main-content ${isReduced ? 'sidebar-reduced' : 'sidebar-expanded'}`}
+        animate={{
+          marginLeft: isMobile ? 0 : isOpen ? (isReduced ? '70px' : '250px') : 0,
+        }}
+        transition={TRANSITIONS.content}
+        style={{
+          minHeight: '100vh',
+          position: 'relative',
+        }}
       >
-        {children}
-      </main>
+        <Navbar
+          {...navBarProps}
+          className="navbar-fixed"
+          shippingBannerTitle={navBarProps.shippingBannerTitle}
+          isMobile={isMobile}
+          texts={{
+            logout: "Cerrar sesión",
+            ...navBarProps.texts
+          }}
+          onReducerHandle={handleToggleWithAnimation}
+          sidebarReduce={isReduced}
+        />
+        
+        {/* Área de contenido */}
+        <div className="content-area" style={{ 
+          paddingTop: '60px', // Height del navbar
+          padding: theme.spacing(3) 
+        }}>
+          {children}
+        </div>
+      </motion.main>
     </div>
   );
 }
 
+/**
+ * Componente principal del Layout Menu
+ * Provee el contexto y gestiona todo el estado del menú
+ */
 export default function LayoutMenu(props: LayoutMenuProps) {
-  return (
+  const { config = {} } = props;
+  
+  // Wrapper con AnimatePresence si las animaciones están habilitadas
+  const content = (
     <MenuProvider>
       <LayoutMenuContent {...props} />
     </MenuProvider>
   );
+  
+  if (config.animations !== false) {
+    return <AnimatePresence mode="wait">{content}</AnimatePresence>;
+  }
+  
+  return content;
 }
