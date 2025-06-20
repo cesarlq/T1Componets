@@ -1,16 +1,70 @@
 @use './variables.scss';
 
+// ========================================================================
+// VARIABLES & MIXINS
+// ========================================================================
+
+$transition-base: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+$transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+$transition-spring: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+@mixin glass-effect {
+  backdrop-filter: blur(10px);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.05) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+@mixin hover-glow {
+  &::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(variables.$primary-color, 0.1),
+      transparent
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    border-radius: inherit;
+    pointer-events: none;
+  }
+  
+  &:hover::before {
+    opacity: 1;
+  }
+}
+
+@mixin focus-ring {
+  &:focus-visible {
+    outline: 2px solid rgba(variables.$primary-color, 0.5);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 4px rgba(variables.$primary-color, 0.1);
+  }
+}
+
+// ========================================================================
+// CONTAINER STYLES
+// ========================================================================
+
 .itemSubPath {
   list-style: none;
-
+  position: relative;
+  
   &[data-reduce="true"] {
     .linkContainer {
-      width: 41px;
-      height: 41px;
+      width: 44px;
+      height: 44px;
       padding: 0;
       display: grid;
       place-content: center;
-
+      border-radius: 12px;
+      
       .arrow {
         display: none;
       }
@@ -21,271 +75,471 @@
 .linkContainer {
   display: flex;
   align-items: center;
-  height: 30px;
-  padding: 10px;
+  min-height: 40px;
+  padding: 8px 12px;
+  margin: 2px 0;
   list-style-type: none;
-  transition: all ease 0.3s;
+  transition: $transition-base;
   cursor: pointer;
-
-  // Estado activo cuando NO está reducido y NO tiene subpaths
-  &[data-active="true"][data-has-sub-paths="false"][data-reduce="false"] {
-    background-color: #FEF4F4;
-    border-radius: 6px;
-
-    .link {
-      padding: 4px;
-      margin-left: -4px;
-      font-weight: 700;
-      font-family: variables.$font-family!important;
-      height: 32.99px;
-
-      &::before {
-        content: ' ';
-        position: absolute;
-        width: 2px;
-        background-color: variables.$primary-color;
-        left: -2px;
-        top: 6px;
-        bottom: 6px;
-        border-radius: 10px;
-      }
-
-      .endAdornment {
-        bottom: 8.5px;
-        right: -25px;
-      }
+  position: relative;
+  border-radius: 10px;
+  overflow: hidden;
+  
+  @include hover-glow;
+  @include focus-ring;
+  
+  // Micro-animación en hover
+  &:hover {
+    transform: translateX(2px);
+    background: linear-gradient(
+      90deg,
+      rgba(variables.$primary-color, 0.03) 0%,
+      transparent 100%
+    );
+    
+    .menuIcon {
+      filter: brightness(1.1);
     }
   }
-
-  // Estado activo cuando NO está reducido y SÍ tiene subpaths
-  &[data-active="true"][data-reduce="false"] {
-    position: relative;
-
+  
+  // Estados activos mejorados
+  &[data-active="true"] {
+    background: linear-gradient(
+      135deg,
+      rgba(variables.$primary-color, 0.08) 0%,
+      rgba(variables.$primary-color, 0.04) 100%
+    );
+    box-shadow: 
+      inset 0 1px 2px rgba(variables.$primary-color, 0.1),
+      0 2px 8px rgba(variables.$primary-color, 0.05);
+    
+    &::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 3px;
+      height: 70%;
+      background: linear-gradient(
+        180deg,
+        variables.$primary-color 0%,
+        darken(variables.$primary-color, 10%) 100%
+      );
+      border-radius: 0 3px 3px 0;
+      box-shadow: 2px 0 4px rgba(variables.$primary-color, 0.3);
+      animation: slideIn 0.3s ease-out;
+    }
+    
     .link {
-      font-weight: 700;
-
-      &::before {
-        content: ' ';
-        position: absolute;
-        width: 2px;
-        background-color: variables.$primary-color;
-        left: -4px;
-        top: 0;
-        bottom: 0;
-        border-radius: 10px;
+      font-weight: 600;
+      color: variables.$primary-color;
+    }
+  }
+  
+  // Mobile touch feedback
+  @media (max-width: variables.$breakpoint-md) {
+    &[data-has-sub-paths="true"] {
+      // Indicador visual de que es clickeable
+      .link {
+        &::after {
+          content: '';
+          position: absolute;
+          right: 40px;
+          top: 50%;
+          transform: translateY(-50%);
+          width: 20px;
+          height: 20px;
+          border-radius: 50%;
+          background: rgba(variables.$primary-color, 0.05);
+          opacity: 0;
+          transition: opacity 0.2s ease;
+        }
+      }
+      
+      &:active .link::after {
+        opacity: 1;
+        background: rgba(variables.$primary-color, 0.1);
       }
     }
-  }
-
-  // Estado activo cuando SÍ está reducido y NO tiene subpaths
-  &[data-active="true"][data-has-sub-paths="false"][data-reduce="true"] {
-    background-color: #FEF4F4;
-    border-radius: 15px;
-    width: 41px;
-    height: 41px;
-  }
-
-  // Estado activo cuando SÍ está reducido y SÍ tiene subpaths
-  &[data-active="true"][data-has-sub-paths="true"][data-reduce="true"] {
-    background-color: #FEF4F4;
-    border-radius: 15px;
-    width: 41px;
-    height: 41px;
-
-    .link {
-      background-color: #FEF4F4;
-      border-radius: 6px;
-      width: 100%;
-    }
-  }
-
-  // Configuración especial para items con subpaths
-  &[data-has-sub-paths="true"] {
-    width: 100%;
-    display: flex;
-    padding: 10px;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 0 !important;
   }
 }
 
+// ========================================================================
+// LINK & CONTENT STYLES
+// ========================================================================
+
 .link {
   background-color: transparent;
-  -webkit-user-select: none;
-  -ms-user-select: none;
   user-select: none;
   border: none;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   text-decoration: none;
-  color: #4C4C4C;
-  font-size: 12px;
-  font-style: normal;
+  color: variables.$font-color;
+  font-size: 14px;
   font-weight: 500;
-  line-height: normal;
+  line-height: 1.5;
   position: relative;
   width: 100%;
-  padding: 0px;
-  font-family: variables.$font-family!important;
-
-  // Estado activo cuando SÍ está reducido y SÍ tiene subpaths
+  padding: 0;
+  font-family: variables.$font-family;
+  transition: $transition-base;
+  
+  @include focus-ring;
+  
   &[data-reduce="true"] {
     justify-content: center;
   }
-
-  &:hover {
-    text-decoration: none;
-    color: #4C4C4C;
+  
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
   }
-
-  .menuIcon {
-    flex-shrink: 0;
-    fill: variables.$font-color;
-    max-width: 19px;
-    max-height: 19px;
-    @media (max-width: variables.$breakpoint-md) {
-      max-width: 18px;
-      max-height: 18px;
-    }
-  }
-
+  
   @media (max-width: variables.$breakpoint-md) {
     font-size: 13px;
+    gap: 10px;
   }
 }
 
-.endAdornment {
-  position: absolute;
-  right: -30px;
-  bottom: 2px;
-  min-width: 25px;
-  height: 17px;
+.iconWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: $transition-spring;
 }
 
-.endAdornmentSubPath {
-    min-width: 19px;
-    min-height: 20px;
-    font-family: variables.$font-family!important;
-    font-size: 11px;
-    font-weight: 400 ;
-    align-content: center;
-    background-color: #F9D2D2;
-    border-radius: 6px;
-    margin: 5px;
+.menuIcon {
+  flex-shrink: 0;
+  fill: currentColor;
+  width: 20px;
+  height: 20px;
+  transition: $transition-base;
+  
+  @media (max-width: variables.$breakpoint-md) {
+    width: 18px;
+    height: 18px;
+  }
 }
 
-.containerEndAdornmentSubPath{
-    display: flex;
-    width: fit-content;
-    align-items: anchor-center;
+.menuText {
+  flex: 1;
+  text-align: left;
+  transition: $transition-base;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+// ========================================================================
+// ARROW & ANIMATIONS
+// ========================================================================
+
+.arrowWrapper {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .arrow {
-  transition: all ease 0.3s;
-  transform: rotate(180deg);
+  transition: $transition-smooth;
   flex-shrink: 0;
-
+  color: variables.$font-color;
+  opacity: 0.6;
+  
   &[data-open="true"] {
-    transform: rotate(0deg);
+    color: variables.$primary-color;
+    opacity: 1;
+  }
+  
+  // Animación más evidente en móvil
+  @media (max-width: variables.$breakpoint-md) {
+    opacity: 0.8;
+    
+    &[data-open="true"] {
+      filter: drop-shadow(0 0 2px rgba(variables.$primary-color, 0.3));
+    }
   }
 }
 
+// ========================================================================
+// SUBMENUS
+// ========================================================================
+
 .subPaths {
-  max-height: 0;
   overflow: hidden;
-  transition: max-height ease 0.3s;
   display: flex;
   flex-direction: column;
-  gap: 3px;
-  padding-left: 26px;
-
-  &[data-open="true"] {
-    max-height: 500px;
-    position: relative;
-    margin-top: 3px;
-
-    &::before {
-      content: ' ';
-      position: absolute;
-      width: 1px;
-      background-color: #E7E7E7;
-      left: 15px;
-      top: 0;
-      bottom: 0;
-    }
+  gap: 4px;
+  padding-left: 32px;
+  padding-top: 4px;
+  position: relative;
+  
+  // Línea vertical elegante
+  &::before {
+    content: '';
+    position: absolute;
+    width: 1px;
+    background: linear-gradient(
+      180deg,
+      transparent 0%,
+      rgba(variables.$primary-color, 0.2) 20%,
+      rgba(variables.$primary-color, 0.2) 80%,
+      transparent 100%
+    );
+    left: 20px;
+    top: 0;
+    bottom: 0;
+    transition: opacity 0.3s ease;
   }
-
+  
   @media (max-width: variables.$breakpoint-md) {
-    gap: 5px;
+    gap: 6px;
+    padding-left: 28px;
   }
 }
 
 .subPath {
-  background-color: transparent;
-  justify-content: space-between;
-  border: 0px;
-  height: 30px;
+  background: transparent;
+  border: none;
+  min-height: 36px;
   display: flex;
   align-items: center;
-  border-radius: 5px;
-  padding: 4px;
-  width: calc(100% - 10px);
+  justify-content: space-between;
+  gap: 8px;
+  border-radius: 8px;
+  padding: 8px 12px;
   margin-left: -4px;
-  color: #000;
-  font-family: variables.$font-family!important;
-  font-size: 12px;
-  font-style: normal;
+  color: variables.$font-color;
+  font-family: variables.$font-family;
+  font-size: 13px;
   font-weight: 400;
-  line-height: normal;
+  line-height: 1.5;
   text-decoration: none;
   position: relative;
-
-  &:hover {
-    text-decoration: none;
-    color: #000;
-  }
-
-  &[data-active="true"] {
-    background-color: #FEF4F4;
-  }
-
-  // Notification count
+  cursor: pointer;
+  transition: $transition-base;
+  
+  @include focus-ring;
+  
   &::before {
-    content: attr(data-notification-count);
+    content: '';
     position: absolute;
-    right: 18px;
-    font-family: variables.$font-family!important;
-    font-size: 11px;
-    font-weight: 400;
-    border-radius: 6px;
-    background: #F9D2D2;
-    width: 19.356px;
-    height: 20px;
-    place-content: center;
-    display: grid;
-    color: #4C4C4C;
+    left: -12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: rgba(variables.$primary-color, 0.3);
+    opacity: 0;
+    transition: $transition-base;
   }
-
-  &[data-notification-count='']::before {
-    display: none;
+  
+  &:hover {
+    background: rgba(variables.$primary-color, 0.05);
+    color: variables.$primary-color;
+    
+    &::before {
+      opacity: 1;
+      background: variables.$primary-color;
+    }
   }
-
+  
+  &[data-active="true"] {
+    background: linear-gradient(
+      90deg,
+      rgba(variables.$primary-color, 0.1) 0%,
+      rgba(variables.$primary-color, 0.05) 100%
+    );
+    color: variables.$primary-color;
+    font-weight: 500;
+    
+    &::before {
+      opacity: 1;
+      background: variables.$primary-color;
+      width: 8px;
+      height: 8px;
+    }
+  }
+  
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
   @media (max-width: variables.$breakpoint-md) {
-    font-size: 13px;
+    font-size: 12px;
+    min-height: 32px;
+    padding: 6px 10px;
   }
 }
 
-// Media queries
-@media (max-width: variables.$breakpoint-md) {
-  .linkContainer[data-active="true"] {
-    position: relative;
+.subPathText {
+  flex: 1;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
-    .link {
-      &::after {
-        display: none;
-      }
+.subPathEndAdornment {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+// ========================================================================
+// NOTIFICATIONS & INDICATORS
+// ========================================================================
+
+.notificationDot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 6px;
+  min-height: 6px;
+  
+  svg {
+    fill: variables.$primary-color;
+    filter: drop-shadow(0 0 3px rgba(variables.$primary-color, 0.4));
+    animation: pulse 2s ease-in-out infinite;
+  }
+}
+
+.notificationCount {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  background: linear-gradient(
+    135deg,
+    variables.$primary-color 0%,
+    darken(variables.$primary-color, 5%) 100%
+  );
+  color: white;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 10px;
+  box-shadow: 
+    0 2px 4px rgba(variables.$primary-color, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+// ========================================================================
+// LOADING & END ADORNMENTS
+// ========================================================================
+
+.loadingSpinner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: auto;
+  
+  svg {
+    color: variables.$primary-color;
+    opacity: 0.8;
+  }
+}
+
+.endAdornment {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  min-width: fit-content;
+  transition: $transition-base;
+}
+
+.endAdornmentSubPath {
+  min-width: 20px;
+  min-height: 20px;
+  padding: 2px 8px;
+  font-family: variables.$font-family;
+  font-size: 11px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(variables.$primary-color, 0.1);
+  color: variables.$primary-color;
+  border-radius: 6px;
+  transition: $transition-base;
+  
+  &:hover {
+    background: rgba(variables.$primary-color, 0.15);
+    transform: scale(1.05);
+  }
+}
+
+// ========================================================================
+// ANIMATIONS
+// ========================================================================
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-50%) scaleY(0);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(-50%) scaleY(1);
+    opacity: 1;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.1);
+  }
+}
+
+// ========================================================================
+// ACCESSIBILITY
+// ========================================================================
+
+// High contrast mode
+@media (prefers-contrast: high) {
+  .linkContainer {
+    border: 1px solid transparent;
+    
+    &:hover {
+      border-color: variables.$font-color;
     }
+    
+    &[data-active="true"] {
+      border-color: variables.$primary-color;
+      background: transparent;
+    }
+  }
+  
+  .subPath {
+    border: 1px solid transparent;
+    
+    &:hover {
+      border-color: variables.$font-color;
+    }
+    
+    &[data-active="true"] {
+      border-color: variables.$primary-color;
+    }
+  }
+}
+
+// Reduced motion
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }

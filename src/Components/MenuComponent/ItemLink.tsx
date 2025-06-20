@@ -1,13 +1,17 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import Link from 'next/link';
+import React, { useEffect, useState, useMemo, useCallback, useRef } from 'react';
 import Image from 'next/image';
 import ArrowMenu from '../../assets/arrow-menu.svg';
 import Ellipse from '../../assets/Ellipse55.svg';
 import styles from '../../styles/common/ItemLink.module.scss';
 import { MenuPath, SubPath } from './Sidebar';
 import { useSmartRouter } from '../../util/router-adapter';
+import { motion, AnimatePresence } from 'framer-motion';
+
+// ========================================================================
+// TYPES & INTERFACES
+// ========================================================================
 
 export interface ItemLinkProps extends MenuPath {
   className?: string;
@@ -29,6 +33,146 @@ export interface ItemLinkProps extends MenuPath {
   hasNotification?: boolean;
   dataTourTarget?: string;
 }
+
+// ========================================================================
+// ANIMATION VARIANTS
+// ========================================================================
+
+const itemVariants = {
+  idle: { 
+    x: 0, 
+    backgroundColor: 'transparent',
+    transition: { 
+      duration: 0.2, 
+      ease: [0.4, 0, 0.2, 1] 
+    }
+  },
+  hover: { 
+    x: 2,
+    backgroundColor: 'rgba(219, 59, 43, 0.02)',
+    transition: { 
+      duration: 0.2, 
+      ease: [0.4, 0, 0.2, 1] 
+    }
+  },
+  tap: { 
+    scale: 0.98,
+    transition: { 
+      duration: 0.1 
+    }
+  }
+};
+
+const iconVariants = {
+  idle: { 
+    rotate: 0, 
+    scale: 1 
+  },
+  hover: { 
+    rotate: 5, 
+    scale: 1.05,
+    transition: { 
+      duration: 0.3, 
+      ease: 'easeOut' 
+    }
+  },
+  active: {
+    rotate: 0,
+    scale: 1.1,
+    transition: {
+      type: "spring",
+      stiffness: 400,
+      damping: 10
+    }
+  }
+};
+
+const arrowVariants = {
+  closed: { 
+    rotate: 180,
+    transition: { 
+      duration: 0.3, 
+      ease: [0.4, 0, 0.2, 1] 
+    }
+  },
+  open: { 
+    rotate: 0,
+    transition: { 
+      duration: 0.3, 
+      ease: [0.4, 0, 0.2, 1] 
+    }
+  }
+};
+
+const subMenuVariants = {
+  closed: {
+    height: 0,
+    opacity: 0,
+    transition: {
+      height: { duration: 0.3, ease: [0.4, 0, 0.2, 1] },
+      opacity: { duration: 0.2 }
+    }
+  },
+  open: {
+    height: "auto",
+    opacity: 1,
+    transition: {
+      height: { duration: 0.3, ease: [0.4, 0, 0.2, 1] },
+      opacity: { duration: 0.2, delay: 0.1 }
+    }
+  }
+};
+
+const subItemVariants = {
+  hidden: { 
+    opacity: 0, 
+    x: -20 
+  },
+  visible: (i: number) => ({
+    opacity: 1,
+    x: 0,
+    transition: {
+      delay: i * 0.05,
+      duration: 0.3,
+      ease: [0.4, 0, 0.2, 1]
+    }
+  })
+};
+
+// ========================================================================
+// UTILITY COMPONENTS
+// ========================================================================
+
+const LoadingSpinner = () => (
+  <motion.div
+    className={styles.loadingSpinner}
+    animate={{ rotate: 360 }}
+    transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+  >
+    <svg width="16" height="16" viewBox="0 0 16 16">
+      <circle cx="8" cy="8" r="6" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeDasharray="30" strokeDashoffset="10" />
+    </svg>
+  </motion.div>
+);
+
+const NotificationDot = ({ count }: { count?: number }) => (
+  <motion.div
+    className={styles.notificationDot}
+    initial={{ scale: 0 }}
+    animate={{ scale: 1 }}
+    transition={{ type: "spring", stiffness: 500, damping: 15 }}
+  >
+    {count && count > 0 ? (
+      <span className={styles.notificationCount}>{count > 99 ? '99+' : count}</span>
+    ) : (
+      <Ellipse height={4} width={4} />
+    )}
+  </motion.div>
+);
+
+// ========================================================================
+// MAIN COMPONENT
+// ========================================================================
 
 export function ItemLink({
   className = '',
@@ -57,98 +201,77 @@ export function ItemLink({
   component,
   autoNavigateToFirstSubPath = false,
   hasNotification = false,
-  dataTourTarget=''
+  dataTourTarget = ''
 }: ItemLinkProps) {
   
-  // Usar el adaptador de router
+  // Router & Refs
   const { push: routerPush, pathname, isReady } = useSmartRouter();
-  
-  const [currentSubSteps, setCurrentSubSteps] = useState<SubPath[]>([]);
+  const itemRef = useRef<HTMLLIElement>(null);
+  const [isNavigating, setIsNavigating] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
 
   // Valores seguros
   const safeHref = href || '';
   const safeText = text || '';
   
-  // Si es un título estático o componente React, no renderizar
+  // Skip render para tipos especiales
   const itemType = typeof type === 'string' ? type : type?.toString();
-  if (itemType === 'STATIC_TITLE' || itemType === 'REACT_TSX' || itemType === '0' || itemType === '3' || itemType === 'INFORMATIVE_TEXT') {
+  if (['STATIC_TITLE', 'REACT_TSX', '0', '3', 'INFORMATIVE_TEXT'].includes(itemType || '')) {
     return null;
   }
 
-  // Filtrar sub-rutas restringidas
-  useEffect(() => {
-    if (subPaths) {
-      const filteredSubPaths = subPaths.filter(subPath => 
-        !restrictedPaths.includes(subPath.href)
-      );
-      setCurrentSubSteps(filteredSubPaths);
-    }
+  // Memoized: Filtrar sub-rutas restringidas
+  const filteredSubPaths = useMemo(() => {
+    if (!subPaths) return [];
+    return subPaths.filter(subPath => !restrictedPaths.includes(subPath.href));
   }, [subPaths, restrictedPaths]);
 
-
-  // Modificación en handleItemClick
-  const handleItemClick = async (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-
-    // Siempre activar el menú item
-    setActivePath(safeHref);
-    onClickPath(index);
-
-    // Si tiene subPaths
+  // Memoized: Determinar si item está activo
+  const itemIsActive = useMemo(() => {
     if (subPaths && subPaths.length > 0) {
-      
-      // 🔥 NUEVA CONDICIÓN: No auto-navegar si es móvil
-      if (autoNavigateToFirstSubPath && !mobile) {
-        const firstValidSubPath = currentSubSteps[0];
-        
-        if (firstValidSubPath) {
-          await handleSubPathNavigation(firstValidSubPath.href);
-          return;
-        } else {
-        }
-      }
-      
-      // Si estamos en móvil y ya hay un subpath activo, mantener el estado
-      if (mobile && subPaths.some(subPath => subPath.href === pathname)) {
-        setActiveSubPath(pathname);
-      }
-      return;
+      return subPaths.some(subPath => 
+        subPath.href === pathname || 
+        subPath.href === activeSubPath ||
+        (pathname.startsWith(subPath.href) && subPath.href !== '/')
+      ) || safeHref === activePath;
     }
+    return safeHref === pathname || safeHref === activeSubPath;
+  }, [subPaths, pathname, activeSubPath, safeHref, activePath]);
 
-    // Si no tiene subPaths, navegar directamente
-    if (!subPaths && safeHref) {
-      await handleDirectNavigation(safeHref);
-    }
-  };
+  // Determinar icono actual
+  const currentIcon = (itemIsActive && activeIcon) ? activeIcon : icon;
 
-  // Manejar navegación a subPaths
-  const handleSubPathNavigation = async (subHref: string) => {
+  // Callbacks optimizados
+  const handleSubPathNavigation = useCallback(async (subHref: string) => {
+    setIsNavigating(true);
     let finalSubHref = subHref;
     
     if (concatStoreId && currentUserId) {
       finalSubHref = subHref + currentUserId;
     }
     
-    
     try {
-      // Navegación interna
+      // Haptic feedback para móvil
+      if (mobile && 'vibrate' in navigator) {
+        navigator.vibrate(10);
+      }
+
       await routerPush(finalSubHref);
-      
-      // Actualizar estados
       setActiveSubPath(finalSubHref);
       onNavigate(finalSubHref);
       
-      // Cerrar sidebar en móvil
       if (mobile) {
-        setTimeout(() => onToggleOpen(false), 100);
+        setTimeout(() => onToggleOpen(false), 300);
       }
     } catch (error) {
-      console.error('❌ Error en auto-navegación a subpath:', error);
+      console.error('Error en navegación:', error);
+    } finally {
+      setIsNavigating(false);
     }
-  };
+  }, [concatStoreId, currentUserId, routerPush, setActiveSubPath, onNavigate, mobile, onToggleOpen]);
 
-  const handleDirectNavigation = async (targetHref: string) => {
+  const handleDirectNavigation = useCallback(async (targetHref: string) => {
+    setIsNavigating(true);
     let finalHref = targetHref;
     
     if (concatStoreId && currentUserId) {
@@ -156,196 +279,279 @@ export function ItemLink({
     }
     
     try {
-      
-      // Navegación interna usando router
+      if (mobile && 'vibrate' in navigator) {
+        navigator.vibrate(10);
+      }
+
       await routerPush(finalHref);
-      
-      // Actualizar estados
       setActiveSubPath(finalHref);
       onNavigate(finalHref);
       
-      // Cerrar sidebar en móvil
       if (mobile) {
-        setTimeout(() => onToggleOpen(false), 100);
+        setTimeout(() => onToggleOpen(false), 300);
       }
-      
     } catch (error) {
-      console.error('❌ Error en navegación:', error);
+      console.error('Error en navegación:', error);
+    } finally {
+      setIsNavigating(false);
     }
-  };
+  }, [concatStoreId, currentUserId, routerPush, setActiveSubPath, onNavigate, mobile, onToggleOpen]);
 
-  const handleSubPathClick = async (e: React.MouseEvent, subHref: string) => {
+  const handleItemClick = useCallback(async (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
 
-    await handleSubPathNavigation(subHref);
-  };
+    // Prevenir clicks durante navegación
+    if (isNavigating) return;
 
-  // Determinar si este item está activo
-  const isThisItemActive = () => {
+    setActivePath(safeHref);
+    onClickPath(index);
+
     if (subPaths && subPaths.length > 0) {
-      // Para items con subpaths, está activo si algún subpath coincide
-      return subPaths.some(subPath => 
-        subPath.href === pathname || 
-        subPath.href === activeSubPath ||
-        (pathname.startsWith(subPath.href) && subPath.href !== '/')
-      ) || safeHref === activePath;
-    } else {
-      // Para items sin subpaths, coincidencia exacta
-      return safeHref === pathname || safeHref === activeSubPath;
+      if (autoNavigateToFirstSubPath && !mobile && filteredSubPaths[0]) {
+        await handleSubPathNavigation(filteredSubPaths[0].href);
+      } else if (mobile && subPaths.some(subPath => subPath.href === pathname)) {
+        setActiveSubPath(pathname);
+      }
+      return;
     }
-  };
 
-  const itemIsActive = isThisItemActive();
-  
-  // Determinar icono a usar
-  const currentIcon = (itemIsActive && activeIcon) ? activeIcon : icon;
+    if (!subPaths && safeHref) {
+      await handleDirectNavigation(safeHref);
+    }
+  }, [isNavigating, setActivePath, safeHref, onClickPath, index, subPaths, autoNavigateToFirstSubPath, mobile, filteredSubPaths, pathname, setActiveSubPath, handleSubPathNavigation, handleDirectNavigation]);
 
-  // Renderizar item con subPaths
+  const handleSubPathClick = useCallback(async (e: React.MouseEvent, subHref: string) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    if (!isNavigating) {
+      await handleSubPathNavigation(subHref);
+    }
+  }, [isNavigating, handleSubPathNavigation]);
+
+  // Keyboard navigation
+  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      handleItemClick(e as any);
+    }
+  }, [handleItemClick]);
+
+  // Focus management
+  useEffect(() => {
+    if (itemIsActive && itemRef.current) {
+      itemRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  }, [itemIsActive]);
+
+  // Render con subPaths
   if (subPaths && subPaths.length > 0) {
     return (
-      <div 
+      <motion.div 
         className={`${styles.itemSubPath} ${className}`} 
         data-reduce={sidebarReduce && !enlargeByHover}
         data-tour-target={dataTourTarget}
+        initial="idle"
+        animate={isHovered ? "hover" : "idle"}
+        onHoverStart={() => setIsHovered(true)}
+        onHoverEnd={() => setIsHovered(false)}
       >
-        <li
+        <motion.li
+          ref={itemRef}
           className={styles.linkContainer}
           data-active={itemIsActive}
           data-has-sub-paths={true}
-          style={
-            openSubMenu && (!sidebarReduce || enlargeByHover) 
-              ? { marginBottom: '20px' } 
-              : { marginBottom: 0 }
-          }
           data-reduce={sidebarReduce && !enlargeByHover}
           onClick={handleItemClick}
+          onKeyDown={handleKeyDown}
+          tabIndex={0}
+          role="button"
+          aria-expanded={openSubMenu}
+          aria-label={`${safeText} menu${openSubMenu ? ' expandido' : ' colapsado'}`}
+          variants={itemVariants}
+          whileTap="tap"
         >
           <div data-reduce={sidebarReduce && !enlargeByHover} className={styles.link}>
             {currentIcon && (
-              <Image
-                src={currentIcon}
-                alt={safeText}
-                height={19}
-                width={19}
-                className={styles.menuIcon}
-              />
-            )}
-            {(!sidebarReduce || enlargeByHover) && safeText}
-            {hasNotification && 
-              <Ellipse
-                height={4}
-                width={4}
-                style={{maxWidth:'4px', maxHeight:'4px', marginLeft:'-4px'}}
-              />
-            }
-            {endAdornment && !(sidebarReduce && !enlargeByHover) && (
-              <div className={styles.endAdornment}>
-                {endAdornment}
-              </div>
-            )}
-          </div>
-          <ArrowMenu
-            className={styles.arrow}
-            data-open={openSubMenu}
-            style={{maxWidth:'10px', maxHeight:'10px'}}
-            width={10}
-            height={10}
-          />
-        </li>
-        
-        {/* Subpaths */}
-        {(!sidebarReduce || enlargeByHover) && (
-          <div 
-            className={styles.subPaths} 
-            data-open={openSubMenu}
-          >
-          {currentSubSteps.map((subItem, subIndex) => {
-            const subItemHref = concatStoreId && currentUserId 
-              ? `${subItem.href}${currentUserId}` 
-              : subItem.href;
-            
-            const isSubItemActive = subItemHref === activeSubPath || 
-                                subItem.href === pathname ||
-                                subItem.href === activeSubPath;
-
-            return (
-              <button
-                key={subIndex}
-                className={styles.subPath}
-                data-active={isSubItemActive}
-                data-reduce={sidebarReduce && !enlargeByHover}
-                onClick={(e) => handleSubPathClick(e, subItem.href)}
-                data-notification-count={''}
+              <motion.div
+                className={styles.iconWrapper}
+                variants={iconVariants}
+                animate={itemIsActive ? "active" : isHovered ? "hover" : "idle"}
               >
-                {subItem.text}
-                
-                <div className={styles.containerEndAdornmentSubPath}>
-                  {subItem.hasNotification && (
-                    <Ellipse
-                      height={4}
-                      width={4}
-                      style={{maxWidth:'4px', maxHeight:'4px'}}
-                    />
-                  )}
-                  {subItem.endAdornmentSubPath && (
-                    React.isValidElement(subItem.endAdornmentSubPath) ? (
-                      // Si es un componente, renderizarlo directamente sin wrapper
-                      subItem.endAdornmentSubPath
-                    ) : (
-                      // Si es string o cualquier otro tipo, envolverlo en div
-                      <div className={styles.endAdornmentSubPath}>
-                        {subItem.endAdornmentSubPath}
-                      </div>
-                    )
-                  )}
-                </div>
-              </button>
-            );
-          })}
+                <Image
+                  src={currentIcon}
+                  alt=""
+                  height={19}
+                  width={19}
+                  className={styles.menuIcon}
+                  aria-hidden="true"
+                />
+              </motion.div>
+            )}
+            
+            {(!sidebarReduce || enlargeByHover) && (
+              <span className={styles.menuText}>{safeText}</span>
+            )}
+            
+            {isNavigating && <LoadingSpinner />}
+            
+            {hasNotification && !isNavigating && <NotificationDot />}
+            
+            {endAdornment && !(sidebarReduce && !enlargeByHover) && (
+              <motion.div 
+                className={styles.endAdornment}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.2 }}
+              >
+                {endAdornment}
+              </motion.div>
+            )}
           </div>
-        )}
-      </div>
+          
+          <motion.div
+            className={styles.arrowWrapper}
+            variants={arrowVariants}
+            animate={openSubMenu ? "open" : "closed"}
+          >
+            <ArrowMenu
+              className={styles.arrow}
+              width={10}
+              height={10}
+              aria-hidden="true"
+            />
+          </motion.div>
+        </motion.li>
+        
+        {/* Subpaths con animación */}
+        <AnimatePresence>
+          {(!sidebarReduce || enlargeByHover) && (
+            <motion.div 
+              className={styles.subPaths}
+              variants={subMenuVariants}
+              initial="closed"
+              animate={openSubMenu ? "open" : "closed"}
+              exit="closed"
+            >
+              {filteredSubPaths.map((subItem, subIndex) => {
+                const subItemHref = concatStoreId && currentUserId 
+                  ? `${subItem.href}${currentUserId}` 
+                  : subItem.href;
+                
+                const isSubItemActive = subItemHref === activeSubPath || 
+                                      subItem.href === pathname ||
+                                      subItem.href === activeSubPath;
+
+                return (
+                  <motion.button
+                    key={subItem.href}
+                    className={styles.subPath}
+                    data-active={isSubItemActive}
+                    onClick={(e) => handleSubPathClick(e, subItem.href)}
+                    disabled={isNavigating}
+                    tabIndex={openSubMenu ? 0 : -1}
+                    role="menuitem"
+                    aria-label={subItem.text}
+                    variants={subItemVariants}
+                    custom={subIndex}
+                    initial="hidden"
+                    animate="visible"
+                    whileHover={{ x: 4, backgroundColor: 'rgba(219, 59, 43, 0.03)' }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    <span className={styles.subPathText}>{subItem.text}</span>
+                    
+                    <div className={styles.subPathEndAdornment}>
+                      {subItem.hasNotification && <NotificationDot />}
+                      {subItem.endAdornmentSubPath && (
+                        <motion.div
+                          initial={{ opacity: 0, scale: 0.8 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          transition={{ delay: 0.3 }}
+                        >
+                          {React.isValidElement(subItem.endAdornmentSubPath) ? 
+                            subItem.endAdornmentSubPath : 
+                            <div className={styles.endAdornmentSubPath}>
+                              {subItem.endAdornmentSubPath}
+                            </div>
+                          }
+                        </motion.div>
+                      )}
+                    </div>
+                  </motion.button>
+                );
+              })}
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.div>
     );
   }
 
-  // Renderizar item simple (sin subPaths)
+  // Render item simple (sin subPaths)
   return (
-    <li
+    <motion.li
+      ref={itemRef}
       data-tour-target={dataTourTarget}
       className={`${styles.linkContainer} ${className}`}
       data-active={itemIsActive}
       data-reduce={sidebarReduce && !enlargeByHover}
       data-has-sub-paths={false}
+      initial="idle"
+      animate={isHovered ? "hover" : "idle"}
+      onHoverStart={() => setIsHovered(true)}
+      onHoverEnd={() => setIsHovered(false)}
+      variants={itemVariants}
+      whileTap="tap"
+      role="menuitem"
+      tabIndex={0}
     >
       <button
         data-reduce={sidebarReduce && !enlargeByHover}
         className={styles.link}
         onClick={handleItemClick}
+        onKeyDown={handleKeyDown}
+        disabled={isNavigating}
+        aria-label={`Navegar a ${safeText}`}
+        title={sidebarReduce && !enlargeByHover ? safeText : undefined}
       >
         {currentIcon && (
-          <Image
-            src={currentIcon}
-            alt={safeText}
-            height={19}
-            width={19}
-            className={styles.menuIcon}
-          />
+          <motion.div
+            className={styles.iconWrapper}
+            variants={iconVariants}
+            animate={itemIsActive ? "active" : isHovered ? "hover" : "idle"}
+          >
+            <Image
+              src={currentIcon}
+              alt=""
+              height={19}
+              width={19}
+              className={styles.menuIcon}
+              aria-hidden="true"
+            />
+          </motion.div>
         )}
-        {(!sidebarReduce || enlargeByHover) && safeText}
-        {hasNotification && 
-          <Ellipse
-            height={4}
-            width={4}
-            style={{maxWidth:'4px', maxHeight:'4px', marginLeft:'-4px'}}
-          />
-        }
+        
+        {(!sidebarReduce || enlargeByHover) && (
+          <span className={styles.menuText}>{safeText}</span>
+        )}
+        
+        {isNavigating && <LoadingSpinner />}
+        
+        {hasNotification && !isNavigating && <NotificationDot />}
+        
         {endAdornment && !(sidebarReduce && !enlargeByHover) && (
-          <div className={styles.endAdornment}>
+          <motion.div 
+            className={styles.endAdornment}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
+          >
             {endAdornment}
-          </div>
+          </motion.div>
         )}
       </button>
-    </li>
+    </motion.li>
   );
 }
