@@ -1,9 +1,13 @@
 // next.config.js - Reemplaza todo el contenido de tu next.config.js con esto:
 /** @type {import('next').NextConfig} */
+const path = require('path');
+
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
-  
+  sassOptions: {
+    includePaths: [path.join(__dirname, 'src/styles')],
+  },
   // Configurar imágenes para permitir assets locales
   images: {
     // Permitir todos los dominios locales
