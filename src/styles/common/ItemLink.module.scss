@@ -243,6 +243,13 @@ $transition-spring: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: $transition-base;
+  
+  // En móvil, hacer el área de click más grande
+  @media (max-width: variables.$breakpoint-md) {
+    padding: 4px;
+    margin-right: -4px;
+  }
 }
 
 .arrow {
@@ -259,6 +266,7 @@ $transition-spring: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
   // Animación más evidente en móvil
   @media (max-width: variables.$breakpoint-md) {
     opacity: 0.8;
+    font-size: 12px;
     
     &[data-open="true"] {
       filter: drop-shadow(0 0 2px rgba(variables.$primary-color, 0.3));
