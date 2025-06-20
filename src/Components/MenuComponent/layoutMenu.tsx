@@ -261,7 +261,16 @@ function LayoutMenuContent({
             initial={{ opacity: 0 }}
             animate={{ opacity: 0.3 }}
             exit={{ opacity: 0 }}
-            onClick={handleToggleOpen}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              handleToggleOpen();
+            }}
+            onTouchEnd={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              handleToggleOpen();
+            }}
             style={{
               position: 'fixed',
               top: 0,
@@ -270,6 +279,8 @@ function LayoutMenuContent({
               bottom: 0,
               backgroundColor: '#000',
               zIndex: 10,
+              cursor: 'pointer',
+              WebkitTapHighlightColor: 'transparent',
             }}
           />
         )}

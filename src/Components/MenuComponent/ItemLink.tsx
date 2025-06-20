@@ -41,25 +41,14 @@ export interface ItemLinkProps extends MenuPath {
 const itemVariants = {
   idle: { 
     x: 0, 
-    backgroundColor: 'transparent',
-    transition: { 
-      duration: 0.2, 
-      ease: [0.4, 0, 0.2, 1] 
-    }
+    backgroundColor: 'transparent'
   },
   hover: { 
     x: 2,
-    backgroundColor: 'rgba(219, 59, 43, 0.02)',
-    transition: { 
-      duration: 0.2, 
-      ease: [0.4, 0, 0.2, 1] 
-    }
+    backgroundColor: 'rgba(219, 59, 43, 0.02)'
   },
   tap: { 
-    scale: 0.98,
-    transition: { 
-      duration: 0.1 
-    }
+    scale: 0.98
   }
 };
 
@@ -70,56 +59,31 @@ const iconVariants = {
   },
   hover: { 
     rotate: 5, 
-    scale: 1.05,
-    transition: { 
-      duration: 0.3, 
-      ease: 'easeOut' 
-    }
+    scale: 1.05
   },
   active: {
     rotate: 0,
-    scale: 1.1,
-    transition: {
-      type: "spring",
-      stiffness: 400,
-      damping: 10
-    }
+    scale: 1.1
   }
 };
 
 const arrowVariants = {
   closed: { 
-    rotate: 180,
-    transition: { 
-      duration: 0.3, 
-      ease: [0.4, 0, 0.2, 1] 
-    }
+    rotate: 180
   },
   open: { 
-    rotate: 0,
-    transition: { 
-      duration: 0.3, 
-      ease: [0.4, 0, 0.2, 1] 
-    }
+    rotate: 0
   }
 };
 
 const subMenuVariants = {
   closed: {
     height: 0,
-    opacity: 0,
-    transition: {
-      height: { duration: 0.3, ease: [0.4, 0, 0.2, 1] },
-      opacity: { duration: 0.2 }
-    }
+    opacity: 0
   },
   open: {
     height: "auto",
-    opacity: 1,
-    transition: {
-      height: { duration: 0.3, ease: [0.4, 0, 0.2, 1] },
-      opacity: { duration: 0.2, delay: 0.1 }
-    }
+    opacity: 1
   }
 };
 
@@ -133,8 +97,7 @@ const subItemVariants = {
     x: 0,
     transition: {
       delay: i * 0.05,
-      duration: 0.3,
-      ease: [0.4, 0, 0.2, 1]
+      duration: 0.3
     }
   })
 };

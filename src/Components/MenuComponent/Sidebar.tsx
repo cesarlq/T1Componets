@@ -192,19 +192,29 @@ export function Sidebar({
     };
   }, [isOpen, isMobile]);
 
-  // Click outside handler para móvil
+  // Click outside handler para móvil - solo si no hay control externo
   useEffect(() => {
-    if (!isOpen || !isMobile) return;
+    // Si hay control externo (onToggleOpen prop), no manejar click outside aquí
+    if (!isOpen || !isMobile || onToggleOpen) return;
 
-    const handleClickOutside = (event: MouseEvent) => {
-      if (refSideBar.current && !refSideBar.current.contains(event.target as Node)) {
+    const handleClickOutside = (event: MouseEvent | TouchEvent) => {
+      const target = event.target as Node;
+      if (refSideBar.current && !refSideBar.current.contains(target)) {
+        event.preventDefault();
+        event.stopPropagation();
         handleToggleOpen(false);
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [isOpen, isMobile]);
+    // Usar tanto mousedown como touchstart para mejor compatibilidad móvil
+    document.addEventListener('mousedown', handleClickOutside, { passive: false });
+    document.addEventListener('touchstart', handleClickOutside, { passive: false });
+    
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('touchstart', handleClickOutside);
+    };
+  }, [isOpen, isMobile, onToggleOpen]);
 
   // Inicializar rutas activas basado en pathname
   useEffect(() => {
