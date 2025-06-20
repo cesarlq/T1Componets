@@ -33,7 +33,6 @@ export interface ItemLinkProps extends MenuPath {
   hasNotification?: boolean;
   dataTourTarget?: string;
 }
-
 // ========================================================================
 // ANIMATION VARIANTS
 // ========================================================================
@@ -206,6 +205,7 @@ export function ItemLink({
 
   // Callbacks optimizados
   const handleSubPathNavigation = useCallback(async (subHref: string) => {
+    console.log('📍 handleSubPathNavigation:', { subHref, mobile, onToggleOpen: !!onToggleOpen });
     setIsNavigating(true);
     let finalSubHref = subHref;
     
@@ -214,6 +214,12 @@ export function ItemLink({
     }
     
     try {
+      // Cerrar sidebar ANTES de navegar en móvil
+      if (mobile && onToggleOpen) {
+        console.log('🔒 Cerrando sidebar en móvil ANTES de navegar...');
+        onToggleOpen(false);
+      }
+      
       // Haptic feedback para móvil
       if (mobile && 'vibrate' in navigator) {
         navigator.vibrate(10);
@@ -223,9 +229,6 @@ export function ItemLink({
       setActiveSubPath(finalSubHref);
       onNavigate(finalSubHref);
       
-      if (mobile) {
-        setTimeout(() => onToggleOpen(false), 300);
-      }
     } catch (error) {
       console.error('Error en navegación:', error);
     } finally {
@@ -234,6 +237,7 @@ export function ItemLink({
   }, [concatStoreId, currentUserId, routerPush, setActiveSubPath, onNavigate, mobile, onToggleOpen]);
 
   const handleDirectNavigation = useCallback(async (targetHref: string) => {
+    console.log('📍 handleDirectNavigation:', { targetHref, mobile, onToggleOpen: !!onToggleOpen });
     setIsNavigating(true);
     let finalHref = targetHref;
     
@@ -242,6 +246,12 @@ export function ItemLink({
     }
     
     try {
+      // Cerrar sidebar ANTES de navegar en móvil
+      if (mobile && onToggleOpen) {
+        console.log('🔒 Cerrando sidebar en móvil ANTES de navegar...');
+        onToggleOpen(false);
+      }
+      
       if (mobile && 'vibrate' in navigator) {
         navigator.vibrate(10);
       }
@@ -250,9 +260,6 @@ export function ItemLink({
       setActiveSubPath(finalHref);
       onNavigate(finalHref);
       
-      if (mobile) {
-        setTimeout(() => onToggleOpen(false), 300);
-      }
     } catch (error) {
       console.error('Error en navegación:', error);
     } finally {
@@ -267,22 +274,43 @@ export function ItemLink({
     // Prevenir clicks durante navegación
     if (isNavigating) return;
 
-    setActivePath(safeHref);
-    onClickPath(index);
-
+    // Si tiene subPaths
     if (subPaths && subPaths.length > 0) {
-      if (autoNavigateToFirstSubPath && !mobile && filteredSubPaths[0]) {
-        await handleSubPathNavigation(filteredSubPaths[0].href);
-      } else if (mobile && subPaths.some(subPath => subPath.href === pathname)) {
-        setActiveSubPath(pathname);
+      // En móvil: solo toggle del submenú, NO navegar
+      if (mobile) {
+        // Toggle del submenú
+        if (openSubMenu) {
+          onClickPath(-1); // Cerrar
+        } else {
+          setActivePath(safeHref);
+          onClickPath(index); // Abrir
+        }
+        
+        // Mantener el subpath activo si existe
+        if (subPaths.some(subPath => subPath.href === pathname)) {
+          setActiveSubPath(pathname);
+        }
+        return; // NO navegar en móvil con subPaths
+      } else {
+        // En desktop: comportamiento normal
+        setActivePath(safeHref);
+        onClickPath(index);
+        
+        // Auto-navegar si está configurado
+        if (autoNavigateToFirstSubPath && filteredSubPaths[0]) {
+          await handleSubPathNavigation(filteredSubPaths[0].href);
+        }
       }
       return;
     }
 
-    if (!subPaths && safeHref) {
+    // Si NO tiene subPaths, navegar directamente
+    setActivePath(safeHref);
+    if (safeHref) {
+      console.log('🚀 Navegando a:', safeHref, 'mobile:', mobile);
       await handleDirectNavigation(safeHref);
     }
-  }, [isNavigating, setActivePath, safeHref, onClickPath, index, subPaths, autoNavigateToFirstSubPath, mobile, filteredSubPaths, pathname, setActiveSubPath, handleSubPathNavigation, handleDirectNavigation]);
+  }, [isNavigating, setActivePath, safeHref, onClickPath, index, subPaths, autoNavigateToFirstSubPath, mobile, filteredSubPaths, pathname, setActiveSubPath, handleSubPathNavigation, handleDirectNavigation, openSubMenu]);
 
   const handleSubPathClick = useCallback(async (e: React.MouseEvent, subHref: string) => {
     e.preventDefault();
@@ -334,6 +362,9 @@ export function ItemLink({
           aria-label={`${safeText} menu${openSubMenu ? ' expandido' : ' colapsado'}`}
           variants={itemVariants}
           whileTap="tap"
+          style={{
+            cursor: mobile && subPaths && subPaths.length > 0 ? 'pointer' : 'default'
+          }}
         >
           <div data-reduce={sidebarReduce && !enlargeByHover} className={styles.link}>
             {currentIcon && (
