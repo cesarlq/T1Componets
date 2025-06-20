@@ -1,0 +1,181 @@
+@use './variables' as *;
+
+// =============================================================================
+// Z-INDEX SYSTEM
+// =============================================================================
+$z-navbar: 10;
+$z-sidebar-expanded: 2;
+$z-sidebar-reduced: 1;
+$z-sidebar-mobile: 11;
+$z-overlay: 9;
+$z-dropdowns: 50;
+
+// =============================================================================
+// LAYOUT CONTAINER
+// =============================================================================
+.layoutContainer {
+  position: relative;
+  min-height: 100vh;
+  background-color: #f8fafc;
+}
+
+// =============================================================================
+// NAVBAR WRAPPER
+// =============================================================================
+.navbarWrapper {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: $height-navbar;
+  z-index: $z-navbar !important; // Forzar z-index alto
+  background-color: white;
+  border-bottom: 1px solid #f2f2f2;
+  
+  // Asegurar que el contenido sea clickeable
+  > * {
+    position: relative;
+    z-index: 1;
+  }
+  
+  // En móvil cuando el sidebar está abierto
+  @media (max-width: $breakpoint-mobile) {
+    &[data-sidebar-open="true"] {
+      z-index: 2 !important;
+    }
+  }
+}
+
+// =============================================================================
+// SIDEBAR WRAPPER
+// =============================================================================
+.sidebarWrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  transition: all 0.3s ease;
+  
+  // Estado expandido
+  &[data-reduce="false"] {
+    width: $width-side-bar;
+    z-index: $z-sidebar-expanded;
+  }
+  
+  // Estado reducido - z-index bajo para no interferir con navbar
+  &[data-reduce="true"] {
+    width: $reduce-sidebar-width;
+    z-index: $z-sidebar-reduced !important;
+    
+    // Prevenir que elementos internos interfieran
+    * {
+      position: relative;
+      z-index: auto !important;
+    }
+  }
+  
+  // Móvil
+  @media (max-width: $breakpoint-mobile) {
+    width: $width-side-bar-mobile;
+    transform: translateX(-100%);
+    z-index: $z-sidebar-mobile;
+    
+    &[data-open-side-bar="true"] {
+      transform: translateX(0);
+      box-shadow: 10px 0 20px rgba(0, 0, 0, 0.15);
+    }
+  }
+}
+
+// =============================================================================
+// MOBILE OVERLAY
+// =============================================================================
+.mobileOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: $z-overlay;
+  
+  @media (min-width: calc($breakpoint-mobile + 1px) ) {
+    display: none;
+  }
+}
+
+// =============================================================================
+// MAIN CONTENT
+// =============================================================================
+.mainContent {
+  position: relative;
+  padding-top: $height-navbar;
+  min-height: 100vh;
+  transition: margin-left 0.3s ease;
+  
+  // Sidebar expandido
+  &[data-sidebar-expanded="true"] {
+    margin-left: $width-side-bar;
+  }
+  
+  // Sidebar reducido
+  &[data-sidebar-reduced="true"] {
+    margin-left: $reduce-sidebar-width;
+  }
+  
+  // Móvil sin margen
+  @media (max-width: $breakpoint-mobile) {
+    margin-left: 0 !important;
+  }
+}
+
+// =============================================================================
+// MOBILE TOP BANNER
+// =============================================================================
+.mobileTopBanner {
+  padding: 0.75rem 1rem;
+  background-color: white;
+  border-bottom: 1px solid #f2f2f2;
+  
+  @media (min-width: calc($breakpoint-mobile + 1px) ) {
+    display: none;
+  }
+}
+
+// =============================================================================
+// FIXES ESPECÍFICOS
+// =============================================================================
+
+// Asegurar que el T1ShippingBanner sea clickeable
+:global(.t1-shipping-banner) {
+  position: relative;
+  z-index: 2;
+  
+  button {
+    position: relative;
+    z-index: 1;
+    
+    // Área clickeable expandida
+    &::after {
+      content: '';
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      bottom: -5px;
+      left: -5px;
+    }
+  }
+}
+
+// Prevenir superposición de dropdowns del sidebar
+:global(.sidebar-container) {
+  .store-selector-dropdown,
+  .t1-selector-modal {
+    z-index: $z-dropdowns !important;
+  }
+}
+
+// Fix para tooltips
+:global(.MuiTooltip-popper) {
+  z-index: 1500 !important;
+}
