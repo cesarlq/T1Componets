@@ -33,6 +33,7 @@ export interface ItemLinkProps extends MenuPath {
   hasNotification?: boolean;
   dataTourTarget?: string;
 }
+
 // ========================================================================
 // ANIMATION VARIANTS
 // ========================================================================
@@ -205,7 +206,6 @@ export function ItemLink({
 
   // Callbacks optimizados
   const handleSubPathNavigation = useCallback(async (subHref: string) => {
-    console.log('📍 handleSubPathNavigation:', { subHref, mobile, onToggleOpen: !!onToggleOpen });
     setIsNavigating(true);
     let finalSubHref = subHref;
     
@@ -214,13 +214,6 @@ export function ItemLink({
     }
     
     try {
-      // Cerrar sidebar ANTES de navegar en móvil
-      if (mobile && onToggleOpen) {
-        console.log('🔒 Cerrando sidebar en móvil ANTES de navegar...');
-        onToggleOpen(false);
-      }
-      
-      // Haptic feedback para móvil
       if (mobile && 'vibrate' in navigator) {
         navigator.vibrate(10);
       }
@@ -229,6 +222,15 @@ export function ItemLink({
       setActiveSubPath(finalSubHref);
       onNavigate(finalSubHref);
       
+      // Cerrar sidebar en móvil usando doble requestAnimationFrame
+      // para asegurar que se ejecute después de todos los efectos
+      if (mobile && onToggleOpen) {
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            onToggleOpen(false);
+          });
+        });
+      }
     } catch (error) {
       console.error('Error en navegación:', error);
     } finally {
@@ -237,7 +239,6 @@ export function ItemLink({
   }, [concatStoreId, currentUserId, routerPush, setActiveSubPath, onNavigate, mobile, onToggleOpen]);
 
   const handleDirectNavigation = useCallback(async (targetHref: string) => {
-    console.log('📍 handleDirectNavigation:', { targetHref, mobile, onToggleOpen: !!onToggleOpen });
     setIsNavigating(true);
     let finalHref = targetHref;
     
@@ -246,12 +247,6 @@ export function ItemLink({
     }
     
     try {
-      // Cerrar sidebar ANTES de navegar en móvil
-      if (mobile && onToggleOpen) {
-        console.log('🔒 Cerrando sidebar en móvil ANTES de navegar...');
-        onToggleOpen(false);
-      }
-      
       if (mobile && 'vibrate' in navigator) {
         navigator.vibrate(10);
       }
@@ -260,6 +255,15 @@ export function ItemLink({
       setActiveSubPath(finalHref);
       onNavigate(finalHref);
       
+      // Cerrar sidebar en móvil usando doble requestAnimationFrame
+      // para asegurar que se ejecute después de todos los efectos
+      if (mobile && onToggleOpen) {
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            onToggleOpen(false);
+          });
+        });
+      }
     } catch (error) {
       console.error('Error en navegación:', error);
     } finally {
@@ -307,7 +311,6 @@ export function ItemLink({
     // Si NO tiene subPaths, navegar directamente
     setActivePath(safeHref);
     if (safeHref) {
-      console.log('🚀 Navegando a:', safeHref, 'mobile:', mobile);
       await handleDirectNavigation(safeHref);
     }
   }, [isNavigating, setActivePath, safeHref, onClickPath, index, subPaths, autoNavigateToFirstSubPath, mobile, filteredSubPaths, pathname, setActiveSubPath, handleSubPathNavigation, handleDirectNavigation, openSubMenu]);
