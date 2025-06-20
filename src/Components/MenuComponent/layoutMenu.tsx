@@ -164,6 +164,9 @@ function LayoutMenuContent({
   
   // Inicialización y cambios de viewport
   useEffect(() => {
+    if (sessionStorage.getItem('t1-sidebar-manually-closed') === 'true') {
+      return;
+    }
     // Solo ejecutar si:
     // 1. No se ha inicializado aún
     // 2. El viewport cambió Y el usuario no ha interactuado recientemente
@@ -212,11 +215,22 @@ function LayoutMenuContent({
   }, [isReduced, viewport, isMobile, savePreferences]);
   
   // Handlers con callbacks
-  const handleToggleOpen = useCallback(() => {
-    userHasInteracted.current = true;
-    toggleOpen();
-    menuCallbacks?.onToggleOpen?.(!isOpen);
-  }, [toggleOpen, isOpen, menuCallbacks]);
+const handleToggleOpen = useCallback(() => {
+  userHasInteracted.current = true;
+  
+  // NUEVO: Marcar específicamente que fue una acción de cierre manual
+  if (isOpen) {
+    // Si estamos cerrando, marcar que fue intencional
+    sessionStorage.setItem('t1-sidebar-manually-closed', 'true');
+    // Remover la marca después de 2 segundos
+    setTimeout(() => {
+      sessionStorage.removeItem('t1-sidebar-manually-closed');
+    }, 2000);
+  }
+  
+  toggleOpen();
+  menuCallbacks?.onToggleOpen?.(!isOpen);
+}, [toggleOpen, isOpen, menuCallbacks]);
   
   const handleToggleReduce = useCallback(() => {
     userHasInteracted.current = true;
