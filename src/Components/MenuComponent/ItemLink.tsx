@@ -1,13 +1,14 @@
 'use client';
 
-import React, { useEffect, useState, useMemo, useCallback, useRef } from 'react';
+import React, { useEffect, useState, useMemo, useCallback, useRef, useReducer } from 'react';
 import Image from 'next/image';
 import ArrowMenu from '../../assets/arrow-menu.svg';
 import Ellipse from '../../assets/Ellipse55.svg';
 import styles from '../../styles/common/ItemLink.module.scss';
 import { MenuPath, SubPath } from './Sidebar';
 import { useSmartRouter } from '../../util/router-adapter';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useMenuIntelligence } from '../../hooks/useMenuIntelligence';
+import { SmartTooltip } from './SmartTooltip';
 
 // ========================================================================
 // TYPES & INTERFACES
@@ -34,110 +35,130 @@ export interface ItemLinkProps extends MenuPath {
   dataTourTarget?: string;
 }
 
-// ========================================================================
-// ANIMATION VARIANTS
-// ========================================================================
+// State management con useReducer
+interface MenuItemState {
+  isNavigating: boolean;
+  isHovered: boolean;
+  ripples: Array<{ id: number; x: number; y: number }>;
+  navigationProgress: number;
+}
 
-const itemVariants = {
-  idle: { 
-    x: 0, 
-    backgroundColor: 'transparent'
-  },
-  hover: { 
-    x: 2,
-    backgroundColor: 'rgba(219, 59, 43, 0.02)'
-  },
-  tap: { 
-    scale: 0.98
+type MenuItemAction = 
+  | { type: 'SET_NAVIGATING'; payload: boolean }
+  | { type: 'SET_HOVERED'; payload: boolean }
+  | { type: 'ADD_RIPPLE'; payload: { x: number; y: number } }
+  | { type: 'REMOVE_RIPPLE'; payload: number }
+  | { type: 'SET_PROGRESS'; payload: number };
+
+const menuItemReducer = (state: MenuItemState, action: MenuItemAction): MenuItemState => {
+  switch (action.type) {
+    case 'SET_NAVIGATING':
+      return { ...state, isNavigating: action.payload };
+    case 'SET_HOVERED':
+      return { ...state, isHovered: action.payload };
+    case 'ADD_RIPPLE':
+      return { 
+        ...state, 
+        ripples: [...state.ripples, { 
+          id: Date.now(), 
+          x: action.payload.x, 
+          y: action.payload.y 
+        }] 
+      };
+    case 'REMOVE_RIPPLE':
+      return { 
+        ...state, 
+        ripples: state.ripples.filter(r => r.id !== action.payload) 
+      };
+    case 'SET_PROGRESS':
+      return { ...state, navigationProgress: action.payload };
+    default:
+      return state;
   }
 };
 
-const iconVariants = {
-  idle: { 
-    rotate: 0, 
-    scale: 1 
-  },
-  hover: { 
-    rotate: 5, 
-    scale: 1.05
-  },
-  active: {
-    rotate: 0,
-    scale: 1.1
-  }
-};
-
-const arrowVariants = {
-  closed: { 
-    rotate: 180
-  },
-  open: { 
-    rotate: 0
-  }
-};
-
-const subMenuVariants = {
-  closed: {
-    height: 0,
-    opacity: 0
-  },
-  open: {
-    height: "auto",
-    opacity: 1
-  }
-};
-
-const subItemVariants = {
-  hidden: { 
-    opacity: 0, 
-    x: -20 
-  },
-  visible: (i: number) => ({
-    opacity: 1,
-    x: 0,
-    transition: {
-      delay: i * 0.05,
-      duration: 0.3
-    }
-  })
-};
-
 // ========================================================================
-// UTILITY COMPONENTS
+// UTILITY COMPONENTS - Lightweight Animations
 // ========================================================================
 
-const LoadingSpinner = () => (
-  <motion.div
-    className={styles.loadingSpinner}
-    animate={{ rotate: 360 }}
-    transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-  >
-    <svg width="16" height="16" viewBox="0 0 16 16">
-      <circle cx="8" cy="8" r="6" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeDasharray="30" strokeDashoffset="10" />
-    </svg>
-  </motion.div>
-);
+const LoadingSpinner = ({ progress }: { progress?: number }) => {
+  return (
+    <div className={styles.loadingSpinner}>
+      <svg width="16" height="16" viewBox="0 0 16 16">
+        <circle 
+          cx="8" 
+          cy="8" 
+          r="6" 
+          fill="none" 
+          stroke="currentColor" 
+          strokeWidth="2" 
+          strokeLinecap="round" 
+          strokeDasharray="30" 
+          strokeDashoffset={progress ? 10 - (progress * 0.2) : 10}
+          style={{
+            transition: 'stroke-dashoffset 0.3s ease'
+          }}
+        />
+      </svg>
+      {progress !== undefined && (
+        <div className={styles.progressText}>
+          {Math.round(progress)}%
+        </div>
+      )}
+    </div>
+  );
+};
 
 const NotificationDot = ({ count }: { count?: number }) => (
-  <motion.div
-    className={styles.notificationDot}
-    initial={{ scale: 0 }}
-    animate={{ scale: 1 }}
-    transition={{ type: "spring", stiffness: 500, damping: 15 }}
-  >
+  <div className={styles.notificationDot}>
     {count && count > 0 ? (
-      <span className={styles.notificationCount}>{count > 99 ? '99+' : count}</span>
+      <span className={styles.notificationCount}>
+        {count > 99 ? '99+' : count}
+      </span>
     ) : (
-      <Ellipse height={4} width={4} />
+      <div>
+        <Ellipse height={4} width={4} />
+      </div>
     )}
-  </motion.div>
+  </div>
+);
+
+// Ripple Effect Component - CSS Only
+const RippleEffect = ({ x, y, id, onComplete }: { 
+  x: number; 
+  y: number; 
+  id: number;
+  onComplete: (id: number) => void;
+}) => {
+  useEffect(() => {
+    const timer = setTimeout(() => onComplete(id), 600);
+    return () => clearTimeout(timer);
+  }, [id, onComplete]);
+
+  return (
+    <div
+      className={styles.ripple}
+      style={{ 
+        left: x, 
+        top: y,
+        animation: 'ripple-effect 0.6s ease-out forwards'
+      }}
+    />
+  );
+};
+
+// Success Animation - CSS Only
+const NavigationSuccess = () => (
+  <div className={styles.successPulse}>
+    <div className={styles.successInner} />
+  </div>
 );
 
 // ========================================================================
-// MAIN COMPONENT
+// MAIN COMPONENT - Optimized for Performance
 // ========================================================================
 
-export function ItemLink({
+export const ItemLink = React.memo(function ItemLink({
   className = '',
   href,
   text,
@@ -167,11 +188,18 @@ export function ItemLink({
   dataTourTarget = ''
 }: ItemLinkProps) {
   
-  // Router & Refs
+  // State & Refs
   const { push: routerPush, pathname, isReady } = useSmartRouter();
   const itemRef = useRef<HTMLLIElement>(null);
-  const [isNavigating, setIsNavigating] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
+  const [state, dispatch] = useReducer(menuItemReducer, {
+    isNavigating: false,
+    isHovered: false,
+    ripples: [],
+    navigationProgress: 0
+  });
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [showTooltip, setShowTooltip] = useState(false);
+  const tooltipTimer = useRef<NodeJS.Timeout>();
 
   // Valores seguros
   const safeHref = href || '';
@@ -204,9 +232,27 @@ export function ItemLink({
   // Determinar icono actual
   const currentIcon = (itemIsActive && activeIcon) ? activeIcon : icon;
 
-  // Callbacks optimizados
+  // Haptic feedback helper
+  const triggerHaptic = useCallback((intensity: number | number[] = 10) => {
+    if (mobile && 'vibrate' in navigator) {
+      navigator.vibrate(intensity);
+    }
+  }, [mobile]);
+
+  // Ripple effect handler
+  const handleRipple = useCallback((e: React.MouseEvent) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    dispatch({ type: 'ADD_RIPPLE', payload: { x, y } });
+    triggerHaptic(5);
+  }, [triggerHaptic]);
+
+  // Navigation callbacks con progress tracking
   const handleSubPathNavigation = useCallback(async (subHref: string) => {
-    setIsNavigating(true);
+    dispatch({ type: 'SET_NAVIGATING', payload: true });
+    dispatch({ type: 'SET_PROGRESS', payload: 0 });
+    
     let finalSubHref = subHref;
     
     if (concatStoreId && currentUserId) {
@@ -214,16 +260,28 @@ export function ItemLink({
     }
     
     try {
-      if (mobile && 'vibrate' in navigator) {
-        navigator.vibrate(10);
-      }
+      triggerHaptic(10);
+      
+      // Simulate smooth progress
+      let progress = 0;
+      const progressInterval = setInterval(() => {
+        progress = Math.min(progress + 10, 90);
+        dispatch({ type: 'SET_PROGRESS', payload: progress });
+      }, 50);
 
       await routerPush(finalSubHref);
+      
+      clearInterval(progressInterval);
+      dispatch({ type: 'SET_PROGRESS', payload: 100 });
+      
       setActiveSubPath(finalSubHref);
       onNavigate(finalSubHref);
       
-      // Cerrar sidebar en móvil usando doble requestAnimationFrame
-      // para asegurar que se ejecute después de todos los efectos
+      // Success animation
+      setShowSuccess(true);
+      setTimeout(() => setShowSuccess(false), 600);
+      
+      // Cerrar sidebar en móvil
       if (mobile && onToggleOpen) {
         requestAnimationFrame(() => {
           requestAnimationFrame(() => {
@@ -233,13 +291,15 @@ export function ItemLink({
       }
     } catch (error) {
       console.error('Error en navegación:', error);
+      triggerHaptic([100, 50, 100]); // Error haptic pattern
     } finally {
-      setIsNavigating(false);
+      dispatch({ type: 'SET_NAVIGATING', payload: false });
+      dispatch({ type: 'SET_PROGRESS', payload: 0 });
     }
-  }, [concatStoreId, currentUserId, routerPush, setActiveSubPath, onNavigate, mobile, onToggleOpen]);
+  }, [concatStoreId, currentUserId, routerPush, setActiveSubPath, onNavigate, mobile, onToggleOpen, triggerHaptic]);
 
   const handleDirectNavigation = useCallback(async (targetHref: string) => {
-    setIsNavigating(true);
+    dispatch({ type: 'SET_NAVIGATING', payload: true });
     let finalHref = targetHref;
     
     if (concatStoreId && currentUserId) {
@@ -247,16 +307,14 @@ export function ItemLink({
     }
     
     try {
-      if (mobile && 'vibrate' in navigator) {
-        navigator.vibrate(10);
-      }
-
+      triggerHaptic(10);
       await routerPush(finalHref);
       setActiveSubPath(finalHref);
       onNavigate(finalHref);
       
-      // Cerrar sidebar en móvil usando doble requestAnimationFrame
-      // para asegurar que se ejecute después de todos los efectos
+      setShowSuccess(true);
+      setTimeout(() => setShowSuccess(false), 600);
+      
       if (mobile && onToggleOpen) {
         requestAnimationFrame(() => {
           requestAnimationFrame(() => {
@@ -266,41 +324,37 @@ export function ItemLink({
       }
     } catch (error) {
       console.error('Error en navegación:', error);
+      triggerHaptic([100, 50, 100]);
     } finally {
-      setIsNavigating(false);
+      dispatch({ type: 'SET_NAVIGATING', payload: false });
     }
-  }, [concatStoreId, currentUserId, routerPush, setActiveSubPath, onNavigate, mobile, onToggleOpen]);
+  }, [concatStoreId, currentUserId, routerPush, setActiveSubPath, onNavigate, mobile, onToggleOpen, triggerHaptic]);
 
   const handleItemClick = useCallback(async (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
+    
+    handleRipple(e);
+    
+    if (state.isNavigating) return;
 
-    // Prevenir clicks durante navegación
-    if (isNavigating) return;
-
-    // Si tiene subPaths
     if (subPaths && subPaths.length > 0) {
-      // En móvil: solo toggle del submenú, NO navegar
       if (mobile) {
-        // Toggle del submenú
         if (openSubMenu) {
-          onClickPath(-1); // Cerrar
+          onClickPath(-1);
         } else {
           setActivePath(safeHref);
-          onClickPath(index); // Abrir
+          onClickPath(index);
         }
         
-        // Mantener el subpath activo si existe
         if (subPaths.some(subPath => subPath.href === pathname)) {
           setActiveSubPath(pathname);
         }
-        return; // NO navegar en móvil con subPaths
+        return;
       } else {
-        // En desktop: comportamiento normal
         setActivePath(safeHref);
         onClickPath(index);
         
-        // Auto-navegar si está configurado
         if (autoNavigateToFirstSubPath && filteredSubPaths[0]) {
           await handleSubPathNavigation(filteredSubPaths[0].href);
         }
@@ -308,50 +362,102 @@ export function ItemLink({
       return;
     }
 
-    // Si NO tiene subPaths, navegar directamente
     setActivePath(safeHref);
     if (safeHref) {
       await handleDirectNavigation(safeHref);
     }
-  }, [isNavigating, setActivePath, safeHref, onClickPath, index, subPaths, autoNavigateToFirstSubPath, mobile, filteredSubPaths, pathname, setActiveSubPath, handleSubPathNavigation, handleDirectNavigation, openSubMenu]);
+  }, [state.isNavigating, handleRipple, setActivePath, safeHref, onClickPath, index, subPaths, autoNavigateToFirstSubPath, mobile, filteredSubPaths, pathname, setActiveSubPath, handleSubPathNavigation, handleDirectNavigation, openSubMenu]);
 
   const handleSubPathClick = useCallback(async (e: React.MouseEvent, subHref: string) => {
     e.preventDefault();
     e.stopPropagation();
     
-    if (!isNavigating) {
+    handleRipple(e);
+    
+    if (!state.isNavigating) {
       await handleSubPathNavigation(subHref);
     }
-  }, [isNavigating, handleSubPathNavigation]);
+  }, [state.isNavigating, handleRipple, handleSubPathNavigation]);
 
-  // Keyboard navigation
+  // Enhanced keyboard navigation
   const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      handleItemClick(e as any);
+    switch(e.key) {
+      case 'Enter':
+      case ' ':
+        e.preventDefault();
+        handleItemClick(e as any);
+        break;
+      case 'ArrowRight':
+        if (subPaths && !openSubMenu) {
+          e.preventDefault();
+          onClickPath(index);
+        }
+        break;
+      case 'ArrowLeft':
+        if (subPaths && openSubMenu) {
+          e.preventDefault();
+          onClickPath(-1);
+        }
+        break;
+      case 'ArrowDown':
+        if (openSubMenu && filteredSubPaths.length > 0) {
+          e.preventDefault();
+          const firstSubPath = itemRef.current?.querySelector('[role="menuitem"]') as HTMLElement;
+          firstSubPath?.focus();
+        }
+        break;
     }
-  }, [handleItemClick]);
+  }, [handleItemClick, subPaths, openSubMenu, onClickPath, index, filteredSubPaths]);
 
-  // Focus management
+  // Focus management with smooth scroll
   useEffect(() => {
-    if (itemIsActive && itemRef.current) {
-      itemRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    if (itemIsActive && itemRef.current && !mobile) {
+      itemRef.current.scrollIntoView({ 
+        behavior: 'smooth', 
+        block: 'nearest',
+        inline: 'nearest'
+      });
     }
-  }, [itemIsActive]);
+  }, [itemIsActive, mobile]);
+
+  // Cleanup tooltip timer on unmount
+  useEffect(() => {
+    return () => {
+      if (tooltipTimer.current) {
+        clearTimeout(tooltipTimer.current);
+      }
+    };
+  }, []);
+
+  // Mouse handlers for hover effects
+  const handleMouseEnter = useCallback(() => {
+    dispatch({ type: 'SET_HOVERED', payload: true });
+    tooltipTimer.current = setTimeout(() => setShowTooltip(true), 800);
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    dispatch({ type: 'SET_HOVERED', payload: false });
+    if (tooltipTimer.current) {
+      clearTimeout(tooltipTimer.current);
+    }
+    setShowTooltip(false);
+  }, []);
 
   // Render con subPaths
   if (subPaths && subPaths.length > 0) {
     return (
-      <motion.div 
+      <div 
         className={`${styles.itemSubPath} ${className}`} 
         data-reduce={sidebarReduce && !enlargeByHover}
         data-tour-target={dataTourTarget}
-        initial="idle"
-        animate={isHovered ? "hover" : "idle"}
-        onHoverStart={() => setIsHovered(true)}
-        onHoverEnd={() => setIsHovered(false)}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        role="menuitem"
+        aria-expanded={openSubMenu}
+        aria-haspopup="menu"
+        aria-current={itemIsActive ? "page" : undefined}
       >
-        <motion.li
+        <li
           ref={itemRef}
           className={styles.linkContainer}
           data-active={itemIsActive}
@@ -360,22 +466,28 @@ export function ItemLink({
           onClick={handleItemClick}
           onKeyDown={handleKeyDown}
           tabIndex={0}
-          role="button"
-          aria-expanded={openSubMenu}
-          aria-label={`${safeText} menu${openSubMenu ? ' expandido' : ' colapsado'}`}
-          variants={itemVariants}
-          whileTap="tap"
           style={{
-            cursor: mobile && subPaths && subPaths.length > 0 ? 'pointer' : 'default'
+            cursor: mobile && subPaths && subPaths.length > 0 ? 'pointer' : 'default',
+            contain: 'layout style paint'
           }}
         >
+          {/* Ripple effects */}
+          {state.ripples.map(ripple => (
+            <RippleEffect
+              key={ripple.id}
+              x={ripple.x}
+              y={ripple.y}
+              id={ripple.id}
+              onComplete={(id) => dispatch({ type: 'REMOVE_RIPPLE', payload: id })}
+            />
+          ))}
+
+          {/* Success animation */}
+          {showSuccess && <NavigationSuccess />}
+
           <div data-reduce={sidebarReduce && !enlargeByHover} className={styles.link}>
             {currentIcon && (
-              <motion.div
-                className={styles.iconWrapper}
-                variants={iconVariants}
-                animate={itemIsActive ? "active" : isHovered ? "hover" : "idle"}
-              >
+              <div className={styles.iconWrapper}>
                 <Image
                   src={currentIcon}
                   alt=""
@@ -383,34 +495,44 @@ export function ItemLink({
                   width={19}
                   className={styles.menuIcon}
                   aria-hidden="true"
+                  priority={itemIsActive}
                 />
-              </motion.div>
+              </div>
             )}
             
             {(!sidebarReduce || enlargeByHover) && (
-              <span className={styles.menuText}>{safeText}</span>
+              <span 
+                className={styles.menuText}
+                style={{ opacity: state.isNavigating ? 0.5 : 1 }}
+              >
+                {safeText}
+              </span>
             )}
             
-            {isNavigating && <LoadingSpinner />}
+            {state.isNavigating && (
+              <LoadingSpinner progress={state.navigationProgress} />
+            )}
             
-            {hasNotification && !isNavigating && <NotificationDot />}
+            {hasNotification && !state.isNavigating && <NotificationDot />}
             
             {endAdornment && !(sidebarReduce && !enlargeByHover) && (
-              <motion.div 
-                className={styles.endAdornment}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.2 }}
-              >
+              <div className={styles.endAdornment}>
                 {endAdornment}
-              </motion.div>
+              </div>
             )}
           </div>
           
-          <motion.div
+          {/* Smart Tooltip for reduced sidebar */}
+          {sidebarReduce && !enlargeByHover && !mobile && (
+            <SmartTooltip content={safeText} show={showTooltip} />
+          )}
+          
+          <div
             className={styles.arrowWrapper}
-            variants={arrowVariants}
-            animate={openSubMenu ? "open" : "closed"}
+            style={{
+              transform: openSubMenu ? 'rotate(0deg) scale(1.1)' : 'rotate(180deg) scale(1)',
+              transition: 'transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)'
+            }}
           >
             <ArrowMenu
               className={styles.arrow}
@@ -418,107 +540,126 @@ export function ItemLink({
               height={10}
               aria-hidden="true"
             />
-          </motion.div>
-        </motion.li>
+          </div>
+        </li>
         
-        {/* Subpaths con animación */}
-        <AnimatePresence>
-          {(!sidebarReduce || enlargeByHover) && (
-            <motion.div 
-              className={styles.subPaths}
-              variants={subMenuVariants}
-              initial="closed"
-              animate={openSubMenu ? "open" : "closed"}
-              exit="closed"
-            >
-              {filteredSubPaths.map((subItem, subIndex) => {
-                const subItemHref = concatStoreId && currentUserId 
-                  ? `${subItem.href}${currentUserId}` 
-                  : subItem.href;
-                
-                const isSubItemActive = subItemHref === activeSubPath || 
-                                      subItem.href === pathname ||
-                                      subItem.href === activeSubPath;
+        {/* Subpaths con animación CSS */}
+        {(!sidebarReduce || enlargeByHover) && (
+          <nav 
+            className={styles.subPaths}
+            style={{
+              height: openSubMenu ? 'auto' : 0,
+              opacity: openSubMenu ? 1 : 0,
+              transform: `scale(${openSubMenu ? 1 : 0.95})`,
+              transition: 'all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+              overflow: 'hidden'
+            }}
+            role="menu"
+            aria-label={`Submenú de ${safeText}`}
+          >
+            {filteredSubPaths.map((subItem, subIndex) => {
+              const subItemHref = concatStoreId && currentUserId 
+                ? `${subItem.href}${currentUserId}` 
+                : subItem.href;
+              
+              const isSubItemActive = subItemHref === activeSubPath || 
+                                    subItem.href === pathname ||
+                                    subItem.href === activeSubPath;
 
-                return (
-                  <motion.button
-                    key={subItem.href}
-                    className={styles.subPath}
-                    data-active={isSubItemActive}
-                    onClick={(e) => handleSubPathClick(e, subItem.href)}
-                    disabled={isNavigating}
-                    tabIndex={openSubMenu ? 0 : -1}
-                    role="menuitem"
-                    aria-label={subItem.text}
-                    variants={subItemVariants}
-                    custom={subIndex}
-                    initial="hidden"
-                    animate="visible"
-                    whileHover={{ x: 4, backgroundColor: 'rgba(219, 59, 43, 0.03)' }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    <span className={styles.subPathText}>{subItem.text}</span>
-                    
-                    <div className={styles.subPathEndAdornment}>
-                      {subItem.hasNotification && <NotificationDot />}
-                      {subItem.endAdornmentSubPath && (
-                        <motion.div
-                          initial={{ opacity: 0, scale: 0.8 }}
-                          animate={{ opacity: 1, scale: 1 }}
-                          transition={{ delay: 0.3 }}
-                        >
-                          {React.isValidElement(subItem.endAdornmentSubPath) ? 
-                            subItem.endAdornmentSubPath : 
-                            <div className={styles.endAdornmentSubPath}>
-                              {subItem.endAdornmentSubPath}
-                            </div>
-                          }
-                        </motion.div>
-                      )}
-                    </div>
-                  </motion.button>
-                );
-              })}
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </motion.div>
+              return (
+                <button
+                  key={subItem.href}
+                  className={styles.subPath}
+                  data-active={isSubItemActive}
+                  onClick={(e) => handleSubPathClick(e, subItem.href)}
+                  disabled={state.isNavigating}
+                  tabIndex={openSubMenu ? 0 : -1}
+                  role="menuitem"
+                  aria-label={subItem.text}
+                  aria-current={isSubItemActive ? "page" : undefined}
+                  style={{ 
+                    contain: 'layout style',
+                    animationDelay: `${subIndex * 30}ms`
+                  }}
+                >
+                  {/* Ripple container */}
+                  <span className={styles.rippleContainer}>
+                    {state.ripples.map(ripple => (
+                      <RippleEffect
+                        key={ripple.id}
+                        x={ripple.x}
+                        y={ripple.y}
+                        id={ripple.id}
+                        onComplete={(id) => dispatch({ type: 'REMOVE_RIPPLE', payload: id })}
+                      />
+                    ))}
+                  </span>
+
+                  <span className={styles.subPathText}>{subItem.text}</span>
+                  
+                  <div className={styles.subPathEndAdornment}>
+                    {subItem.hasNotification && <NotificationDot />}
+                    {subItem.endAdornmentSubPath && (
+                      <div>
+                        {React.isValidElement(subItem.endAdornmentSubPath) ? 
+                          subItem.endAdornmentSubPath : 
+                          <div className={styles.endAdornmentSubPath}>
+                            {subItem.endAdornmentSubPath}
+                          </div>
+                        }
+                      </div>
+                    )}
+                  </div>
+                </button>
+              );
+            })}
+          </nav>
+        )}
+      </div>
     );
   }
 
   // Render item simple (sin subPaths)
   return (
-    <motion.li
+    <li
       ref={itemRef}
       data-tour-target={dataTourTarget}
       className={`${styles.linkContainer} ${className}`}
       data-active={itemIsActive}
       data-reduce={sidebarReduce && !enlargeByHover}
       data-has-sub-paths={false}
-      initial="idle"
-      animate={isHovered ? "hover" : "idle"}
-      onHoverStart={() => setIsHovered(true)}
-      onHoverEnd={() => setIsHovered(false)}
-      variants={itemVariants}
-      whileTap="tap"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
       role="menuitem"
       tabIndex={0}
+      aria-current={itemIsActive ? "page" : undefined}
+      style={{ contain: 'layout style paint' }}
     >
+      {/* Ripple effects */}
+      {state.ripples.map(ripple => (
+        <RippleEffect
+          key={ripple.id}
+          x={ripple.x}
+          y={ripple.y}
+          id={ripple.id}
+          onComplete={(id) => dispatch({ type: 'REMOVE_RIPPLE', payload: id })}
+        />
+      ))}
+
+      {/* Success animation */}
+      {showSuccess && <NavigationSuccess />}
+
       <button
         data-reduce={sidebarReduce && !enlargeByHover}
         className={styles.link}
         onClick={handleItemClick}
         onKeyDown={handleKeyDown}
-        disabled={isNavigating}
+        disabled={state.isNavigating}
         aria-label={`Navegar a ${safeText}`}
         title={sidebarReduce && !enlargeByHover ? safeText : undefined}
       >
         {currentIcon && (
-          <motion.div
-            className={styles.iconWrapper}
-            variants={iconVariants}
-            animate={itemIsActive ? "active" : isHovered ? "hover" : "idle"}
-          >
+          <div className={styles.iconWrapper}>
             <Image
               src={currentIcon}
               alt=""
@@ -526,29 +667,47 @@ export function ItemLink({
               width={19}
               className={styles.menuIcon}
               aria-hidden="true"
+              priority={itemIsActive}
             />
-          </motion.div>
+          </div>
         )}
         
         {(!sidebarReduce || enlargeByHover) && (
-          <span className={styles.menuText}>{safeText}</span>
+          <span 
+            className={styles.menuText}
+            style={{ opacity: state.isNavigating ? 0.5 : 1 }}
+          >
+            {safeText}
+          </span>
         )}
         
-        {isNavigating && <LoadingSpinner />}
+        {state.isNavigating && <LoadingSpinner />}
         
-        {hasNotification && !isNavigating && <NotificationDot />}
+        {hasNotification && !state.isNavigating && <NotificationDot />}
         
         {endAdornment && !(sidebarReduce && !enlargeByHover) && (
-          <motion.div 
-            className={styles.endAdornment}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.2 }}
-          >
+          <div className={styles.endAdornment}>
             {endAdornment}
-          </motion.div>
+          </div>
         )}
       </button>
-    </motion.li>
+
+      {/* Smart Tooltip for reduced sidebar */}
+      {sidebarReduce && !enlargeByHover && !mobile && (
+        <SmartTooltip content={safeText} show={showTooltip} />
+      )}
+    </li>
   );
-}
+}, (prevProps, nextProps) => {
+  // Memoización personalizada para evitar re-renders innecesarios
+  return (
+    prevProps.openSubMenu === nextProps.openSubMenu &&
+    prevProps.activePath === nextProps.activePath &&
+    prevProps.activeSubPath === nextProps.activeSubPath &&
+    prevProps.sidebarReduce === nextProps.sidebarReduce &&
+    prevProps.enlargeByHover === nextProps.enlargeByHover &&
+    prevProps.hasNotification === nextProps.hasNotification &&
+    prevProps.href === nextProps.href &&
+    prevProps.text === nextProps.text
+  );
+});

@@ -1,69 +1,80 @@
-@use './variables.scss';
+@use './design-tokens.scss' as tokens;
 
 // ========================================================================
-// VARIABLES & MIXINS
+// TOOLTIP STYLES - Apple Style Premium
 // ========================================================================
 
-$transition-base: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-$transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-$transition-spring: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-
-@mixin glass-effect {
-  backdrop-filter: blur(10px);
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.1) 0%,
-    rgba(255, 255, 255, 0.05) 100%
-  );
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-@mixin hover-glow {
-  &::before {
-    content: '';
-    position: absolute;
-    inset: -1px;
-    background: linear-gradient(
-      90deg,
-      transparent,
-      rgba(variables.$primary-color, 0.1),
-      transparent
-    );
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    border-radius: inherit;
-    pointer-events: none;
+.tooltip {
+  position: absolute;
+  left: calc(100% + tokens.$space-3);
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(tokens.$neutral-900, 0.95);
+  backdrop-filter: blur(20px) saturate(180%);
+  color: tokens.$text-inverse;
+  padding: tokens.$space-2 tokens.$space-3;
+  border-radius: tokens.$radius-lg;
+  font-size: tokens.$text-xs;
+  font-weight: tokens.$font-weight-medium;
+  white-space: nowrap;
+  pointer-events: none;
+  box-shadow: tokens.$shadow-lg;
+  z-index: tokens.$z-tooltip;
+  
+  .tooltipContent {
+    position: relative;
+    z-index: 1;
   }
   
-  &:hover::before {
-    opacity: 1;
-  }
-}
-
-@mixin focus-ring {
-  &:focus-visible {
-    outline: 2px solid rgba(variables.$primary-color, 0.5);
-    outline-offset: 2px;
-    box-shadow: 0 0 0 4px rgba(variables.$primary-color, 0.1);
+  .tooltipArrow {
+    position: absolute;
+    left: -4px;
+    top: 50%;
+    transform: translateY(-50%) rotate(45deg);
+    width: 8px;
+    height: 8px;
+    background: rgba(tokens.$neutral-900, 0.95);
   }
 }
 
 // ========================================================================
-// CONTAINER STYLES
+// KEYBOARD HINT - Linear Style Premium
+// ========================================================================
+
+.keyboardHint {
+  margin-left: auto;
+  padding: tokens.$space-1 tokens.$space-2;
+  background: tokens.$surface-tertiary;
+  border: 1px solid tokens.$border-subtle;
+  border-radius: tokens.$radius-sm;
+  font-family: tokens.$font-family-mono;
+  font-size: tokens.$text-xs;
+  font-weight: tokens.$font-weight-medium;
+  color: tokens.$text-tertiary;
+  display: none;
+  
+  @media (min-width: tokens.$breakpoint-lg) {
+    display: inline-flex;
+  }
+}
+
+// ========================================================================
+// CONTAINER STYLES - Professional Grade
 // ========================================================================
 
 .itemSubPath {
   list-style: none;
   position: relative;
+  contain: layout style;
   
   &[data-reduce="true"] {
     .linkContainer {
-      width: 44px;
-      height: 44px;
+      width: tokens.$menu-sidebar-width-reduced;
+      height: tokens.$menu-item-height;
       padding: 0;
       display: grid;
       place-content: center;
-      border-radius: 12px;
+      border-radius: tokens.$radius-xl;
       
       .arrow {
         display: none;
@@ -75,43 +86,71 @@ $transition-spring: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 .linkContainer {
   display: flex;
   align-items: center;
-  min-height: 40px;
-  padding: 8px 12px;
-  margin: 2px 0;
+  min-height: 44px;
+  min-width: 44px;
+  padding: tokens.$space-3 tokens.$space-4;
+  margin: tokens.$space-1 0;
   list-style-type: none;
-  transition: $transition-base;
+  transition: all tokens.$duration-normal tokens.$ease-smooth;
   cursor: pointer;
   position: relative;
-  border-radius: 10px;
+  border-radius: tokens.$radius-xl;
   overflow: hidden;
+  contain: layout style paint;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+  will-change: transform;
   
-  @include hover-glow;
-  @include focus-ring;
+  @media (hover: none) and (pointer: coarse) {
+    min-height: tokens.$menu-item-height-mobile;
+    min-width: 48px;
+  }
   
-  // Micro-animación en hover
+  // Premium hover effect - Apple/Linear style
   &:hover {
-    transform: translateX(2px);
+    transform: translateX(3px) translateZ(0);
     background: linear-gradient(
-      90deg,
-      rgba(variables.$primary-color, 0.03) 0%,
-      transparent 100%
+      135deg,
+      tokens.$surface-hover 0%,
+      rgba(#db3b2b, 0.01) 100%
     );
+    box-shadow: 
+      tokens.$shadow-md,
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
     
     .menuIcon {
-      filter: brightness(1.1);
+      filter: brightness(1.1) drop-shadow(0 2px 4px rgba(#db3b2b, 0.2));
+      transform: rotate(-2deg) scale(1.05);
+    }
+    
+    .menuText {
+      color: tokens.$text-primary;
     }
   }
   
-  // Estados activos mejorados
+  // Touch optimization
+  @media (hover: none) and (pointer: coarse) {
+    min-height: tokens.$menu-item-height-mobile;
+    transition-duration: tokens.$duration-fast;
+    -webkit-tap-highlight-color: transparent;
+    
+    &:active {
+      transform: scale(0.98);
+      transition-duration: 0.1s;
+    }
+  }
+  
+  // Estados activos premium
   &[data-active="true"] {
     background: linear-gradient(
       135deg,
-      rgba(variables.$primary-color, 0.08) 0%,
-      rgba(variables.$primary-color, 0.04) 100%
+      tokens.$surface-selected 0%,
+      tokens.$surface-active 100%
     );
     box-shadow: 
-      inset 0 1px 2px rgba(variables.$primary-color, 0.1),
-      0 2px 8px rgba(variables.$primary-color, 0.05);
+      inset 0 1px 3px rgba(#db3b2b, 0.1),
+      tokens.$shadow-sm;
     
     &::after {
       content: '';
@@ -119,54 +158,65 @@ $transition-spring: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
       left: 0;
       top: 50%;
       transform: translateY(-50%);
-      width: 3px;
+      width: 4px;
       height: 70%;
       background: linear-gradient(
         180deg,
-        variables.$primary-color 0%,
-        darken(variables.$primary-color, 10%) 100%
+        tokens.$brand-primary 0%,
+        tokens.$brand-primary-hover 100%
       );
-      border-radius: 0 3px 3px 0;
-      box-shadow: 2px 0 4px rgba(variables.$primary-color, 0.3);
-      animation: slideIn 0.3s ease-out;
+      border-radius: 0 tokens.$radius-sm tokens.$radius-sm 0;
+      box-shadow: 
+        2px 0 8px rgba(#db3b2b, 0.3),
+        inset -1px 0 2px rgba(255, 255, 255, 0.2);
+      animation: slideIn 0.4s tokens.$ease-bounce;
     }
     
     .link {
-      font-weight: 600;
-      color: variables.$primary-color;
+      font-weight: tokens.$font-weight-semibold;
+      color: tokens.$text-accent;
+    }
+    
+    .menuIcon {
+      transform: scale(1.05);
     }
   }
   
-  // Mobile touch feedback
-  @media (max-width: variables.$breakpoint-md) {
+  // Mobile-specific styles
+  @media (max-width: tokens.$breakpoint-menu-mobile) {
+    margin: tokens.$space-1 tokens.$space-2;
+    
     &[data-has-sub-paths="true"] {
-      // Indicador visual de que es clickeable
       .link {
         &::after {
           content: '';
           position: absolute;
-          right: 40px;
+          right: 48px;
           top: 50%;
           transform: translateY(-50%);
-          width: 20px;
-          height: 20px;
-          border-radius: 50%;
-          background: rgba(variables.$primary-color, 0.05);
+          width: 24px;
+          height: 24px;
+          border-radius: tokens.$radius-full;
+          background: radial-gradient(
+            circle,
+            rgba(#db3b2b, 0.1) 0%,
+            transparent 70%
+          );
           opacity: 0;
-          transition: opacity 0.2s ease;
+          transition: opacity tokens.$duration-fast ease;
         }
       }
       
       &:active .link::after {
         opacity: 1;
-        background: rgba(variables.$primary-color, 0.1);
+        animation: ripple-effect 0.6s ease-out;
       }
     }
   }
 }
 
 // ========================================================================
-// LINK & CONTENT STYLES
+// LINK & CONTENT STYLES - Professional Grade
 // ========================================================================
 
 .link {
@@ -175,32 +225,26 @@ $transition-spring: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
   border: none;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: tokens.$space-4;
   text-decoration: none;
-  color: variables.$font-color;
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 1.5;
+  color: tokens.$text-primary;
+  font-size: tokens.$text-sm;
+  font-weight: tokens.$font-weight-medium;
+  line-height: tokens.$line-height-normal;
   position: relative;
   width: 100%;
   padding: 0;
-  font-family: variables.$font-family;
-  transition: $transition-base;
-  
-  @include focus-ring;
+  font-family: tokens.$font-family-primary;
+  transition: all tokens.$duration-normal tokens.$ease-smooth;
   
   &[data-reduce="true"] {
     justify-content: center;
   }
   
   &:disabled {
-    opacity: 0.6;
+    opacity: 0.5;
     cursor: not-allowed;
-  }
-  
-  @media (max-width: variables.$breakpoint-md) {
-    font-size: 13px;
-    gap: 10px;
+    filter: grayscale(0.3);
   }
 }
 
@@ -209,169 +253,259 @@ $transition-spring: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  transition: $transition-spring;
-}
-
-.menuIcon {
-  flex-shrink: 0;
-  fill: currentColor;
-  width: 20px;
-  height: 20px;
-  transition: $transition-base;
+  transition: all tokens.$duration-normal tokens.$ease-bounce;
+  position: relative;
   
-  @media (max-width: variables.$breakpoint-md) {
-    width: 18px;
-    height: 18px;
+  // Icon glow effect
+  &::after {
+    content: '';
+    position: absolute;
+    inset: -8px;
+    background: radial-gradient(
+      circle,
+      rgba(#db3b2b, 0.15) 0%,
+      transparent 70%
+    );
+    opacity: 0;
+    transition: opacity tokens.$duration-normal ease;
+    pointer-events: none;
+  }
+  
+  &:hover::after {
+    opacity: 1;
+    animation: pulse 2s ease-in-out infinite;
   }
 }
 
+.menuIcon {
+  width: 20px;
+  height: 20px;
+  transition: all tokens.$duration-normal tokens.$ease-bounce;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.05));
+  
+  // 3D perspective for icons
+  transform-style: preserve-3d;
+  transform: perspective(1000px) translateZ(0);
+}
+
 .menuText {
-  flex: 1;
-  text-align: left;
-  transition: $transition-base;
+  font-size: tokens.$text-sm;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  transition: all tokens.$duration-normal tokens.$ease-smooth;
 }
-
-// ========================================================================
-// ARROW & ANIMATIONS
-// ========================================================================
 
 .arrowWrapper {
   margin-left: auto;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: $transition-base;
-  
-  // En móvil, hacer el área de click más grande
-  @media (max-width: variables.$breakpoint-md) {
-    padding: 4px;
-    margin-right: -4px;
-  }
+  transition: all tokens.$duration-normal tokens.$ease-bounce;
 }
 
 .arrow {
-  transition: $transition-smooth;
-  flex-shrink: 0;
-  color: variables.$font-color;
-  opacity: 0.6;
+  transition: all tokens.$duration-normal tokens.$ease-bounce;
+  color: tokens.$text-tertiary;
   
-  &[data-open="true"] {
-    color: variables.$primary-color;
-    opacity: 1;
-  }
-  
-  // Animación más evidente en móvil
-  @media (max-width: variables.$breakpoint-md) {
-    opacity: 0.8;
-    font-size: 12px;
-    
-    &[data-open="true"] {
-      filter: drop-shadow(0 0 2px rgba(variables.$primary-color, 0.3));
-    }
+  .linkContainer:hover & {
+    color: tokens.$text-accent;
   }
 }
 
 // ========================================================================
-// SUBMENUS
+// LOADING & FEEDBACK STATES - Premium
+// ========================================================================
+
+.loadingSpinner {
+  position: relative;
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  svg {
+    filter: drop-shadow(0 2px 4px rgba(#db3b2b, 0.2));
+    animation: subtle-breathing 2s ease-in-out infinite;
+  }
+  
+  circle {
+    stroke: tokens.$brand-primary;
+    transition: stroke-dashoffset tokens.$duration-normal ease;
+    stroke-linecap: round;
+  }
+  
+  @keyframes subtle-breathing {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.8; transform: scale(0.95); }
+  }
+}
+
+.progressText {
+  position: absolute;
+  font-size: tokens.$text-xs;
+  font-weight: tokens.$font-weight-bold;
+  color: tokens.$text-accent;
+}
+
+.ripple {
+  position: absolute;
+  border-radius: tokens.$radius-full;
+  background: radial-gradient(
+    circle,
+    rgba(#db3b2b, 0.3) 0%,
+    rgba(#db3b2b, 0.1) 40%,
+    transparent 70%
+  );
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  width: 40px;
+  height: 40px;
+}
+
+.rippleContainer {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.successPulse {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40px;
+  height: 40px;
+  pointer-events: none;
+  
+  .successInner {
+    width: 100%;
+    height: 100%;
+    border-radius: tokens.$radius-full;
+    background: radial-gradient(
+      circle,
+      rgba(#db3b2b, 0.4) 0%,
+      rgba(#db3b2b, 0.2) 50%,
+      transparent 100%
+    );
+    box-shadow: 
+      0 0 20px rgba(#db3b2b, 0.4),
+      inset 0 0 20px rgba(#db3b2b, 0.2);
+  }
+}
+
+// ========================================================================
+// NOTIFICATION STYLES - Premium
+// ========================================================================
+
+.notificationDot {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: auto;
+  min-width: 20px;
+  min-height: 20px;
+  
+  svg {
+    filter: drop-shadow(0 0 4px rgba(#db3b2b, 0.6));
+    color: tokens.$brand-primary;
+    animation: notification-glow 3s ease-in-out infinite;
+  }
+}
+
+.notificationCount {
+  font-size: tokens.$text-xs;
+  font-weight: tokens.$font-weight-bold;
+  color: tokens.$text-inverse;
+  background: linear-gradient(
+    135deg,
+    tokens.$brand-primary 0%,
+    tokens.$brand-primary-hover 100%
+  );
+  padding: tokens.$space-1 tokens.$space-2;
+  border-radius: tokens.$radius-full;
+  box-shadow: 
+    tokens.$shadow-sm,
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  animation: notification-glow 3s ease-in-out infinite;
+}
+
+// ========================================================================
+// SUBPATHS STYLES - Professional Grade
 // ========================================================================
 
 .subPaths {
+  margin-top: tokens.$space-1;
+  margin-left: tokens.$space-5;
+  padding: tokens.$space-1 0;
+  border-left: 1px solid tokens.$border-subtle;
   overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  padding-left: 32px;
-  padding-top: 4px;
-  position: relative;
   
-  // Línea vertical elegante
-  &::before {
-    content: '';
-    position: absolute;
-    width: 1px;
-    background: linear-gradient(
-      180deg,
-      transparent 0%,
-      rgba(variables.$primary-color, 0.2) 20%,
-      rgba(variables.$primary-color, 0.2) 80%,
-      transparent 100%
-    );
-    left: 20px;
-    top: 0;
-    bottom: 0;
-    transition: opacity 0.3s ease;
-  }
-  
-  @media (max-width: variables.$breakpoint-md) {
-    gap: 6px;
-    padding-left: 28px;
+  @media (max-width: tokens.$breakpoint-menu-mobile) {
+    margin-left: tokens.$space-4;
   }
 }
 
 .subPath {
-  background: transparent;
-  border: none;
-  min-height: 36px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 8px;
-  border-radius: 8px;
-  padding: 8px 12px;
-  margin-left: -4px;
-  color: variables.$font-color;
-  font-family: variables.$font-family;
-  font-size: 13px;
-  font-weight: 400;
-  line-height: 1.5;
-  text-decoration: none;
-  position: relative;
+  width: calc(100% - tokens.$space-5);
+  margin-left: tokens.$space-5;
+  padding: tokens.$space-2 tokens.$space-3;
+  margin-bottom: tokens.$space-1;
+  background: transparent;
+  border: none;
+  border-radius: tokens.$radius-lg;
   cursor: pointer;
-  transition: $transition-base;
-  
-  @include focus-ring;
-  
-  &::before {
-    content: '';
-    position: absolute;
-    left: -12px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: rgba(variables.$primary-color, 0.3);
-    opacity: 0;
-    transition: $transition-base;
-  }
+  transition: all tokens.$duration-normal tokens.$ease-smooth;
+  font-family: tokens.$font-family-primary;
+  position: relative;
+  overflow: hidden;
+  contain: layout style paint;
   
   &:hover {
-    background: rgba(variables.$primary-color, 0.05);
-    color: variables.$primary-color;
+    background: linear-gradient(
+      135deg,
+      tokens.$surface-hover 0%,
+      rgba(#db3b2b, 0.02) 100%
+    );
+    box-shadow: 
+      tokens.$shadow-xs,
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
     
-    &::before {
-      opacity: 1;
-      background: variables.$primary-color;
+    .subPathText {
+      color: tokens.$text-accent;
+      transform: translateX(2px);
     }
   }
   
   &[data-active="true"] {
     background: linear-gradient(
-      90deg,
-      rgba(variables.$primary-color, 0.1) 0%,
-      rgba(variables.$primary-color, 0.05) 100%
+      135deg,
+      tokens.$surface-selected 0%,
+      tokens.$surface-active 100%
     );
-    color: variables.$primary-color;
-    font-weight: 500;
+    
+    .subPathText {
+      color: tokens.$text-accent;
+      font-weight: tokens.$font-weight-semibold;
+    }
     
     &::before {
-      opacity: 1;
-      background: variables.$primary-color;
-      width: 8px;
-      height: 8px;
+      content: '';
+      position: absolute;
+      left: calc(-1 * tokens.$space-5);
+      top: 50%;
+      transform: translateY(-50%);
+      width: 3px;
+      height: 60%;
+      background: tokens.$brand-primary;
+      border-radius: 0 tokens.$radius-sm tokens.$radius-sm 0;
+      box-shadow: 2px 0 4px rgba(#db3b2b, 0.3);
     }
   }
   
@@ -379,114 +513,47 @@ $transition-spring: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
     opacity: 0.5;
     cursor: not-allowed;
   }
-  
-  @media (max-width: variables.$breakpoint-md) {
-    font-size: 12px;
-    min-height: 32px;
-    padding: 6px 10px;
-  }
 }
 
 .subPathText {
-  flex: 1;
-  text-align: left;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  font-size: tokens.$text-sm;
+  color: tokens.$text-primary;
+  transition: all tokens.$duration-normal tokens.$ease-smooth;
 }
 
 .subPathEndAdornment {
   display: flex;
   align-items: center;
-  gap: 4px;
-}
-
-// ========================================================================
-// NOTIFICATIONS & INDICATORS
-// ========================================================================
-
-.notificationDot {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 6px;
-  min-height: 6px;
-  
-  svg {
-    fill: variables.$primary-color;
-    filter: drop-shadow(0 0 3px rgba(variables.$primary-color, 0.4));
-    animation: pulse 2s ease-in-out infinite;
-  }
-}
-
-.notificationCount {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 20px;
-  height: 20px;
-  padding: 0 6px;
-  background: linear-gradient(
-    135deg,
-    variables.$primary-color 0%,
-    darken(variables.$primary-color, 5%) 100%
-  );
-  color: white;
-  font-size: 11px;
-  font-weight: 600;
-  border-radius: 10px;
-  box-shadow: 
-    0 2px 4px rgba(variables.$primary-color, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2);
-}
-
-// ========================================================================
-// LOADING & END ADORNMENTS
-// ========================================================================
-
-.loadingSpinner {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  gap: tokens.$space-2;
   margin-left: auto;
-  
-  svg {
-    color: variables.$primary-color;
-    opacity: 0.8;
-  }
 }
 
 .endAdornment {
   margin-left: auto;
   display: flex;
   align-items: center;
-  min-width: fit-content;
-  transition: $transition-base;
+  font-size: tokens.$text-xs;
+  color: tokens.$text-tertiary;
+  transition: all tokens.$duration-normal tokens.$ease-smooth;
 }
 
 .endAdornmentSubPath {
-  min-width: 20px;
-  min-height: 20px;
-  padding: 2px 8px;
-  font-family: variables.$font-family;
-  font-size: 11px;
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(variables.$primary-color, 0.1);
-  color: variables.$primary-color;
-  border-radius: 6px;
-  transition: $transition-base;
+  font-size: tokens.$text-xs;
+  padding: tokens.$space-1 tokens.$space-2;
+  background: tokens.$brand-primary-lighter;
+  color: tokens.$text-accent;
+  border-radius: tokens.$radius-full;
+  font-weight: tokens.$font-weight-semibold;
+  transition: all tokens.$duration-normal tokens.$ease-bounce;
   
   &:hover {
-    background: rgba(variables.$primary-color, 0.15);
+    background: tokens.$brand-primary-light;
     transform: scale(1.05);
   }
 }
 
 // ========================================================================
-// ANIMATIONS
+// ANIMATIONS KEYFRAMES - Professional Grade
 // ========================================================================
 
 @keyframes slideIn {
@@ -502,52 +569,105 @@ $transition-spring: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 
 @keyframes pulse {
   0%, 100% {
-    opacity: 1;
+    opacity: 0.5;
     transform: scale(1);
   }
   50% {
-    opacity: 0.8;
+    opacity: 1;
     transform: scale(1.1);
   }
 }
 
-// ========================================================================
-// ACCESSIBILITY
-// ========================================================================
-
-// High contrast mode
-@media (prefers-contrast: high) {
-  .linkContainer {
-    border: 1px solid transparent;
-    
-    &:hover {
-      border-color: variables.$font-color;
-    }
-    
-    &[data-active="true"] {
-      border-color: variables.$primary-color;
-      background: transparent;
-    }
-  }
-  
-  .subPath {
-    border: 1px solid transparent;
-    
-    &:hover {
-      border-color: variables.$font-color;
-    }
-    
-    &[data-active="true"] {
-      border-color: variables.$primary-color;
-    }
+@keyframes ripple-effect {
+  to {
+    transform: scale(4);
+    opacity: 0;
   }
 }
 
-// Reduced motion
+@keyframes notification-glow {
+  0%, 100% {
+    box-shadow: 
+      0 0 5px rgba(#db3b2b, 0.5),
+      0 0 10px rgba(#db3b2b, 0.3);
+  }
+  50% {
+    box-shadow: 
+      0 0 10px rgba(#db3b2b, 0.8),
+      0 0 20px rgba(#db3b2b, 0.5),
+      0 0 30px rgba(#db3b2b, 0.3);
+  }
+}
+
+// ========================================================================
+// PERFORMANCE OPTIMIZATIONS - Professional Grade
+// ========================================================================
+
+// GPU acceleration para elementos animados
+.linkContainer,
+.iconWrapper,
+.menuIcon,
+.subPath {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+  will-change: transform;
+}
+
+// Container queries para adaptación contextual
+@container sidebar (width < 200px) {
+  .menuText { 
+    display: none;
+  }
+  
+  .iconWrapper { 
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .endAdornment {
+    display: none;
+  }
+}
+
+// Reduced motion support
 @media (prefers-reduced-motion: reduce) {
   * {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+}
+
+// High contrast support
+@media (prefers-contrast: high) {
+  .linkContainer {
+    border: 2px solid currentColor;
+    
+    &[data-active="true"] {
+      border-color: tokens.$brand-primary;
+      background: tokens.$brand-primary-lighter;
+    }
+  }
+}
+
+// Dark mode support
+@media (prefers-color-scheme: dark) {
+  .linkContainer {
+    backdrop-filter: blur(20px) saturate(180%);
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.08) 0%,
+      rgba(255, 255, 255, 0.04) 100%
+    );
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    
+    &:hover {
+      background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.08) 0%,
+        rgba(255, 255, 255, 0.04) 100%
+      );
+    }
   }
 }
