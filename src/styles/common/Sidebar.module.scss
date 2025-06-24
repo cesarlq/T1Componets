@@ -61,7 +61,7 @@
 
     .paths {
       align-items: center;
-      gap: tokens.$space-5;
+      // gap: tokens.$space-5;
     }
   }
 
@@ -263,10 +263,10 @@
   display: flex;
   height: 100%;
   flex-direction: column;
-  gap: tokens.$space-2;
+  // gap: tokens.$space-2;
   
   @media (max-width: tokens.$breakpoint-menu-mobile) {
-    gap: tokens.$space-3;
+    // gap: tokens.$space-3;
   }
 }
 

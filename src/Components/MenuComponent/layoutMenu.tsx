@@ -320,6 +320,7 @@ const handleToggleOpen = useCallback(() => {
         style={{
           minHeight: '100vh',
           position: 'relative',
+          justifyItems: 'center'
         }}
       >
         <Navbar

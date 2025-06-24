@@ -1,71 +1,58 @@
-import React, { useState, useEffect, useRef } from 'react';
-import styles from '../../styles/common/ItemLink.module.scss';
+// src/Components/MenuComponent/SmartTooltip.tsx
+'use client';
+
+import React from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import styles from '../../styles/common/SmartTooltip.module.scss';
 
 interface SmartTooltipProps {
   content: string;
   show: boolean;
-  delay?: number;
+  shortcuts?: string[];
+  description?: string;
   position?: 'right' | 'left' | 'top' | 'bottom';
-  className?: string;
 }
 
-export const SmartTooltip: React.FC<SmartTooltipProps> = ({
+export const SmartTooltip = React.memo(function SmartTooltip({
   content,
   show,
-  delay = 800,
-  position = 'right',
-  className = ''
-}) => {
-  const [isVisible, setIsVisible] = useState(false);
-  const [shouldRender, setShouldRender] = useState(false);
-  const timeoutRef = useRef<NodeJS.Timeout>();
-
-  useEffect(() => {
-    if (show) {
-      // Delay antes de mostrar
-      timeoutRef.current = setTimeout(() => {
-        setShouldRender(true);
-        // Pequeño delay adicional para la animación
-        requestAnimationFrame(() => {
-          setIsVisible(true);
-        });
-      }, delay);
-    } else {
-      // Ocultar inmediatamente
-      setIsVisible(false);
-      // Remover del DOM después de la animación
-      setTimeout(() => {
-        setShouldRender(false);
-      }, 150);
-    }
-
-    return () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-    };
-  }, [show, delay]);
-
-  if (!shouldRender) return null;
-
+  shortcuts = [],
+  description,
+  position = 'right'
+}: SmartTooltipProps) {
   return (
-    <div
-      className={`${styles.tooltip} ${className}`}
-      style={{
-        opacity: isVisible ? 1 : 0,
-        transform: `translateY(-50%) scale(${isVisible ? 1 : 0.9})`,
-        transition: 'opacity 150ms ease, transform 150ms ease',
-        pointerEvents: 'none'
-      }}
-      role="tooltip"
-      aria-hidden={!isVisible}
-    >
-      <div className={styles.tooltipArrow} />
-      <div className={styles.tooltipContent}>
-        {content}
-      </div>
-    </div>
+    <AnimatePresence>
+      {show && (
+        <motion.div
+          className={`${styles.tooltip} ${styles[position]}`}
+          initial={{ opacity: 0, scale: 0.95, x: -10 }}
+          animate={{ opacity: 1, scale: 1, x: 0 }}
+          exit={{ opacity: 0, scale: 0.95, x: -10 }}
+          transition={{
+            duration: 0.2,
+            ease: [0.25, 0.46, 0.45, 0.94]
+          }}
+          role="tooltip"
+          aria-live="polite"
+        >
+          <div className={styles.tooltipArrow} />
+          <div className={styles.tooltipContent}>
+            <div className={styles.tooltipTitle}>{content}</div>
+            {description && (
+              <div className={styles.tooltipDescription}>{description}</div>
+            )}
+            {shortcuts.length > 0 && (
+              <div className={styles.tooltipShortcuts}>
+                {shortcuts.map((shortcut, index) => (
+                  <kbd key={index} className={styles.shortcutKey}>
+                    {shortcut}
+                  </kbd>
+                ))}
+              </div>
+            )}
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
-};
-
-export default SmartTooltip;
+});
