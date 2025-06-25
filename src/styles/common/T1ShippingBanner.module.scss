@@ -313,7 +313,6 @@ $animation: (
   line-height: 1.2;
   letter-spacing: -0.02em;
   color: #1f2937;
-  font-family: $font-family !important;
   position: relative;
   transition: all map-get(map-get($animation, duration), normal) map-get(map-get($animation, easing), smooth);
   

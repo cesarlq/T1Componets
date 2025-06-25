@@ -94,7 +94,7 @@ const menuItemReducer = (state: MenuItemState, action: MenuItemAction): MenuItem
 // ========================================================================
 
 const springConfig = {
-  type: "spring",
+  type: "spring" as const,
   stiffness: 400,
   damping: 30,
   mass: 0.8,

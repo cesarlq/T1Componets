@@ -1,4 +1,5 @@
 @use './variables.scss';
+@use 'sass:color';
 
 // ========================================================================
 // DESIGN TOKENS - Apple/Shopify/Linear Inspired
@@ -6,7 +7,7 @@
 
 // Extendemos la paleta de colores existente
 $color-primary: variables.$primary-color; // #DB3B2B
-$color-primary-hover: darken($color-primary, 5%);
+$color-primary-hover: color.scale($color-primary, $lightness: -5%);
 $color-primary-light: rgba($color-primary, 0.1);
 $color-primary-lighter: rgba($color-primary, 0.05);
 
@@ -48,8 +49,8 @@ $space-lg: clamp(1rem, 4vw, 1.5rem);
 
 
 // Typography responsive
-$text-xs: clamp(0.6875rem, 1.5vw, 0.75rem); // 11px-12px
-$text-sm: clamp(0.8125rem, 2vw, 0.875rem); // 13px-14px
+$text-xs: clamp(12px, .8vw, 15px); // 11px-12px
+$text-sm: clamp(13px, 1vw, 16px); // 13px-16px
 $text-base: clamp(0.9375rem, 2.5vw, 1rem); // 15px-16px
 
 // Animación premium
@@ -268,7 +269,6 @@ $border-radius-xl: 12px;
   position: relative;
   width: 100%;
   padding: 0;
-  font-family: variables.$font-family;
   @include smooth-transition;
   
   &[data-reduce="true"] {
@@ -292,8 +292,8 @@ $border-radius-xl: 12px;
   @include gpu-accelerate;
 }
 .menuIcon {
-  width: 20px;
-  height: 20px;
+  width: variables.$icon-size-md;
+  height: variables.$icon-size-md;
   @include smooth-transition(all);
   filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.05));
 }
@@ -491,8 +491,7 @@ $border-radius-xl: 12px;
   padding: $space-sm $space-md;
   margin: 2px 0;
   color: $color-text-primary;
-  font-size: $text-sm;
-  font-family: variables.$font-family;
+  font-size: $text-xs;
   position: relative;
   overflow: hidden;
   cursor: pointer;

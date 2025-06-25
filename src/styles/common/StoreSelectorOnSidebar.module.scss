@@ -59,13 +59,11 @@
   place-content: center;
   border-radius: 9px;
   flex-shrink: 0;
-  font-family: variables.$font-family!important;
 }
 
 .storeName {
   font-size: 12px;
   font-weight: 700;
-  font-family: variables.$font-family!important;
 
   @media (min-width: 1024px) {
     display: inline;
@@ -132,14 +130,12 @@
   padding-bottom: 16px;
   text-align: center;
   color: #111827;
-  font-family: variables.$font-family!important;
 }
 
 .searchInput {
   margin-bottom: 5px;
   margin-left: 8px;
   margin-right: 8px;
-  font-family: variables.$font-family!important;
 }
 
 .storesList {

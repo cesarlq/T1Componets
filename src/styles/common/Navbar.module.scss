@@ -2,7 +2,6 @@
 @use './design-tokens.scss' as tokens;
 
 .container {
-  font-family: tokens.$font-family-primary;
 
   button {
     border: none;
@@ -78,7 +77,6 @@
     .first-letter {
       cursor: pointer;
       font-size: tokens.$text-sm;
-      font-family: tokens.$font-family-primary;
       height: 28px;
       width: 28px;
       background-color: tokens.$brand-primary;
@@ -336,7 +334,6 @@
   font-size: tokens.$text-xl;
   font-weight: tokens.$font-weight-medium;
   color: tokens.$text-primary;
-  font-family: tokens.$font-family-primary;
   transition: all tokens.$duration-normal tokens.$ease-smooth;
   
   &:hover {

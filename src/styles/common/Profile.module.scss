@@ -12,7 +12,6 @@
 
     .letter{
         background-color: variables.$primary-color;
-        font-family: variables.$font-family!important;
         color: white;
         width: auto;
         height: auto;
@@ -37,7 +36,6 @@
             font-size: 16px;
             font-weight: 700;
             text-overflow: ellipsis;
-            font-family: variables.$font-family!important;
         }
 
         .email{
@@ -47,7 +45,6 @@
             font-size: 12px;
             font-weight: 400;
             text-overflow: ellipsis;
-            font-family: variables.$font-family!important;
         }
     }
 }

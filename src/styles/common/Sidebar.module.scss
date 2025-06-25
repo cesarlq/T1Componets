@@ -21,7 +21,6 @@
   justify-content: space-between;
   flex-direction: column;
   gap: tokens.$space-3;
-  font-family: tokens.$font-family-primary;
   z-index: tokens.$z-fixed;
   box-shadow: tokens.$shadow-lg;
   backdrop-filter: blur(20px) saturate(180%);
@@ -170,7 +169,6 @@
 .informativeText {
   font-size: tokens.$text-xs;
   font-weight: tokens.$font-weight-normal;
-  font-family: tokens.$font-family-primary;
   text-align: center;
   padding: tokens.$space-6 tokens.$space-4;
   color: tokens.$text-secondary;
@@ -189,7 +187,6 @@
   border-radius: tokens.$radius-xl !important;
   font-weight: tokens.$font-weight-bold !important;
   font-size: tokens.$text-sm !important;
-  font-family: tokens.$font-family-primary !important;
   text-transform: none !important;
   padding: 0 tokens.$space-6 !important;
   box-shadow: 
@@ -280,7 +277,6 @@
   .titleText {
     font-size: tokens.$text-xs;
     font-weight: tokens.$font-weight-bold;
-    font-family: tokens.$font-family-primary !important;
     color: tokens.$text-secondary;
     text-transform: uppercase;
     letter-spacing: 1px;

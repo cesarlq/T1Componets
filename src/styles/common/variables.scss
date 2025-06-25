@@ -1,6 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap&subset=latin');
 
-$font-family: 'Manrope', sans-serif;
 $primary-color: #DB3B2B;
 $box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.1);
 $border-radius: 12px;
@@ -89,7 +87,7 @@ $font-size-xxl: clamp(26px, 5vw, 32px);
 // Tamaños de íconos responsivos
 $icon-size-xs: clamp(12px, 2vw, 14px);
 $icon-size-sm: clamp(14px, 2.5vw, 16px);
-$icon-size-md: clamp(16px, 3vw, 20px);
+$icon-size-md: clamp(16px, 1.5vw, 20px);
 $icon-size-lg: clamp(20px, 3.5vw, 24px);
 $icon-size-xl: clamp(24px, 4vw, 28px);
 $icon-size-xxl: clamp(28px, 5vw, 32px);
@@ -112,7 +110,6 @@ $secondary-border: 1px solid #ebebeb;
 $height-info: 70px;
 
 :export {
-    font-family: $font-family;
     primary-color: $primary-color;
     box-shadow: $box-shadow;
     border-radius: $border-radius;

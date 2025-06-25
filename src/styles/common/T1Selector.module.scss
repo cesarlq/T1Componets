@@ -191,7 +191,6 @@
   font-weight: tokens.$font-weight-bold;
   font-size: tokens.$text-base;
   color: tokens.$text-primary;
-  font-family: tokens.$font-family-primary;
 }
 
 .t1Logo {
@@ -317,7 +316,6 @@
   font-size: tokens.$text-sm;
   text-align: center;
   color: tokens.$text-primary;
-  font-family: tokens.$font-family-primary;
   transition: all tokens.$duration-normal tokens.$ease-smooth;
   line-height: tokens.$line-height-tight;
   
