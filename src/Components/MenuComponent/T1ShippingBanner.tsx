@@ -192,7 +192,7 @@ export const T1ShippingBanner = memo<T1ShippingBannerProps>(({
         transition={{ type: "spring", stiffness: 400, damping: 17 }}
       >
         {/* Loading overlay con animación */}
-        <AnimatePresence>
+        {/* <AnimatePresence>
           {isNavigating && (
             <motion.div 
               className={styles.loadingOverlay}
@@ -208,16 +208,14 @@ export const T1ShippingBanner = memo<T1ShippingBannerProps>(({
               />
             </motion.div>
           )}
-        </AnimatePresence>
+        </AnimatePresence> */}
         
         <motion.div 
           className={styles.logoWrapper}
           animate={{
-            rotate: isNavigating ? 360 : 0,
             scale: isHoveringLogo ? 1.1 : 1,
           }}
           transition={{
-            rotate: { duration: 1, ease: "linear" },
             scale: { type: "spring", stiffness: 300, damping: 10 }
           }}
         >
@@ -231,26 +229,15 @@ export const T1ShippingBanner = memo<T1ShippingBannerProps>(({
         
         <motion.span 
           className={styles.brandText}
-          animate={{
-            backgroundPosition: isHoveringLogo ? ["0% 50%", "100% 50%"] : "0% 50%",
-          }}
           transition={{
             duration: 2,
             ease: "linear",
-            repeat: isHoveringLogo ? Infinity : 0,
-          }}
-          style={{
-            backgroundSize: "200% 100%",
           }}
         >
           {brandText}
         </motion.span>
       </motion.button>
       
-      {/* Estado para screen readers */}
-      <div className="sr-only" role="status" aria-live="polite">
-        {isNavigating && "Navegando..."}
-      </div>
     </motion.div>
   );
 });

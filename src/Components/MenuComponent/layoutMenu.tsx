@@ -338,8 +338,11 @@ const handleToggleOpen = useCallback(() => {
         
         {/* Área de contenido */}
         <div className="content-area" style={{ 
-          paddingTop: '60px', // Height del navbar
-          padding: theme.spacing(3) 
+          paddingTop: `calc(${theme.spacing(3)} + 60px)`, // Height del navbar
+          paddingLeft: theme.spacing(3) ,
+          paddingRight: theme.spacing(3) ,
+          maxHeight: '100vh',
+          maxWidth: '100%'
         }}>
           {children}
         </div>

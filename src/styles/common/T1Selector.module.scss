@@ -7,12 +7,16 @@
 }
 
 .overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(4px);
-  z-index: tokens.$z-modal-backdrop;
-  transition: all tokens.$duration-normal tokens.$ease-smooth;
+    backdrop-filter: blur(4px);
+    background: rgba(0, 0, 0, .4);
+    inset: 0;
+    position: absolute;
+    transition: all .25s cubic-bezier(.25,.46,.45,.94);
+    z-index: 1040;
+    width: 105vw;
+    height: 100vh;
+    left: -17.5rem;
+    top: -2vh;
   
   &.overlayHidden {
     opacity: 0;
@@ -61,24 +65,24 @@
   }
 
   // Indicador de estado activo
-  &::after {
-    content: '';
-    position: absolute;
-    top: -2px;
-    right: -2px;
-    width: 8px;
-    height: 8px;
-    background: tokens.$brand-primary;
-    border-radius: tokens.$radius-full;
-    opacity: 0;
-    transform: scale(0);
-    transition: all tokens.$duration-normal tokens.$ease-bounce;
-  }
+  // &::after {
+  //   content: '';
+  //   position: absolute;
+  //   top: -2px;
+  //   right: -2px;
+  //   width: 8px;
+  //   height: 8px;
+  //   background: tokens.$brand-primary;
+  //   border-radius: tokens.$radius-full;
+  //   opacity: 0;
+  //   transform: scale(0);
+  //   transition: all tokens.$duration-normal tokens.$ease-bounce;
+  // }
 
-  &[aria-expanded="true"]::after {
-    opacity: 1;
-    transform: scale(1);
-  }
+  // &[aria-expanded="true"]::after {
+  //   opacity: 1;
+  //   transform: scale(1);
+  // }
 }
 
 .modal {
@@ -92,12 +96,13 @@
 
   // Mobile: Bottom sheet estilo Google/Amazon
   @media (max-width: tokens.$breakpoint-lg) {
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    max-height: 70vh;
     border-radius: tokens.$radius-xl tokens.$radius-xl 0 0;
+    bottom: -95vh;
+    max-height: 70vh;
+    width: 100vw;
+    position: absolute;
+    right: -7.5rem;
+
     
     &.modalClosed {
       transform: translateY(100%);
@@ -258,7 +263,7 @@
     }
     
     .itemLabel {
-      color: tokens.$brand-primary;
+      color: tokens.$text-primary;
       font-weight: tokens.$font-weight-semibold;
     }
   }
@@ -284,15 +289,15 @@
   position: relative;
   
   // Glow effect
-  &::after {
-    content: '';
-    position: absolute;
-    inset: -8px;
-    background: radial-gradient(circle, rgba(tokens.$brand-primary, 0.2) 0%, transparent 70%);
-    border-radius: tokens.$radius-full;
-    opacity: 0;
-    transition: opacity tokens.$duration-normal ease;
-  }
+  // &::after {
+  //   content: '';
+  //   position: absolute;
+  //   inset: -8px;
+  //   background: radial-gradient(circle, rgba(tokens.$brand-primary, 0.2) 0%, transparent 70%);
+  //   border-radius: tokens.$radius-full;
+  //   opacity: 0;
+  //   transition: opacity tokens.$duration-normal ease;
+  // }
   
   .menuItem:hover &::after {
     opacity: 1;
@@ -344,17 +349,17 @@
 
 // Ripple effect para mobile
 .menuItem {
-  &::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(circle, rgba(tokens.$brand-primary, 0.3) 0%, transparent 70%);
-    border-radius: inherit;
-    opacity: 0;
-    transform: scale(0);
-    transition: all 0.6s ease-out;
-    pointer-events: none;
-  }
+
+  // &::after {
+  //   content: '';
+  //   position: absolute;
+  //   inset: 0;
+  //   border-radius: inherit;
+  //   opacity: 0;
+  //   transform: scale(0);
+  //   transition: all 0.6s ease-out;
+  //   pointer-events: none;
+  // }
   
   @media (hover: none) and (pointer: coarse) {
     &:active::after {

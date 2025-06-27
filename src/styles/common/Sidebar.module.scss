@@ -5,13 +5,13 @@
   transition: all tokens.$duration-normal tokens.$ease-smooth;
   width: tokens.$menu-sidebar-width;
   margin-top: tokens.$menu-navbar-height;
-  padding-top: tokens.$space-6;
-  padding-bottom: tokens.$space-6;
+  padding-top: tokens.$space-4;
+  padding-bottom: tokens.$space-4;
   position: fixed;
   left: 0;
   top: 0;
-  padding-left: tokens.$space-6;
-  padding-right: tokens.$space-6;
+  padding-left: tokens.$space-4;
+  padding-right: tokens.$space-4;
   height: 100%;
   background: linear-gradient(180deg, tokens.$surface-primary 0%, tokens.$surface-secondary 100%);
   border-right: 1px solid tokens.$border-subtle;
@@ -133,14 +133,23 @@
       }
     }
   }
+
+  @media (min-width: 1024px) and (max-width: 1440px) {
+    width: 250px;
+  }
+
+  @media (min-width: 1920px) and (max-width: 2559px) {
+    width: 280px;
+  }
+
+  @media (min-width: 2560px) {
+    width: 300px;
+  }
 }
 
 .topBanner {
-  margin-top: tokens.$space-4;
   padding: tokens.$space-4;
-  background: linear-gradient(135deg, tokens.$brand-primary-lighter 0%, rgba(tokens.$brand-primary, 0.05) 100%);
   border-radius: tokens.$radius-xl;
-  border: 1px solid tokens.$brand-primary-light;
   
   @media (min-width: tokens.$breakpoint-lg) {
     margin-left: 0;

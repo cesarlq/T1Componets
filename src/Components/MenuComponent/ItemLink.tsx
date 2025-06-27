@@ -188,20 +188,15 @@ const LoadingSpinner = React.memo(({ progress }: { progress?: number }) => {
   );
 });
 
-const NotificationDot = React.memo(({ count }: { count?: number }) => (
+const NotificationDot = React.memo(() => (
   <motion.div 
     className={styles.notificationDot}
     initial={{ scale: 0 }}
     animate={{ scale: 1 }}
     transition={springConfig}
   >
-    {count && count > 0 ? (
-      <span className={styles.notificationCount}>
-        {count > 99 ? '99+' : count}
-      </span>
-    ) : (
-      <Ellipse height={4} width={4} />
-    )}
+    <Ellipse height={4} width={4} />
+    
   </motion.div>
 ));
 
@@ -710,16 +705,16 @@ export const ItemLink = React.memo(function ItemLink({
                 transition={{ duration: 0.2 }}
               >
                 {safeText}
+
+                {hasNotification && !state.isNavigating && (
+                  <NotificationDot  />
+                )}
               </motion.span>
             )}
             
             {/* {state.isNavigating && (
               <LoadingSpinner progress={state.navigationProgress} />
             )} */}
-            
-            {hasNotification && !state.isNavigating && (
-              <NotificationDot count={typeof hasNotification === 'number' ? hasNotification : undefined} />
-            )}
             
             {endAdornment && !(sidebarReduce && !enlargeByHover) && (
               <motion.div 
@@ -758,101 +753,107 @@ export const ItemLink = React.memo(function ItemLink({
         </motion.li>
         
         {/* Subpaths con animación premium */}
-        <AnimatePresence mode="wait">
-          {(!sidebarReduce || enlargeByHover) && (
-            <motion.nav 
-              className={styles.subPaths}
-              variants={subMenuVariants}
-              initial="closed"
-              animate={openSubMenu ? "open" : "closed"}
-              exit="closed"
-              transition={{ 
-                duration: 0.3,
-                ease: [0.25, 0.46, 0.45, 0.94]
-              }}
-              role="menu"
-              aria-label={`Submenú de ${safeText}`}
-            >
-              {filteredSubPaths.map((subItem, subIndex) => {
-                const subItemHref = concatStoreId && currentUserId 
-                  ? `${subItem.href}${currentUserId}` 
-                  : subItem.href;
-                
-                const isSubItemActive = subItemHref === activeSubPath || 
-                                      subItem.href === pathname ||
-                                      subItem.href === activeSubPath;
+        {openSubMenu && 
+          <AnimatePresence mode="wait">
+            {(!sidebarReduce || enlargeByHover) && (
+              <motion.nav 
+                className={styles.subPaths}
+                variants={subMenuVariants}
+                initial="closed"
+                animate={openSubMenu ? "open" : "closed"}
+                exit="closed"
+                transition={{ 
+                  duration: 0.3,
+                  ease: [0.25, 0.46, 0.45, 0.94]
+                }}
+                role="menu"
+                aria-label={`Submenú de ${safeText}`}
+              >
+                {filteredSubPaths.map((subItem, subIndex) => {
+                  const subItemHref = concatStoreId && currentUserId 
+                    ? `${subItem.href}${currentUserId}` 
+                    : subItem.href;
+                  
+                  const isSubItemActive = subItemHref === activeSubPath || 
+                                        subItem.href === pathname ||
+                                        subItem.href === activeSubPath;
 
-                return (
-                  <motion.button
-                    key={subItem.href}
-                    className={styles.subPath}
-                    data-active={isSubItemActive}
-                    onClick={(e) => handleSubPathClick(e, subItem.href)}
-                    disabled={state.isNavigating}
-                    tabIndex={openSubMenu ? 0 : -1}
-                    role="menuitem"
-                    aria-label={subItem.text}
-                    aria-current={isSubItemActive ? "page" : undefined}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ 
-                      opacity: 1, 
-                      x: 0,
-                      transition: {
-                        delay: openSubMenu ? subIndex * 0.05 : 0,
-                        duration: 0.3,
-                        ease: "easeOut"
-                      }
-                    }}
-                    exit={{ 
-                      opacity: 0, 
-                      x: -20,
-                      transition: {
-                        duration: 0.2
-                      }
-                    }}
-                    whileHover={{ x: 4 }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    {/* Ripple container */}
-                    <div className={styles.rippleContainer}>
-                      <AnimatePresence>
-                        {state.ripples.map(ripple => (
-                          <RippleEffect
-                            key={ripple.id}
-                            x={ripple.x}
-                            y={ripple.y}
-                            id={ripple.id}
-                            onComplete={(id) => dispatch({ type: 'REMOVE_RIPPLE', payload: id })}
-                          />
-                        ))}
-                      </AnimatePresence>
-                    </div>
+                  return (
+                    <motion.button
+                      key={subItem.href}
+                      className={styles.subPath}
+                      data-active={isSubItemActive}
+                      onClick={(e) => handleSubPathClick(e, subItem.href)}
+                      disabled={state.isNavigating}
+                      tabIndex={openSubMenu ? 0 : -1}
+                      role="menuitem"
+                      aria-label={subItem.text}
+                      aria-current={isSubItemActive ? "page" : undefined}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ 
+                        opacity: 1, 
+                        x: 0,
+                        transition: {
+                          delay: openSubMenu ? subIndex * 0.05 : 0,
+                          duration: 0.3,
+                          ease: "easeOut"
+                        }
+                      }}
+                      exit={{ 
+                        opacity: 0, 
+                        x: -20,
+                        transition: {
+                          duration: 0.2
+                        }
+                      }}
+                      whileHover={{ x: 4 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      {/* Ripple container */}
+                      <div className={styles.rippleContainer}>
+                        <AnimatePresence>
+                          {state.ripples.map(ripple => (
+                            <RippleEffect
+                              key={ripple.id}
+                              x={ripple.x}
+                              y={ripple.y}
+                              id={ripple.id}
+                              onComplete={(id) => dispatch({ type: 'REMOVE_RIPPLE', payload: id })}
+                            />
+                          ))}
+                        </AnimatePresence>
+                      </div>
 
-                    <span className={styles.subPathText}>{subItem.text}</span>
-                    
-                    <div className={styles.subPathEndAdornment}>
-                      {subItem.hasNotification && <NotificationDot />}
-                      {subItem.endAdornmentSubPath && (
-                        <motion.div
-                          initial={{ scale: 0 }}
-                          animate={{ scale: 1 }}
-                          transition={springConfig}
-                        >
-                          {React.isValidElement(subItem.endAdornmentSubPath) ? 
-                            subItem.endAdornmentSubPath : 
-                            <div className={styles.endAdornmentSubPath}>
-                              {subItem.endAdornmentSubPath}
-                            </div>
-                          }
-                        </motion.div>
-                      )}
-                    </div>
-                  </motion.button>
-                );
-              })}
-            </motion.nav>
-          )}
-        </AnimatePresence>
+                      <span className={styles.subPathText}>
+                        {subItem.text}
+                        {subItem.hasNotification && <NotificationDot />}
+                      </span>
+                      
+                      <div className={styles.subPathEndAdornment}>
+                        
+                        {subItem.endAdornmentSubPath && (
+                          <motion.div
+                            initial={{ scale: 0 }}
+                            animate={{ scale: 1 }}
+                            transition={springConfig}
+                          >
+                            {React.isValidElement(subItem.endAdornmentSubPath) ? 
+                              subItem.endAdornmentSubPath : 
+                              <div className={styles.endAdornmentSubPath}>
+                                {subItem.endAdornmentSubPath}
+                              </div>
+                            }
+                          </motion.div>
+                        )}
+                      </div>
+                    </motion.button>
+                  );
+                })}
+              </motion.nav>
+            )}
+          </AnimatePresence>
+        }
+        
       </motion.div>
     );
   }
@@ -943,6 +944,10 @@ export const ItemLink = React.memo(function ItemLink({
             transition={{ duration: 0.2 }}
           >
             {safeText}
+            {hasNotification && !state.isNavigating && (
+              <NotificationDot />
+            )}
+        
           </motion.span>
         )}
         
@@ -950,14 +955,10 @@ export const ItemLink = React.memo(function ItemLink({
           <LoadingSpinner progress={state.navigationProgress} />
         )} */}
         
-        {hasNotification && !state.isNavigating && (
-          <NotificationDot count={typeof hasNotification === 'number' ? hasNotification : undefined} />
-        )}
         
         {endAdornment && !(sidebarReduce && !enlargeByHover) && (
           <motion.div 
             className={styles.endAdornment}
-            animate={{ opacity: state.isHovered ? 1 : 0.7 }}
           >
             {endAdornment}
           </motion.div>
