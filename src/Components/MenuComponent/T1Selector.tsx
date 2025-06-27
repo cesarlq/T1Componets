@@ -133,8 +133,10 @@ export function T1Selector({
 
         {/* Header */}
         <div className={styles.header}>
-          <span className={styles.ecosystemTitle}>{ecosystemTitle}</span>
-          <div className={styles.t1Logo}><T1Logo width={23} height={23} /></div>
+          <div className={styles.headerContent}>
+            <span className={styles.ecosystemTitle}>{ecosystemTitle}</span>
+            <div className={styles.t1Logo}><T1Logo width={23} height={23} /></div>
+          </div>
         </div>
         
         {/* Menu Items */}
