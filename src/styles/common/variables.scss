@@ -1,3 +1,4 @@
+@use 'sass:color';
 
 $primary-color: #DB3B2B;
 $box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.1);
@@ -75,6 +76,75 @@ $breakpoint-desktop: 1200px;
     @media (max-width: #{$breakpoint-desktop - 1px}) { @content; }
   }
 }
+// ========================================================================
+// DESIGN TOKENS - Apple/Shopify/Linear Inspired
+// ========================================================================
+
+// Extendemos la paleta de colores existente
+$color-primary: $primary-color; // #DB3B2B
+$color-primary-hover: color.scale($color-primary, $lightness: -5%);
+$color-primary-light: rgba($color-primary, 0.1);
+$color-primary-lighter: rgba($color-primary, 0.05);
+
+// Nuevos colores para el sistema minimalista
+$color-surface-primary: #ffffff;
+$color-surface-secondary: #fafafa;
+$color-surface-hover: rgba(0, 0, 0, 0.04);
+$color-surface-active: rgba($color-primary, 0.08);
+$color-surface-selected: rgba($color-primary, 0.04);
+
+// Glass morphism colors
+$color-glass-light: rgba(255, 255, 255, 0.72);
+$color-glass-dark: rgba(0, 0, 0, 0.72);
+$color-glass-border: rgba(255, 255, 255, 0.18);
+
+// Text colors optimizadas
+$color-text-primary: $font-color; // #4d4d4d
+$color-text-secondary: $light-font-color; // #9b9b9b
+$color-text-accent: $color-primary;
+$color-text-inverse: #ffffff;
+
+// Borders
+$color-border-default: rgba(0, 0, 0, 0.04);
+$color-border-hover: rgba(0, 0, 0, 0.08);
+$color-border-active: transparent;
+
+// Shadows premium
+$shadow-xs: 0 1px 3px rgba(0, 0, 0, 0.04);
+$shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
+$shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.04);
+$shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.12), 0 4px 8px rgba(0, 0, 0, 0.06);
+$shadow-glow: 0 0 20px rgba($color-primary, 0.3);
+
+// Spacing fluido
+$space-xs: clamp(0.25rem, 1vw, 0.5rem);
+$space-sm: clamp(0.3rem, 1vw, 0.5rem);
+$space-md: clamp(0.75rem, 1vw, 1rem);
+$space-lg: clamp(1rem, 4vw, 1.5rem);
+
+
+// Typography responsive
+$text-xs: clamp(12px, .8vw, 15px); // 11px-12px
+$text-sm: clamp(14px, 1vw, 16px); // 13px-16px
+$text-base: clamp(0.9375rem, 2.5vw, 1rem); // 15px-16px
+
+// Animación premium
+$duration-fast: 150ms;
+$duration-normal: 200ms;
+$duration-slow: 300ms;
+$ease-smooth: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+$ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+$ease-apple: cubic-bezier(0.25, 0.1, 0.25, 1);
+
+// Layout
+$menu-item-height: 36px;
+$menu-item-height-mobile: 44px; // Apple HIG
+$menu-sidebar-width-reduced: 44px;
+$border-radius-sm: 6px;
+$border-radius-md: 8px;
+$border-radius-lg: 10px;
+$border-radius-xl: 12px;
+
 
 // Tamaños de fuente responsivos
 $font-size-xs: clamp(12px, 2.5vw, 14px);

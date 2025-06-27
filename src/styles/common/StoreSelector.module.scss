@@ -63,7 +63,7 @@
 
 .storeName {
   display: none;
-  font-size: 12px;
+  font-size: variables.$text-xs;
   font-weight: 700;
 
   @media (min-width: 1024px) {
@@ -89,6 +89,16 @@
   }
 }
 
+@keyframes fadeInScaleDesktop {
+  from {
+    opacity: 0;
+    transform: scale(0.85) translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
 
 @keyframes fadeIn {
   from {
@@ -99,41 +109,52 @@
   }
 }
 
+@keyframes slideUp {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
 .dropdown {
   background: #fff;
-  border-radius: 0 0 8px 8px;
-  /* left: 0; */
-  /* margin-top: 8px; */
   overflow: auto;
   padding-top: 14px;
-  position: absolute;
-  right: -3.5rem;
-  top: 40px;
   transition: all .3s ease;
   z-index: 999;
-  width: 100vw;
 
   // Estados del dropdown
   &.dropdownClosed {
     display: none;
   }
 
-  &.dropdownOpen {
-    display: block;
-    box-shadow: 0 25px 25px rgba(0, 0, 0, 0.15), 0 -1px 10px rgba(0, 0, 0, 0.1);
-    animation: slideDown 0.3s ease;
+  // MOBILE - BOTTOM SHEET
+  @media (max-width: 1023px) {
+    position: fixed;
+    top: 60px; // IMPORTANTE: quitar el top
+    width: 100%;
+    max-height: 80vh;
+    border-radius: 0px 0px 24px 24px; // Bordes redondeados arriba
+    
+    &.dropdownOpen {
+      display: block;
+      box-shadow: 0 -4px 25px rgba(0, 0, 0, 0.15), 0 -10px 60px rgba(0, 0, 0, 0.1);
+      animation: slideUp 0.3s ease;
+    }
   }
 
   // Desktop styles
   @media (min-width: 1024px) {
-    width: 255px;
-    border-radius: 10px;
-    position: absolute;
-    top: 100%;
-    left: auto;
-    right: auto;
-    transform-origin: top center;
+   border-radius: 10px;
     display: block;
+    position: absolute;
+    top: 50px;
+    left: 15rem;
+    z-index: 9999;
+    transform-origin: top center;
+    width: 255px;
 
     &.dropdownClosed {
       opacity: 0;
@@ -145,6 +166,7 @@
     &.dropdownOpen {
       opacity: 1;
       transform: scale(1);
+      animation: fadeInScaleDesktop 0.25s cubic-bezier(0.4, 0, 0.2, 1) forwards;
       box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15), 0 4px 12px rgba(0, 0, 0, 0.1);
     }
   }
@@ -266,7 +288,7 @@
   }
 }
 
-// Variables para personalización
+// Variables para personalización - MANTENER LOS ORIGINALES
 :export {
   primaryColor: #51AF70;
   hoverColor: #F8F8F8;

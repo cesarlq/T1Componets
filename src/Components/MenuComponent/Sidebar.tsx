@@ -492,7 +492,7 @@ export function Sidebar({
   };
 
   return (
-<aside
+    <aside
       className={`${styles.container} ${className}`}
       data-reduce={shouldShowReduced}
       data-enlarge-by-hover={enlargeByHover}

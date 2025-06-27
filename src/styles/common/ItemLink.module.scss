@@ -514,14 +514,14 @@ $border-radius-xl: 12px;
     }
     
     .subPathText {
-      color: $color-text-accent;
+      color: $color-text-primary;
     }
   }
   
   &[data-active="true"] {
     background: $color-surface-active;
     font-weight: 600;
-    color: $color-text-accent;
+    color: $color-text-primary;
     
     &::before {
       opacity: 1;
